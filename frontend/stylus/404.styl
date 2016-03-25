@@ -1,0 +1,32 @@
+@import 'jeet'
+
+html, body
+  background white
+  font-family "Verdana"
+  font-size 12px
+  color #353535
+  margin 0
+  padding 0
+
+a
+  color #353535
+  text-decoration none
+  border-bottom 1px #353535 dashed
+  &:hover
+    border-bottom 1px #353535 solid
+
+.err-page-message-container
+  align(both)
+  text-align center
+
+.err-page-image
+  img
+    height 300px
+
+.err-page-code
+  font-size 350%
+  font-weight bold
+
+@media only screen and (max-width 400px)
+  .err-page-message-container
+    font-size 110%
