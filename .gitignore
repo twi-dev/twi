@@ -7,6 +7,7 @@ frontend/gulp-runtime
 frontend/vendor
 npm-debug.log
 .DS_Store
+index.js
 
 !src/controller
 !src/core
