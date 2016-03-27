@@ -1,13 +1,11 @@
 'use strict'
 
-{__ROOT__} = require '../core/components'
-Model = require __ROOT__ + '/core/server/Model'
+model = require '../core/server/model'
+model = model 'user'
 _ = require 'lodash'
 
-class User extends Model
+class User
   constructor: ->
-    super null
-
     ###
     # Статус пользователя:
     # - Неактивен
@@ -45,17 +43,6 @@ class User extends Model
         'login'
     ]
 
-  tableName: -> return 'user'
-
   getUserByLogin: (sLogin, cb) ->
-    # @model.findOne
-    #   attributes: ['login']
-    #   where:
-    #     login: sLogin
-    # .then (oData) -> cb null, oData.dataValues.login
-    # .catch (err) -> throw err
-    await @findOne sLogin, defer err, oData
-    console.log err if err
-    cb null, oData
 
 module.exports = User

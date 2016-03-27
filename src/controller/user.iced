@@ -1,5 +1,4 @@
-{__ROOT__} = require '../core/components'
-# model = new User = require __ROOT__ + '/model/User'
+user = new User = require '../model/User'
 
 ###
 # Respons login page
@@ -43,10 +42,6 @@ actionUsers = (req, res) ->
 # GET /user/:login?
 ###
 actionProfile = (req, res) ->
-  # await model.getUserByLogin req.params.login,
-  #   defer err, sUserLogin
-  # console.log sUserLogin
-  # res.send sUserLogin
   res.send req.params.login or 'Response owner account by default'
 
 module.exports = (app) ->

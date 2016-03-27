@@ -1,30 +1,20 @@
-Sequelize = require 'sequelize'
+'use strict'
 
+Sequelize = require 'sequelize'
 {getConfig} = require '../components'
 {database} = do getConfig
 
-sConnectionString = "#{database.driver}://#{database.user}" +
-  "#{if database.pass? then ':' + database.pass else ''}@" +
-  "#{database.host}#{if database.port? then ':' + database.port else ''}" +
-  "/#{database.dbname}"
+oModels = {}
 
-oConnection = new Sequelize 'mysql://root@localhost/sandbox'
+# Create new Sequelize instance
+sequelize = new Sequelize database.dbname, database.user, database.pass,
+  host: database.host
+  dialect: database.driver
+  port: database.port
 
-class Model
-  constructor: ->
-    @_aAttributes = []
-    @_model = oConnection.define do @tableName
+module.exports = (sModelName) ->
+  __oModel = sequelize.define sModelName
+  unless sModelName of oModels
+    oModels[sModelName] = __oModel
 
-  tableName: -> return ''
-
-  findOne: (oOptions, cb) ->
-    @_model.findOne
-      attributes: @_aAttributes
-      where:
-        login: oOptions
-    .then (oData) ->
-      cb null, oData
-    .catch (err) ->
-      cb err
-
-module.exports = Model
+  return __oModel
