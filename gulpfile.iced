@@ -16,13 +16,13 @@ csso = require 'gulp-csso'
 autoprefixer = require 'gulp-autoprefixer'
 
 # JS plugins
-coffee = require 'gulp-coffee'
+iced = require 'gulp-iced'
 uglify = require 'gulp-uglify'
 browserify = require 'browserify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
 vueify = require 'gulp-vueify'
-
+-
 # SVG
 svgmin = require 'gulp-svgmin'
 
@@ -86,31 +86,32 @@ gulp.task 'stylus', ->
     .pipe gulpif bIsDevel, do livereload
 
 ###
-# Compile CoffeeScript
-# Note: Do not use this task directly.
-###
-gulp.task 'coffee:compile', ->
-  gulp.src COFFEE_SRC + '/*.coffee'
-    .pipe plumber errorHandler
-    .pipe gulpif bIsDevel, newer COFFEE_SRC + '/*.coffee'
-    .pipe do coffee
-    .pipe gulp.dest COFFEE_TMP
-
-###
 # Compile Vue.js components
 # Note: Do not use this task directly.
 ###
-gulp.task 'vuefy', ->
+gulp.task 'vueify', ->
   gulp.src COMPONENTS_SRC + '/*.vue'
     .pipe newer COMPONENTS_SRC + '/*.vue'
     .pipe do vueify
     .pipe gulp.dest COFFEE_TMP + '/components'
 
 ###
+# Compile IcedCoffeeScript
+#
+# Note: Do not use this task directly.
+###
+gulp.task 'iced:compile', ['vueify'], ->
+  gulp.src COFFEE_SRC + '/*.iced'
+    .pipe plumber errorHandler
+    .pipe gulpif bIsDevel, newer COFFEE_SRC + '/*.coffee'
+    .pipe do iced
+    .pipe gulp.dest COFFEE_TMP
+
+###
 # Build CoffeeScript with Browserify
 # Note: Do not use this task directly.
 ###
-gulp.task 'coffee', ['vuefy', 'coffee:compile'], ->
+gulp.task 'coffee', ['iced:compile'], ->
   browserify COFFEE_TMP + '/main.js',
     insertGlobals: yes
     debug: bIsDevel
@@ -151,7 +152,7 @@ gulp.task 'devel', ->
   bIsDevel = yes
   gulp.watch STYLUS_SRC + '/**/*.styl', ['stylus']
   gulp.watch [
-    COFFEE_SRC + '/*.coffee'
+    COFFEE_SRC + '/*.iced'
     COMPONENTS_SRC + '/*.vue'
   ], ['build:coffee']
   gulp.watch __ROOT__ + '/frontend/svg/**/*.svg', ['svg']

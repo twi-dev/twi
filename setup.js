@@ -2,5 +2,4 @@
 
 'use strict';
 
-var installer = require('./installation');
-installer();
+require('./installation')();
