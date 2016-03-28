@@ -4,4 +4,5 @@ ponyFiction()
   .then (run) ->
     # console.log 'foo'
     do run
-  .catch (err) -> console.log err
+  .catch (err) ->
+    console.log do err.toString

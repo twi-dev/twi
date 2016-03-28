@@ -13,8 +13,10 @@ sequelize = new Sequelize database.dbname, database.user, database.pass,
   port: database.port
 
 module.exports = (sModelName) ->
-  __oModel = sequelize.define sModelName
+  unless sModelName?
+    throw new Error "Model name cannot be empty."
+  sModelName = do sModelName.toLowerCase
   unless sModelName of oModels
-    oModels[sModelName] = __oModel
+    oModels[sModelName] = sequelize.define sModelName
 
-  return __oModel
+  return oModels[sModelName]
