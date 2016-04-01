@@ -3,6 +3,7 @@ core
 node_modules
 model
 public/assets
+public/img/**/*.svg
 frontend/gulp-runtime
 frontend/vendor
 npm-debug.log
