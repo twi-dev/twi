@@ -22,10 +22,11 @@ var exec, realpath, dirname, readConfig, readlineSync;
 exec = require('child_process').execSync;
 realpath = require('fs').realpathSync;
 dirname = require('path').dirname;
-readConfig = require('node-yaml').readSync;
-readlineSync = require('readline-sync');
+// readConfig = require('node-yaml').readSync;
+// readlineSync = require('readline-sync');
+
 // Root path
-const __ROOT__ = dirname(__dirname);
+global.__ROOT__ = dirname(__dirname);
 
 // Variables
 var aLogMessages;
@@ -81,14 +82,16 @@ buildFrontend = function() {
  */
 configure = function() {
   const CONFIGS_ROOT = __ROOT__ + '/configs';
-  var __oDefaultConfig, __oUserConfig;
-  console.log(__oDefaultConfig = readConfig(CONFIGS_ROOT + '/default.config.yaml'));
+  var __oDefaultConfig, __oUserConfig, readConfig;
+  readConfig = require('node-yaml').readSync;
+  __oDefaultConfig = readConfig(CONFIGS_ROOT + '/default.config.yaml');
+  __oUserConfig = readConfig(CONFIGS_ROOT + '/user.config.yaml');
 
-  return __oDefaultConfig;
+
+  return require('lodash').merge(__oDefaultConfig, __oUserConfig);
 };
 
 module.exports = function() {
-  var oDatabaseConfig;
   // try {
   //   logLine('Installing dependencies...');
   //   installDependencies();
@@ -105,16 +108,15 @@ module.exports = function() {
   //   process.exit(1);
   // }
 
-  oDatabaseConfig = configure();
-
-  // logLine('Importing database structure...');
-  // require('./migrations/database')()
-  //   .then(function(){
-  //     logLine('Done without errors.', LOG_OK);
-  //     process.exit(0);
-  //   })
-  //   .catch(function(err) {
-  //     logLine(err, LOG_ERR);
-  //     process.exit(1);
-  //   });
+  logLine('Importing database structure...');
+  require('./migrations/database')(
+    configure().database
+  ).then(function(){
+      logLine('Done without errors.', LOG_OK);
+      process.exit(0);
+    })
+    .catch(function(err) {
+      logLine(err, LOG_ERR);
+      process.exit(1);
+    });
 };

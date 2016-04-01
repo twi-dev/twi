@@ -27,18 +27,13 @@ html
     title= title || name
 
   body
-    <!-- Header start -->
-    include header
-    <!-- Header end -->
-
-    <!-- Page start -->
+    block header
+      include header
     .main-container
-      <!-- Navigation start -->
-      nav.nav-menu-container
-        div
-          | Тут будет вся навигация
-      <!-- Navigation end -->
+      block nav
+        nav.nav-menu-container
+          div
+            | Тут будет вся навигация
       block content
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic')
     script(src="/assets/js/common.js")
-    <!-- Page end -->

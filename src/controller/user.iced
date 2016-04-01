@@ -1,3 +1,5 @@
+'use strict'
+
 user = new User = require '../model/User'
 
 ###
@@ -6,12 +8,24 @@ user = new User = require '../model/User'
 # GET /login
 ###
 actionLogin = (req, res) ->
-  res.send 'Login page will be here'
+  res.render 'user/login',
+    title: 'Авторизация'
+    __redirectUri: req.query.return or '/'
 
 ###
 # POST /login
 ###
-actionSignin = (req, res) ->
+actionSignin = (req, res, next) ->
+  {email, pass} = req.body
+  # await user.auth email, pass, defer err
+
+  # return next err if err
+
+  # __redirectUri = req.query.return
+  # if __redirectUri?
+  #   res
+  #     .status 200
+  #     .redirect __redirectUri
 
 ###
 # Response login page for GET method
@@ -41,8 +55,14 @@ actionUsers = (req, res) ->
 # 
 # GET /user/:login?
 ###
-actionProfile = (req, res) ->
-  res.send req.params.login or 'Response owner account by default'
+actionProfile = (req, res, next) ->
+  {login} = req.params
+  await user.getByLogin login, defer err, oUserData
+
+  return next err if err
+
+  res.render 'user/profile',
+    title: "Профиль #{oUserData.login or '%owner%'}"
 
 module.exports = (app) ->
   # Login
@@ -55,6 +75,6 @@ module.exports = (app) ->
     .get actionRegister
     .post actionSignup
 
-  app.get '/users/page/:page?', actionUsers
+  app.get '/users/:page?', actionUsers
 
   app.get '/user/:login?', actionProfile

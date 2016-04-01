@@ -58,7 +58,7 @@ var loadStructure;
 loadStructure = function() {
   var __oModel, __model, __ref;
   __ref = {};
-  __oModel = requireDir('./structure');
+  __oModel = requireDir(`${global.__ROOT__}/core/database/structure`);
   for (let __sModelName in __oModel) {
     __model = __oModel[__sModelName];
     if (_.isFunction(__model) === true) {
@@ -81,15 +81,22 @@ module.exports = function(oDatabaseConfig) {
     aModelsPromise = [];
     __oStructure = loadStructure();
 
-    // Connection string format: driver://user:pass@hostname:port/dbname
-    oConnection = new Sequelize(`mysql://root@localhost:3306/sandbox`);
+    oConnection = new Sequelize(
+      oDatabaseConfig.dbname,
+      oDatabaseConfig.user,
+      oDatabaseConfig.pass, {
+        dialect: oDatabaseConfig.driver,
+        host: oDatabaseConfig.host,
+        port: oDatabaseConfig.port
+      }
+    );
 
     // Create models
     for (let __sModelName in __oStructure) {
       __oModel = __oStructure[__sModelName];
       aModelsPromise.push(
         oConnection.define(
-          __sModelName, __oModel, {
+          oDatabaseConfig.prefix + __sModelName, __oModel, {
             timestamps: false
           }
         ).sync({

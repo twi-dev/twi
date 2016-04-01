@@ -24,13 +24,15 @@ html(lang="en")
     link(rel="mask-icon", href="/img/icns/safari-pinned-tab.svg", color="#653089")
     link(rel="manifest", href="/manifest.json")
     link(rel="stylesheet", href="/assets/css/404.css")
-    title= "Упс... " + code
+    title Упс...
   body
     .err-page-main-container
       .err-page-message-container
         .err-page-image
-          img(src="/img/errors/404.png", alt="Whoops...")
-        .err-page-message-content Это не та страница, которую Вы ищите.
-        .err-page-code 404
-        .err-page-home-link
-          a(href="/") Home
+          img(src="/img/errors/" + code + ".png", alt="Упс...")
+        .err-page-message-content= message || 'Похоже что-то пошло не так...'
+        .err-page-code= code
+        if code !== 500
+          .err-page-home-link
+            a(href="/") На главную
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic')

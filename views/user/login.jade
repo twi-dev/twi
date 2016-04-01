@@ -1,0 +1,22 @@
+extends ../layout
+
+block header
+block content
+  .auth-container
+    .auth-form-container
+      .auth-form-box
+        .auth-header
+          a(href="/")
+            .auth-header-icon
+              include ../../public/img/layout/ponyfictionjs.svg
+            h2.auth-title= name
+        .auth-form-content
+          form(action="/login?return=" + __redirectUri, method="post")
+            .input-container
+              input.form-input.auth-input(type="email", name="email", placeholder, required)
+              .input-label E-mail
+            .input-container
+              input.form-input.auth-input(type="password", name="pass", placeholder, required)
+              .input-label Пароль
+            .button.auth-button
+              button(type="submit") Войти

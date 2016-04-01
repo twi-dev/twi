@@ -4,7 +4,7 @@
   "description": "Library engine for Node.js",
   "main": "index.js",
   "scripts": {
-    "setup": "node setup.js",
+    "setup": "node setup",
     "run": "node index.js",
     "start": "npm run setup && npm run run"
   },
@@ -26,9 +26,11 @@
     "node-yaml": "~2.0.1",
     "passport": "^0.3.2",
     "pinkie-promise": "^2.0.0",
+    "pretty-error": "^2.0.0",
     "readline-sync": "^1.4.1",
     "require-dir": "^0.3.0",
-    "sequelize": "^3.20.0"
+    "sequelize": "^3.20.0",
+    "validate.js": "^0.9.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",

@@ -3,6 +3,7 @@
 requireDir = require 'require-dir'
 {isFunction} = require 'lodash'
 {logger} = require '../components'
+NotFoundException = require '../errors/NotFoundException'
 
 module.exports = (app) ->
   # Require all controllers
@@ -16,15 +17,7 @@ module.exports = (app) ->
 
   # Render 404
   app.route '*'
-    .get (req, res) ->
-      logger.logLine """
-        Responsed error
-          at route #{req.url}
-          on method #{req.method}
-          with status 404
-         
-      """, logger.LOG_WARN
-      res
-        .status 404
-        .render '404'
+    .get (req, res, next) ->
+      next new NotFoundException "This is not the web page you are looking for."
+      return
   return

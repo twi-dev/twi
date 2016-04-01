@@ -56,7 +56,8 @@ logLine = (sMessage, iLevel) -> log "#{sMessage}\n", iLevel
 clean = (filename) ->
   extname = path.extname filename
   if extname in ICED_EXTNAME
-    filename = path.dirname(filename) + '/' + path.basename(filename, extname) + '.js'
+    filename = path.dirname(filename) + '/' +
+    path.basename(filename, extname) + '.js'
 
   unless (fs.statSync filename).isDirectory()
     logLine "Removing #{filename}", LOG_INFO
@@ -154,20 +155,17 @@ build = (files) ->
 # TASKS
 
 # Build project
-task 'woona:build', 'Build project with save structure', ->
+task 'build', 'Build project with save structure', ->
   try
-    # logLine 'Running task woona:build', LOG_NORMAL
     aPaths = getPaths "./src"
     logLine 'Compiling source files...', LOG_NORMAL
     build aPaths.files
   catch e
-    # logLine e.message, LOG_ERR
-    # logLine e.stack, LOG_ERR
     logLine 'Error while compilation.', LOG_ERR
     process.exit 0
 
 # Start watching
-task 'woona:devel', 'Devel task', ->
+task 'devel', 'Devel task', ->
   logLine "Starting watcher."
   logLine "Press Control+C to stop the watcher."
   fs.watch './src', recursive: yes, watcher

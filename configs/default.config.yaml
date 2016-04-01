@@ -16,4 +16,4 @@ database:
   user: root
   pass: null
   dbname: ponyfiction
-  prefix: lu_
+  prefix: fim_

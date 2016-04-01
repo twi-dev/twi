@@ -1,0 +1,24 @@
+.input-container
+  position relative
+  padding 4px 0
+  margin 14px 0
+  line-height 24px
+  font-size 18px
+
+.input-label
+  position absolute
+  top 0
+  padding 0 2px
+  pointer-events none
+  transition 0.2s ease all
+  z-index -1
+
+.form-input
+  background transparent
+  border none
+  border-bottom 1px solid white
+
+.form-input:focus ~ .input-label,
+.form-input:valid ~ .input-label
+  top -20px
+  font-size 12px

@@ -1,8 +1,17 @@
 'use strict'
 
-model = require '../core/server/model'
-model = model 'user'
 _ = require 'lodash'
+validate = require 'validate.js'
+
+NotFoundException = require '../core/errors/NotFoundException'
+InternalException = require '../core/errors/InternalException'
+ForbiddenException = require '../core/errors/ForbiddenException'
+
+model = require '../core/database'
+__oUserStructure = require '../core/database/structure/user'
+
+model = model 'user', __oUserStructure model.dataTypes
+__oUserStructure = null
 
 class User
   constructor: ->
@@ -39,10 +48,26 @@ class User
         'root'
     ]
 
-    @_aAttributes = [
-        'login'
-    ]
+  _getUser: (oParams, cb) ->
 
-  getUserByLogin: (sLogin, cb) ->
+  _getUsers: (oParams, iLimit, cb) ->
+
+  getByLogin: (sLogin, cb) ->
+    model.findOne
+      where:
+        login: sLogin
+    .then (oResponsedData) ->
+      unless oResponsedData?
+        cb new NotFoundException
+        return
+
+      cb null, oResponsedData.dataValues
+    .catch (err) -> cb err
+
+  getByEmail: (sEmail, cb) ->
+
+  auth: (sEmail, sPassword, cb) ->
+
+  register: (sLogin, sEmail, sPassword, cb) ->
 
 module.exports = User

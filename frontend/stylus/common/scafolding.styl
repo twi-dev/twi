@@ -2,6 +2,10 @@ html, body
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing antialiased
 
+input, textarea, button
+  &:focus, &:active
+    outline none
+
 .fl
   float left
 
@@ -23,7 +27,7 @@ header
   background maneFillViolet
   color white
   font-size 110%
-  box-shadow 0 2px 5px rgba(black, .26)
+  // box-shadow 0 2px 5px rgba(black, .26)
   user-select none
   z-index 1
 
