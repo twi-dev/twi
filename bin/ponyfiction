@@ -4,4 +4,4 @@
 
 const realpathSync = require('fs').realpathSync;
 
-require(realpathSync(__dirname + '/../index.js'));
+require(realpathSync(__dirname + '/../index'));
