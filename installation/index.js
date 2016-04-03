@@ -69,7 +69,7 @@ installDependencies = function(){
 };
 
 buildBackand = function() {
-  exec('cake woona:build', {encoding: 'utf-8', stdio: 'inherit'});
+  exec('cake build', {encoding: 'utf-8', stdio: 'inherit'});
 };
 
 buildFrontend = function() {
@@ -81,7 +81,7 @@ buildFrontend = function() {
  * Получаем конфиги
  */
 configure = function() {
-  const CONFIGS_ROOT = __ROOT__ + '/configs';
+  const CONFIGS_ROOT = global.__ROOT__ + '/configs';
   var __oDefaultConfig, __oUserConfig, readConfig;
   readConfig = require('node-yaml').readSync;
   __oDefaultConfig = readConfig(CONFIGS_ROOT + '/default.config.yaml');
@@ -91,22 +91,22 @@ configure = function() {
   return require('lodash').merge(__oDefaultConfig, __oUserConfig);
 };
 
-module.exports = function() {
-  // try {
-  //   logLine('Installing dependencies...');
-  //   installDependencies();
+(function() {
+  try {
+    logLine('Installing dependencies...');
+    installDependencies();
 
-  //   logLine('Building backend...');
-  //   buildBackand();
+    logLine('Building backend...');
+    buildBackand();
 
-  //   logLine('Building frontend...');
-  //   buildFrontend();
+    logLine('Building frontend...');
+    buildFrontend();
 
-  //   configure();
-  // } catch (err) {
-  //   logLine(err, LOG_ERR);
-  //   process.exit(1);
-  // }
+    configure();
+  } catch (err) {
+    logLine(err, LOG_ERR);
+    process.exit(1);
+  }
 
   logLine('Importing database structure...');
   require('./migrations/database')(
@@ -119,4 +119,4 @@ module.exports = function() {
       logLine(err, LOG_ERR);
       process.exit(1);
     });
-};
+})();
