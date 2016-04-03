@@ -1,7 +1,0 @@
-#!/usr/bin/env node
-
-'use strict';
-
-const realpathSync = require('fs').realpathSync;
-
-require(realpathSync(__dirname + '/../installation'));

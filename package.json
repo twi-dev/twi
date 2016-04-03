@@ -8,6 +8,9 @@
     "run": "node index.js",
     "start": "npm run setup && npm run run"
   },
+  "bin": {
+    "ponyfiction": "bin/ponyfiction"
+  },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "dependencies": {

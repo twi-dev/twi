@@ -4,4 +4,20 @@
 
 const realpathSync = require('fs').realpathSync;
 
-require(realpathSync(__dirname + '/../'));
+switch (process.argv.slice(2)[0]) {
+  case 'run':
+    require(realpathSync(__dirname + '/../'));
+    break;
+  case 'setup':
+    require(realpathSync(__dirname + '/../installation'));
+    break;
+  default:
+    console.log(
+      "\nponyFiction.js said: Unknown command.\n\n" +
+      "Available commands:\n" +
+      "  run   - start your ponyFiction.js app\n" +
+      "  setup - rin ponyFiction.js installer\n\n" +
+      "Usage:\n" +
+      "  ponyfiction <command>\n"
+    );
+}
