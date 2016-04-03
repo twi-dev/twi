@@ -4,7 +4,7 @@
   "description": "Library engine for Node.js",
   "main": "index.js",
   "scripts": {
-    "setup": "node setup",
+    "setup": "node ./installation",
     "run": "node index.js",
     "start": "npm run setup && npm run run"
   },

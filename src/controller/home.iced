@@ -58,7 +58,3 @@ module.exports = (app) ->
 
   # Site rules
   app.get '/rules', actionRules
-
-  # Route this page only if xPoweredBy is set as true
-  if app.locals.settings['x-powered-by']
-    app.get '/powered', actionPowered
