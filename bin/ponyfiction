@@ -16,7 +16,7 @@ switch (process.argv.slice(2)[0]) {
       "\nponyFiction.js said: Unknown command.\n\n" +
       "Available commands:\n" +
       "  run   - start your ponyFiction.js app\n" +
-      "  setup - rin ponyFiction.js installer\n\n" +
+      "  setup - run ponyFiction.js installer\n\n" +
       "Usage:\n" +
       "  ponyfiction <command>\n"
     );
