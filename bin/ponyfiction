@@ -9,7 +9,7 @@ switch (process.argv.slice(2)[0]) {
     require(realpathSync(__dirname + '/../'));
     break;
   case 'setup':
-    require(realpathSync(__dirname + '/../installation'));
+    require(realpathSync(__dirname + '/../setup'));
     break;
   default:
     console.log(
