@@ -3,7 +3,7 @@
 const __ROOT__ = global.__ROOT__;
 
 // Modules
-var requireDir, Sequelize, _;
+var requireDir, Sequelize, question, _;
 
 /* jshint ignore:start */
 Promise = require('pinkie-promise');
@@ -11,6 +11,7 @@ Promise = require('pinkie-promise');
 Sequelize = require('sequelize');
 _ = require('lodash');
 requireDir = require('require-dir');
+question = require('readline-sync').question;
 
 // Variables
 var oTypes;
@@ -75,9 +76,7 @@ loadStructure = () => {
  */
 createSuperUser = () => {
   return new Promise((_res, _rej) => {
-    var user, question, sLogin, sEmail, sPass, sRegisteredAt;
-
-    question = require('readline-sync').question;
+    var user, sLogin, sEmail, sPass, sRegisteredAt;
 
     sLogin = question('Имя пользователя: ');
     sEmail = question('Адрес эл. почты: ');
@@ -110,7 +109,9 @@ createSuperUser = () => {
  */
 module.exports = (oDatabaseConfig) => {
   return new Promise((_res, _rej) => {
-    var oConnection, aModelsPromise, __oStructure, __oModel;
+    var oConnection, aModelsPromise, bIsForce,
+      bCreateSuperUser, __oStructure, __oModel;
+
     aModelsPromise = [];
     __oStructure = loadStructure();
 
@@ -124,6 +125,26 @@ module.exports = (oDatabaseConfig) => {
       }
     );
 
+    bIsForce = question(
+      'Перезаписать структуру таблиц? (Y/n): '
+    ) || 'y';
+
+    bIsForce = (
+      bIsForce === 'y' || bIsForce === 'yes' ||
+      bIsForce === 'д' || bIsForce === 'да'
+    ) ? true : false;
+
+    if (bIsForce === false) {
+      bCreateSuperUser = question(
+        'Создать аккаунт администратора? (Y/n): '
+      ) || 'y';
+    }
+
+    bCreateSuperUser = (
+      bCreateSuperUser === 'y' || bCreateSuperUser === 'yes' ||
+      bCreateSuperUser === 'д' || bCreateSuperUser === 'да'
+    ) ? true : false;
+
     // Create models
     for (let __sModelName in __oStructure) {
       __oModel = __oStructure[__sModelName];
@@ -133,7 +154,7 @@ module.exports = (oDatabaseConfig) => {
             timestamps: false
           }
         ).sync({
-          force: true
+          force: bIsForce
         })
       );
     }
@@ -141,6 +162,10 @@ module.exports = (oDatabaseConfig) => {
     // Send database structure
     Promise.all(aModelsPromise)
       .then(() => {
+        if (bIsForce === false && bCreateSuperUser === false) {
+          return _res();
+        }
+
         createSuperUser()
           .then(() => _res())
           .catch((err) => _rej(err));
