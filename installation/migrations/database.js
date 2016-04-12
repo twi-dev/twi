@@ -13,43 +13,6 @@ _ = require('lodash');
 requireDir = require('require-dir');
 question = require('readline-sync').question;
 
-// Variables
-var oTypes;
-
-/**
- * Import sequelize data types
- * More info here: http://docs.sequelizejs.com/en/latest/api/datatypes/
- */
-oTypes = {
-  STRING: Sequelize.STRING,
-  CHAR: Sequelize.CHAR,
-  TEXT: Sequelize.TEXT,
-  INTEGER: Sequelize.INTEGER,
-  BIGINT: Sequelize.BIGINT,
-  FLOAT: Sequelize.FLOAT,
-  REAL: Sequelize.REAL,
-  DOUBLE: Sequelize.DOUBLE,
-  DECIMAL: Sequelize.DECIMAL,
-  BOOLEAN: Sequelize.BOOLEAN, // implemented as tinyint (mysql)? Huh? o_O
-  TIME: Sequelize.TIME,
-  DATE: Sequelize.DATE,
-  DATEONLY: Sequelize.DATEONLY,
-  HSTORE: Sequelize.HSTORE, // Only for PostgreSQL (pgsql)
-  JSON: Sequelize.JSON, // pgsql
-  JSONB: Sequelize.JSONB, // pgsql
-  NOW: Sequelize.NOW, // A default value of the current timestamp
-  BLOB: Sequelize.BLOB,
-  RANGE: Sequelize.RANGE, // pgsql
-  UUID: Sequelize.UUID,
-  UUIDV1: Sequelize.UUIDV1,
-  UUIDV2: Sequelize.UUIDV2,
-  VIRTUAL: Sequelize.VIRTUAL,
-  ENUM: Sequelize.ENUM,
-  ARRAY: Sequelize.ARRAY, // pgsql
-  GEOMETRY: Sequelize.GEOMETRY, // Only available in PostgreSQL (with PostGIS) or MySQL
-  GEOGRAPHY: Sequelize.GEOGRAPHY
-};
-
 // Functions
 var loadStructure, createSuperUser;
 
@@ -59,13 +22,16 @@ var loadStructure, createSuperUser;
  * @return object
  */
 loadStructure = () => {
-  var __oModel, __model, __ref;
+  var __oModel, __model, __ref, __oTypes;
+
   __ref = {};
+
+  __oTypes = require(`${__ROOT__}/core/database`).dataTypes;
   __oModel = requireDir(`${__ROOT__}/core/database/structure`);
   for (let __sModelName in __oModel) {
     __model = __oModel[__sModelName];
     if (_.isFunction(__model) === true) {
-      __ref[__sModelName] = __model(oTypes);
+      __ref[__sModelName] = __model(__oTypes);
     }
   }
   return __ref;
@@ -76,7 +42,24 @@ loadStructure = () => {
  */
 createSuperUser = () => {
   return new Promise((_res, _rej) => {
-    var user, sLogin, sEmail, sPass, sRegisteredAt;
+    var model, oUser, oContacts,
+      sLogin, sEmail, sPass;
+
+    model = require(`${__ROOT__}/core/database`);
+
+    oUser = model(
+      'user',
+      require(
+        `${__ROOT__}/core/database/structure/user`
+      )(model.dataTypes)
+    );
+
+    oContacts = model(
+      'contacts',
+      require(
+        `${__ROOT__}/core/database/structure/contacts`
+      )(model.dataTypes)
+    );
 
     sLogin = question('Имя пользователя: ');
     sEmail = question('Адрес эл. почты: ');
@@ -84,10 +67,7 @@ createSuperUser = () => {
       hideEchoBack: true
     });
 
-    require('../../core/database')(
-      'user',
-      require(`${__ROOT__}/core/database/structure/user`)(oTypes)
-    ).create({
+    oUser.create({
       login: sLogin,
       email: sEmail,
       password: require('bcryptjs').hashSync(sPass),
@@ -95,8 +75,20 @@ createSuperUser = () => {
       role: 3,
       status: 1
     })
+    .then(() => {
+      return oUser.findOne({
+        where: {
+          role: 3
+        }
+      });
+    })
+    .then((oResponsedData) => {
+      return oContacts.create({
+        userId: oResponsedData.dataValues.userId
+      });
+    })
     .then(() => _res())
-    .catch((err) => _rej(err));
+    .catch(err => _rej(err));
   });
 };
 
@@ -166,10 +158,9 @@ module.exports = (oDatabaseConfig) => {
           return _res();
         }
 
-        createSuperUser()
-          .then(() => _res())
-          .catch((err) => _rej(err));
+        return createSuperUser();
       })
-      .catch((err) => _rej(err));
+      .then(() => _res())
+      .catch(err => _rej(err));
   });
 };
