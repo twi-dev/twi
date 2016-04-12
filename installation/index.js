@@ -227,6 +227,7 @@ configure = () => {
   })
   .catch((err) => {
     logLine(err, LOG_ERR);
+    logLine(err.stack, LOG_ERR);
     process.exit(1);
   });
 })();

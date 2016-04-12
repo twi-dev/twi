@@ -8,7 +8,7 @@ LOG_WARN = 3
 LOG_ERR = 4
 
 LOG_LEVELS = [
-  "trace"
+  "log"
   "ok".green
   "info".cyan
   "warn".yellow

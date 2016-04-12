@@ -1,5 +1,7 @@
 'use strict';
 
+const __ROOT__ = global.__ROOT__;
+
 // Modules
 var requireDir, Sequelize, _;
 
@@ -48,17 +50,17 @@ oTypes = {
 };
 
 // Functions
-var loadStructure;
+var loadStructure, createSuperUser;
 
 /**
  * Load database structure from ./structure directory
  *
  * @return object
  */
-loadStructure = function() {
+loadStructure = () => {
   var __oModel, __model, __ref;
   __ref = {};
-  __oModel = requireDir(`${global.__ROOT__}/core/database/structure`);
+  __oModel = requireDir(`${__ROOT__}/core/database/structure`);
   for (let __sModelName in __oModel) {
     __model = __oModel[__sModelName];
     if (_.isFunction(__model) === true) {
@@ -69,14 +71,45 @@ loadStructure = function() {
 };
 
 /**
+ * Create ponyFiction.js SU
+ */
+createSuperUser = () => {
+  return new Promise((_res, _rej) => {
+    var user, question, sLogin, sEmail, sPass, sRegisteredAt;
+
+    question = require('readline-sync').question;
+
+    sLogin = question('Имя пользователя: ');
+    sEmail = question('Адрес эл. почты: ');
+    sPass = question('Пароль: ', {
+      hideEchoBack: true
+    });
+
+    require('../../core/database')(
+      'user',
+      require(`${__ROOT__}/core/database/structure/user`)(oTypes)
+    ).create({
+      login: sLogin,
+      email: sEmail,
+      password: require('bcryptjs').hashSync(sPass),
+      registeredAt: require('moment')().format(),
+      role: 3,
+      status: 1
+    })
+    .then(() => _res())
+    .catch((err) => _rej(err));
+  });
+};
+
+/**
  * Create and send database structure
  *
  * @param object oDatabaseConfig
  *
  * @return Promise
  */
-module.exports = function(oDatabaseConfig) {
-  return new Promise(function(_res, _rej) {
+module.exports = (oDatabaseConfig) => {
+  return new Promise((_res, _rej) => {
     var oConnection, aModelsPromise, __oStructure, __oModel;
     aModelsPromise = [];
     __oStructure = loadStructure();
@@ -107,7 +140,11 @@ module.exports = function(oDatabaseConfig) {
 
     // Send database structure
     Promise.all(aModelsPromise)
-      .then(() => _res())
+      .then(() => {
+        createSuperUser()
+          .then(() => _res())
+          .catch((err) => _rej(err));
+      })
       .catch((err) => _rej(err));
   });
 };

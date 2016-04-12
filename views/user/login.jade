@@ -11,12 +11,12 @@ block content
               include ../../public/img/layout/ponyfictionjs.svg
             h2.auth-title= name
         .auth-form-content
-          form(action="/login?return=" + __redirectUri, method="post")
+          form#auth(action="/login?return=" + __redirectUri, method="post")
             .input-container
-              input.form-input.auth-input(type="email", name="email", placeholder, required)
+              input.form-input.auth-input(type="text", name="email", placeholder, required)
               .input-label E-mail
             .input-container
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
               .input-label Пароль
             .button.auth-button
-              button(type="submit") Войти
+              button#auth-button(type="submit") Войти

@@ -1,9 +1,9 @@
 'use strict'
 
-ponyFiction = require './core/init'
+ponyFiction = require './core/server'
 
 ponyFiction()
-  .then (run) ->
-    do run
+  .then (server) -> do server.run
   .catch (err) ->
     console.log do err.toString
+    console.log err.stack

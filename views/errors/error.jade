@@ -29,8 +29,11 @@ html(lang="en")
     .err-page-main-container
       .err-page-message-container
         .err-page-image
-          img(src="/img/errors/" + code + ".png", alt="Упс...")
-        .err-page-message-content= message || 'Похоже что-то пошло не так...'
+          block image
+            img(src="/img/errors/500.png", alt="Упс...")
+        .err-page-message-content
+          block message
+            | I just don't know what went wrong.
         .err-page-code= code
         if code !== 500
           .err-page-home-link

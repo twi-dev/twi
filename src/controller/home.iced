@@ -3,7 +3,7 @@
 # 
 # GET /
 ###
-actionIndex = (req, res) ->
+actionIndex = (req, res, next) ->
   res.render 'home/home'
 
 ###
@@ -39,10 +39,6 @@ actionSend = (req, res) ->
 actionRules = (req, res) ->
   res.send 'Site rules',
     title: 'Правила'
-
-actionPowered = (req, res) ->
-  res.render 'home/powered',
-    title: 'Техническая сторона ponyFiction.js'
 
 module.exports = (app) ->
   # Home page

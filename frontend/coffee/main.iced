@@ -1,3 +1,4 @@
 'use strict'
 
-Vue = require '../vendor/vue/dist/vue.js'
+if document.querySelector '#auth'
+  require './auth'

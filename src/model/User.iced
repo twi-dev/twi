@@ -2,6 +2,8 @@
 
 _ = require 'lodash'
 validate = require 'validate.js'
+moment = require 'moment'
+bcrypt = require 'bcryptjs'
 
 NotFoundException = require '../core/errors/NotFoundException'
 InternalException = require '../core/errors/InternalException'
@@ -43,9 +45,9 @@ class User
     # Зарезервированные логины.
     ###
     @RESERVED = [
-        'admin'
-        'moderator'
-        'root'
+      'admin'
+      'moderator'
+      'root'
     ]
 
   _getUser: (oParams, cb) ->
@@ -66,8 +68,21 @@ class User
 
   getByEmail: (sEmail, cb) ->
 
-  auth: (sEmail, sPassword, cb) ->
+  register: (sLogin, sEmail, sPass, cb) ->
+    await bcrypt.hash sPass, 10,
+      defer err, sPass
+    return cb err if err?
 
-  register: (sLogin, sEmail, sPassword, cb) ->
+    model.create
+      login: sLogin
+      email: sEmail
+      password: sPass
+      registeredAt: do moment().format
+      role: @ROLE_USER
+      status: @STATUS_ACTIVE
+    .then -> cb null
+    .catch (err) -> cb err
+
+    # cb null, sLogin, sEmail, sPass
 
 module.exports = User

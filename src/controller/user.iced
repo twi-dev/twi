@@ -1,6 +1,7 @@
 'use strict'
 
 user = new User = require '../model/User'
+moment = require 'moment'
 
 ###
 # Respons login page
@@ -33,14 +34,24 @@ actionSignin = (req, res, next) ->
 # GET /signup
 ###
 actionRegister = (req, res) ->
-  res.send 'Registeration page'
+  res.render 'user/signup',
+    title: 'Регистрация'
+    __redirectUri: req.query.return or '/'
 
 ###
 # Register new user
 # 
 # POST /signup
 ###
-actionSignup = (req, res) ->
+actionSignup = (req, res, next) ->
+  # {username, email, pass} = req.body
+
+  # await user.register username, email, pass,
+  #   defer err
+
+  # return next err if err?
+
+  # res.status 200
 
 ###
 # List of all registered users

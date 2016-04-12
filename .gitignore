@@ -9,6 +9,7 @@ frontend/vendor
 npm-debug.log
 .DS_Store
 index.js
+*.rdb
 
 !src/controller
 !src/core

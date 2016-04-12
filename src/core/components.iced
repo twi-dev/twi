@@ -4,6 +4,7 @@
 logger = require './logger'
 
 __ROOT__ = dirname __dirname
+__CORE__ = __ROOT__ + '/core'
 _oConfig = null
 
 _configure = ->
@@ -16,5 +17,6 @@ getConfig = -> _oConfig or= do _configure
 
 module.exports =
   __ROOT__: __ROOT__
+  __CORE__: __CORE__
   getConfig: getConfig
   logger: logger
