@@ -1,7 +1,7 @@
 colors = require 'colors'
 moment = require 'moment'
 
-LOG_TRACE = 0
+LOG_NORMAL = 0
 LOG_OK = 1
 LOG_INFO = 2
 LOG_WARN = 3
@@ -22,7 +22,7 @@ writeErr = (sErrString) -> process.stderr.write sErrString
 logLine = (sMessage, iLevel = 0) ->
   # moment.locale('ru')
   now = moment().format 'DD MMM YYYY hh:mm:ss a'
-  if iLevel in [LOG_TRACE, LOG_OK, LOG_INFO]
+  if iLevel in [LOG_NORMAL, LOG_OK, LOG_INFO]
     write "[#{LOG_LEVELS[iLevel]}] #{sMessage} at #{now}\n"
   else
     writeErr "[#{LOG_LEVELS[iLevel]}] #{sMessage} at #{now}\n"
@@ -35,7 +35,7 @@ module.exports = (req, res, next) ->
 # logger methods
 module.exports.logLine = logLine
 # module.exports.log = log
-module.exports.LOG_TRACE = LOG_TRACE
+module.exports.LOG_NORMAL = LOG_NORMAL
 module.exports.LOG_OK = LOG_OK
 module.exports.LOG_INFO = LOG_INFO
 module.exports.LOG_WARN = LOG_WARN
