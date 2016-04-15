@@ -42,6 +42,7 @@ configure = ->
   app.set 'x-powered-by', oConfig.xPoweredBy or yes
   app.set 'view engine', 'jade'
 
+  app.workers = oConfig.app.workers
   app.run = run
 
 ###

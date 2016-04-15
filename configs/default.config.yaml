@@ -6,7 +6,7 @@ app:
   name: Библиотека Твайлайт
   host: localhost
   port: 1337
-  workers: 1
+  workers: 2
   lang: ru-RU
   xPoweredBy: true
 database:
