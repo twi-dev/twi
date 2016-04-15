@@ -1,6 +1,5 @@
 controller
 core
-langs
 model
 node_modules
 public/assets
@@ -15,5 +14,4 @@ index.js
 !setup/index.js
 !src/controller
 !src/core
-!src/langs
 !src/model

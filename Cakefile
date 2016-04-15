@@ -155,7 +155,7 @@ build = (files) ->
 # TASKS
 
 # Build project
-task 'build', 'Build project with save structure', ->
+task 'build', 'Build ponyFiction.js', ->
   try
     aPaths = getPaths "./src"
     logLine 'Compiling source files...', LOG_NORMAL
@@ -169,3 +169,5 @@ task 'devel', 'Devel task', ->
   logLine "Starting watcher."
   logLine "Press Control+C to stop the watcher."
   fs.watch './src', recursive: yes, watcher
+
+process.on 'SIGINT', -> process.exit 0

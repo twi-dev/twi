@@ -82,7 +82,7 @@ installDependencies = () => {
 };
 
 buildBackand = () => {
-  exec('cake build', {
+  exec('icake build', {
     encoding: 'utf-8',
     stdio: 'inherit'
   });

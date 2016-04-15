@@ -29,7 +29,7 @@ redirectUrl = (req, res, next) ->
 run = ->
   {port} = oConfig.app
   app.listen port, ->
-    logger.logLine "ponyFiction.js started on http://localhost:#{port}/",
+    logger.logLine i18n.t('ponyfiction.runSuccess', port: port),
       logger.LOG_OK
 
 ###
