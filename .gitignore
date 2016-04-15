@@ -1,7 +1,8 @@
 controller
 core
-node_modules
+langs
 model
+node_modules
 public/assets
 public/img/**/*.svg
 frontend/gulp-runtime
@@ -14,4 +15,5 @@ index.js
 !setup/index.js
 !src/controller
 !src/core
+!src/langs
 !src/model

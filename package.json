@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.1",
     "csurf": "^1.8.3",
     "express": "^4.13.4",
+    "i18next": "^2.5.1",
     "iced-runtime": "^1.0.3",
     "jade": "^1.11.0",
     "jstransformer-stylus": "^1.0.0",

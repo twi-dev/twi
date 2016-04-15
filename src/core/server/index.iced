@@ -8,8 +8,13 @@ favicon = require 'serve-favicon'
 {__ROOT__, __CORE__, getConfig, logger} = require '../components'
 {version} = require __ROOT__ + '/package.json'
 
+i18n = require __CORE__ + '/i18n'
 controller = require __CORE__ + '/server/controller'
 errorHandler = require __CORE__ + '/errors/ErrorHandler'
+
+# Bad way?
+global.__ROOT__ = __ROOT__
+global.__CORE__ = __CORE__
 
 app = do express
 oConfig = do getConfig

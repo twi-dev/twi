@@ -7,6 +7,7 @@ app:
   host: localhost
   port: 1337
   workers: 1
+  lang: ru-RU
   xPoweredBy: true
 database:
   driver: mysql
