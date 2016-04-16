@@ -7,7 +7,7 @@ NotFoundException = require '../errors/NotFoundException'
 
 module.exports = (app) ->
   # Require all controllers
-  oControllers = requireDir __ROOT__ + '/controller'
+  oControllers = requireDir '../../controller'
 
   for __sName, __controller of oControllers
     unless isFunction __controller
@@ -21,7 +21,9 @@ module.exports = (app) ->
   # Render 404
   app.route '*'
     .get (req, res, next) ->
-      next new NotFoundException "This is not the web page you are looking for."
+      next new NotFoundException "
+        This is not the web page you are looking for.
+      "
       return
 
   return

@@ -1,1 +1,6 @@
+process: Process
+datetimeFormat: MMMM/DD/YYYY HH:mm:ss
+logSuffix: at {{format}}
+configure: Configuration
+init: Initialization
 runSuccess: ponyFiction.js started on http://localhost:{{port}}/

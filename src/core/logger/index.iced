@@ -20,12 +20,27 @@ write = (sString) -> process.stdout.write sString
 writeErr = (sErrString) -> process.stderr.write sErrString
 
 logLine = (sMessage, iLevel = 0) ->
-  # moment.locale('ru')
-  now = moment().format 'DD MMM YYYY hh:mm:ss a'
+  i18n = require '../i18n'
+
+  moment.locale do i18n.getLang().toLowerCase
+  now = moment().format i18n.t 'ponyfiction.datetimeFormat'
+  suffix = i18n.t 'ponyfiction.logSuffix',
+    format: now
+
   if iLevel in [LOG_NORMAL, LOG_OK, LOG_INFO]
-    write "[#{LOG_LEVELS[iLevel]}] #{sMessage} at #{now}\n"
+    write "[#{LOG_LEVELS[iLevel]}]
+      #{i18n.t 'ponyfiction.process'}
+      ##{process.pid}:
+      #{sMessage}
+      #{suffix}
+    \n"
   else
-    writeErr "[#{LOG_LEVELS[iLevel]}] #{sMessage} at #{now}\n"
+    writeErr "[#{LOG_LEVELS[iLevel]}]
+      #{i18n.t 'ponyfiction.process'}
+      ##{process.pid}:
+      #{sMessage}
+      #{suffix}
+    \n"
 
 # Logger middleware
 module.exports = (req, res, next) ->
@@ -34,7 +49,6 @@ module.exports = (req, res, next) ->
 
 # logger methods
 module.exports.logLine = logLine
-# module.exports.log = log
 module.exports.LOG_NORMAL = LOG_NORMAL
 module.exports.LOG_OK = LOG_OK
 module.exports.LOG_INFO = LOG_INFO

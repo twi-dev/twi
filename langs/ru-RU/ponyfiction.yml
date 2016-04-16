@@ -1,1 +1,6 @@
+process: Процесс
+datetimeFormat: DD MMM YYYY [в] HH:mm:ss
+logSuffix: '{{format}}'
+configure: Конфигурация приложения
+init: Инициализация
 runSuccess: ponyFiction.js успешно запущен на http://localhost:{{port}}/

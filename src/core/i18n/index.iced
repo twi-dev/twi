@@ -9,6 +9,13 @@ requireHelper = require '../helpers/require-helper'
 {app: {lang}} = do getConfig
 
 i18n = null
+sCurrentLang = lang
+
+getLang = -> sCurrentLang
+
+setLang = (sLang) ->
+  sCurrentLang = sLang
+  return
 
 loadLangs = ->
   __oLangs = requireHelper '../../langs'
@@ -33,3 +40,4 @@ t = (sKey, oOptions = {}) ->
 module.exports =
   init: init
   t: t
+  getLang: getLang

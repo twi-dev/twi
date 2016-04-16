@@ -5,12 +5,13 @@ express = require 'express'
 bodyParser = require 'body-parser'
 favicon = require 'serve-favicon'
 
-{__ROOT__, __CORE__, getConfig, logger} = require '../components'
-{version} = require __ROOT__ + '/package.json'
+{__ROOT__, __CORE__, getConfig} = require '../components'
+{version} = require '../../package.json'
 
-i18n = require __CORE__ + '/i18n'
-controller = require __CORE__ + '/server/controller'
-errorHandler = require __CORE__ + '/errors/ErrorHandler'
+i18n = require '../i18n'
+logger = require '../logger'
+controller = require './controller'
+errorHandler = require '../errors/ErrorHandler'
 
 # Bad way?
 global.__ROOT__ = __ROOT__
@@ -60,7 +61,9 @@ init = ->
 ponyFiction = ->
   return new Promise (_res, _rej) ->
     try
+      logger.logLine i18n.t 'ponyfiction.configure'
       do configure
+      logger.logLine i18n.t 'ponyfiction.init'
       do init
     catch err
       return _rej err
