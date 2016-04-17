@@ -1,10 +1,16 @@
+'use strict'
+
+i18n = require '../core/i18n'
+
 ###
 # Response a home page
 # 
 # GET /
 ###
 actionIndex = (req, res, next) ->
-  res.render 'home/home'
+  res.render 'home/home',
+    title: i18n.t 'home.title.index',
+      name: res.app.locals.name
 
 ###
 # Response Site Help page
@@ -12,8 +18,8 @@ actionIndex = (req, res, next) ->
 # GET /help
 ###
 actionHelp = (req, res) ->
-  res.send 'Site help',
-    title: 'Справочная информация'
+  res.render 'home/help',
+    title: i18n.t 'home.title.help'
 
 ###
 # Response Site Feedback page
@@ -21,8 +27,8 @@ actionHelp = (req, res) ->
 # GET /feedback
 ###
 actionFeedback = (req, res) ->
-  res.send 'Site feedback',
-    title: 'Обратная связь'
+  res.render 'home/feedback',
+    title: i18n.t 'home.title.feedback'
 
 ###
 # Send a feedback message
@@ -37,15 +43,15 @@ actionSend = (req, res) ->
 # GET /rules
 ###
 actionRules = (req, res) ->
-  res.send 'Site rules',
-    title: 'Правила'
+  res.send 'home/rules',
+    title: i18n.t 'home.title.rules'
 
 module.exports = (app) ->
   # Home page
   app.get '/', actionIndex
 
   # Site help & FAQ
-  app.get '/help'
+  app.get '/help', actionHelp
 
   # Site feedback
   app.route '/feedback'

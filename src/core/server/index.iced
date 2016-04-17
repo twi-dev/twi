@@ -2,36 +2,31 @@
 
 Promise = require 'pinkie-promise'
 express = require 'express'
-bodyParser = require 'body-parser'
 favicon = require 'serve-favicon'
+methodOverride = require 'method-override'
+bodyParser = require 'body-parser'
+cookieParser = require 'cookie-parser'
+connectRedis = require 'connect-redis'
+session = require 'express-session'
+passport = 'passport'
+localStrategy = 'passport-local'
 
-{__ROOT__, __CORE__, getConfig} = require '../components'
 {version} = require '../../package.json'
+{realpathSync} = require 'fs'
 
 i18n = require '../i18n'
 logger = require '../logger'
 controller = require './controller'
 errorHandler = require '../errors/ErrorHandler'
-
-# Bad way?
-global.__ROOT__ = __ROOT__
-global.__CORE__ = __CORE__
+oConfig = require '../helpers/configure-helper'
 
 app = do express
-oConfig = do getConfig
+RedisStore = connectRedis session
+__ROOT__ = realpathSync "#{__dirname}/../../"
 
 redirectUrl = (req, res, next) ->
   app.locals.__redirectUri = req.url
   do next
-
-###
-# Run server
-###
-run = ->
-  {port} = oConfig.app
-  app.listen port, ->
-    logger.logLine i18n.t('ponyfiction.runSuccess', port: port),
-      logger.LOG_OK
 
 ###
 # Configure app
@@ -43,31 +38,40 @@ configure = ->
   app.set 'x-powered-by', oConfig.xPoweredBy or yes
   app.set 'view engine', 'jade'
 
-  app.workers = oConfig.app.workers
-  app.run = run
-
 ###
 # Init all routes and middlewares
 ###
 init = ->
   app.use favicon __ROOT__ + '/public/img/icns/favicons/ponyfiction-js.ico'
   app.use express.static __ROOT__ + '/public'
+  app.use do cookieParser
+  app.use session
+    store: new RedisStore()
+    secret: oConfig.app.storeSecret # Required!
+    # I have to read express-session docs before use options from below.
+    resave: no
+    saveUninitialized: no
   app.use bodyParser.urlencoded extended: on
   app.use logger
   app.use redirectUrl
   controller app
   app.use errorHandler
 
-ponyFiction = ->
-  return new Promise (_res, _rej) ->
-    try
-      logger.logLine i18n.t 'ponyfiction.configure'
-      do configure
-      logger.logLine i18n.t 'ponyfiction.init'
-      do init
-    catch err
-      return _rej err
+###
+# Run server
+###
+run = ->
+  logger.logLine i18n.t 'ponyfiction.configure'
+  do configure
 
-    _res app
+  logger.logLine i18n.t 'ponyfiction.init'
+  do init
+
+  {port} = oConfig.app
+  app.listen port, ->
+    logger.logLine i18n.t('ponyfiction.runSuccess', port: port),
+      logger.LOG_OK
+
+ponyFiction = -> new Promise (_res, _rej) -> _res run
 
 module.exports = ponyFiction

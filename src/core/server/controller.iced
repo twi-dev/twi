@@ -2,7 +2,8 @@
 
 requireDir = require 'require-dir'
 {isFunction} = require 'lodash'
-{__ROOT__, logger} = require '../components'
+logger = require '../logger'
+
 NotFoundException = require '../errors/NotFoundException'
 
 module.exports = (app) ->

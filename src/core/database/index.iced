@@ -1,8 +1,7 @@
 'use strict'
 
 Sequelize = require 'sequelize'
-{getConfig} = require '../components'
-{database} = do getConfig
+{database} = require '../helpers/configure-helper'
 
 oModels = {}
 

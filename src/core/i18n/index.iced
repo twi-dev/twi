@@ -5,8 +5,7 @@ i18next = require 'i18next'
 yaml = require 'node-yaml'
 
 requireHelper = require '../helpers/require-helper'
-{getConfig} = require '../components'
-{app: {lang}} = do getConfig
+{app: {lang}} = require '../helpers/configure-helper'
 
 i18n = null
 sCurrentLang = lang
@@ -23,7 +22,7 @@ loadLangs = ->
   __ref = {}
   for __sLangName in __aLangs
     __ref[__sLangName] = {}
-    __ref[__sLangName]['translation'] = __oLangs[__sLangName]
+    __ref[__sLangName].translation = __oLangs[__sLangName]
 
   return __ref
 

@@ -9,6 +9,8 @@ app:
   workers: 2
   lang: ru-RU
   xPoweredBy: true
+  # Your secret key for session storage
+  storeSecret: JLhBIVv9PdTpH81XaWSdIxpITcaTZ4IjdmINwhHBo
 database:
   driver: mysql
   host: localhost
