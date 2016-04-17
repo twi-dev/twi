@@ -34,6 +34,7 @@ redirectUrl = (req, res, next) ->
 configure = ->
   app.locals.name = oConfig.app.name
   app.locals.VERSION = version
+  app.locals.t = i18n.t
 
   app.set 'x-powered-by', oConfig.xPoweredBy or yes
   app.set 'view engine', 'jade'
