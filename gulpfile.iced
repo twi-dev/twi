@@ -22,7 +22,7 @@ browserify = require 'browserify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
 vueify = require 'gulp-vueify'
--
+
 # SVG
 svgmin = require 'gulp-svgmin'
 
@@ -73,7 +73,6 @@ gulp.task 'stylus', ->
       STYLUS_SRC + '/common/common.styl'
       STYLUS_SRC + '/404.styl'
     ]
-    .pipe newer STYLUS_SRC + '/**/*.styl'
     .pipe plumber errorHandler
     .pipe gulpif bIsDevel, newer STYLUS_SRC + '/**/*.styl'
     .pipe stylus use: [
@@ -131,7 +130,6 @@ gulp.task 'svg', ->
     .pipe plumber errorHandler
     .pipe do svgmin
     .pipe gulp.dest __ROOT__ + '/public/img'
-    # .pipe gulpif bIsDevel, do livereload
 
 ###
 # Refreshing page with livereload

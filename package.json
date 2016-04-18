@@ -1,11 +1,11 @@
 {
   "name": "ponyfiction-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Library engine for Node.js",
   "main": "index.js",
   "scripts": {
-    "setup": "node ./installation",
-    "run": "node index.js",
+    "setup": "bin/ponyfiction setup",
+    "run": "bin/ponyfiction run",
     "start": "npm run setup && npm run run"
   },
   "bin": {
@@ -16,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/octet-stream/ponyfiction-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/octet-stream/ponyfiction-js/issues"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
