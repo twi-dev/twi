@@ -69,7 +69,6 @@
     "gulp-svgmin": "^1.2.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
-    "gulp-vueify": "0.0.1",
     "iced-coffee-script": "^108.0.9",
     "jeet": "^6.1.2",
     "rimraf": "^2.5.2",

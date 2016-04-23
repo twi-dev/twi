@@ -1,4 +1,7 @@
 extends error
 
+block title
+  = t('ponyfiction.httpErrors.forbidden.title')
+
 block message
-  | Forbidden
+  = t('ponyfiction.httpErrors.forbidden.message')

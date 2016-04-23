@@ -21,7 +21,6 @@ uglify = require 'gulp-uglify'
 browserify = require 'browserify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
-vueify = require 'gulp-vueify'
 
 # SVG
 svgmin = require 'gulp-svgmin'
@@ -71,7 +70,7 @@ errorHandler = (err) ->
 gulp.task 'stylus', ->
   gulp.src [
       STYLUS_SRC + '/common/common.styl'
-      STYLUS_SRC + '/404.styl'
+      STYLUS_SRC + '/error.styl'
     ]
     .pipe plumber errorHandler
     .pipe gulpif bIsDevel, newer STYLUS_SRC + '/**/*.styl'
@@ -85,21 +84,11 @@ gulp.task 'stylus', ->
     .pipe gulpif bIsDevel, do livereload
 
 ###
-# Compile Vue.js components
-# Note: Do not use this task directly.
-###
-gulp.task 'vueify', ->
-  gulp.src COMPONENTS_SRC + '/*.vue'
-    .pipe newer COMPONENTS_SRC + '/*.vue'
-    .pipe do vueify
-    .pipe gulp.dest COFFEE_TMP + '/components'
-
-###
 # Compile IcedCoffeeScript
 #
 # Note: Do not use this task directly.
 ###
-gulp.task 'iced:compile', ['vueify'], ->
+gulp.task 'iced:compile', ->
   gulp.src COFFEE_SRC + '/*.iced'
     .pipe plumber errorHandler
     .pipe gulpif bIsDevel, newer COFFEE_SRC + '/*.coffee'

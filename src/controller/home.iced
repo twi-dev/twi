@@ -43,7 +43,7 @@ actionSend = (req, res) ->
 # GET /rules
 ###
 actionRules = (req, res) ->
-  res.send 'home/rules',
+  res.render 'home/rules',
     title: i18n.t 'home.title.rules'
 
 module.exports = (app) ->

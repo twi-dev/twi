@@ -4,3 +4,17 @@ logSuffix: '{{format}}'
 configure: Конфигурация приложения
 init: Инициализация
 runSuccess: ponyFiction.js успешно запущен на http://localhost:{{port}}/
+httpErrors:
+  forbidden:
+    title: Доступ ограничен
+    message: К сожалению, Вы не можете получить доступ к запрашиваемому ресурсу.
+  notFound:
+    title: Страница не найдена
+    message: Это не та страница, которую Вы ищите.
+  methodNotAllowed:
+    title: Метод не поддерживается
+    message: Вы надеваете носки на уши. Видок нелепый. Впрочем, ушам тепло.
+  internalServerError:
+    title: Упс... Что-то поломалось.
+    message: Я даже не знаю, что пошло не так...
+  homeLinkLabel: На главную

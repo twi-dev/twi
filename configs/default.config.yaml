@@ -9,7 +9,8 @@ app:
   workers: 2
   lang: ru-RU
   xPoweredBy: true
-  # Your secret key for session storage
+  # Your secret key for session storage. This is default value.
+  # Notice: Do not use default value in production.
   storeSecret: JLhBIVv9PdTpH81XaWSdIxpITcaTZ4IjdmINwhHBo
 database:
   driver: mysql
@@ -19,3 +20,6 @@ database:
   pass: null
   dbname: ponyfiction
   prefix: fim_
+session:
+  prefix: ponyfiction.
+  sessidName: uid

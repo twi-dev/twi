@@ -1,32 +1,34 @@
 'use strict'
 
-user = new User = require '../model/User'
 moment = require 'moment'
+passport = require 'passport'
+
+{Strategy} = require 'passport-local'
+
+i18n = require '../core/i18n'
+user = new User = require '../model/User'
+
+NotFoundException = require '../core/errors/NotFoundException'
+ForbiddenException = require '../core/errors/ForbiddenException'
 
 ###
-# Respons login page
+# Response login page
 # 
 # GET /login
 ###
 actionLogin = (req, res) ->
+  if do req.isAuthenticated
+    return res.redirect '/'
+
   res.render 'user/login',
-    title: 'Авторизация'
+    title: i18n.t 'user.title.signin'
     __redirectUri: req.query.return or '/'
 
 ###
 # POST /login
 ###
 actionSignin = (req, res, next) ->
-  {email, pass} = req.body
-  # await user.auth email, pass, defer err
-
-  # return next err if err
-
-  # __redirectUri = req.query.return
-  # if __redirectUri?
-  #   res
-  #     .status 200
-  #     .redirect __redirectUri
+  res.redirect '/'
 
 ###
 # Response login page for GET method
@@ -34,8 +36,11 @@ actionSignin = (req, res, next) ->
 # GET /signup
 ###
 actionRegister = (req, res) ->
+  if do req.isAuthenticated
+    return res.redirect '/'
+
   res.render 'user/signup',
-    title: 'Регистрация'
+    title: i18n.t 'user.title.signup'
     __redirectUri: req.query.return or '/'
 
 ###
@@ -53,6 +58,10 @@ actionSignup = (req, res, next) ->
 
   # res.status 200
 
+actionLogout = (req, res, next) ->
+  do req.logout
+  res.redirect req.query.return or '/'
+
 ###
 # List of all registered users
 # 
@@ -68,24 +77,46 @@ actionUsers = (req, res) ->
 ###
 actionProfile = (req, res, next) ->
   {login} = req.params
-  await user.getByLogin login, defer err, oUserData
-
-  return next err if err
+  await user.profile login,
+    defer err, oUserData
+  return next err if err?
 
   res.render 'user/profile',
-    title: "Профиль #{oUserData.login or '%owner%'}"
+    title: i18n.t 'user.title.profile',
+      username: oUserData.username
+    profile: oUserData
+
+actionSettings = (req, res, next) ->
+  unless do req.isAuthenticated
+    return next new ForbiddenException "Unauthorized access to user settings."
+  res.render 'user/settings',
+    title: i18n.t 'user.title.settings'
 
 module.exports = (app) ->
+  passport.serializeUser (oUser, cb) -> cb null, oUser.id
+  passport.deserializeUser user.getAuthorizedUser
+
+  passport.use new Strategy
+    usernameField: 'email'
+    passwordField: 'pass',
+    # failureRedirect: app.locals.__redirectUri or '/login?return=/',
+    user.auth
+
   # Login
   app.route '/login'
     .get actionLogin
-    .post actionSignin
+    .post passport.authenticate('local'), actionSignin
 
   # Signup
   app.route '/signup'
     .get actionRegister
     .post actionSignup
 
+  # Logout
+  app.get '/logout', actionLogout
+
   app.get '/users/:page?', actionUsers
 
   app.get '/user/:login?', actionProfile
+
+  app.get '/settings', actionSettings

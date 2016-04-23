@@ -1,5 +1,8 @@
 title:
-  index: Twilight's Library
+  index: Twilight's Library # You can translate title of your app :D
   rules: Site rules
   help: Help
   feedback: Feedback
+moreVertNav:
+  help: Help
+  logout: Logout

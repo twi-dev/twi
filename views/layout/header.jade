@@ -5,3 +5,19 @@ header
         include ../../public/img/layout/hamburger-button.svg
     .page-title-container.fl
       div= name
+    nav.nav-header-right.fr
+      #vert-menu.nav-more-vert-nav
+        ul.nav-vert
+          li.ripple
+            a(href="/rules")= t('home.title.rules')
+          li.ripple
+            a(href="/help")= t('home.moreVertNav.help')
+          li.ripple
+            a(href="/feedback")= t('home.title.feedback')
+          if user
+            li.ripple
+              a(href="/settings")= t('user.title.settings')
+            li.ripple
+              a(href="/logout")= t('home.moreVertNav.logout')
+      .more-vert-container(tabindex="0")
+        include ../../public/img/layout/more-vert.svg

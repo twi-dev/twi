@@ -1,0 +1,12 @@
+title:
+  signup: Регистрация
+  signin: Авторизация
+  profile: Профиль {{username}}
+  settings: Настройки
+  users: Пользователи
+nav:
+  feed: Лента
+  subs: Подписки
+  mail: Сообщения
+  comments: Комментарии
+  login: Вход

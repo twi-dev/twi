@@ -8,7 +8,7 @@ bodyParser = require 'body-parser'
 cookieParser = require 'cookie-parser'
 connectRedis = require 'connect-redis'
 session = require 'express-session'
-passport = 'passport'
+passport = require 'passport'
 localStrategy = 'passport-local'
 
 {version} = require '../../package.json'
@@ -48,13 +48,22 @@ init = ->
   app.use do cookieParser
   app.use session
     store: new RedisStore()
+    name: "#{oConfig.session.prefix}#{oConfig.session.sessidName}"
     secret: oConfig.app.storeSecret # Required!
     # I have to read express-session docs before use options from below.
     resave: no
     saveUninitialized: no
   app.use bodyParser.urlencoded extended: on
+  app.use do passport.initialize
+  app.use do passport.session
   app.use logger
   app.use redirectUrl
+  app.use (req, res, next) ->
+    app.locals.user = if req.user?
+      req.user.url = do req.user.username.toLowerCase
+      req.user
+    else null
+    do next
   controller app
   app.use errorHandler
 

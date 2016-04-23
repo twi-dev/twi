@@ -1,5 +1,6 @@
 'use strict'
 
+Promise = require 'pinkie-promise'
 _ = require 'lodash'
 validate = require 'validate.js'
 moment = require 'moment'
@@ -51,22 +52,48 @@ class User
     ]
 
   _getUser: (oParams, cb) ->
-
-  _getUsers: (oParams, iLimit, cb) ->
-
-  getByLogin: (sLogin, cb) ->
-    model.findOne
-      where:
-        login: sLogin
-    .then (oResponsedData) ->
-      unless oResponsedData?
-        cb new NotFoundException
-        return
-
-      cb null, oResponsedData.dataValues
+    model.findOne oParams
+    .then (oResponsedData) -> cb null, oResponsedData
     .catch (err) -> cb err
 
+  _getUsers: (oParams, iLimit, cb) ->
+    model.findAll oParams
+    .then (oResponsedData) -> cb null, oResponsedData
+    .catch (err) -> cb err
+
+  ###
+  # Get user by given login
+  ###
+  getByLogin: (sLogin, cb) ->
+    await @_getUser
+      attributes: [
+        ['userId', 'id']
+        ['login', 'username']
+        ['password', 'pass']
+      ]
+      where:
+        login: sLogin,
+      defer err, oUserData
+    return cb err if err?
+
+    cb null, oUserData.dataValues
+
   getByEmail: (sEmail, cb) ->
+
+  profile: (sLogin, cb) ->
+    await @_getUser
+      attributes: [
+        ['login', 'username']
+      ]
+      where:
+        login: sLogin,
+      defer err, oUserData
+    return cb err if err?
+
+    unless oUserData?
+      return cb new NotFoundException "Unknown user \"#{sLogin}\"."
+
+    cb null, oUserData.dataValues
 
   register: (sLogin, sEmail, sPass, cb) ->
     await bcrypt.hash sPass, 10,
@@ -83,6 +110,34 @@ class User
     .then -> cb null
     .catch (err) -> cb err
 
-    # cb null, sLogin, sEmail, sPass
+  getAuthorizedUser: (sId, cb) =>
+    await @_getUser
+      attributes: [
+        ['login', 'username']
+        'role',
+        'status'
+      ]
+      where:
+        userId: sId,
+      defer err, oUserData
+    return cb err if err?
+
+    cb null, oUserData.dataValues
+
+  ###
+  # Notice: "=>" because this function used for passport.js in LocalStrategy.
+  ###
+  auth: (sUsername, sPass, cb) =>
+    await @getByLogin sUsername,
+      defer err, oUserData
+    return cb err if err?
+
+    await bcrypt.compare sPass, oUserData.pass,
+      defer err, bIsCompare
+    return err if err?
+
+    return cb null, no unless bIsCompare
+
+    return cb null, oUserData
 
 module.exports = User

@@ -122,7 +122,7 @@ question = (sQuestion, bUseMask) => {
  * @return object
  */
 setUserConfig = (oDefaultConfig, __sParentKey) => {
-  var __ref, __mValue, __sAnswer, isEmpty;
+  var __ref, __mValue, __sAnswer, _, isEmpty;
   isEmpty = require('lodash').isEmpty;
   __ref = {};
 
@@ -134,7 +134,7 @@ setUserConfig = (oDefaultConfig, __sParentKey) => {
         delete __ref[__sKey];
       }
     } else {
-      if (__sKey === 'xPoweredBy') {
+      if (isEmpty(oConfigPhrases[__sParentKey][__sKey])) {
         continue;
       }
 

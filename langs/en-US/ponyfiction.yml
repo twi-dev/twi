@@ -4,3 +4,17 @@ logSuffix: at {{format}}
 configure: Configuration
 init: Initialization
 runSuccess: ponyFiction.js started on http://localhost:{{port}}/
+httpErrors:
+  forbidden:
+    title: Forbidden
+    message: Sorry, but you cannot get access to this resource.
+  notFound:
+    title: Page not found
+    message: This is not the web page you are looking for.
+  methodNotAllowed:
+    title: Method not allowed
+    message: Method not allowed.
+  internalServerError:
+    title: Whoops... Something's broke.
+    message: I just don't know what went wrong.
+  homeLinkLabel: Home page

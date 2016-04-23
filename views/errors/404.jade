@@ -1,7 +1,16 @@
 extends error
 
+block title
+  = t('ponyfiction.httpErrors.notFound.title')
+
+block codeOnTopStyle
+  .err-page-not-found= code
+
 block image
-  img(src="/img/errors/404.svg", alt="Упс...")
+  img(
+    src="/img/errors/404.svg",
+    alt="" + t('ponyfiction.httpErrors.notFound.title')
+  )
 
 block message
-  | This is not the web page you are looking for.
+  = t('ponyfiction.httpErrors.notFound.message')

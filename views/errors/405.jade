@@ -1,4 +1,19 @@
 extends error
 
+block title
+  = t('ponyfiction.httpErrors.methodNotAllowed.title')
+
+block codeOnTopStyle
+  span.err-page-not-allowed= code
+
+block image
+  img(
+    src="/img/errors/405.png",
+    alt="" + t('ponyfiction.httpErrors.methodNotAllowed.title')
+  )
+
 block message
-  | Method not allowed.
+  span.err-page-not-allowed= t('ponyfiction.httpErrors.methodNotAllowed.message')
+
+block linkTextStyle
+  span.err-page-not-allowed= t('ponyfiction.httpErrors.homeLinkLabel')
