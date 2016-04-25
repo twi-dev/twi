@@ -6,7 +6,7 @@ app:
   name: Библиотека Твайлайт
   host: localhost
   port: 1337
-  workers: 2
+  workers: 0
   lang: ru-RU
   xPoweredBy: true
   # Your secret key for session storage. This is default value.

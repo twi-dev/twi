@@ -1,5 +1,11 @@
 # ponyFiction.js
 
-Библиотека фикшена для Node.js
+Open source fanfiction library engine for Node.js
 
-Описание будет добавлено позже.
+Documentation available on these languages:
+
+[Russian](docs/ru/introduction.md)
+
+## License
+
+**MIT**

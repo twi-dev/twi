@@ -4,13 +4,13 @@ cluster = require 'cluster'
 {cpus} = require 'os'
 {app: {workers}} = require '../helpers/configure-helper'
 
-iCpus = cpus().length
+{length} = do cpus
 
 init = (server) ->
-  workers or= iCpus
+  workers or= length
 
-  unless 0 <= workers <= iCpus
-    workers = iCpus
+  unless 0 <= workers <= length
+    workers = length
 
   if cluster.isMaster
     for i in [1..workers]
