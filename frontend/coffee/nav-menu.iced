@@ -4,7 +4,9 @@ require '../vendor/web-animations-js/web-animations-next.min.js'
 
 navMenu = document.querySelector '#nav-menu'
 vertMenu = document.querySelector '#vert-menu'
+
 vertMenuList = document.querySelector '.nav-vert'
+headerNav = document.querySelector '#header-nav-button'
 
 # I'm not sure is that good way.
 menuAnimation = ->
@@ -114,6 +116,9 @@ animateMenu = ->
 
 animateMoreVertMenu = (e) ->
   unless 'active' in @classList
+    if 'active' in headerNav.classList
+      animateMenu.call headerNav
+
     do vertMenuAnimation
     @classList.add 'active'
     do @focus if @focus?
@@ -122,8 +127,7 @@ animateMoreVertMenu = (e) ->
     @classList.remove 'active'
     do @blur if @blur?
 
-document.querySelector '.hamburger-button-icon'
-  .onclick = animateMenu
+headerNav.onclick = animateMenu
 
 document.querySelector '.more-vert-container'
   .onclick = animateMoreVertMenu

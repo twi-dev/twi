@@ -68,7 +68,8 @@ actionLogout = (req, res, next) ->
 # GET /users/:page?
 ###
 actionUsers = (req, res) ->
-  res.send 'Show all registred users'
+  res.render 'user/users',
+    title: 'Пользователи'
 
 ###
 # Response user profile
@@ -83,7 +84,7 @@ actionProfile = (req, res, next) ->
 
   res.render 'user/profile',
     title: i18n.t 'user.title.profile',
-      username: oUserData.username
+      username: oUserData.login
     profile: oUserData
 
 actionSettings = (req, res, next) ->

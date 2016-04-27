@@ -42,15 +42,31 @@ logLine = (sMessage, iLevel = 0) ->
       #{suffix}
     \n"
 
+# Alternate logger calls
+normal = (sMessage) -> logLine sMessage, LOG_NORMAL
+
+ok = (sMessage) -> logLine sMessage, LOG_OK
+
+info = (sMessage) -> logLine sMessage, LOG_INFO
+
+warn = (sMessage) -> logLine sMessage, LOG_WARN
+
+err = (sMessage) -> logLine sMessage, LOG_ERR
+
 # Logger middleware
 module.exports = (req, res, next) ->
   logLine "#{req.method} #{req.url}"
   do next
 
-# logger methods
+# Logger methods
 module.exports.logLine = logLine
 module.exports.LOG_NORMAL = LOG_NORMAL
 module.exports.LOG_OK = LOG_OK
 module.exports.LOG_INFO = LOG_INFO
 module.exports.LOG_WARN = LOG_WARN
 module.exports.LOG_ERR = LOG_ERR
+module.exports.normal = normal
+module.exports.ok = ok
+module.exports.info = info
+module.exports.warn = warn
+module.exports.err = err

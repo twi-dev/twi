@@ -17,7 +17,7 @@ setLang = (sLang) ->
   return
 
 loadLangs = ->
-  __oLangs = requireHelper '../../langs'
+  __oLangs = requireHelper '../../langs', on
   __aLangs = Object.keys __oLangs
   __ref = {}
   for __sLangName in __aLangs

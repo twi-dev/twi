@@ -10,3 +10,6 @@ nav:
   mail: Сообщения
   comments: Комментарии
   login: Вход
+gender:
+  male: Мужской
+  female: Женский

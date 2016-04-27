@@ -14,9 +14,8 @@ block content
           form#auth(action="/login?return=" + __redirectUri, method="post")
             .input-container
               input.form-input.auth-input(type="text", name="email", placeholder, required)
-              .input-label E-mail
+              .input-label Логин
             .input-container
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
               .input-label Пароль
-            .button.auth-button
-              button#auth-button(type="submit") Войти
+            button#auth-button.button.button-raised.button-auth(type="submit") Войти

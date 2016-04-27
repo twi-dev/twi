@@ -7,6 +7,7 @@ nav#nav-menu.nav-menu-container
         .nav-user-info-username.fl= user.username
     a.nav-link(href="/")
       .nav-icn.fl
+        include ../../public/img/layout/home.svg
       .nav-link-label.fl= t('user.nav.feed')
     a.nav-link(href="/subs")
       .nav-icn.fl
@@ -18,12 +19,15 @@ nav#nav-menu.nav-menu-container
       .nav-link-label.fl= t('user.nav.mail')
     a.nav-link(href="/comments")
       .nav-icn.fl
+        include ../../public/img/layout/qa.svg
       .nav-link-label.fl= t('user.nav.comments')
   else
     //- If unauthorized
     a.nav-link(href="/login?return=" + __redirectUri)
       .nav-icn.fl
+        include ../../public/img/layout/add-person.svg
       .nav-link-label.fl= t('user.nav.login')
     a.nav-link(href="/signup?return=" + __redirectUri)
       .nav-icn.fl
+        include ../../public/img/layout/lock.svg
       .nav-link-label.fl= t('user.title.signup')

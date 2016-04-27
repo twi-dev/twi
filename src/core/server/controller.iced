@@ -1,9 +1,9 @@
 'use strict'
 
-requireDir = require 'require-dir'
 {isFunction} = require 'lodash'
 logger = require '../logger'
 i18n = require '../i18n'
+requireHelper = require '../helpers/require-helper'
 
 NotFoundException = require '../errors/NotFoundException'
 NotAllowedException = require '../errors/NotAllowedException'
@@ -18,18 +18,17 @@ actionMethodNotAllowed  = (req, res, next) ->
 
 module.exports = (app) ->
   # Require all controllers
-  oControllers = requireDir '../../controller'
+  oControllers = requireHelper '../../controller'
 
   for __sName, __controller of oControllers
     unless isFunction __controller
-      logger.logLine "Notice: Controller \"#{__sName}\" is not a function.",
-        logger.LOG_INFO
+      logger.warn "Notice: Controller \"#{__sName}\" is not a function."
       continue
 
     # Set routes
     __controller app
 
-  # Render 404
+  # For unknown methods and routes.
   app.route '*'
     .get actionNotFound
     .all actionMethodNotAllowed

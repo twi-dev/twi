@@ -12,18 +12,27 @@ ForbiddenException = require '../core/errors/ForbiddenException'
 
 model = require '../core/database'
 __oUserStructure = require '../core/database/structure/user'
+__oContactsStructure = require '../core/database/structure/contacts'
 
-model = model 'user', __oUserStructure model.dataTypes
+user = model 'user', __oUserStructure model.dataTypes
+contacts = model 'contacts', __oContactsStructure model.dataTypes
+
 __oUserStructure = null
+__oContactsStructure = null
+
+# Associate contacts with users
+user.hasOne contacts,
+  foreignKey: 'userId'
+  as: 'contacts'
 
 class User
   constructor: ->
     ###
-    # Статус пользователя:
-    # - Неактивен
-    # - Активен
-    # - Забанен
-    # - Удалён
+    # Status:
+    #   - Inactive
+    #   - Active
+    #   - Banned
+    #   - Deleted
     ###
     @STATUS_INACTIVE = 0
     @STATUS_ACTIVE = 1
@@ -31,19 +40,22 @@ class User
     @STATUS_DELETED = 3
 
     ###
-    # Роли пользователей:
-    # - Пользователь
-    # - Модератор
-    # - Администратор
-    # - Рут
+    # Roles:
+    #   - User
+    #   - Moderator
+    #   - Admin
+    #   - Root
     ###
     @ROLE_USER = 0
     @ROLE_MODERATOR = 1
     @ROLE_ADMIN = 2
     @ROLE_ROOT = 3
 
+    @GENDER_MALE = 1
+    @GENDER_FEMALE = 0
+
     ###
-    # Зарезервированные логины.
+    # Reserved.
     ###
     @RESERVED = [
       'admin'
@@ -52,14 +64,12 @@ class User
     ]
 
   _getUser: (oParams, cb) ->
-    model.findOne oParams
-    .then (oResponsedData) -> cb null, oResponsedData
-    .catch (err) -> cb err
+    user.findOne oParams
+      .asCallback cb
 
   _getUsers: (oParams, iLimit, cb) ->
-    model.findAll oParams
-    .then (oResponsedData) -> cb null, oResponsedData
-    .catch (err) -> cb err
+    user.findAll oParams
+      .asCallback cb
 
   ###
   # Get user by given login
@@ -82,34 +92,51 @@ class User
 
   profile: (sLogin, cb) ->
     await @_getUser
-      attributes: [
-        ['login', 'username']
-      ]
+      attributes:
+        exclude: [
+          'userId'
+          'email'
+          'password'
+          'role'
+        ]
       where:
-        login: sLogin,
+        login: sLogin
+      include: [
+        model: contacts
+        as: 'contacts'
+        attributes:
+          exclude: [
+            'contactsId'
+            'userId'
+        ]
+      ],
       defer err, oUserData
     return cb err if err?
 
     unless oUserData?
       return cb new NotFoundException "Unknown user \"#{sLogin}\"."
 
-    cb null, oUserData.dataValues
+    oUserData = oUserData.get plain: yes
+
+    cb null, oUserData
 
   register: (sLogin, sEmail, sPass, cb) ->
     await bcrypt.hash sPass, 10,
       defer err, sPass
     return cb err if err?
 
-    model.create
+    user.create
       login: sLogin
       email: sEmail
       password: sPass
       registeredAt: do moment().format
       role: @ROLE_USER
-      status: @STATUS_ACTIVE
-    .then -> cb null
-    .catch (err) -> cb err
+      status: @STATUS_INACTIVE
+    .asCallback cb
 
+  ###
+  # Notice: "=>" because this function used for passport.js in LocalStrategy.
+  ###
   getAuthorizedUser: (sId, cb) =>
     await @_getUser
       attributes: [
@@ -125,6 +152,11 @@ class User
     cb null, oUserData.dataValues
 
   ###
+  # Auth user by his login + password pair
+  #
+  # @param string sUsername
+  # @param string sPass
+  #
   # Notice: "=>" because this function used for passport.js in LocalStrategy.
   ###
   auth: (sUsername, sPass, cb) =>

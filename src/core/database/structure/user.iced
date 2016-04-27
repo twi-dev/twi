@@ -17,6 +17,16 @@ module.exports = (oTypes) ->
     type: oTypes.STRING
     unique: yes
     allowNull: no
+  firstname:
+    type: oTypes.STRING 36
+    allowNull: yes
+  lastname:
+    type: oTypes.STRING 40
+    allowNull: yes
+  gender:
+    type: oTypes.INTEGER 1
+    allowNull: yes
+    defaultValue: null
   about:
     type: oTypes.TEXT
     allowNull: yes

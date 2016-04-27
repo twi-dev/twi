@@ -3,16 +3,26 @@
 fs = require 'fs'
 path = require 'path'
 yaml = require 'node-yaml'
-{isEmpty} = require 'lodash'
+{isEmpty, isBoolean, isFunction} = require 'lodash'
 
 {parent} = module
 sParentFile = parent.filename
 sParentDir = path.dirname sParentFile
 
+###
+# Object of require functions
+###
 oExtensions =
   '.yaml': yaml.readSync
   '.yml': yaml.readSync
 
+###
+# Normalize given path
+# 
+# @param string sPath
+# 
+# @return string
+###
 normalizePath = (sPath) ->
   aExtensions = Object.keys oExtensions
   sBasename = path.basename sPath
@@ -27,6 +37,26 @@ normalizePath = (sPath) ->
 
   return "#{sDirname}#{path.sep}#{sBasename}"
 
+###
+# Normalize given options
+# 
+# @param mixed mOptions
+# 
+# @return object
+###
+normalizeOptions = (mOptions) ->
+  if isBoolean mOptions
+    return recursive: mOptions
+
+  return mOptions
+
+###
+# Require module from given path.
+# 
+# @param string sPath
+# 
+# @return mixed
+###
 requireFile = (sPath) ->
   __sExtname = path.extname sPath
   if __sExtname of oExtensions
@@ -34,7 +64,13 @@ requireFile = (sPath) ->
 
   return require sPath
 
-requireDir = (sPath, bRecursive = on) ->
+###
+# Require all modules from given directory.
+#
+# @param string sPath - path to directory
+# @param boolean bRecursive (false by default)
+###
+requireDir = (sPath, bRecursive = off) ->
   __ref = {}
 
   aFilename = fs.readdirSync sPath
@@ -53,14 +89,79 @@ requireDir = (sPath, bRecursive = on) ->
 
   return __ref
 
-requireHelper = (sPath = '.', oOptions = {}) ->
+###
+# Add require function
+# 
+# @param string sExtname
+# @param function func
+#   Note: Only synchronous functions has support.
+# 
+# Example:
+# ```
+# {setRequireFunction} = require './require-helper'
+# {readSync} = 
+# 
+# setRequireFunction '.yaml'
+# ```
+###
+setRequireFunction = (sExtname, func) ->
+  if typeof sExtname isnt 'string' or isEmpty sExtname
+    throw new TypeError "Name must be a string and cannot me empty."
+
+  unless isFunction func
+    throw new TypeError "The second parameter must be a function."
+
+  unless sExtname of oExtensions and sExtname in ['.yaml', '.yml']
+    oExtensions[sExtname] = func
+    return
+
+###
+# Unset require function
+# 
+# @param string sExtname
+###
+unsetRequireFunction = (sExtname) ->
+  if typeof sExtname isnt 'string' or isEmpty sExtname
+    throw new TypeError "Name must be a string and cannot me empty."
+
+  unless sExtname in ['.yaml', '.yml']
+    delete oExtensions[sExtname]
+    return
+
+###
+# Require helper
+# 
+# @param string sPath - A path to requiring directory or file
+# @param boolean|object mOptions - requireHelper options:
+#   - boolean recursive - turn recursive require mode on/off
+#     (false by default).
+#   - function|object ext - add new require function.
+#     Note: "object" means object of require functions.
+# 
+# @return mixed
+# 
+# Example:
+# ```
+# requireHelper = require '../helpers/require-helper'
+# 
+# oControllers = requireHelper '../../controller'
+# # Return controllers as key-value pair
+# # => home: [Function]
+# ```
+# You can found this example in src/core/controller.iced
+###
+requireHelper = (sPath = '.', mOptions = {}) ->
   unless typeof sPath is 'string'
     throw new TypeError "Path must be a string."
+
+  mOptions = normalizeOptions mOptions
 
   sPath = normalizePath sPath
   unless do fs.statSync(sPath).isDirectory
     return requireFile sPath
 
-  return requireDir sPath
+  return requireDir sPath, mOptions.recursive
 
 module.exports = requireHelper
+module.exports.setRequireFunction = setRequireFunction
+module.exports.unsetRequireFunction = unsetRequireFunction

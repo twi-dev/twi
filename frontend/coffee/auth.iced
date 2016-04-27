@@ -85,6 +85,3 @@
 #     repass: ''
 #   methods:
 #     submit: submit
-
-class Auth
-  constructor: (@sLogin, @sEmail, @sPassword, @sConfirmPassword) ->

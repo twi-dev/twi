@@ -24,6 +24,13 @@ app = do express
 RedisStore = connectRedis session
 __ROOT__ = realpathSync "#{__dirname}/../../"
 
+process.env.NODE_ENV or= do ->
+  {app: {env}} = oConfig
+  if env in ['pro', 'prod', 'production']
+    'production'
+  else
+    'development'
+
 redirectUrl = (req, res, next) ->
   app.locals.__redirectUri = req.url
   do next

@@ -3,15 +3,29 @@
 # Put your settings in user.config.yaml
 ###
 app:
+  # Name of your app.
   name: Библиотека Твайлайт
   host: localhost
   port: 1337
+
+  # Number of app workers
+  # Can be only positive integer.
   workers: 0
+
+  # Set default app lang
   lang: ru-RU
-  xPoweredBy: true
+
   # Your secret key for session storage. This is default value.
   # Notice: Do not use default value in production.
   storeSecret: JLhBIVv9PdTpH81XaWSdIxpITcaTZ4IjdmINwhHBo
+
+  # Add X-Powered-By HTTP headers?
+  # Can be only 'true' or 'false'
+  xPoweredBy: true
+
+  # Node.js env for app
+  # Can be 'devel' or 'pro'
+  env: devel
 database:
   driver: mysql
   host: localhost

@@ -11,6 +11,9 @@
     align(center)
     cursor pointer
     fill white
+    
+.more-vert-container
+  padding 0 16px
 
 ul.nav-vert
   width 220px
@@ -28,13 +31,14 @@ ul.nav-vert
 
 .nav
   &-header-right
+    cursor pointer
     position relative
 
   &-more-vert-nav
     overflow hidden
     position absolute
     top 16px
-    right -4px
+    right 12px
     width 220px // 220px when menu opened
     height 0
     padding 0
@@ -53,10 +57,11 @@ ul.nav-vert
     width navMenuWidth
     background #fff
     box-shadow 2px 0 5px rgba(black, .26)
-    z-index 1
     padding 0
+    user-select none
+    z-index 1
 
-  &-profile-link
+  &-profile-link,
   &-link
     overflow hidden
     display block
@@ -66,10 +71,12 @@ ul.nav-vert
     
   &-profile-link
     color white
+    font-weight bold
 
   &-user-info-bg
     cf()
-    background maneStroke
+    background transparent url('/img/user/twilights-library.svg') center center no-repeat
+    background-size cover
     padding 56px 0 22px
 
   &-user-info-avatar,
@@ -85,12 +92,15 @@ ul.nav-vert
       width 100%
       height 100%
   &-icn
-    width 54px
-    height 54px
+    position relative
+    width 48px
+    height 52px
     border none
     border-radius 0
     svg
       fill maneFillBase
+      width 28px
+      align(center(28px))
 
   &-user-info-username,
   &-link-label

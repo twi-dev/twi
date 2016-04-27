@@ -15,7 +15,7 @@ div, span, svg
 
 .header-container,
 .main-container
-  center(1440px, 16px)
+  center(1440px)
   cf()
 
 header
@@ -31,12 +31,19 @@ header
   box-shadow 0 2px 5px rgba(black, .26)
   user-select none
   z-index 1
+  
+.header-nav
+  cursor pointer
+  padding 0 16px
 
 .page-title-container
-  padding-left 20px
+  a
+    display block
+    color white
+    text-decoration none
 
 .main-container
-  margin-top 60px
+  margin-top 56px
 
 .page-no-content
   align(center)

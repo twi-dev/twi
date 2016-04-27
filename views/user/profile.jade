@@ -2,4 +2,19 @@ extends ../layout/layout
 
 block content
   .page-content-container
-    include ../layout/no-content
+    .profile-cover-container
+      .cover.cover-twilights-fireplace-day
+      .profile-main-info
+        .profile-avatar.fl
+          img(src="/img/user/no-avatar.png", alt="")
+        .profile-label.fl
+          .profile-login-label= profile.login
+          if profile.firstname && profile.lastname
+            .profile-label-name= profile.firstname + ' ' + profile.lastname
+        .profile-counters.fl
+          //- div
+          //-   if profile.gender
+          //-     if profile.gender = 1
+          //-       = t('user.gender.male')
+          //-     else
+          //-       = t('user.gender.female')
