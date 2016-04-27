@@ -99,9 +99,9 @@ requireDir = (sPath, bRecursive = off) ->
 # Example:
 # ```
 # {setRequireFunction} = require './require-helper'
-# {readSync} = 
+# {readSync} = require 'node-yaml'
 # 
-# setRequireFunction '.yaml'
+# setRequireFunction '.yaml', readSync
 # ```
 ###
 setRequireFunction = (sExtname, func) ->
