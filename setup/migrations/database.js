@@ -3,7 +3,7 @@
 const __ROOT__ = global.__ROOT__;
 
 // Modules
-var requireDir, Sequelize, question, _;
+var requireDir, requireHelper, Sequelize, question, logger, _;
 
 /* jshint ignore:start */
 Promise = require('pinkie-promise');
@@ -11,10 +11,12 @@ Promise = require('pinkie-promise');
 Sequelize = require('sequelize');
 _ = require('lodash');
 requireDir = require('require-dir');
+requireHelper = require('../../core/helpers/require-helper');
 question = require('readline-sync').question;
+logger = require('../../core/logger');
 
 // Functions
-var loadStructure, createSuperUser;
+var loadStructure, createSuperUser, importData;
 
 /**
  * Load database structure from ./structure directory
@@ -92,6 +94,40 @@ createSuperUser = () => {
   });
 };
 
+importData = (sPrefix, oConnection) => {
+  return new Promise((_res, _rej) => {
+    var oDataArrays, oModelsStructure, aModelsPromise, __oTypes;
+
+    oModelsStructure = {};
+    aModelsPromise = [];
+    oDataArrays = requireHelper('./data');
+    __oTypes = require(
+      `${__ROOT__}/core/database`
+    ).dataTypes;
+
+    for (let __sModelName in oDataArrays) {
+      oModelsStructure[__sModelName] = require(
+        `${__ROOT__}/core/database/structure/${__sModelName}`
+      )(__oTypes);
+    }
+
+    for (let __sModelName in oModelsStructure) {
+      let __oModel = oModelsStructure[__sModelName];
+      for (let oValues of oDataArrays[__sModelName]) {
+        aModelsPromise.push(
+          oConnection.define(
+            `${sPrefix}${__sModelName}`, __oModel, {
+              timestamps: false
+          }).upsert(oValues)
+        );
+      }
+    }
+    Promise.all(aModelsPromise)
+      .then(() => _res())
+      .catch(err => _rej(err));
+  });
+};
+
 /**
  * Create and send database structure
  *
@@ -113,7 +149,8 @@ module.exports = (oDatabaseConfig) => {
       oDatabaseConfig.pass, {
         dialect: oDatabaseConfig.driver,
         host: oDatabaseConfig.host,
-        port: oDatabaseConfig.port
+        port: oDatabaseConfig.port,
+        logging: logger.info
       }
     );
 
@@ -153,11 +190,11 @@ module.exports = (oDatabaseConfig) => {
 
     // Send database structure
     Promise.all(aModelsPromise)
+      .then(() => importData(oDatabaseConfig.prefix, oConnection))
       .then(() => {
         if (bIsForce === false && bCreateSuperUser === false) {
           return _res();
         }
-
         return createSuperUser();
       })
       .then(() => _res())

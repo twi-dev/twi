@@ -1,5 +1,5 @@
 module.exports = (oTypes) ->
-  categoryId:
+  tagId:
     type: oTypes.INTEGER
     primaryKey: yes
     allowNull: no
