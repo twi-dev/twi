@@ -11,6 +11,13 @@ npm-debug.log
 index.js
 *.rdb
 
+# Temporarily ignore API things
+langs/**/api.yml
+src/api
+src/core/api
+src/controller/api.iced
+views/api
+
 !setup/index.js
 !src/controller
 !src/core

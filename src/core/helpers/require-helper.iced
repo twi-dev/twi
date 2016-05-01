@@ -106,7 +106,7 @@ requireDir = (sPath, bRecursive = off) ->
 ###
 setRequireFunction = (sExtname, func) ->
   if typeof sExtname isnt 'string' or isEmpty sExtname
-    throw new TypeError "Name must be a string and cannot me empty."
+    throw new TypeError "Name must be a string and cannot be empty."
 
   unless isFunction func
     throw new TypeError "The second parameter must be a function."
@@ -122,7 +122,7 @@ setRequireFunction = (sExtname, func) ->
 ###
 unsetRequireFunction = (sExtname) ->
   if typeof sExtname isnt 'string' or isEmpty sExtname
-    throw new TypeError "Name must be a string and cannot me empty."
+    throw new TypeError "Name must be a string and cannot be empty."
 
   unless sExtname in ['.yaml', '.yml']
     delete oExtensions[sExtname]

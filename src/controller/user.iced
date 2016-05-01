@@ -28,7 +28,7 @@ actionLogin = (req, res) ->
 # POST /login
 ###
 actionSignin = (req, res, next) ->
-  res.redirect '/'
+  res.redirect req.query.return or '/'
 
 ###
 # Response login page for GET method
