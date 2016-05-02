@@ -17,11 +17,13 @@ ForbiddenException = require '../core/errors/ForbiddenException'
 # GET /login
 ###
 actionLogin = (req, res) ->
+
   if do req.isAuthenticated
     return res.redirect '/'
 
   res.render 'user/login',
     title: i18n.t 'user.title.signin'
+    __csrf: do req.csrfToken
     __redirectUri: req.query.return or '/'
 
 ###

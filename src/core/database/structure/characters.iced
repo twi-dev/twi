@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = (oTypes) ->
   characterId:
     type: oTypes.INTEGER

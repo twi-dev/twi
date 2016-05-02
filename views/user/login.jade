@@ -18,4 +18,5 @@ block content
             .input-container
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
               .input-label Пароль
+            input(type="hidden", name="_csrf", value="" + __csrf)
             button#auth-button.button.button-raised.button-auth(type="submit") Войти

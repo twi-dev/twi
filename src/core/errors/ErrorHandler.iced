@@ -25,6 +25,14 @@ module.exports = (err, req, res, next) ->
         code: err.code
     return
 
+  if err.code is 'EBADCSRFTOKEN'
+    console.log pe.render err
+    res
+      .status 403
+      .render 'errors/403',
+        code: 403
+    return
+
   console.log pe.render err
   res
     .status 500

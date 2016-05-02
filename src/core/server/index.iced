@@ -4,6 +4,7 @@ Promise = require 'pinkie-promise'
 express = require 'express'
 favicon = require 'serve-favicon'
 methodOverride = require 'method-override'
+csrf = require 'csurf'
 bodyParser = require 'body-parser'
 cookieParser = require 'cookie-parser'
 connectRedis = require 'connect-redis'
@@ -61,6 +62,9 @@ init = ->
     resave: no
     saveUninitialized: no
   app.use bodyParser.urlencoded extended: on
+  app.use csrf
+    cookie:
+      key: "#{oConfig.session.prefix}csrf"
   app.use do passport.initialize
   app.use do passport.session
   app.use logger

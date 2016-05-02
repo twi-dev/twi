@@ -35,5 +35,5 @@ database:
   dbname: ponyfiction
   prefix: fim_
 session:
-  prefix: ponyfiction.
+  prefix: ponyfiction. # prefix must end with "."
   sessidName: uid

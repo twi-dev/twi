@@ -1,3 +1,5 @@
+'use strict'
+
 colors = require 'colors'
 moment = require 'moment'
 
