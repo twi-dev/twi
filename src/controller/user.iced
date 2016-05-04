@@ -102,7 +102,6 @@ module.exports = (app) ->
   passport.use new Strategy
     usernameField: 'email'
     passwordField: 'pass',
-    # failureRedirect: app.locals.__redirectUri or '/login?return=/',
     user.auth
 
   # Login
