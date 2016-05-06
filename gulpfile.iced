@@ -89,7 +89,7 @@ gulp.task 'stylus', ->
 # Note: Do not use this task directly.
 ###
 gulp.task 'iced:compile', ->
-  gulp.src COFFEE_SRC + '/*.iced'
+  gulp.src COFFEE_SRC + '/**/*.iced'
     .pipe plumber errorHandler
     .pipe gulpif bIsDevel, newer COFFEE_SRC + '/*.coffee'
     .pipe do iced
@@ -139,8 +139,7 @@ gulp.task 'devel', ->
   bIsDevel = yes
   gulp.watch STYLUS_SRC + '/**/*.styl', ['stylus']
   gulp.watch [
-    COFFEE_SRC + '/*.iced'
-    COMPONENTS_SRC + '/*.vue'
+    COFFEE_SRC + '/**/*.iced'
   ], ['build:coffee']
   gulp.watch __ROOT__ + '/frontend/svg/**/*.svg', ['svg']
   gulp.watch __ROOT__ + '/views/**/*.jade', ['refresh']

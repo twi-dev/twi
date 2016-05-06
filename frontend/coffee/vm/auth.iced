@@ -46,7 +46,7 @@
 #   return true
 
 # authSuccess = (oResponsed) ->
-#   console.log oResponsed.data
+#   console.log 'ok'
 
 # authFailed = (oResponsed) ->
 #   console.log oResponsed
@@ -66,14 +66,14 @@
 #     console.log 'foo'
 #     return
 
-  # @$http.post sAct, {
-  #   username: sLogin
-  #   email: sEmail
-  #   pass: sPass
-  # }, {
-  #   emulateJSON: yes
-  # }
-  # .then authSuccess, authFailed
+#   @$http.post sAct, {
+#     username: sLogin
+#     email: sEmail
+#     pass: sPass
+#   }, {
+#     emulateJSON: yes
+#   }
+#   .then authSuccess, authFailed
 
 
 # auth = new Vue

@@ -17,7 +17,6 @@ ForbiddenException = require '../core/errors/ForbiddenException'
 # GET /login
 ###
 actionLogin = (req, res) ->
-
   if do req.isAuthenticated
     return res.redirect '/'
 
@@ -43,6 +42,7 @@ actionRegister = (req, res) ->
 
   res.render 'user/signup',
     title: i18n.t 'user.title.signup'
+    __csrf: do req.csrfToken
     __redirectUri: req.query.return or '/'
 
 ###
@@ -51,14 +51,14 @@ actionRegister = (req, res) ->
 # POST /signup
 ###
 actionSignup = (req, res, next) ->
-  # {username, email, pass} = req.body
+  {login, email, pass} = req.body
 
-  # await user.register username, email, pass,
-  #   defer err
+  await user.register login, email, pass,
+    defer err
 
-  # return next err if err?
+  return next err if err?
 
-  # res.status 200
+  res.redirect req.query.return or '/'
 
 actionLogout = (req, res, next) ->
   do req.logout

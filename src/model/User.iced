@@ -6,9 +6,10 @@ validate = require 'validate.js'
 moment = require 'moment'
 bcrypt = require 'bcryptjs'
 
+UnauthorisedException = require '../core/errors/UnauthorisedException'
+ForbiddenException = require '../core/errors/ForbiddenException'
 NotFoundException = require '../core/errors/NotFoundException'
 InternalException = require '../core/errors/InternalException'
-ForbiddenException = require '../core/errors/ForbiddenException'
 
 model = require '../core/database'
 __oUserStructure = require '../core/database/structure/user'
@@ -121,18 +122,47 @@ class User
     cb null, oUserData
 
   register: (sLogin, sEmail, sPass, cb) ->
+    [sLogin, sEmail, sPass] = (
+      do v.trim for v in [sLogin, sEmail, sPass]
+    )
+
+    unless /^[a-z-_]+$/i.test sLogin
+      cb new UnauthorisedException "Wrong login format."
+      return
+
     await bcrypt.hash sPass, 10,
       defer err, sPass
     return cb err if err?
 
-    user.create
+    if (__res = validate email: sEmail, {email:{ email: yes, presence: yes}})?
+      cb new UnauthorisedException "Registration error.",
+        valudationError: __res
+      return
+
+    await user.create
       login: sLogin
       email: sEmail
       password: sPass
       registeredAt: do moment().format
       role: @ROLE_USER
       status: @STATUS_INACTIVE
-    .asCallback cb
+    .asCallback defer err
+
+    return cb err if err?
+
+    await @_getUser
+      attributes: [
+        'userId'
+      ]
+      where:
+        email: sEmail,
+      defer err, oUserData
+
+    return cb err if err?
+
+    oUserData = oUserData.get plain: yes
+    contacts.create userId: oUserData.userId
+      .asCallback cb
 
   ###
   # Notice: "=>" because this function used for passport.js in LocalStrategy.

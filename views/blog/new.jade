@@ -1,4 +1,11 @@
 extends ../layout/layout
 
 block content
-  include ../layout/no-content
+  .blog-form#blog-form
+    .blog-form-container.fl
+      .blog-form-fields
+        form(action="/blog/new")
+          textarea.post-space(name="post", v-model="postContent", v-on:keyup="updateBlogView")
+    .blog-view-container.fl
+      .blog-view-content
+        | foo

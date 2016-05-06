@@ -84,7 +84,7 @@ reverseVertMenuAnimation = ->
     opacity: 0
     offset: 1
   }], {
-    delay: 50
+    delay: 120
     duration: 180
     fill: 'forwards'
   }
