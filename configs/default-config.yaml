@@ -19,7 +19,7 @@ app:
   # Notice: Do not use default value in production.
   storeSecret: JLhBIVv9PdTpH81XaWSdIxpITcaTZ4IjdmINwhHBo
 
-  # Add X-Powered-By HTTP headers?
+  # Add X-Powered-By HTTP header?
   # Can be only 'true' or 'false'
   xPoweredBy: true
 
@@ -37,3 +37,16 @@ database:
 session:
   prefix: ponyfiction. # prefix must end with "."
   sessidName: uid
+smtp:
+  host: null
+  port: null
+
+  # Use SSL?
+  # Can be only 'true' of 'false'
+  secure: true
+  # E-mail address for noreply bot. Something like this:
+  # noreply@yourdomain.com
+  user: null
+
+  # Password of noreply bot account
+  pass: null

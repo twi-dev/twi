@@ -1,0 +1,13 @@
+div(style="width: 98%; margin: auto;")
+  div(style="padding: 0 16px 0 16px; background-color: #653089; color: white; line-height: 50px; font-size: 18px;")
+    img(src="" + host + "/img/icns/favicons/ponyfiction-js-96.png", alt="Logo" border="0", width="34", height="34", style="vertical-align: middle;")
+    span(style="margin-left:16px; vertical-align: middle;")= t('home.title.index', {name: name})
+  div(style="padding: 20px 16px 20px 16px; border: solid #653089 1px; border-top: none;")
+    block messageContent
+    div
+      br
+      span С уважением, администрация сайта 
+        a(href="" + host)= t('home.title.index', {name: name})
+  div(style="padding: 4px 0 4px 0; font-size: 10px; color: #c0c0c0")
+    | © 
+    = t('home.title.index', {name: name})

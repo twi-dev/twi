@@ -1,68 +1,10 @@
 'use strict'
 
-moment = require 'moment'
-passport = require 'passport'
-
-{Strategy} = require 'passport-local'
-
 i18n = require '../core/i18n'
 user = new User = require '../model/User'
 
 NotFoundException = require '../core/errors/NotFoundException'
 ForbiddenException = require '../core/errors/ForbiddenException'
-
-###
-# Response login page
-# 
-# GET /login
-###
-actionLogin = (req, res) ->
-  if do req.isAuthenticated
-    return res.redirect '/'
-
-  res.render 'user/login',
-    title: i18n.t 'user.title.signin'
-    __csrf: do req.csrfToken
-    __redirectUri: req.query.return or '/'
-
-###
-# POST /login
-###
-actionSignin = (req, res, next) ->
-  res.redirect req.query.return or '/'
-
-###
-# Response login page for GET method
-# 
-# GET /signup
-###
-actionRegister = (req, res) ->
-  if do req.isAuthenticated
-    return res.redirect '/'
-
-  res.render 'user/signup',
-    title: i18n.t 'user.title.signup'
-    __csrf: do req.csrfToken
-    __redirectUri: req.query.return or '/'
-
-###
-# Register new user
-# 
-# POST /signup
-###
-actionSignup = (req, res, next) ->
-  {login, email, pass} = req.body
-
-  await user.register login, email, pass,
-    defer err
-
-  return next err if err?
-
-  res.redirect req.query.return or '/'
-
-actionLogout = (req, res, next) ->
-  do req.logout
-  res.redirect req.query.return or '/'
 
 ###
 # List of all registered users
@@ -96,29 +38,10 @@ actionSettings = (req, res, next) ->
     title: i18n.t 'user.title.settings'
 
 module.exports = (app) ->
-  passport.serializeUser (oUser, cb) -> cb null, oUser.id
-  passport.deserializeUser user.getAuthorizedUser
-
-  passport.use new Strategy
-    usernameField: 'email'
-    passwordField: 'pass',
-    user.auth
-
-  # Login
-  app.route '/login'
-    .get actionLogin
-    .post passport.authenticate('local'), actionSignin
-
-  # Signup
-  app.route '/signup'
-    .get actionRegister
-    .post actionSignup
-
-  # Logout
-  app.get '/logout', actionLogout
-
   app.get '/users/:page?', actionUsers
 
   app.get '/user/:login?', actionProfile
 
   app.get '/settings', actionSettings
+
+  return

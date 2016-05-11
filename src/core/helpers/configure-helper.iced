@@ -6,8 +6,15 @@ oConfig = null
 
 configure = ->
   CONFIGS_ROOT = realpathSync "#{__dirname}/../../configs"
-  __oDefaultConfig = readSync "#{CONFIGS_ROOT}/default.config.yaml"
-  __oUserConfig = readSync "#{CONFIGS_ROOT}/user.config.yaml"
+
+  # Trying to read user-config
+  try
+    __oUserConfig = readSync "#{CONFIGS_ROOT}/user-config"
+  catch err
+    # Set default value if user-config is not exists
+    __oUserConfig = {}
+
+  __oDefaultConfig = readSync "#{CONFIGS_ROOT}/default-config"
   return merge __oDefaultConfig, __oUserConfig
 
 module.exports = oConfig or= do configure

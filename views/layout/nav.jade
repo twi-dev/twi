@@ -13,7 +13,7 @@ nav#nav-menu.nav-menu-container
       .nav-icn.fl
         include ../../public/img/layout/star-rate.svg
       .nav-link-label.fl= t('user.nav.subs')
-    a.nav-link(href="/mail")
+    a.nav-link(href="/im")
       .nav-icn.fl
         include ../../public/img/layout/mail.svg
       .nav-link-label.fl= t('user.nav.mail')
@@ -23,11 +23,11 @@ nav#nav-menu.nav-menu-container
       .nav-link-label.fl= t('user.nav.comments')
   else
     //- If unauthorized
-    a.nav-link(href="/login?return=" + __redirectUri)
+    a.nav-link(href="/auth/signin?return=" + __redirectUri)
       .nav-icn.fl
         include ../../public/img/layout/add-person.svg
       .nav-link-label.fl= t('user.nav.login')
-    a.nav-link(href="/signup?return=" + __redirectUri)
+    a.nav-link(href="/auth/signup?return=" + __redirectUri)
       .nav-icn.fl
         include ../../public/img/layout/lock.svg
       .nav-link-label.fl= t('user.title.signup')

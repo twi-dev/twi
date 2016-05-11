@@ -11,7 +11,7 @@ block content
               include ../../public/img/layout/ponyfictionjs.svg
             h2.auth-title= name
         .auth-form-content
-          form#auth(action="/login?return=" + __redirectUri, method="post")
+          form#auth(action="/auth/signin?return=" + __redirectUri, method="post")
             .input-container
               input.form-input.auth-input(type="text", name="email", placeholder, required)
               .input-label Логин

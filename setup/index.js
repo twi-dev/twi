@@ -18,22 +18,22 @@ const LOG_WARN = 3;
 const LOG_ERR = 4;
 
 // Modules
-var exec, realpath, dirname, readlineSync, oConfigPhrases;
+var exec, fs, dirname, readlineSync, oConfigPhrases;
 exec = require('child_process').execSync;
-realpath = require('fs').realpathSync;
+fs = require('fs');
 dirname = require('path').dirname;
 
 // Root path
-const __ROOT__ = global.__ROOT__ = dirname(__dirname);
+// global.__ROOT__ = dirname(__dirname);
 
 // Variables
 var aLogMessages;
 aLogMessages = [
-  '[' + COLOR_DEF + 'log' + COLOR_DEF + ']',
-  '[' + COLOR_GEEN + 'ok' + COLOR_DEF + ']',
-  '[' + COLOR_CYAN + 'info' + COLOR_DEF + ']',
-  '[' + COLOR_YELLOW + 'warn' + COLOR_DEF + ']',
-  '[' + COLOR_RED + 'err' + COLOR_DEF + ']'
+  COLOR_DEF + 'log' + COLOR_DEF,
+  COLOR_GEEN + 'ok' + COLOR_DEF,
+  COLOR_CYAN + 'info' + COLOR_DEF,
+  COLOR_YELLOW + 'warn' + COLOR_DEF,
+  COLOR_RED + 'err' + COLOR_DEF
 ];
 
 oConfigPhrases = {
@@ -65,15 +65,20 @@ writeErr = (err) => process.stderr.write(err);
 log = (message, lvl) => {
   lvl = lvl || 0;
   if (lvl === LOG_NORMAL || lvl === LOG_OK || lvl === LOG_INFO) {
-    write(`${aLogMessages[lvl]} ${message}`);
+    write(`[${aLogMessages[lvl]}] ${message}`);
   } else {
-    writeErr(`${aLogMessages[lvl]} ${message}`);
+    writeErr(`[${aLogMessages[lvl]}] ${message}`);
   }
 };
 
 logLine = (message, lvl) => log(`${message}\n`, lvl);
 
 installDependencies = () => {
+  exec('bower install', {
+    encoding: 'utf-8',
+    stdio: 'inherit'
+  });
+
   exec('npm install', {
     encoding: 'utf-8',
     stdio: 'inherit'
@@ -160,18 +165,25 @@ setUserConfig = (oDefaultConfig, __sParentKey) => {
  * @return object
  */
 configure = () => {
-  const CONFIGS_ROOT = __ROOT__ + '/configs';
+  const CONFIGS_DIR = fs.realpathSync(`${__dirname}/../configs`);
   var __oDefaultConfig, __oUserConfig, __sAnswer, yaml, isEmpty;
   yaml = require('node-yaml');
   isEmpty = require('lodash').isEmpty;
-  __oDefaultConfig = yaml.readSync(CONFIGS_ROOT + '/default.config.yaml');
+  __oDefaultConfig = yaml.readSync(`${CONFIGS_DIR}/default-config`);
+
+  // Create user-config if not exists.
+  try {
+    fs.statSync(`${CONFIGS_DIR}/user-config.yaml`);
+  } catch (err) {
+    fs.writeFileSync(`${CONFIGS_DIR}/user-config.yaml`, '');
+  }
 
   while (true) {
     __sAnswer = question('Сконфигурировать приложение сейчас? (Y/n)')
       .toLowerCase() || null;
     if (__sAnswer === 'n' || __sAnswer === 'no' ||
         __sAnswer === 'н' || __sAnswer === 'нет') {
-      __oUserConfig = yaml.readSync(`${CONFIGS_ROOT}/user.config.yaml`);
+      __oUserConfig = yaml.readSync(`${CONFIGS_DIR}/user-config`);
       break;
     }
 
@@ -189,11 +201,11 @@ configure = () => {
 
   if (!isEmpty(__oUserConfig)) {
     yaml.writeSync(
-      `${CONFIGS_ROOT}/user.config.yaml`,
+      `${CONFIGS_DIR}/user.config.yaml`,
       __oUserConfig
     );
     logLine('Конфиг записан в:', LOG_INFO);
-    logLine(`${CONFIGS_ROOT}/user.config.yaml`, LOG_INFO);
+    logLine(`${CONFIGS_DIR}/user.config.yaml`, LOG_INFO);
   }
 
   return require('lodash').merge(__oDefaultConfig, __oUserConfig);

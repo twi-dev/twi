@@ -60,3 +60,5 @@ module.exports = (app) ->
 
   # Site rules
   app.get '/rules', actionRules
+
+  return

@@ -1,0 +1,12 @@
+extends layout
+
+block messageContent
+  span.
+    Добро пожаловать в библиотеку!<br>
+    Чтобы активировать свой аккаунт, перейдите по этой ссылке: 
+  a(href="" + host + "/auth/activate/" + activationLink)= host + '/auth/activate/'+ activationLink
+  br
+  br
+  span.
+    Ссылка будет действительна в течение суток.<br>
+    Если Вы не регистрировались в библиотеке – просто проигнорируйте это сообщение.

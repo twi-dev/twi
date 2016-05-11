@@ -71,3 +71,5 @@ module.exports = (app) ->
 
   # Delete story
   app.delete '/story/:storyId', actionDelete
+
+  return

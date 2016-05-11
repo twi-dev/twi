@@ -6,3 +6,5 @@ actionCharacter = (req, res) ->
 
 module.exports = (app) ->
   app.get '/kb', actionIndex
+
+  return

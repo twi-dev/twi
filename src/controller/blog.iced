@@ -60,3 +60,5 @@ module.exports = (app) ->
 
   app.route '/blog/:page?'
     .get actionIndex
+
+  return

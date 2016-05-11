@@ -28,8 +28,8 @@ loadStructure = () => {
 
   __ref = {};
 
-  __oTypes = require(`${__ROOT__}/core/database`).dataTypes;
-  __oModel = requireDir(`${__ROOT__}/core/database/structure`);
+  __oTypes = require('../../core/database').dataTypes;
+  __oModel = requireDir('../../core/database/structure');
   for (let __sModelName in __oModel) {
     __model = __oModel[__sModelName];
     if (_.isFunction(__model) === true) {
@@ -47,21 +47,26 @@ createSuperUser = () => {
     var model, oUser, oContacts,
       sLogin, sEmail, sPass;
 
-    model = require(`${__ROOT__}/core/database`);
+    model = require('../../core/database');
 
     oUser = model(
       'user',
       require(
-        `${__ROOT__}/core/database/structure/user`
+        '../../core/database/structure/user'
       )(model.dataTypes)
     );
 
     oContacts = model(
       'contacts',
       require(
-        `${__ROOT__}/core/database/structure/contacts`
+        '../../core/database/structure/contacts'
       )(model.dataTypes)
     );
+
+    oUser.hasOne(oContacts, {
+      foreignKey: 'userId',
+      as: 'contacts'
+    });
 
     sLogin = question('Имя пользователя: ');
     sEmail = question('Адрес эл. почты: ');
@@ -69,24 +74,32 @@ createSuperUser = () => {
       hideEchoBack: true
     });
 
-    oUser.create({
-      login: sLogin,
-      email: sEmail,
-      password: require('bcryptjs').hashSync(sPass),
-      registeredAt: require('moment')().format(),
-      role: 3,
-      status: 1
-    })
-    .then(() => {
-      return oUser.findOne({
-        where: {
-          role: 3
-        }
-      });
+    oUser.findOrCreate({
+      where: {
+        role: 3
+      },
+      include: [{
+        model: oContacts,
+        as: 'contacts'
+      }],
+      defaults: {
+        login: sLogin,
+        email: sEmail,
+        password: require('bcryptjs').hashSync(sPass),
+        registeredAt: require('moment')().format(),
+        role: 3,
+        status: 1
+      }
     })
     .then((oResponsedData) => {
-      return oContacts.create({
-        userId: oResponsedData.dataValues.userId
+      let iUserId = oResponsedData[0].dataValues.userId;
+      return oContacts.findOrCreate({
+        where: {
+          userId: iUserId
+        },
+        defaults: {
+          userId: iUserId
+        }
       });
     })
     .then(() => _res())
@@ -102,12 +115,12 @@ importData = (sPrefix, oConnection) => {
     aModelsPromise = [];
     oDataArrays = requireHelper('./data');
     __oTypes = require(
-      `${__ROOT__}/core/database`
+      '../../core/database'
     ).dataTypes;
 
     for (let __sModelName in oDataArrays) {
       oModelsStructure[__sModelName] = require(
-        `${__ROOT__}/core/database/structure/${__sModelName}`
+        `../../core/database/structure/${__sModelName}`
       )(__oTypes);
     }
 
@@ -122,6 +135,7 @@ importData = (sPrefix, oConnection) => {
         );
       }
     }
+
     Promise.all(aModelsPromise)
       .then(() => _res())
       .catch(err => _rej(err));

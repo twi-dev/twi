@@ -1,5 +1,7 @@
 api
 controller
+configs/user-config.yaml
+configs/user-config.yml
 core
 model
 node_modules
