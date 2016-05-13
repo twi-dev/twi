@@ -58,6 +58,21 @@ actionSignup = (req, res, next) ->
   res.redirect req.query.return or '/'
 
 ###
+# Confirm account via email
+#
+# GET /auth/confirm/:confirmationHash
+###
+actionConfirm = (req, res, next) ->
+  {confirmationHash} = req.params
+
+  await user.activate confirmationHash,
+    defer err, bIsConfirmed
+  return next err if err?
+
+  res.render 'auth/confirm-success',
+    title: 'Регистрация успешно завершена'
+
+###
 # Logout
 #
 # POST /auth/logout
@@ -82,6 +97,9 @@ module.exports = (app) ->
   app.route '/auth/signup'
     .get actionRegister
     .post actionSignup
+
+  # Confirmation link
+  app.get '/auth/confirm/:confirmationHash', actionConfirm
 
   app.get '/auth/logout', actionLogout
 

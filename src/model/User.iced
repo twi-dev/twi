@@ -5,6 +5,10 @@ _ = require 'lodash'
 validate = require 'validate.js'
 moment = require 'moment'
 bcrypt = require 'bcryptjs'
+crypto = require 'crypto'
+redis = require 'redis'
+mailer = require '../core/mail/mailer'
+{info} = require '../core/logger'
 
 UnauthorisedException = require '../core/errors/UnauthorisedException'
 ForbiddenException = require '../core/errors/ForbiddenException'
@@ -15,8 +19,16 @@ model = require '../core/database'
 __oUserStructure = require '../core/database/structure/user'
 __oContactsStructure = require '../core/database/structure/contacts'
 
+redis = do redis.createClient
 user = model 'user', __oUserStructure model.dataTypes
 contacts = model 'contacts', __oContactsStructure model.dataTypes
+
+###
+# Expiry period for confirmation link
+#
+# By default is 24 hours
+###
+CONFIRMATION_EXPIRE = 60 * 60 * 24
 
 __oUserStructure = null
 __oContactsStructure = null
@@ -72,6 +84,49 @@ class User
     user.findAll oParams
       .asCallback cb
 
+  confirm: (sEmail, sLogin, cb) ->
+    sHash = crypto.createHash 'sha256'
+      .update "#{+moment()}#{sEmail}"
+      .digest 'hex'
+
+    await redis.set sHash, sLogin, 'EX', CONFIRMATION_EXPIRE,
+      defer err
+    return cb err if err?
+
+    # send => to, subject, template name, options, cb
+    await mailer.send sEmail, 'Добро пожаловать!', 'welcome',
+      activationLink: sHash,
+      defer err, oInfo
+    return cb err if err?
+
+    info "Confirmation message has been sent to #{sEmail}"
+
+    cb null
+
+  ###
+  # Activate user account
+  ###
+  activate: (sHash, cb) ->
+    await redis.get sHash,
+      defer err, sLogin
+    return cb err if err?
+
+    unless sLogin?
+      return cb null, false
+
+    user.update {
+      status: @STATUS_ACTIVE
+    }, {
+      where:
+        login: sLogin
+    }
+
+    await redis.del sHash,
+      defer err
+    return err if err?
+
+    cb null, true
+
   ###
   # Get user by given login
   ###
@@ -126,7 +181,7 @@ class User
       do v.trim for v in [sLogin, sEmail, sPass]
     )
 
-    unless /^[a-z-_]+$/i.test sLogin
+    unless /^[0-9a-z-_]+$/i.test sLogin
       cb new UnauthorisedException "Wrong login format."
       return
 
@@ -163,6 +218,12 @@ class User
     oUserData = oUserData.get plain: yes
     contacts.create userId: oUserData.userId
       .asCallback cb
+
+    await @confirm sEmail, sLogin,
+      defer err
+    return cb err if err?
+
+    cb null
 
   ###
   # Notice: "=>" because this function used for passport.js in LocalStrategy.

@@ -30,7 +30,7 @@ normalizePath = (sPath, cb) ->
 
 renderer = (sName, oOptions, cb) ->
   unless typeof sName is 'string'
-    return cb new TypeError "Path must be a string."
+    return cb new TypeError "Name must be a string."
 
   if typeof oOptions is 'function'
     [cb, oOptions] = [oOptions, {}]

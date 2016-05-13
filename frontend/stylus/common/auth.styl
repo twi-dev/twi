@@ -8,7 +8,8 @@
     background maneFillViolet
     color white
 
-  &-form-container
+  &-form-container,
+  &-confirm-main-container
     width 100%
     align(center)
 
@@ -40,3 +41,32 @@
 .auth-input
   width 100%
   border-bottom-color white
+
+.auth-confirm
+  &-container
+    min-height 200px
+    center(600px)
+    border maneFillViolet solid 1px
+    box-sizing border-box
+
+  &-header
+    cf()
+    background maneFillViolet
+    color white
+    font-size 110%
+    line-height 56px
+    user-select none
+    
+    &-title
+      padding 0 16px 0 6px
+
+    &-logo
+      position relative
+      width 56px
+      height 56px
+      background url('/img/layout/ponyfictionjs.svg') center center no-repeat
+      background-size 34px
+
+  &-content
+    text-align center
+    padding 20px 16px
