@@ -1,40 +1,34 @@
 {
-  "name": "ponyfiction-js",
-  "version": "0.2.1",
+  "name": "twi",
+  "version": "1.0.0",
   "description": "Library engine for Node.js",
   "main": "index.js",
   "scripts": {
-    "setup": "bin/ponyfiction setup",
-    "run": "bin/ponyfiction run",
+    "setup": "bin/twi setup",
+    "run": "bin/twi run",
     "start": "npm run setup && npm run run"
   },
   "bin": {
-    "ponyfiction": "bin/ponyfiction"
+    "twi": "bin/twi"
   },
   "author": "Nick K. <nick.kruchinin@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/octet-stream/ponyfiction-js.git"
+    "url": "git://github.com/octet-stream/twi-js.git"
   },
   "bugs": {
-    "url": "https://github.com/octet-stream/ponyfiction-js/issues"
+    "url": "https://github.com/octet-stream/twi-js/issues"
   },
   "dependencies": {
     "bcryptjs": "^2.3.0",
-    "body-parser": "^1.15.0",
     "co": "^4.6.0",
     "co-fs": "^1.2.0",
     "colors": "^1.1.2",
     "connect-redis": "^3.0.2",
-    "cookie-parser": "^1.4.1",
     "csurf": "^1.8.3",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
     "i18next": "^2.5.1",
-    "iced-runtime": "^1.0.3",
-    "jade": "^1.11.0",
-    "jstransformer-stylus": "^1.0.0",
+    "jade": "1.11.0",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",
     "koa-generic-session": "^1.10.2",
@@ -45,16 +39,11 @@
     "koa-static": "^2.0.0",
     "lodash": "^4.6.0",
     "markdown-it": "^6.0.1",
-    "method-override": "^2.3.5",
     "moment": "^2.11.2",
     "mysql": "^2.10.2",
     "node-yaml": "~2.0.1",
     "nodemailer": "^2.3.2",
-    "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "pinkie-promise": "^2.0.0",
-    "pretty-error": "^2.0.0",
-    "rbac": "^4.0.1",
     "readline-sync": "^1.4.1",
     "redis": "^2.6.0-1",
     "require-dir": "^0.3.0",
