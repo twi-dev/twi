@@ -1,0 +1,80 @@
+@import '../common/variables'
+@import 'jeet'
+
+html, body
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing antialiased
+  font-size 14px
+  background white
+  color maneStroke
+  user-select none
+
+a
+  text-decoration none
+  color maneStroke
+
+.button
+  position relative
+  display inline-block
+  overflow hidden
+  user-select none
+  padding 0 2rem
+  cursor pointer
+  text-transform uppercase
+  line-height 36px
+
+.flat-button
+  color maneStroke
+
+.err-page
+  &-main-container
+    align(center(450px))
+
+  &-message-container
+    position relative
+    font-size 120%
+    text-align center
+
+  &-image
+    svg
+      width 100%
+    img
+      width auto
+      max-width 100%
+
+  &-home-link
+    margin 10px 0
+
+  &-code
+    color maneStroke
+    padding .5rem 0
+    font-weight bold
+
+  &-not-allowed
+    color #343434
+
+  &-not-found
+    position absolute
+    top 10%
+    left 5%
+    font-size 100% * 2
+
+.err
+  &-code-on-top
+    font-size 100% * 3
+
+@media only screen and (max-width 854px)
+  .err-page
+    &-not-found
+      top 0
+      font-size 140%
+
+@media only screen and (max-width 500px)
+  .err-page
+    &-main-container
+      uncenter()
+      width 96%
+
+    &-not-found
+      top 0
+      font-size 140%

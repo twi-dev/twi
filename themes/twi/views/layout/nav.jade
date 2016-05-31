@@ -1,10 +1,10 @@
 nav#nav-menu.nav-menu-container
   if user
-    a.nav-profile-link(href="/user/" + user.url)
+    a.nav-profile-link(href="/user/" + user.login.toLowerCase())
       .nav-user-info-bg
         .nav-user-info-avatar.fl
           img(src="/img/layout/no-avatar.png")
-        .nav-user-info-username.fl= user.username
+        .nav-user-info-username.fl= user.login
     a.nav-link(href="/")
       .nav-icn.fl
         include ../../public/img/layout/home.svg
@@ -23,11 +23,11 @@ nav#nav-menu.nav-menu-container
       .nav-link-label.fl= t('user.nav.comments')
   else
     //- If unauthorized
-    a.nav-link(href="/auth/signin?return=" + __redirectUri)
+    a.nav-link(href="/auth/signin?return=" + __return || '/')
       .nav-icn.fl
         include ../../public/img/layout/add-person.svg
       .nav-link-label.fl= t('user.nav.login')
-    a.nav-link(href="/auth/signup?return=" + __redirectUri)
+    a.nav-link(href="/auth/signup?return=" + __return || '/')
       .nav-icn.fl
         include ../../public/img/layout/lock.svg
       .nav-link-label.fl= t('user.title.signup')

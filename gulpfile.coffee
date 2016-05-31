@@ -31,20 +31,36 @@ jeet = require 'jeet'
 # Breakpoint system
 rupture = require 'rupture'
 
-__ROOT__ = __dirname
-COMPONENTS_SRC = __ROOT__ + '/frontend/components'
-COFFEE_SRC = __ROOT__ + '/frontend/coffee'
-COFFEE_DEST = __ROOT__ + '/public/assets/js'
-COFFEE_TMP = __ROOT__ + '/frontend/gulp-runtime'
-STYLUS_SRC = __ROOT__ + '/frontend/stylus'
-STYLUS_DEST = __ROOT__ + '/public/assets/css'
+{app: {theme}} = require './core/helpers/configure-helper'
+theme or= 'eri'
+
+# Theme path
+THEME_PATH = "#{__dirname}/themes/#{theme}"
+
+# Src dirs
+JADE_SRC = "#{THEME_PATH}/views/**/*.jade"
+COFFEE_SRC = "#{THEME_PATH}/src/coffee/**/*.iced"
+SVG_SRC = "#{THEME_PATH}/src/svg/**/*.svg"
+STYLUS_SRC_DIR = "#{THEME_PATH}/src/stylus"
+STYLUS_SRC = [
+  "#{STYLUS_SRC_DIR}/common/common.styl"
+  "#{STYLUS_SRC_DIR}/errors/*.styl"
+]
+
+###
+# Destination dirs
+###
+COFFEE_TMP = "#{THEME_PATH}/src/gulp-tmp/"
+COFFEE_DEST = "#{THEME_PATH}/public/assets/js"
+SVG_DEST = "#{THEME_PATH}/public/img"
+STYLUS_DEST = "#{THEME_PATH}/public/assets/css"
 
 # Is devel task running?
 bIsDevel = no
 
 ###
 # SIGINT signal listener
-# -
+# 
 # Clean frontend/gulp-runtime before exit if devel task has been running
 ###
 process.on 'SIGINT', ->
@@ -56,7 +72,7 @@ process.on 'SIGINT', ->
 
 ###
 # Error Handler
-# -
+# 
 # @param Error err
 ###
 errorHandler = (err) ->
@@ -68,12 +84,9 @@ errorHandler = (err) ->
 # Build Stylus
 ###
 gulp.task 'stylus', ->
-  gulp.src [
-      STYLUS_SRC + '/common/common.styl'
-      STYLUS_SRC + '/error.styl'
-    ]
+  gulp.src STYLUS_SRC
     .pipe plumber errorHandler
-    .pipe gulpif bIsDevel, newer STYLUS_SRC + '/**/*.styl'
+    # .pipe gulpif bIsDevel, newer STYLUS_SRC
     .pipe stylus use: [
       do jeet
       do rupture
@@ -89,9 +102,9 @@ gulp.task 'stylus', ->
 # Note: Do not use this task directly.
 ###
 gulp.task 'iced:compile', ->
-  gulp.src COFFEE_SRC + '/**/*.iced'
+  gulp.src COFFEE_SRC
     .pipe plumber errorHandler
-    .pipe gulpif bIsDevel, newer COFFEE_SRC + '/*.coffee'
+    .pipe gulpif bIsDevel, newer COFFEE_SRC
     .pipe do iced
     .pipe gulp.dest COFFEE_TMP
 
@@ -108,25 +121,25 @@ gulp.task 'coffee', ['iced:compile'], ->
   .pipe source 'common.js'
   .pipe do vinylBuffer
   .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
-  .pipe gulp.dest __ROOT__ + '/public/assets/js'
+  .pipe gulp.dest COFFEE_DEST
   .pipe gulpif bIsDevel, do livereload
 
 ###
 # Optimizing SVG.
 ###
 gulp.task 'svg', ->
-  gulp.src __ROOT__ + '/frontend/svg/**/*.svg'
+  gulp.src SVG_SRC
     .pipe plumber errorHandler
     .pipe do svgmin
-    .pipe gulp.dest __ROOT__ + '/public/img'
+    .pipe gulp.dest SVG_DEST
 
 ###
 # Refreshing page with livereload
 # Note: Do not use this task directly.
 ###
 gulp.task 'refresh', ->
-  gulp.src __ROOT__ + '/views/**/*.jade'
-    .pipe newer __ROOT__ + '/views/**/*.jade'
+  gulp.src "#{THEME_PATH}/views/**/*.jade"
+    .pipe newer "#{THEME_PATH}/views/**/*.jade"
     .pipe do livereload
 
 ###
@@ -137,12 +150,10 @@ gulp.task 'refresh', ->
 gulp.task 'devel', ->
   do livereload.listen
   bIsDevel = yes
-  gulp.watch STYLUS_SRC + '/**/*.styl', ['stylus']
-  gulp.watch [
-    COFFEE_SRC + '/**/*.iced'
-  ], ['build:coffee']
-  gulp.watch __ROOT__ + '/frontend/svg/**/*.svg', ['svg']
-  gulp.watch __ROOT__ + '/views/**/*.jade', ['refresh']
+  gulp.watch "#{STYLUS_SRC_DIR}/**/*.styl", ['stylus']
+  gulp.watch COFFEE_SRC, ['coffee']
+  gulp.watch SVG_SRC, ['svg']
+  gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
 
 ###
 # Build coffee and clean working directory

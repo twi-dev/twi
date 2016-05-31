@@ -23,12 +23,9 @@ exec = require('child_process').execSync;
 fs = require('fs');
 dirname = require('path').dirname;
 
-// Root path
-// global.__ROOT__ = dirname(__dirname);
-
 // Variables
-var aLogMessages;
-aLogMessages = [
+var aLabels;
+aLabels = [
   COLOR_DEF + 'log' + COLOR_DEF,
   COLOR_GEEN + 'ok' + COLOR_DEF,
   COLOR_CYAN + 'info' + COLOR_DEF,
@@ -38,19 +35,18 @@ aLogMessages = [
 
 oConfigPhrases = {
   app: {
-    name: "Название приложения",
-    host: "Адрес хоста",
-    port: "Номер порта",
-    workers: "Количество воркеров приложения"
+    name: "Name for your blog",
+    host: "Host",
+    port: "Port",
   },
   database: {
-    driver: "СУБД",
-    host: "Адрес хоста",
-    port: "Порт",
-    user: "Имя пользователя",
-    pass: "Пароль",
-    dbname: "Имя базы данных",
-    prefix: "Префикс таблиц"
+    driver: "Database driver",
+    host: "Database host",
+    port: "Database port",
+    user: "Database user",
+    pass: "Database password",
+    name: "Database name",
+    prefix: "Table prefix"
   }
 };
 
@@ -65,16 +61,16 @@ writeErr = (err) => process.stderr.write(err);
 log = (message, lvl) => {
   lvl = lvl || 0;
   if (lvl === LOG_NORMAL || lvl === LOG_OK || lvl === LOG_INFO) {
-    write(`[${aLogMessages[lvl]}] ${message}`);
+    write(`[${aLabels[lvl]}] ${message}`);
   } else {
-    writeErr(`[${aLogMessages[lvl]}] ${message}`);
+    writeErr(`[${aLabels[lvl]}] ${message}`);
   }
 };
 
 logLine = (message, lvl) => log(`${message}\n`, lvl);
 
 installDependencies = () => {
-  exec('bower install', {
+  exec('bower install --config.cwd=themes/twi/src', {
     encoding: 'utf-8',
     stdio: 'inherit'
   });
@@ -87,7 +83,7 @@ installDependencies = () => {
 };
 
 buildBackand = () => {
-  exec('icake build', {
+  exec('cake build', {
     encoding: 'utf-8',
     stdio: 'inherit'
   });
@@ -112,7 +108,7 @@ buildFrontend = () => {
 question = (sQuestion, bUseMask) => {
   const readlineSync = require('readline-sync');
   return readlineSync.question(
-    `${aLogMessages[LOG_NORMAL]} ${sQuestion}: `, {
+    `${aLabels[LOG_NORMAL]} ${sQuestion}: `, {
       hideEchoBack: !!bUseMask || false
     }
   );
@@ -169,28 +165,30 @@ configure = () => {
   var __oDefaultConfig, __oUserConfig, __sAnswer, yaml, isEmpty;
   yaml = require('node-yaml');
   isEmpty = require('lodash').isEmpty;
-  __oDefaultConfig = yaml.readSync(`${CONFIGS_DIR}/default-config`);
+  __oDefaultConfig = yaml.readSync(`${CONFIGS_DIR}/default`);
 
   // Create user-config if not exists.
   try {
-    fs.statSync(`${CONFIGS_DIR}/user-config.yaml`);
+    fs.statSync(`${CONFIGS_DIR}/user.yaml`);
   } catch (err) {
-    fs.writeFileSync(`${CONFIGS_DIR}/user-config.yaml`, '');
+    fs.writeFileSync(`${CONFIGS_DIR}/user.yaml`, '');
   }
 
   while (true) {
-    __sAnswer = question('Сконфигурировать приложение сейчас? (Y/n)')
-      .toLowerCase() || null;
+    __sAnswer = question(
+        'Do you want to configure your app right now? (Y/n)'
+    ).toLowerCase() || null;
+
     if (__sAnswer === 'n' || __sAnswer === 'no' ||
         __sAnswer === 'н' || __sAnswer === 'нет') {
-      __oUserConfig = yaml.readSync(`${CONFIGS_DIR}/user-config`);
+      __oUserConfig = yaml.readSync(`${CONFIGS_DIR}/user`);
       break;
     }
 
      __oUserConfig = setUserConfig(__oDefaultConfig);
-    logLine('Ваш конфиг:');
+    logLine('Your config:');
     console.log(__oUserConfig);
-    __sAnswer = question('Всё верно? (Y/n)').toLowerCase() || null;
+    __sAnswer = question('Looks good? (Y/n)').toLowerCase() || null;
 
     if (__sAnswer === 'y' || __sAnswer === 'yes' ||
         __sAnswer === 'д' || __sAnswer === 'да' ||
@@ -201,11 +199,11 @@ configure = () => {
 
   if (!isEmpty(__oUserConfig)) {
     yaml.writeSync(
-      `${CONFIGS_DIR}/user.config.yaml`,
+      `${CONFIGS_DIR}/user.yaml`,
       __oUserConfig
     );
-    logLine('Конфиг записан в:', LOG_INFO);
-    logLine(`${CONFIGS_DIR}/user.config.yaml`, LOG_INFO);
+    logLine('Config file has been saved at:', LOG_INFO);
+    logLine(`${CONFIGS_DIR}/user.yaml`, LOG_INFO);
   }
 
   return require('lodash').merge(__oDefaultConfig, __oUserConfig);
@@ -213,18 +211,19 @@ configure = () => {
 
 (() => {
   var __oDatabaseConfig;
+
   try {
-    logLine('Установка зависимостей...');
+    logLine('Installing dependencies...');
     installDependencies();
 
-    logLine('Сборка движка...');
-    buildBackand();
+    // logLine('Compiling backend...');
+    // buildBackand();
 
-    logLine('Сборка фронтенда...');
+    logLine('Compiling frontend...');
     buildFrontend();
 
     __oDatabaseConfig = configure().database;
-  } catch (err) {
+  } catch(err) {
     logLine(err, LOG_ERR);
     logLine(err.stack, LOG_ERR);
     process.exit(1);
@@ -235,6 +234,9 @@ configure = () => {
     __oDatabaseConfig
   ).then(() => {
     logLine('Done without errors.', LOG_OK);
+    logLine('Congrats! Your Twi application has been sucessfully installed!',
+      LOG_OK
+    );
     process.exit(0);
   })
   .catch((err) => {

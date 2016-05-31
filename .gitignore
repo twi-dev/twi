@@ -1,9 +1,8 @@
 api
 controller
-configs/user-config.yaml
-configs/user-config.yml
 configs/user.yaml
 configs/user.yml
+configs/cert
 core
 model
 node_modules
