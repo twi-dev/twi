@@ -11,12 +11,18 @@ button-colored(bgc, fgc)
   cursor pointer
   text-transform uppercase
   line-height 36px
+  text-align center
 
   &-white
     button-colored(white, maneStroke)
 
   &-auth
+    display block
     button-colored(white, maneFillViolet)
+    &-confirm
+      width 200px
+      margin 0 auto 20px
+      text-decoration none
 
   &-raised
     border none

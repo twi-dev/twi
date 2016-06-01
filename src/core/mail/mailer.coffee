@@ -10,7 +10,7 @@ i18n = require '../i18n'
 oTransporter = null
 
 createTransport = ->
-  if host? and user? and pass?
+  unless smtp.host? and smtp.user? and smtp.pass?
     return null
 
   mailer.createTransport
@@ -22,37 +22,23 @@ createTransport = ->
       pass: smtp.pass
 
 # TODO: Rewrite this function using generators or thunk
-sendPlain = (sTo, sSubject, sText, cb) ->
+sendPlain = (sTo, sSubject, sText) ->
   unless oTransporter?
     info "Email transporter is not set. Message has not sent."
-    return cb null
+    return
 
-  await oTransporter.sendMail
+  yield oTransporter.sendMail
     from: "Пони-почтовик <#{smtp.user}>"
     to: sTo
     subject: sSubject
-    html: sText,
-    defer err, info
-  return cb err if err?
+    html: sText
 
-  cb null, info
-
-send = (sTo, sSubject, sTemplate, oOptions, cb) ->
-  if typeof oOptions is 'function'
-    [cb, oOptions] = [oOptions, {}]
-
-  await renderer sTemplate, oOptions,
-    defer err, sText
-  return cb err if err?
-
-  await sendPlain sTo, sSubject, sText,
-    defer err, info
-  return err if err?
-
-  cb null, info
+send = (sTo, sSubject, sTemplateName, oOptions = {}) ->
+  yield sendPlain sTo, sSubject,
+    yield renderer sTemplateName, oOptions
 
 module.exports = do ->
   oTransporter ?= do createTransport
 
-  sendPlain: thunk sendPlain
-  send: thunk send
+  sendPlain: sendPlain
+  send: send

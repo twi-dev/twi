@@ -21,13 +21,12 @@ oLocals =
 normalizePath = (sPath) ->
   aFiles = yield readdir dirname sPath
 
-  for sFilename in aFiles when (__sExtname = extname sFilename) in PUG_EXT
-    __sFilename = "#{basename sFilename, __sExtname}"
+  for sFile in aFiles when (__sExtname = extname sFile) in PUG_EXT
+    __sFilename = "#{basename sFile, __sExtname}"
     if __sFilename is basename sPath
-      yield "#{dirname sPath}/#{__sFilename}.jade"
-      return
+      return "#{dirname sPath}/#{__sFilename}.jade"
 
-  yield sPath
+  return sPath
 
 renderer = (sName, oOptions = {}) ->
   unless typeof sName is 'string'
@@ -35,11 +34,12 @@ renderer = (sName, oOptions = {}) ->
 
   oOptions = _.assign oOptions, oLocals
   sPath = yield normalizePath "#{EMAIL_TEMPLATES}/#{sName}"
+  # console.log sPath = "#{EMAIL_TEMPLATES}/#{sName}.jade"
   sContent = yield readFile sPath
 
   oOptions.filename = sPath
   sContent = render sContent, oOptions
 
-  yield sContent
+  return sContent
 
 module.exports = renderer

@@ -17,6 +17,9 @@ passport.use new Strategy
   passwordField: 'pass',
   user.auth
 
+# tmp
+mailer = require '../core/mail/mailer'
+
 ###
 # Response signin page
 # 
@@ -53,7 +56,7 @@ actionRegister = (next) ->
   @render 'auth/signup',
     title: i18n.t 'user.title.signup'
     __csrf: @csrf
-    __redirectUri: @query.return or '/'
+    __return: @query.return or '/'
 
     yield next
 
@@ -63,11 +66,9 @@ actionRegister = (next) ->
 # POST /auth/signup
 ###
 actionSignup = (next) ->
-  {login, email, pass} = @request.body
+  {login, email, pass, repass} = @request.body
 
-  # await user.register login, email, pass,
-  #   defer err
-  # return next err if err?
+  yield user.signup login, email, pass, repass
 
   @redirect @query.return or '/'
 
@@ -81,11 +82,12 @@ actionSignup = (next) ->
 actionConfirm = (next) ->
   {confirmationHash} = @params
 
-  # await user.activate confirmationHash,
-  #   defer err, bIsConfirmed
-  # return next err if err?
+  unless yield user.activate confirmationHash
+    @render 'auth/confirm-fail',
+      title: 'Ошибка при подтверждении адреса электронной почты'
+    return
 
-  res.render 'auth/confirm-success',
+  @render 'auth/confirm-success',
     title: 'Регистрация успешно завершена'
 
   yield next

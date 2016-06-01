@@ -3,8 +3,6 @@
 i18n = require '../core/i18n'
 {app: {name}} = require '../core/helpers/configure-helper'
 
-console.log require '../core/mail/mailer'
-
 ###
 # Response a home page
 # 
