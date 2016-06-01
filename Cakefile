@@ -36,9 +36,6 @@ ICED_EXTNAME = [
   '.coffee'
   '.litcoffee'
   '.coffee.md'
-  '.iced'
-  '.liticed'
-  '.iced.md'
 ]
 
 write = (string) -> process.stdout.write string
@@ -118,7 +115,8 @@ getPaths = (sPath) ->
 
 # Compile file
 compile = (file, output) ->
-  exec "iced -b --no-header -I node -c -o #{output} #{file}", encoding: 'utf-8'
+  exec "coffee -b --no-header -c -o #{output} #{file}",
+    encoding: 'utf-8'
 
 # Build files
 build = (files) ->
@@ -155,7 +153,7 @@ build = (files) ->
 # TASKS
 
 # Build project
-task 'build', 'Build ponyFiction.js', ->
+task 'build', 'Build Eri from source', ->
   try
     aPaths = getPaths "./src"
     logLine 'Compiling source files...', LOG_NORMAL

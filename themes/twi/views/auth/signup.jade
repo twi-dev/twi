@@ -1,0 +1,28 @@
+extends ../layout/layout
+
+block header
+block content
+  .auth-container
+    .auth-form-container
+      .auth-form-box
+        .auth-header
+          a(href="/")
+            .auth-header-icon
+              include ../../public/img/layout/ponyfictionjs.svg
+            h2.auth-title= name
+        .auth-form-content
+          form#auth(action="/auth/signup?return=" + __return, method="post")
+            .input-container
+              input.form-input.auth-input(type="text", name="login", v-model="username", required)
+              .input-label Имя пользователя
+            .input-container
+              input.form-input.auth-input(type="text", name="email", v-model="email", required)
+              .input-label Адрес эл. почты
+            .input-container
+              input.form-input.auth-input(type="password", name="pass", v-model="pass", required)
+              .input-label Пароль
+            .input-container
+              input.form-input.auth-input(type="password", name="repass", v-model="repass", required)
+              .input-label Подтвердите пароль
+            input(type="hidden", name="_csrf", value="" + __csrf)
+            button#auth-button.button.button-raised.button-auth(type="submit", v-on:click="submit") Отправить

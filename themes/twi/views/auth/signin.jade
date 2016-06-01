@@ -1,0 +1,22 @@
+extends ../layout/layout
+
+block header
+block content
+  .auth-container
+    .auth-form-container
+      .auth-form-box
+        .auth-header
+          a(href="/")
+            .auth-header-icon
+              include ../../public/img/layout/ponyfictionjs.svg
+            h2.auth-title= name
+        .auth-form-content
+          form#auth(action="/auth/signin?return=" + __return, method="post")
+            .input-container
+              input.form-input.auth-input(type="text", name="username", placeholder, required)
+              .input-label Логин
+            .input-container
+              input.form-input.auth-input(type="password", name="pass", placeholder, required)
+              .input-label Пароль
+            input(type="hidden", name="_csrf", value="" + __csrf)
+            button#auth-button.button.button-raised.button-auth(type="submit") Войти

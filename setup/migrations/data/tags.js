@@ -2,69 +2,113 @@
 
 module.exports = [
   {
-    name: 'second_person'
+    name: 'second_person',
+    title: 'Second Person',
+    about: null
   },
   {
-    name: 'alternate_universe'
+    name: 'alternate_universe',
+    title: 'Alternative Universe',
+    about: null
   },
   {
-    name: 'comedy'
+    name: 'comedy',
+    title: 'Comedy',
+    about: null
   },
   {
-    name: 'dark'
+    name: 'dark',
+    title: 'Dark',
+    about: null
   },
   {
-    name: 'equestria_girls'
+    name: 'equestria_girls',
+    title: 'Equestria Girls',
+    about: null
   },
   {
-    name: 'human'
+    name: 'human',
+    title: 'Human',
+    about: null
   },
   {
-    name: 'random'
+    name: 'random',
+    title: 'Random',
+    about: null
   },
   {
-    name: 'sad'
+    name: 'sad',
+    title: 'Sad',
+    about: null
   },
   {
-    name: 'slice_of_life'
+    name: 'slice_of_life',
+    title: 'Slice Of Life',
+    about: null
   },
   {
-    name: 'tragedy'
+    name: 'tragedy',
+    title: 'Tragedy',
+    about: null
   },
   {
-    name: 'adventure'
+    name: 'adventure',
+    title: 'Adventure',
+    about: null
   },
   {
-    name: 'anthro'
+    name: 'anthro',
+    title: 'Anthro',
+    about: null
   },
   {
-    name: 'crossover'
+    name: 'crossover',
+    title: 'Crossover',
+    about: null
   },
   {
-    name: 'drama'
+    name: 'drama',
+    title: 'Drama',
+    about: null
   },
   {
-    name: 'horror'
+    name: 'horror',
+    title: 'Horror',
+    about: null
   },
   {
-    name: 'mystery'
+    name: 'mystery',
+    title: 'Mystery',
+    about: null
   },
   {
-    name: 'romance'
+    name: 'romance',
+    title: 'Romance',
+    about: null
   },
   {
-    name: 'erotic'
+    name: 'erotic',
+    title: 'Erotic',
+    about: null
   },
   {
-    name: 'sex'
+    name: 'sex',
+    title: 'Sex',
+    about: null
   },
   {
-    name: 'scifi'
+    name: 'scifi',
+    title: 'Sci-Fi',
+    about: null
   },
   {
-    name: 'thriller'
+    name: 'thriller',
+    title: 'Thriller',
+    about: null
   },
   {
-    name: 'fluff'
+    name: 'fluff',
+    title: 'Fluff',
+    about: null
   },
 ];

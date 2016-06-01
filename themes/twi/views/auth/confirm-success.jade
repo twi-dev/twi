@@ -1,0 +1,13 @@
+extends ../layout/layout
+
+block header
+block content
+  .auth-confirm-main-container
+    .auth-confirm-container
+      .auth-confirm-header
+        .auth-confirm-header-logo.fl
+        .auth-confirm-header-title.fl= name
+      .auth-confirm-content.
+        Ваш E-mail адрес подтверждён!<br>
+        Теперь Вы можете авторизоваться в библиотеке, используя данные, указанные при регистрации.
+      a.button.button-auth.button-auth-confirm(href="/auth/signin") Вход

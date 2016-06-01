@@ -1,0 +1,15 @@
+# About humans.txt: http://humanstxt.org
+# The humans responsible & technology colophon
+
+# TEAM
+  <name> -- <role> -- <twitter>
+  Nick K. -- Core developer -- @octet_stream
+
+# THANKS
+  <name>
+
+# TECHNOLOGY COLOPHON
+  Node.js, Express, IcedCoffeeScript,
+  i18next, YAML, Jade, Stylus, CSS3,
+  HTML5, SVG, Normalize.css, Jeet.gs,
+  Vue.js, Browserify, Gulp, Lodash, Codemirror

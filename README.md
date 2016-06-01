@@ -1,4 +1,4 @@
-# ponyFiction.js
+# Twi
 
 Open source fanfiction library engine for Node.js
 

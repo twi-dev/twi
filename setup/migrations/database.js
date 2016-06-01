@@ -1,137 +1,61 @@
 'use strict';
 
-const __ROOT__ = global.__ROOT__;
-
 // Modules
-var requireDir, requireHelper, Sequelize, question, logger, _;
-
-/* jshint ignore:start */
-Promise = require('pinkie-promise');
-/* jshint ignore:end */
-Sequelize = require('sequelize');
-_ = require('lodash');
-requireDir = require('require-dir');
-requireHelper = require('../../core/helpers/require-helper');
+var model, question, logger, requireHelper, requireHelper, _;
+model = require('../../core/database/index');
+requireHelper = require('require-dir');
 question = require('readline-sync').question;
 logger = require('../../core/logger');
+_ = require('lodash');
 
 // Functions
-var loadStructure, createSuperUser, importData;
+var createSuperUser, loadSchemas, importData;
 
 /**
- * Load database structure from ./structure directory
- *
- * @return object
- */
-loadStructure = () => {
-  var __oModel, __model, __ref, __oTypes;
+ * Load database schemas
+ **/
+loadSchemas = (bIsForce) => {
+  var oSchemas, bCreateSuperUser, __ref;
 
-  __ref = {};
+  __ref = [];
+  oSchemas = requireHelper('../../core/database/schemas');
 
-  __oTypes = require('../../core/database').dataTypes;
-  __oModel = requireDir('../../core/database/structure');
-  for (let __sModelName in __oModel) {
-    __model = __oModel[__sModelName];
-    if (_.isFunction(__model) === true) {
-      __ref[__sModelName] = __model(__oTypes);
-    }
+  for (let __sName in oSchemas) {
+    let __schema = oSchemas[__sName];
+    __ref.push(
+      model(
+        __sName, __schema
+      ).sync({
+        force: !!bIsForce
+      })
+    );
   }
+
   return __ref;
 };
 
-/**
- * Create ponyFiction.js SU
- */
-createSuperUser = () => {
+importData = (sPrefix) => {
   return new Promise((_res, _rej) => {
-    var model, oUser, oContacts,
-      sLogin, sEmail, sPass;
-
-    model = require('../../core/database');
-
-    oUser = model(
-      'user',
-      require(
-        '../../core/database/structure/user'
-      )(model.dataTypes)
-    );
-
-    oContacts = model(
-      'contacts',
-      require(
-        '../../core/database/structure/contacts'
-      )(model.dataTypes)
-    );
-
-    oUser.hasOne(oContacts, {
-      foreignKey: 'userId',
-      as: 'contacts'
-    });
-
-    sLogin = question('Имя пользователя: ');
-    sEmail = question('Адрес эл. почты: ');
-    sPass = question('Пароль: ', {
-      hideEchoBack: true
-    });
-
-    oUser.findOrCreate({
-      where: {
-        role: 3
-      },
-      include: [{
-        model: oContacts,
-        as: 'contacts'
-      }],
-      defaults: {
-        login: sLogin,
-        email: sEmail,
-        password: require('bcryptjs').hashSync(sPass),
-        registeredAt: require('moment')().format(),
-        role: 3,
-        status: 1
-      }
-    })
-    .then((oResponsedData) => {
-      let iUserId = oResponsedData[0].dataValues.userId;
-      return oContacts.findOrCreate({
-        where: {
-          userId: iUserId
-        },
-        defaults: {
-          userId: iUserId
-        }
-      });
-    })
-    .then(() => _res())
-    .catch(err => _rej(err));
-  });
-};
-
-importData = (sPrefix, oConnection) => {
-  return new Promise((_res, _rej) => {
-    var oDataArrays, oModelsStructure, aModelsPromise, __oTypes;
+    var oDataArrays, oModelsStructure, aModelsPromise;
 
     oModelsStructure = {};
     aModelsPromise = [];
     oDataArrays = requireHelper('./data');
-    __oTypes = require(
-      '../../core/database'
-    ).dataTypes;
 
     for (let __sModelName in oDataArrays) {
       oModelsStructure[__sModelName] = require(
-        `../../core/database/structure/${__sModelName}`
-      )(__oTypes);
+        `../../core/database/schemas/${__sModelName}`
+      );
     }
 
     for (let __sModelName in oModelsStructure) {
       let __oModel = oModelsStructure[__sModelName];
       for (let oValues of oDataArrays[__sModelName]) {
         aModelsPromise.push(
-          oConnection.define(
-            `${sPrefix}${__sModelName}`, __oModel, {
+          model(
+            `${__sModelName}`, __oModel, {
               timestamps: false
-          }).upsert(oValues)
+          }).upsert(oValues) // TODO: May be I can replace this one with bulk.
         );
       }
     }
@@ -143,34 +67,63 @@ importData = (sPrefix, oConnection) => {
 };
 
 /**
- * Create and send database structure
- *
- * @param object oDatabaseConfig
- *
- * @return Promise
+ * Create ponyFiction.js SU
  */
-module.exports = (oDatabaseConfig) => {
+createSuperUser = () => {
   return new Promise((_res, _rej) => {
-    var oConnection, aModelsPromise, bIsForce,
-      bCreateSuperUser, __oStructure, __oModel;
+    var user, contacts, sUsername, sEmail, sPass;
 
-    aModelsPromise = [];
-    __oStructure = loadStructure();
-
-    oConnection = new Sequelize(
-      oDatabaseConfig.dbname,
-      oDatabaseConfig.user,
-      oDatabaseConfig.pass, {
-        dialect: oDatabaseConfig.driver,
-        host: oDatabaseConfig.host,
-        port: oDatabaseConfig.port,
-        logging: logger.info
-      }
+    user = model(
+      'user',
+      require('../../core/database/schemas/user')
     );
 
+    contacts = model(
+      'contacts',
+      require('../../core/database/schemas/contacts')
+    );
+
+    // Associate user with his contacts
+    user.hasOne(contacts, {
+      foreignKey: 'userId',
+      as: 'contacts'
+    });
+
+    sUsername = question('Your login: ');
+    sEmail = question('Your email: ');
+    sPass = question('Your password: ', {
+      hideEchoBack: true
+    });
+
+    user.findOrCreate({
+      where: {
+        role: 3
+      },
+      include: [{
+        model: contacts,
+        as: 'contacts'
+      }],
+      defaults: {
+        login: sUsername,
+        email: sEmail,
+        password: require('bcryptjs').hashSync(sPass),
+        registeredAt: require('moment')().format(),
+        role: 3,
+        status: 1
+      }
+    })
+    .then(() => _res())
+    .catch(err => _rej(err));
+  });
+};
+
+module.exports = oDatabaseConfig => {
+  return new Promise((_res, _rej) => {
+    var bIsForce, bCreateSuperUser;
+
     bIsForce = question(
-      'Перезаписать структуру таблиц? (Y/n): '
-    ) || 'y';
+        'Drop and database structure? (Y/n): '
+      ) || 'y';
 
     bIsForce = (
       bIsForce === 'y' || bIsForce === 'yes' ||
@@ -179,7 +132,7 @@ module.exports = (oDatabaseConfig) => {
 
     if (bIsForce === false) {
       bCreateSuperUser = question(
-        'Создать аккаунт администратора? (Y/n): '
+        'Create owner account? (Y/n): '
       ) || 'y';
     }
 
@@ -188,23 +141,8 @@ module.exports = (oDatabaseConfig) => {
       bCreateSuperUser === 'д' || bCreateSuperUser === 'да'
     ) ? true : false;
 
-    // Create models
-    for (let __sModelName in __oStructure) {
-      __oModel = __oStructure[__sModelName];
-      aModelsPromise.push(
-        oConnection.define(
-          oDatabaseConfig.prefix + __sModelName, __oModel, {
-            timestamps: false
-          }
-        ).sync({
-          force: bIsForce
-        })
-      );
-    }
-
-    // Send database structure
-    Promise.all(aModelsPromise)
-      .then(() => importData(oDatabaseConfig.prefix, oConnection))
+    Promise.all(loadSchemas(bIsForce))
+      .then(() => importData())
       .then(() => {
         if (bIsForce === false && bCreateSuperUser === false) {
           return _res();
