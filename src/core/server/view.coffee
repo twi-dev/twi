@@ -15,19 +15,6 @@ VIEWS = realpathSync "#{__dirname}/../../themes/#{theme}/views"
 {NODE_ENV} = process.env
 bIsDevel = unless NODE_ENV is 'production' then yes else no
 
-# jade = new Jade
-#   viewPath: VIEWS
-#   debug: yes # bIsDevel
-#   pretty: no # bIsDevel
-#   noCache: bIsDevel
-#   locals:
-#     name: name
-#     credits: credits
-#     version: version
-#     codename: codename
-#     theme: theme
-#     t: t
-
 oConfig = null
 
 # Tiny-tiny cache for templates :D
@@ -69,5 +56,3 @@ init = (app, oCustom = {}) ->
   app.context.render = renderer
 
 module.exports = init
-
-# module.exports = (app) -> jade.use app
