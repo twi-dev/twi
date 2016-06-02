@@ -17,9 +17,6 @@ passport.use new Strategy
   passwordField: 'pass',
   user.auth
 
-# tmp
-mailer = require '../core/mail/mailer'
-
 ###
 # Response signin page
 # 
