@@ -1,11 +1,11 @@
 'use strict'
 
 model = require '../core/database'
-blog = model 'blog', require '../core/database/schemas/blog'
-tag = model 'blogTag', require '../core/database/schemas/blogTags'
+post = model 'post', require '../core/database/schemas/post'
+tag = model 'tag', require '../core/database/schemas/tag'
+postTags = model 'postTags', require '../core/database/schemas/postTags'
 
 NotFoundException = require '../core/errors/NotFound'
-# InternalException = require '../core/errors/Internal'
 ForbiddenException = require '../core/errors/Forbidden'
 
 class Blog

@@ -40,6 +40,9 @@ loadSchemas = bIsForce => {
   return __ref;
 };
 
+/**
+ * Importing data
+ */
 importData = sPrefix => {
   return new Promise((_res, _rej) => {
     var oDataArrays, oModelsStructure, aModelsPromise;
@@ -161,8 +164,8 @@ module.exports = oDatabaseConfig => {
     var bIsForce, bCreateSuperUser;
 
     bIsForce = question(
-        'Drop and database structure? (Y/n): '
-      ) || 'y';
+      'Drop and database structure? (Y/n): '
+    ) || 'y';
 
     bIsForce = (
       bIsForce === 'y' || bIsForce === 'yes' ||

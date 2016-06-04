@@ -3,74 +3,90 @@
 # 
 # GET /stories/:page?
 ###
-actionIndex = (req, res) ->
-  res.render 'stories/index',
-    title: 'Фанфики'
+actionIndex = (next) ->
+  @render 'stories/index',
+    title: 'Stories'
+
+  yield next
 
 ###
 # Read story with given id
 # 
 # GET /story/read/:storyId/:chapter?
 ###
-actionRead = (req, res) ->
-  res.render 'stories/read',
-    title: 'Название фанфика'
+actionRead = (next) ->
+  @render 'stories/read',
+    title: '<Story title>'
+
+  yield next
 
 ###
 # Response Add Story page
 # 
 # GET /story/new
 ###
-actionNew = (req, res) ->
-  res.render 'stories/new'
+actionNew = (next) ->
+  @render 'stories/new',
+    title: 'Add story'
+
+  yield next
 
 ###
 # Add new story
 #
 # POST /story/new
 ###
-actionSend = (req, res) ->
+actionSend = (next) ->
+  yield next
 
 ###
 # Response Edit Story page
 #
 # GET /story/edit/:storyId
 ###
-actionEdit = (req, res) ->
-  res.render 'stories/edit',
-    title: 'Редактирование'
+actionEdit = (next) ->
+  @render 'stories/edit',
+    title: 'Edit story'
+
+  yield next
 
 ###
 # Save changes for story with given id
 # 
 # PUT /story/edit/:storyId
 ###
-actionSave = (req, res) ->
+actionSave = (next) ->
   yield next
 
 ###
 # DELETE 
 ###
-actionDelete = (req, res) ->
+actionDelete = (next) ->
+  yield next
 
-module.exports = (app) ->
+module.exports = (route) ->
   # List of all stories
-  app.get '/stories/:page?', actionIndex
+  route '/stories/:page?'
+    .get actionIndex
 
   # Read story with given id
-  app.get '/story/read/:storyId/:chapter?', actionRead
+  route '/story/read/:storyId/:chapter?'
+    .get actionRead
 
   # Add new story
-  app.route '/story/new', actionNew
+  route '/story/new'
     .get actionNew
     .post actionSend
 
   # Edit story
-  app.route '/story/edit/:storyId/:chapter?'
+  route '/story/edit/:storyId/:chapter?'
     .get actionEdit
     .put actionSave
 
   # Delete story
-  app.delete '/story/:storyId', actionDelete
+  # TODO: Node said something about EventEmitter memory leak on this.
+  # I need some research.
+  route '/story/:storyId'
+    .delete actionDelete
 
   return
