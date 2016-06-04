@@ -4,12 +4,8 @@ module.exports = (oTypes) ->
   contactsId:
     type: oTypes.INTEGER
     primaryKey: yes
-    allowNull: no
     autoIncrement: on
-  userId:
-    type: oTypes.INTEGER
-    allowNull: no
-  contactEmail:
+  email:
     type: oTypes.STRING
     allowNull: yes
     unique: yes

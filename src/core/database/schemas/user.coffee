@@ -45,3 +45,7 @@ module.exports = (oTypes) ->
     type: oTypes.INTEGER 1
     allowNull: no
     defaultValue: 0 # Inactive by default
+  contactsId:
+    type: oTypes.INTEGER
+    unique: yes
+    allowNull: no

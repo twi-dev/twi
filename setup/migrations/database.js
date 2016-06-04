@@ -1,12 +1,12 @@
 'use strict';
 
 // Modules
-var model, question, logger, requireHelper, requireHelper, _;
-model = require('../../core/database/index');
-requireHelper = require('require-dir');
-question = require('readline-sync').question;
-logger = require('../../core/logger');
-_ = require('lodash');
+// var model, question, logger, requireHelper, requireHelper, _;
+const model = require('../../core/database/index');
+const requireHelper = require('../../core/helpers/require-helper');
+const question = require('readline-sync').question;
+const logger = require('../../core/logger');
+const _ = require('lodash');
 
 // Functions
 var createSuperUser, loadSchemas, importData;
@@ -14,7 +14,7 @@ var createSuperUser, loadSchemas, importData;
 /**
  * Load database schemas
  **/
-loadSchemas = (bIsForce) => {
+loadSchemas = bIsForce => {
   var oSchemas, bCreateSuperUser, __ref;
 
   __ref = [];
@@ -22,6 +22,12 @@ loadSchemas = (bIsForce) => {
 
   for (let __sName in oSchemas) {
     let __schema = oSchemas[__sName];
+
+    if (_.isFunction(__schema) === false) {
+      logger.warn(`Schema "${__sName}" is not a function.`);
+      continue;
+    }
+
     __ref.push(
       model(
         __sName, __schema
@@ -34,7 +40,7 @@ loadSchemas = (bIsForce) => {
   return __ref;
 };
 
-importData = (sPrefix) => {
+importData = sPrefix => {
   return new Promise((_res, _rej) => {
     var oDataArrays, oModelsStructure, aModelsPromise;
 
@@ -55,7 +61,7 @@ importData = (sPrefix) => {
           model(
             `${__sModelName}`, __oModel, {
               timestamps: false
-          }).upsert(oValues) // TODO: May be I can replace this one with bulk.
+          }).upsert(oValues) // TODO: Maybe I can replace this one with bulk.
         );
       }
     }
@@ -67,11 +73,12 @@ importData = (sPrefix) => {
 };
 
 /**
- * Create ponyFiction.js SU
+ * Create owner account
  */
 createSuperUser = () => {
   return new Promise((_res, _rej) => {
     var user, contacts, sUsername, sEmail, sPass;
+    const validationHelper = require('../../core/helpers/validation-helper');
 
     user = model(
       'user',
@@ -83,35 +90,67 @@ createSuperUser = () => {
       require('../../core/database/schemas/contacts')
     );
 
-    // Associate user with his contacts
-    user.hasOne(contacts, {
-      foreignKey: 'userId',
-      as: 'contacts'
-    });
+    while (true) {
+      sUsername = question('Your login: ');
 
-    sUsername = question('Your login: ');
-    sEmail = question('Your email: ');
-    sPass = question('Your password: ', {
-      hideEchoBack: true
-    });
+      // Checking login
+      if (validationHelper.isLogin(sUsername)) break;
 
-    user.findOrCreate({
+      logger.warn(
+        'Username may contain only letters, digits, underscores and dots.'
+      );
+    }
+
+    while(true) {
+      sEmail = question('Your email: ');
+
+      // Checking email
+      if (validationHelper.isEmail(sEmail)) break;
+
+      logger.warn('Wrong email format.');
+    }
+
+    while (true) {
+      let sRepass;
+
+      sPass = question('Your password: ', {
+        hideEchoBack: true
+      });
+
+      sRepass = question('Repeat your password: ', {
+        hideEchoBack: true
+      });
+
+      // Checking password
+      if (validationHelper.isValidPassword(sPass) && sPass === sRepass) break;
+
+      logger.err('Passwords are not equal.');
+    }
+
+    user.find({
       where: {
         role: 3
-      },
-      include: [{
-        model: contacts,
-        as: 'contacts'
-      }],
-      defaults: {
+      }
+    })
+    .then(oUser => {
+      if (_.isEmpty(oUser) === false) {
+        logger.info('Owner account is already exists.');
+        return _res();
+      }
+
+      return contacts.create();
+    })
+    .then(oContact =>
+      user.create({
         login: sUsername,
         email: sEmail,
         password: require('bcryptjs').hashSync(sPass),
         registeredAt: require('moment')().format(),
         role: 3,
-        status: 1
-      }
-    })
+        status: 1,
+        contactsId: oContact.get({plain: true}).contactsId
+      })
+    )
     .then(() => _res())
     .catch(err => _rej(err));
   });

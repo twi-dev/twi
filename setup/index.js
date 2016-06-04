@@ -108,7 +108,7 @@ buildFrontend = () => {
 question = (sQuestion, bUseMask) => {
   const readlineSync = require('readline-sync');
   return readlineSync.question(
-    `${aLabels[LOG_NORMAL]} ${sQuestion}: `, {
+    `[${aLabels[LOG_NORMAL]}] ${sQuestion}: `, {
       hideEchoBack: !!bUseMask || false
     }
   );
@@ -216,8 +216,8 @@ configure = () => {
     logLine('Installing dependencies...');
     installDependencies();
 
-    // logLine('Compiling backend...');
-    // buildBackand();
+    logLine('Compiling backend...');
+    buildBackand();
 
     logLine('Compiling frontend...');
     buildFrontend();

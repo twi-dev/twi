@@ -16,12 +16,8 @@ module.exports = (oTypes) ->
     type: oTypes.TEXT
     allowNull: no
   tags:
-    type: oTypes.TEXT
+    type: oTypes.INTEGER
     allowNull: no
-    get: -> if (sValue = @getDataValue 'tags') then sValue.split ':' else []
-    set: (aValues) ->
-      @setDataValue = aValues.join ':' if aValues?
-      return
   createdAt:
     type: oTypes.DATE
     allowNull: no

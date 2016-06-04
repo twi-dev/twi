@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = (oTypes) ->
-  tagId:
+  markId:
     type: oTypes.INTEGER
     primaryKey: yes
     allowNull: no
