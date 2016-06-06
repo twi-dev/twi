@@ -15,9 +15,6 @@ module.exports = (oTypes) ->
   content:
     type: oTypes.TEXT
     allowNull: no
-  tags:
-    type: oTypes.INTEGER
-    allowNull: no
   createdAt:
     type: oTypes.DATE
     allowNull: no

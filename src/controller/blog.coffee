@@ -1,6 +1,6 @@
 'use strict'
 
-blog = new Blog = require '../model/Blog'
+blog = require '../model/Blog'
 
 ForbiddenException = require '../core/errors/Forbidden'
 NotFoundException = require '../core/errors/NotFound'
@@ -22,10 +22,10 @@ actionIndex = (next) ->
   yield next
 
 actionNew = (next) ->
-  {user} = this
+  {user} = @req
 
   unless user? or user?.role < 3
-    throw new ForbiddenException "Unauthorized access to #{req.url}"
+    throw new ForbiddenException "Unauthorized access to #{@url}"
 
   @render 'blog/new',
     title: 'Новая запись в блог'
@@ -36,6 +36,11 @@ actionCreate = (next) ->
   yield next
 
 actionEdit = (next) ->
+  {user} = @req
+
+  unless user? or user?.role < 3
+    throw new ForbiddenException "Unauthorized access to #{@url}"
+
   yield next
 
 actionSave = (next) ->
@@ -45,13 +50,18 @@ actionDelete = (next) ->
   yield next
 
 actionRead = (next) ->
+  oPost = yield blog.getPostById @params.postId
+  @render 'blog/post',
+    title: oPost.title
+    post: oPost
+
   yield next
 
 module.exports = (route) ->
   route '/blog/tag/:tagName'
     .get actionTag
 
-  route '/blog/read/:postId'
+  route '/blog/post/:postId'
     .get actionRead
 
   route '/blog/new'

@@ -10,6 +10,7 @@ mailer = require '../core/mail/mailer'
 model = require '../core/database'
 user = model 'user', require '../core/database/schemas/user'
 contacts = model 'contacts', require '../core/database/schemas/contacts'
+validationHelper = require '../core/helpers/validation-helper'
 redis = do redis.createClient
 
 ForbiddenException = require '../core/errors/Forbidden'
@@ -18,9 +19,9 @@ NotFoundException = require '../core/errors/NotFound'
 {info} = require '../core/logger'
 
 # Associate contacts with users
-user.hasOne contacts,
-  foreignKey: 'userId'
+user.belongsTo contacts,
   as: 'contacts'
+  foreignKey: 'userId'
 
 ###
 # Expiry period for confirmation link
@@ -112,7 +113,7 @@ class User
     yield oUserData.get plain: yes
 
   signup: (sLogin, sEmail, sPass, sRepass) ->
-    # unless sPass is sRepass
+    # unless sPass is sRepass and validationHelper.isValidPassword sPass
     #   throw new UnauthorizedException ""
 
     oUserData = yield user.create

@@ -1,12 +1,14 @@
 'use strict'
 
 {database} = require '../helpers/configure-helper'
+{info} = require '../logger'
 
 Sequelize = require 'sequelize'
 sequelize = new Sequelize database.name, database.user, database.pass,
   dialect: database.driver
   host: database.host
   port: database.port
+  logging: info
 
 oTypes =
   STRING: Sequelize.STRING
