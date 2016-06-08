@@ -48,7 +48,6 @@
     "redis": "^2.6.0",
     "require-dir": "^0.3.0",
     "sequelize": "^3.20.0",
-    "serve-favicon": "^2.3.0",
     "then-redis": "^2.0.1",
     "thunkify": "^2.1.2",
     "uuid": "^2.0.2",
@@ -85,5 +84,8 @@
     "vue-hot-reload-api": "^1.3.2",
     "vueify": "^8.3.6",
     "vueify-insert-css": "^1.0.0"
+  },
+  "optionalDependencies": {
+    "pg": "^5.0.0"
   }
 }
