@@ -5,6 +5,7 @@ passport = require 'koa-passport'
 
 i18n = require '../core/i18n'
 user = new User = require '../model/User'
+{app: {enableSignup}} = require '../core/helpers/configure-helper'
 
 NotFoundException = require '../core/errors/NotFound'
 ForbiddenException = require '../core/errors/Forbidden'
@@ -47,6 +48,9 @@ actionSignin = (next) ->
 # GET /auth/signup
 ###
 actionRegister = (next) ->
+  unless enableSignup
+    return @render 'auth/signup-disabled'
+
   if do @isAuthenticated
     return @redirect '/'
 
@@ -63,6 +67,9 @@ actionRegister = (next) ->
 # POST /auth/signup
 ###
 actionSignup = (next) ->
+  unless enableSignup
+    throw new ForbiddenException "Unauthorized access to registration form."
+
   {login, email, pass, repass} = @request.body
 
   yield user.signup login, email, pass, repass

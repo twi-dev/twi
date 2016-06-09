@@ -11,6 +11,7 @@ controller = require './controller'
 view = require './view'
 oConfig = require '../helpers/configure-helper'
 errorHandler = require '../errors/error-handler'
+outdated = require '../middlewares/outdated'
 
 {ok, info, logger}  = require '../logger'
 {readFileSync, realpathSync} = require 'fs'
@@ -25,6 +26,8 @@ app.use errorHandler
 app.use serve realpathSync "#{__dirname}/../../themes/#{theme}/public"
 
 app.use logger
+
+app.use outdated
 
 # Bodyparser
 app.use do bodyparser

@@ -32,7 +32,7 @@ jeet = require 'jeet'
 rupture = require 'rupture'
 
 {app: {theme}} = require './core/helpers/configure-helper'
-theme or= 'eri'
+theme or= 'twi'
 
 # Theme path
 THEME_PATH = "#{__dirname}/themes/#{theme}"
