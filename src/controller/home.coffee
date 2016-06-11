@@ -78,7 +78,7 @@ module.exports = (route) ->
   route '/rules'
     .get actionRules
 
-  route '/badbrowser'
+  route '/outdated'
     .get actionOutdated
 
   return

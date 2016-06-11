@@ -60,5 +60,14 @@ smtp:
   pass: null
 
 # List of supported browsers and their major version
-# See: https://github.com/ai/browserslist
-browsers: last 5 versions, not ie <= 11, not ie_mob <= 11, not safari < 9
+browsers:
+  # Desktop
+  chrome: 42
+  firefox: 30
+  opera: 30
+  safari: 9
+
+  # Mobile
+  chromeMobile: 40
+  firefoxMobile: 40
+  mobileSafari: 5

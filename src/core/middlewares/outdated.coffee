@@ -1,10 +1,11 @@
 'use strict'
 
-list = require 'browserslist'
+camelcase = require 'camelcase'
 ua = require 'useragent'
 {isEmpty} = require 'lodash'
 {browsers} = require '../helpers/configure-helper'
-aSupported = list browsers
+__toLowerCase = String::toLowerCase
+oSupported = browsers
 
 ###
 # Checking user agent major version
@@ -17,14 +18,9 @@ isOutdated = (oUserAgent) ->
 outdated = (next) ->
   {family, major} = oAgent = ua.parse @headers['user-agent']
 
-  # console.log oAgent
-  # console.log aSupported
-
-  # unless
-  unless "#{do family.toLowerCase} #{major}" in aSupported
-    # @render 'errors/outdated'
-    @body = 'You are using an outdated browser'
-    return
+  __ver = oSupported[camelcase __toLowerCase.call family]
+  unless __ver? and __ver <= major
+    return @render 'errors/outdated'
 
   yield next
 

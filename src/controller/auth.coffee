@@ -48,8 +48,10 @@ actionSignin = (next) ->
 # GET /auth/signup
 ###
 actionRegister = (next) ->
+  {inviteHash} = @params
   unless enableSignup
-    return @render 'auth/signup-disabled'
+    return @render 'auth/signup-disabled',
+      title: 'Регистрация временно недоступна'
 
   if do @isAuthenticated
     return @redirect '/'
@@ -77,6 +79,13 @@ actionSignup = (next) ->
   @redirect @query.return or '/'
 
   yield next
+
+# actionInvite = (next) ->
+#   {inviteHash} = @params
+
+#   console.log inviteCode
+
+#   yield next
 
 ###
 # Confirm account via email
@@ -112,9 +121,12 @@ module.exports = (route) ->
     .get actionLogin
     .post passport.authenticate('local'), actionSignin
 
-  route '/auth/signup'
+  route '/auth/signup/:inviteHash'
     .get actionRegister
     .post actionSignup
+
+  # route '/auth/invite/:inviteHash?'
+  #   .get actionInvite
 
   # Confirmation link
   route '/auth/confirm/:confirmationHash'
