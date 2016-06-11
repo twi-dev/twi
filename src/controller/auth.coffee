@@ -121,7 +121,7 @@ module.exports = (route) ->
     .get actionLogin
     .post passport.authenticate('local'), actionSignin
 
-  route '/auth/signup/:inviteHash'
+  route '/auth/signup/:inviteHash?'
     .get actionRegister
     .post actionSignup
 

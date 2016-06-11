@@ -25,9 +25,9 @@ nav#nav-menu.nav-menu-container
     //- If unauthorized
     a.nav-link(href="/auth/signin?return=" + __return || '/')
       .nav-icn.fl
-        include ../../public/img/layout/add-person.svg
+        include ../../public/img/layout/lock.svg
       .nav-link-label.fl= t('user.nav.login')
     a.nav-link(href="/auth/signup?return=" + __return || '/')
       .nav-icn.fl
-        include ../../public/img/layout/lock.svg
+        include ../../public/img/layout/add-person.svg
       .nav-link-label.fl= t('user.title.signup')
