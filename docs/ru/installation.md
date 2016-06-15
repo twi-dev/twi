@@ -5,7 +5,7 @@ Redis, Node.js, IcedCoffeeScript, Gulp и Bower.
 
 1. Скачайте архив с Twi,
   либо клонируйте репозиторий при помощи команды
-  `git clone https://github.com/octet-stream/twi.git /your/local/path/to/ponyfiction-js/`
+  `git clone https://github.com/octet-stream/twi.git /your/local/path/to/twi/`
 2. Перейдите в папку с проектом `cd /your/local/path/to/twi`
 3. Запустите установщик командой `npm run start`
   * Опционально: Команда `npm run start` установит и запустит Twi.

@@ -57,7 +57,9 @@ actionRules = (next) ->
   yield next
 
 actionOutdated = (next) ->
-  @body = 'You\'re using an outdated browser.'
+  @render 'errors/outdated',
+    title: 'You are using an outdated browser'
+
   yield next
 
 module.exports = (route) ->

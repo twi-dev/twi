@@ -49,6 +49,7 @@
     "redis": "^2.6.0",
     "require-dir": "^0.3.0",
     "sequelize": "^3.20.0",
+    "snake-case": "^2.1.0",
     "then-redis": "^2.0.1",
     "thunkify": "^2.1.2",
     "useragent": "^2.1.9",

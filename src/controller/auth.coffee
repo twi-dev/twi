@@ -69,6 +69,7 @@ actionRegister = (next) ->
 # POST /auth/signup
 ###
 actionSignup = (next) ->
+  {inviteHash} = @params
   unless enableSignup
     throw new ForbiddenException "Unauthorized access to registration form."
 

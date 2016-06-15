@@ -1,5 +1,6 @@
 'use strict'
 
+snakecase = require 'snake-case'
 {database} = require '../helpers/configure-helper'
 {info} = require '../logger'
 
@@ -9,6 +10,8 @@ sequelize = new Sequelize database.name, database.user, database.pass,
   host: database.host
   port: database.port
   logging: info
+  define:
+    underscored: yes
 
 oTypes =
   STRING: Sequelize.STRING
@@ -41,8 +44,9 @@ oTypes =
 
 init = (sName, schema, oOptions = {}) ->
   oOptions.timestamps or= off
+  oOptions.underscored = yes
 
-  return sequelize.define "#{database.prefix}#{sName}",
+  return sequelize.define snakecase("#{database.prefix}#{sName}"),
     schema(oTypes),
     oOptions
 

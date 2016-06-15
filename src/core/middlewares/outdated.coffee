@@ -5,7 +5,6 @@ ua = require 'useragent'
 {isEmpty} = require 'lodash'
 {browsers} = require '../helpers/configure-helper'
 __toLowerCase = String::toLowerCase
-oSupported = browsers
 
 ###
 # Checking user agent major version
@@ -18,7 +17,7 @@ isOutdated = (oUserAgent) ->
 outdated = (next) ->
   {family, major} = oAgent = ua.parse @headers['user-agent']
 
-  __ver = oSupported[camelcase __toLowerCase.call family]
+  __ver = browsers[camelcase __toLowerCase.call family]
   unless __ver? and __ver <= major
     return @render 'errors/outdated'
 

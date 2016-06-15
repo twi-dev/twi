@@ -24,8 +24,8 @@ fs = require('fs');
 dirname = require('path').dirname;
 
 // Variables
-var aLabels;
-aLabels = [
+// var aLabels;
+const aLabels = [
   COLOR_DEF + 'log' + COLOR_DEF,
   COLOR_GEEN + 'ok' + COLOR_DEF,
   COLOR_CYAN + 'info' + COLOR_DEF,
@@ -35,7 +35,7 @@ aLabels = [
 
 oConfigPhrases = {
   app: {
-    name: "Name for your blog",
+    name: "Name for your library",
     host: "Host",
     port: "Port",
   },
@@ -54,9 +54,9 @@ oConfigPhrases = {
 var configure, setUserConfig, question, write, writeErr, log, logLine,
 installDependencies, buildBackand, buildFrontend;
 
-write = (str) => process.stdout.write(str);
+write = str => process.stdout.write(str);
 
-writeErr = (err) => process.stderr.write(err);
+writeErr = err => process.stderr.write(err);
 
 log = (message, lvl) => {
   lvl = lvl || 0;
@@ -239,7 +239,7 @@ configure = () => {
     );
     process.exit(0);
   })
-  .catch((err) => {
+  .catch(err => {
     logLine(err, LOG_ERR);
     logLine(err.stack, LOG_ERR);
     process.exit(1);
