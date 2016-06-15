@@ -97,7 +97,7 @@ createSuperUser = () => {
       sUsername = question('Your login: ');
 
       // Checking login
-      if (validationHelper.isLogin(sUsername)) break;
+      if (validationHelper.isValidLogin(sUsername)) break;
 
       logger.warn(
         'Username may contain only letters, digits, underscores and dots.'
