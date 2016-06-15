@@ -46,10 +46,6 @@ warn = (sMessage) -> log sMessage, LOG_WARN
 
 err = (sMessage) -> log sMessage, LOG_ERR
 
-logger = (next) ->
-  normal "#{@method} #{@url}"
-  yield next
-
 module.exports = log
 module.exports.log = log
 module.exports.normal = normal
@@ -57,4 +53,3 @@ module.exports.ok = ok
 module.exports.info = info
 module.exports.warn = warn
 module.exports.err = err
-module.exports.logger = logger

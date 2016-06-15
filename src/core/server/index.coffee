@@ -12,13 +12,16 @@ view = require './view'
 oConfig = require '../helpers/configure-helper'
 errorHandler = require '../errors/error-handler'
 outdated = require '../middlewares/outdated'
+logger = require '../middlewares/logger'
 
-{ok, info, logger}  = require '../logger'
+{ok, info, normal}  = require '../logger'
 {readFileSync, realpathSync} = require 'fs'
-{app: {name, port, theme, lang}, session} = oConfig
+{app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
 
 app = do koa
 app.keys = [session.secret]
+
+normal 'Init Twi middlewares'
 
 # Set error handler
 app.use errorHandler
@@ -56,6 +59,10 @@ controller app
 
 # Set view engine
 view app, debug: off
+
+normal "
+  Run Twi server for #{process.env.NODE_ENV or 'development'} environment
+"
 
 # Run server
 do ->

@@ -2,7 +2,11 @@
 {merge} = require 'lodash'
 {realpathSync} = require 'fs'
 
+# Config cache
 oConfig = null
+
+setEnv = (env = 'development') ->
+  if env in ['pro', 'prod', 'production'] then 'production' else 'development'
 
 configure = ->
   CONFIGS_ROOT = realpathSync "#{__dirname}/../../configs"
@@ -15,6 +19,17 @@ configure = ->
     __oUserConfig = {}
 
   __oDefaultConfig = readSync "#{CONFIGS_ROOT}/default"
-  return merge __oDefaultConfig, __oUserConfig
+  oConfig = merge __oDefaultConfig, __oUserConfig
 
-module.exports = oConfig or= do configure
+  # Set read-only property IS_DEVEL
+  Object.defineProperty oConfig, 'IS_DEVEL',
+    value: do ->
+      NODE_ENV = process.env.NODE_ENV or= setEnv oConfig.app.env
+      unless NODE_ENV is 'production' then yes else no
+    writable: no
+    enumerable: yes
+    configurable: no
+
+  return oConfig
+
+module.exports = oConfig or do configure

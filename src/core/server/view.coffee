@@ -6,14 +6,14 @@
 
 # {readFile} = require 'co-fs'
 {realpathSync, readFileSync} = require 'fs'
-{app: {name, credits, theme}} = require '../helpers/configure-helper'
+{app: {name, credits, theme}, IS_DEVEL} = require '../helpers/configure-helper'
 {version, codename} = require '../../package.json'
 {t} = require '../i18n'
 
 theme or= 'twi'
 VIEWS = realpathSync "#{__dirname}/../../themes/#{theme}/views"
 {NODE_ENV} = process.env
-bIsDevel = unless NODE_ENV is 'production' then yes else no
+# bIsDevel = unless NODE_ENV is 'production' then yes else no
 
 oConfig = null
 
@@ -22,8 +22,8 @@ oCache = {}
 
 oDefaults =
   views: VIEWS
-  debug: bIsDevel
-  cache: not bIsDevel
+  debug: IS_DEVEL
+  cache: not IS_DEVEL
 
 oLocals =
   name: name
