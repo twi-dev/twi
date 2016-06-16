@@ -64,42 +64,27 @@ post.belongsTo user,
 # # .then (oData) -> console.log oData
 # .catch (err) -> console.log err
 
-class Blog
-  _getTag: (oOptions) ->
-    yield tag.findOne oOptions
-
-  getPostById: (sId) ->
-    oPostData = yield post.findOne
-      include: [
-        model: user
-        as: 'user'
-        attributes: [
-          'login'
-        ]
+###
+# Get tag his name
+#
+# @param string sName
+#
+# @yield object
+###
+getTagByName = (sName) ->
+  oTagData = yield tag.findOne
+    attributes:
+      exclude: [
+        'tagId'
       ]
-      where:
-        postId: sId
+    where:
+      name: unescape sName # I'm not sure is that secure
 
-    unless oPostData?
-      throw new NotFoundException "Post is not found."
+  unless oTagData?
+    throw new NotFoundException "Tag \"#{sName}\" is not found."
 
-    oPostData = oPostData.get plain: yes
-    oPostData.content = md.render oPostData.content
+  yield oTagData.get plain: yes
 
-    yield oPostData
-
-  getTagByName: (sName) ->
-    oTagData = yield @_getTag
-      attributes:
-        exclude: [
-          'tagId'
-        ]
-      where:
-        name: sName
-
-    unless oTagData?
-      throw new NotFoundException "Tag \"#{sName}\" is not found."
-
-    yield oTagData.get plain: yes
-
-module.exports = new Blog
+# module.exports = new Blog
+module.exports =
+  getTagByName: getTagByName

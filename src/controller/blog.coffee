@@ -8,7 +8,7 @@ NotFoundException = require '../core/errors/NotFound'
 actionTag = (next) ->
   {tagName} = @params
 
-  oTag = yield blog.getTagByName unescape tagName # I'm not sure is that secure
+  oTag = yield blog.getTagByName tagName
 
   @render 'blog/tag',
     title: "Поиск по тегу #{oTag?.name}"
@@ -50,10 +50,14 @@ actionDelete = (next) ->
   yield next
 
 actionRead = (next) ->
-  oPost = yield blog.getPostById @params.postId
-  @render 'blog/post',
-    title: oPost.title
-    post: oPost
+  # oPost = yield blog.getPostById @params.postId
+  # @render 'blog/post',
+  #   title: oPost.title
+  #   post: oPost
+
+  # TODO: Don't forget to add NotImplementedException class
+  # for same specific exceptions.
+  throw new NotFoundException "Posts is not implemented right now."
 
   yield next
 
