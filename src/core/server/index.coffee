@@ -10,7 +10,7 @@ passport = require 'koa-passport'
 controller = require './controller'
 view = require './view'
 oConfig = require '../helpers/configure-helper'
-errorHandler = require '../errors/error-handler'
+errorHandler = require '../middlewares/error-handler'
 outdated = require '../middlewares/outdated'
 logger = require '../middlewares/logger'
 
