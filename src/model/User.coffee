@@ -20,9 +20,8 @@ NotFoundException = require '../core/errors/NotFound'
 {isEmail} = validationHelper
 
 # Associate contacts with users
-user.belongsTo contacts,
-  as: 'contacts'
-  foreignKey: 'userId'
+contacts.hasOne user, foreignKey: 'contacts_id'
+user.belongsTo contacts, foreignKey: 'contacts_id'
 
 # Authenticate user by login/email and pass
 _authenticate = (sUsername, sPass) ->
@@ -107,6 +106,7 @@ class User
     oUserData = yield @_getUser
       attributes:
         exclude: [
+          'contactsId'
           'userId'
           'email'
           'password'
@@ -114,7 +114,6 @@ class User
         ]
       include: [
         model: contacts
-        as: 'contacts'
         attributes:
           exclude: [
             'contactsId'

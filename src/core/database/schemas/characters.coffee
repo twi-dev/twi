@@ -2,13 +2,15 @@
 
 module.exports = (oTypes) ->
   characterId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     primaryKey: yes
+    defaultValue: oTypes.UUIDV1
     allowNull: no
-    autoIncrement: on
+    field: 'character_id'
   groupId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     allowNull: no
+    field: 'group_id'
   name:
     type: oTypes.STRING
     allowNull: no

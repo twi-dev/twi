@@ -2,13 +2,15 @@
 
 module.exports = (oTypes) ->
   id:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     primaryKey: yes
-    autoIncrement: on
+    defaultValue: oTypes.UUIDV1
     allowNull: no
   postId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     allowNull: no
+    field: 'post_id'
   tagId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     allowNull: no
+    field: 'tag_id'

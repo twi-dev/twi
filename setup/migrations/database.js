@@ -43,7 +43,7 @@ loadSchemas = bIsForce => {
 /**
  * Importing data
  */
-importData = sPrefix => {
+importData = () => {
   return new Promise((_res, _rej) => {
     var oDataArrays, oModelsStructure, aModelsPromise;
 

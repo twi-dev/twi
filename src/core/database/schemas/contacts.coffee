@@ -2,9 +2,11 @@
 
 module.exports = (oTypes) ->
   contactsId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     primaryKey: yes
-    autoIncrement: on
+    defaultValue: oTypes.UUIDV1
+    allowNull: no
+    field: 'contacts_id'
   email:
     type: oTypes.STRING
     allowNull: yes

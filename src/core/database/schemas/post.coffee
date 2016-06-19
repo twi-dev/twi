@@ -2,13 +2,15 @@
 
 module.exports = (oTypes) ->
   postId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     primaryKey: yes
+    defaultValue: oTypes.UUIDV1
     allowNull: no
-    autoIncrement: on
+    field: 'post_id'
   userId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     allowNull: no
+    field: 'user_id'
   title:
     type: oTypes.STRING
     allowNull: no
@@ -19,7 +21,9 @@ module.exports = (oTypes) ->
     type: oTypes.DATE
     allowNull: no
     defaultValue: oTypes.NOW
+    field: 'created_at'
   updatedAt:
     type: oTypes.DATE
     allowNull: yes
     defaultValue: null
+    field: 'updated_at'

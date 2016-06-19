@@ -2,10 +2,16 @@
 
 module.exports = (oTypes) ->
   userId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
+    defaultValue: oTypes.UUIDV1
     primaryKey: yes
     allowNull: no
-    autoIncrement: on
+    field: 'user_id'
+  contactsId:
+    type: oTypes.UUID
+    unique: yes
+    allowNull: no
+    field: 'contacts_id'
   login:
     type: oTypes.STRING 32
     unique: yes
@@ -34,9 +40,11 @@ module.exports = (oTypes) ->
     type: oTypes.DATE
     allowNull: no
     defaultValue: oTypes.NOW
+    field: 'registered_at'
   lastVisit:
     type: oTypes.DATE
     allowNull: yes
+    field: 'last_visit'
   role:
     type: oTypes.INTEGER 1
     allowNull: no
@@ -45,7 +53,3 @@ module.exports = (oTypes) ->
     type: oTypes.INTEGER 1
     allowNull: no
     defaultValue: 0 # Inactive by default
-  contactsId:
-    type: oTypes.INTEGER
-    unique: yes
-    allowNull: no

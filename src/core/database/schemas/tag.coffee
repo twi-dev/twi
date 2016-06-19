@@ -2,10 +2,11 @@
 
 module.exports = (oTypes) ->
   tagId:
-    type: oTypes.INTEGER
+    type: oTypes.UUID
     primaryKey: yes
+    defaultValue: oTypes.UUIDV1
     allowNull: no
-    autoIncrement: on
+    field: 'tag_id'
   name:
     type: oTypes.STRING
     allowNull: no
