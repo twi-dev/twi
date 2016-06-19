@@ -1,4 +1,3 @@
-HttpException = require '../errors/HttpException'
 {warn, err} = require '../logger'
 
 errorHandler = (next) ->

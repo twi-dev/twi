@@ -17,11 +17,29 @@ ForbiddenException = require '../core/errors/Forbidden'
 NotFoundException = require '../core/errors/NotFound'
 
 {info} = require '../core/logger'
+{isEmail} = validationHelper
 
 # Associate contacts with users
 user.belongsTo contacts,
   as: 'contacts'
   foreignKey: 'userId'
+
+# Authenticate user by login/email and pass
+_authenticate = (sUsername, sPass) ->
+  oOptions =
+    attributes: [
+      'userId'
+      'password'
+    ]
+    where: (if isEmail sUsername then email: sUsername else login: sUsername)
+
+  oUserData = yield user.findOne oOptions
+
+  return null unless oUserData?
+
+  return null unless yield bcrypt.compare sPass, oUserData.password
+
+  return oUserData.userId
 
 ###
 # Expiry period for confirmation link
@@ -143,7 +161,7 @@ class User
 
     return yes
 
-  getAuthenticated: (id, cb) =>
+  getAuthenticated: (id, cb) ->
     user.findOne
       attributes: [
         'userId'
@@ -161,27 +179,10 @@ class User
   #
   # @param string sUsername
   # @param string sPass
-  #
-  # Notice: "=>" because this function used for passport.js in LocalStrategy.
   ###
-  auth: (sUsername, sPass, cb) =>
-    user.findOne
-      attributes: [
-        'userId'
-        'password'
-      ]
-      where:
-        login: sUsername
-    .then (oUserData) ->
-      {password, userId} = oUserData.get plain: yes
-      co ->
-        try
-          unless yield bcrypt.compare sPass, password
-            return cb null, no
-
-          cb null, userId
-        catch err
-          Promise.reject err
-    .catch (err) -> cb err
+  signin: (sUsername, sPass, cb) ->
+    co _authenticate sUsername, sPass
+      .then (userId) -> if userId? then cb null, userId else cb null, no
+      .catch (err) -> cb err
 
 module.exports = User

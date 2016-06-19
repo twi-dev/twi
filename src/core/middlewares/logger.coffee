@@ -1,7 +1,7 @@
 {normal} = require '../logger'
 
-main = (next) ->
+logger = (next) ->
   normal "#{@method} #{@url}"
   yield next
 
-module.exports = main
+module.exports = logger

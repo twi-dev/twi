@@ -16,7 +16,7 @@ passport.deserializeUser user.getAuthenticated
 passport.use new Strategy
   usernameField: 'username'
   passwordField: 'pass',
-  user.auth
+  user.signin
 
 ###
 # Response signin page
@@ -81,13 +81,6 @@ actionSignup = (next) ->
 
   yield next
 
-# actionInvite = (next) ->
-#   {inviteHash} = @params
-
-#   console.log inviteCode
-
-#   yield next
-
 ###
 # Confirm account via email
 #
@@ -125,9 +118,6 @@ module.exports = (route) ->
   route '/auth/signup/:inviteHash?'
     .get actionRegister
     .post actionSignup
-
-  # route '/auth/invite/:inviteHash?'
-  #   .get actionInvite
 
   # Confirmation link
   route '/auth/confirm/:confirmationHash'
