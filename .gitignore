@@ -25,8 +25,8 @@ index.js
 langs/**/api.yml
 src/api
 src/core/api
-src/controller/api.iced
-views/api
+src/controller/api.coffee
+themes/**/views/api
 
 !setup/index.js
 !src/controller

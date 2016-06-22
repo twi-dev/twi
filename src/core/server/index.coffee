@@ -32,8 +32,10 @@ app.use errorHandler
 app.use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
 app.use serve PUBLIC_DIR
 
+# Logger middleware for any requests
 app.use logger
 
+# Filter outdated browsers
 app.use outdated
 
 # Bodyparser
@@ -45,6 +47,7 @@ app.use sess
   prefix: session.prefix
   key: "#{session.prefix}#{session.sessidName}"
 
+# Csrf tokens
 csrf app
 app.use csrf.middleware
 

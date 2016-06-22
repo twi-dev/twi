@@ -1,0 +1,16 @@
+extends ../layout
+
+block title
+  = t('errors.http.notFound.title')
+
+block codeOnTopStyle
+  .err-page-not-found= code
+
+block image
+  img(
+    src="/img/errors/404.svg",
+    alt="" + t('errors.http.notFound.title')
+  )
+
+block message
+  = t('errors.http.notFound.message')

@@ -4,13 +4,12 @@ errorHandler = (next) ->
   try
     yield next
   catch e
-    {stack, status, props} = e
+    {stack, status, properties} = e
 
     err stack
 
     status ?= 500
-    props or= null
     @status = status
-    @render "errors/#{status}", code: status, props: props
+    @render "errors/http/#{status}", code: status, props: properties or null
 
 module.exports = errorHandler

@@ -23,30 +23,32 @@ html(lang="en")
     link(rel="icon", type="image/png", href="/img/icns/chrome/chrome-ponyfiction-js-192.png", sizes="192x192")
     link(rel="mask-icon", href="/img/icns/safari-pinned-tab.svg", color="#653089")
     link(rel="manifest", href="/manifest.json")
-    link(rel="stylesheet", href="/assets/css/http-error.css")
+    block styl
+      link(rel="stylesheet", href="/assets/css/http-error.css")
     title
       block title
-        = t('ponyfiction.httpErrors.internalServerError.title')
+        = t('errors.http.internalServerError.title')
   body
-    .err-page-main-container
-      .err-page-message-container
-        block codeOnTop
-          .err-page-code.err-code-on-top
-            block codeOnTopStyle
-              = code
-        .err-page-image
-          block image
-            img(
-              src="/img/errors/500.svg",
-              alt="" + t('ponyfiction.httpErrors.internalServerError.title')
-            )
-        .err-page-message-content
-          block message
-            = t('ponyfiction.httpErrors.internalServerError.message')
-        if code < 500
-          .err-page-home-link
-            a.button.flat-button(href="/")
-              block linkTextStyle
-                = t('ponyfiction.httpErrors.homeLinkLabel')
+    block content
+      .err-page-main-container
+        .err-page-message-container
+          block codeOnTop
+            .err-page-code.err-code-on-top
+              block codeOnTopStyle
+                = code
+          .err-page-image
+            block image
+              img(
+                src="/img/errors/500.svg",
+                alt="" + t('errors.http.internalServerError.title')
+              )
+          .err-page-message-content
+            block message
+              = t('errors.http.internalServerError.message')
+          if code < 500
+            .err-page-home-link
+              a.button.flat-button(href="/")
+                block linkTextStyle
+                  = t('errors.http.homeLinkLabel')
 
     link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic')
