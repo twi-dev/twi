@@ -10,14 +10,13 @@ mailer = require '../core/mail/mailer'
 model = require '../core/database'
 user = model 'user', require '../core/database/schemas/user'
 contacts = model 'contacts', require '../core/database/schemas/contacts'
-validationHelper = require '../core/helpers/validation-helper'
-redis = do redis.createClient
+{isEmail, isValidPassword} = require '../core/helpers/validation-helper'
 
 ForbiddenException = require '../core/errors/Forbidden'
 NotFoundException = require '../core/errors/NotFound'
 
+redis = do redis.createClient
 {info} = require '../core/logger'
-{isEmail} = validationHelper
 
 # Associate contacts with users
 contacts.hasOne user, foreignKey: 'contacts_id'
@@ -130,7 +129,7 @@ class User
     yield oUserData.get plain: yes
 
   signup: (sLogin, sEmail, sPass, sRepass) ->
-    # unless sPass is sRepass and validationHelper.isValidPassword sPass
+    # unless sPass is sRepass and isValidPassword sPass
     #   throw new UnauthorizedException ""
 
     oUserData = yield user.create

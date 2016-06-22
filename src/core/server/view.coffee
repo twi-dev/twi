@@ -48,7 +48,7 @@ renderer = (sFilename, oOptions) ->
 
   @body = fn assign merge({
     user: @req.user
-    __return: @redirectUrl ? '/'
+    __return: @url
   }, oOptions), oLocals
 
 init = (app, oCustom = {}) ->

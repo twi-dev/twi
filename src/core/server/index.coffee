@@ -2,6 +2,7 @@
 
 koa = require 'koa'
 serve = require 'koa-static'
+favicon = require 'koa-favicon'
 bodyparser = require 'koa-bodyparser'
 sess = require 'koa-generic-session'
 redisStore = require 'koa-redis'
@@ -18,6 +19,7 @@ logger = require '../middlewares/logger'
 {readFileSync, realpathSync} = require 'fs'
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
 
+PUBLIC_DIR = realpathSync "#{__dirname}/../../themes/#{theme}/public"
 app = do koa
 app.keys = [session.secret]
 
@@ -26,7 +28,9 @@ normal 'Init Twi middlewares'
 # Set error handler
 app.use errorHandler
 
-app.use serve realpathSync "#{__dirname}/../../themes/#{theme}/public"
+# Serve favicon and static files
+app.use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
+app.use serve PUBLIC_DIR
 
 app.use logger
 
@@ -48,11 +52,6 @@ app.use csrf.middleware
 app
   .use do passport.initialize
   .use do passport.session
-
-# Just add a redirectUrl
-app.use (next) ->
-  @redirectUrl = @url
-  yield next
 
 # Set controllers
 controller app

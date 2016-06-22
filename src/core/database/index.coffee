@@ -40,7 +40,7 @@ oTypes =
   GEOMETRY: Sequelize.GEOMETRY
   GEOGRAPHY: Sequelize.GEOGRAPHY
 
-init = (sName, schema, oOptions = {}) ->
+main = (sName, schema, oOptions = {}) ->
   oOptions.timestamps or= off
   oOptions.underscored = yes
 
@@ -48,4 +48,4 @@ init = (sName, schema, oOptions = {}) ->
     schema(oTypes),
     oOptions
 
-module.exports = init
+module.exports = main
