@@ -13,10 +13,10 @@ block content
           form#auth(action="/auth/signin?return=" + __return, method="post")
             .input-container
               input.form-input.auth-input(type="text", name="username", placeholder, required)
-              .input-label Логин
+              .input-label= t('auth.form.label.username')
             .input-container
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
-              .input-label Пароль
+              .input-label= t('auth.form.label.pass')
             input(type="hidden", name="_csrf", value="" + __csrf)
-            button#auth-button.button.button-raised.button-auth.fl(type="submit") Войти
-            a.auth-restore-link.fr(href="/auth/restore") Забыли пароль?
+            button#auth-button.button.button-raised.button-auth.fl(type="submit")= t('auth.form.signin')
+            a.auth-restore-link.fr(href="/auth/restore")= t('auth.form.restore')

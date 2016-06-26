@@ -3,7 +3,7 @@
 passport = require 'koa-passport'
 {Strategy} = require 'passport-local'
 
-i18n = require '../core/i18n'
+{t} = i18n = require '../core/i18n'
 user = new User = require '../model/User'
 {app: {enableSignup}} = require '../core/helpers/configure-helper'
 
@@ -28,7 +28,7 @@ actionLogin = (next) ->
     return @redirect '/'
 
   @render 'auth/signin',
-    title: i18n.t 'user.title.signin'
+    title: t 'auth.title.signin'
     __csrf: @csrf
     __return: @query.return or '/'
 
@@ -51,13 +51,13 @@ actionRegister = (next) ->
   {inviteHash} = @params
   unless enableSignup
     return @render 'auth/signup-disabled',
-      title: 'Регистрация временно недоступна'
+      title: t 'auth.title.inviteOnly'
 
   if do @isAuthenticated
     return @redirect '/'
 
   @render 'auth/signup',
-    title: i18n.t 'user.title.signup'
+    title: t 'user.title.signup'
     __csrf: @csrf
     __return: @query.return or '/'
 
@@ -91,11 +91,11 @@ actionConfirm = (next) ->
 
   unless yield user.activate confirmationHash
     @render 'auth/confirm-fail',
-      title: 'Ошибка при подтверждении адреса электронной почты'
+      title: t 'auth.title.confirm.fail'
     return
 
   @render 'auth/confirm-success',
-    title: 'Регистрация успешно завершена'
+    title: t 'auth.title.confirm.success'
 
   yield next
 

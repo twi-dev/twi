@@ -1,7 +1,18 @@
 extends layout
 
+block styl
+  link(rel="stylesheet", href="/assets/css/outdated.css")
+
 block title
-  | You are using an outdated browser
+  = t('errors.outdated.title')
 
 block content
-  | You are using an outdated browser.
+  .outdated-main-container
+    .outdated-container
+      .outdated-content-message!= t('errors.outdated.message')
+      .outdated-content-suggestion= t('errors.outdated.suggestion')
+      .featured-browsers
+        a.featured-browser.fl(href="//chrome.google.com/", style="background: transparent url('/img/browsers/chrome.png') no-repeat center 0", target="_blank") Google Chrome
+        a.featured-browser.fl(href="//www.mozilla.org/en-US/firefox/new/", style="background: transparent url('/img/browsers/firefox.png') no-repeat center 0", target="_blank") Firefox
+        a.featured-browser.fl(href="//opera.com/", style="background: transparent url('/img/browsers/opera.png') no-repeat center 0", target="_blank") Opera
+        a.featured-browser.fl(href="//maxthon.com/", style="background: transparent url('/img/browsers/maxthon.png') no-repeat center 0", target="_blank") Maxthon
