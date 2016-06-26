@@ -10,13 +10,21 @@ actionIndex = (next) ->
   yield next
 
 ###
+# GET
+###
+actionStory = (next) ->
+  @body = 'Story summary'
+
+  yield next
+
+###
 # Read story with given id
 # 
-# GET /story/read/:storyId/:chapter?
+# GET /story/read/:slug/:chapter?
 ###
 actionRead = (next) ->
   @render 'stories/read',
-    title: '<Story title>'
+    title: 'Story title'
 
   yield next
 
@@ -42,7 +50,7 @@ actionSend = (next) ->
 ###
 # Response Edit Story page
 #
-# GET /story/edit/:storyId
+# GET /story/edit/:slug
 ###
 actionEdit = (next) ->
   @render 'stories/edit',
@@ -53,7 +61,7 @@ actionEdit = (next) ->
 ###
 # Save changes for story with given id
 # 
-# PUT /story/edit/:storyId
+# PUT /story/edit/:slug
 ###
 actionSave = (next) ->
   yield next
@@ -64,29 +72,30 @@ actionSave = (next) ->
 actionDelete = (next) ->
   yield next
 
-module.exports = (route) ->
+main =  (r) ->
   # List of all stories
-  route '/stories/:page?'
+  r '/stories/:page?'
     .get actionIndex
 
   # Read story with given id
-  route '/story/read/:storyId/:chapter?'
+  r '/story/read/:slug/:chapter?'
     .get actionRead
 
   # Add new story
-  route '/story/new'
+  r '/story/new'
     .get actionNew
     .post actionSend
 
   # Edit story
-  route '/story/edit/:storyId/:chapter?'
+  r '/story/edit/:slug/:chapter?'
     .get actionEdit
     .put actionSave
 
-  # Delete story
+  # Story details/Delete story
   # TODO: Node said something about EventEmitter memory leak on this.
   # I need some research.
-  route '/story/:storyId'
+  r '/story/:slug'
+    .get actionStory
     .delete actionDelete
 
-  return
+module.exports = main

@@ -12,7 +12,6 @@ controller = require './controller'
 view = require './view'
 oConfig = require '../helpers/configure-helper'
 errorHandler = require '../middlewares/error-handler'
-outdated = require '../middlewares/outdated'
 logger = require '../middlewares/logger'
 
 {ok, info, normal}  = require '../logger'
@@ -34,9 +33,6 @@ app.use serve PUBLIC_DIR
 
 # Logger middleware for any requests
 app.use logger
-
-# Filter outdated browsers
-app.use outdated
 
 # Bodyparser
 app.use do bodyparser
