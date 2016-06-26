@@ -7,9 +7,8 @@ block content
       .auth-form-box
         .auth-header
           a(href="/")
-            .auth-header-icon
-              include ../../public/img/layout/ponyfictionjs.svg
-            h2.auth-title= name
+            .auth-header-icon.fl
+            .auth-header-title.fl= name
         .auth-form-content
           form#auth(action="/auth/signup?return=" + __return, method="post")
             .input-container

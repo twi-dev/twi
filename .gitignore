@@ -8,6 +8,8 @@ model
 node_modules
 public/assets
 public/img/**/*.svg
+foo
+bar
 
 themes/**/public/img/**/*.svg
 themes/**/public/assets
@@ -20,6 +22,10 @@ npm-debug.log
 .DS_Store
 index.js
 *.rdb
+*.doc
+*.docx
+*.odf
+*.odt
 
 # Temporarily ignore API things
 langs/**/api.yml

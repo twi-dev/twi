@@ -7,9 +7,8 @@ block content
       .auth-form-box
         .auth-header
           a(href="/")
-            .auth-header-icon
-              include ../../public/img/layout/ponyfictionjs.svg
-            h2.auth-title= name
+            .auth-header-icon.fl
+            .auth-header-title.fl= name
         .auth-form-content
           form#auth(action="/auth/signin?return=" + __return, method="post")
             .input-container
@@ -19,4 +18,5 @@ block content
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
               .input-label Пароль
             input(type="hidden", name="_csrf", value="" + __csrf)
-            button#auth-button.button.button-raised.button-auth(type="submit") Войти
+            button#auth-button.button.button-raised.button-auth.fl(type="submit") Войти
+            a.auth-restore-link.fr(href="/auth/restore") Забыли пароль?

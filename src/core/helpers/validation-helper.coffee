@@ -1,6 +1,6 @@
 'use strict'
 
-isEmail = (sValue = '') ->
+isEmail = (string = '') ->
   ///
     ^[-a-z0-9~!$%^&*_=+}{\'?]+
     (\.[-a-z0-9~!$%^&*_=+}{\'?]+)*
@@ -9,13 +9,14 @@ isEmail = (sValue = '') ->
     int|mil|museum|name|net|org|pro|travel|
     mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}
     \.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$
-  ///i.test sValue
+  ///i.test string
 
-isValidLogin = (sValue = '') -> /^[a-z0-9_\.]+$/i.test sValue
+isValidLogin = (string = '') -> /^[a-z0-9_\.]+$/i.test string
 
-isValidPassword = (sValue = '') -> /^.{8,}$/i.test sValue
+isValidPassword = (string = '') -> /^.{8,}$/i.test string
 
-module.exports =
-  isEmail: isEmail
-  isValidLogin: isValidLogin
-  isValidPassword: isValidPassword
+module.exports = {
+  isEmail
+  isValidLogin
+  isValidPassword
+}
