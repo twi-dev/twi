@@ -1,6 +1,6 @@
 'use strict'
 
-md = new MD = require 'markdown-it'
+md = new (require 'markdown-it')
 moment = require 'moment'
 model = require '../core/database'
 post = model 'post', require '../core/database/schemas/post'
@@ -12,7 +12,6 @@ NotFoundException = require '../core/errors/NotFound'
 ForbiddenException = require '../core/errors/Forbidden'
 
 post.belongsTo user,
-  as: 'user'
   foreignKey: 'userId'
 
 # postTags.belongsTo tag
@@ -86,5 +85,6 @@ getTagByName = (sName) ->
   yield oTagData.get plain: yes
 
 # module.exports = new Blog
-module.exports =
-  getTagByName: getTagByName
+module.exports = {
+  getTagByName
+}
