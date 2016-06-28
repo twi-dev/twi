@@ -277,4 +277,8 @@ module.exports = [
     name: 'Velvet Remedy',
     code: 'velvet_remedy',
   },
+  {
+    name: 'Original Character',
+    code: 'original_character',
+  },
 ];
