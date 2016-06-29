@@ -1,19 +1,19 @@
 'use strict'
 
-module.exports = (oTypes) ->
+module.exports = (types) ->
   characterId:
-    type: oTypes.UUID
+    type: types.UUID
     primaryKey: yes
-    defaultValue: oTypes.UUIDV1
+    defaultValue: types.UUIDV1
     allowNull: no
     field: 'character_id'
   code:
-    type: oTypes.TEXT
+    type: types.TEXT
     allowNull: no
     unique: yes
   name:
-    type: oTypes.STRING
+    type: types.STRING
     allowNull: no
   pic:
-    type: oTypes.STRING
+    type: types.STRING
     allowNull: yes

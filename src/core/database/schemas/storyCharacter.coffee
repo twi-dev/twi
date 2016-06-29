@@ -1,14 +1,16 @@
+'use strict'
+
 module.exports = (types) ->
   id:
     type: types.UUID
-    primaryKey: yes
     defaultValue: types.UUIDV1
+    primaryKey: yes
     allowNull: no
   storyId:
     type: types.UUID
-    unique: yes
+    allowNull: no
     field: 'story_id'
-  markId:
+  characterId:
     type: types.UUID
-    unique: yes
-    field: 'mark_id'
+    allowNull: no
+    field: 'character_id'

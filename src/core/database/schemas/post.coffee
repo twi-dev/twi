@@ -1,29 +1,29 @@
 'use strict'
 
-module.exports = (oTypes) ->
+module.exports = (types) ->
   postId:
-    type: oTypes.UUID
+    type: types.UUID
     primaryKey: yes
-    defaultValue: oTypes.UUIDV1
+    defaultValue: types.UUIDV1
     allowNull: no
     field: 'post_id'
   userId:
-    type: oTypes.UUID
+    type: types.UUID
     allowNull: no
     field: 'user_id'
   title:
-    type: oTypes.STRING
+    type: types.STRING
     allowNull: no
   content:
-    type: oTypes.TEXT
+    type: types.TEXT
     allowNull: no
   createdAt:
-    type: oTypes.DATE
+    type: types.DATE
     allowNull: no
-    defaultValue: oTypes.NOW
+    defaultValue: types.NOW
     field: 'created_at'
   updatedAt:
-    type: oTypes.DATE
+    type: types.DATE
     allowNull: yes
     defaultValue: null
     field: 'updated_at'

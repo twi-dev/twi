@@ -139,7 +139,7 @@ module.exports = [
   },
   {
     name: 'Bulk Biceps',
-    code: 'bulp_biceps',
+    code: 'bulk_biceps',
   },
   {
     name: 'Snowdrop',
@@ -158,7 +158,7 @@ module.exports = [
     code: 'derpy_hooves',
   },
   {
-    name: 'discord',
+    name: 'Discord',
     code: 'discord',
   },
   {

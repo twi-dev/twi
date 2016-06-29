@@ -1,55 +1,55 @@
 'use strict'
 
-module.exports = (oTypes) ->
+module.exports = (types) ->
   userId:
-    type: oTypes.UUID
-    defaultValue: oTypes.UUIDV1
+    type: types.UUID
+    defaultValue: types.UUIDV1
     primaryKey: yes
     allowNull: no
     field: 'user_id'
   contactsId:
-    type: oTypes.UUID
+    type: types.UUID
     unique: yes
     allowNull: no
     field: 'contacts_id'
   login:
-    type: oTypes.STRING 32
+    type: types.STRING 32
     unique: yes
     allowNull: no
   password:
-    type: oTypes.STRING
+    type: types.STRING
     allowNull: no
   email:
-    type: oTypes.STRING
+    type: types.STRING
     unique: yes
     allowNull: no
   firstname:
-    type: oTypes.STRING 36
+    type: types.STRING 36
     allowNull: yes
   lastname:
-    type: oTypes.STRING 40
+    type: types.STRING 40
     allowNull: yes
   gender:
-    type: oTypes.INTEGER 1
+    type: types.INTEGER 1
     allowNull: yes
     defaultValue: null
   about:
-    type: oTypes.TEXT
+    type: types.TEXT
     allowNull: yes
   registeredAt:
-    type: oTypes.DATE
+    type: types.DATE
     allowNull: no
-    defaultValue: oTypes.NOW
+    defaultValue: types.NOW
     field: 'registered_at'
   lastVisit:
-    type: oTypes.DATE
+    type: types.DATE
     allowNull: yes
     field: 'last_visit'
   role:
-    type: oTypes.INTEGER 1
+    type: types.INTEGER 1
     allowNull: no
     defaultValue: 0 # User by default
   status:
-    type: oTypes.INTEGER 1
+    type: types.INTEGER 1
     allowNull: no
     defaultValue: 0 # Inactive by default

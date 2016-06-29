@@ -1,16 +1,16 @@
 'use strict'
 
-module.exports = (oTypes) ->
+module.exports = (types) ->
   tagId:
-    type: oTypes.UUID
+    type: types.UUID
     primaryKey: yes
-    defaultValue: oTypes.UUIDV1
+    defaultValue: types.UUIDV1
     allowNull: no
     field: 'tag_id'
   name:
-    type: oTypes.STRING
+    type: types.STRING
     allowNull: no
   about:
-    type: oTypes.TEXT
+    type: types.TEXT
     allowNull: yes
     defaultValue: null
