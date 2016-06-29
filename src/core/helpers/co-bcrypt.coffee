@@ -1,17 +1,17 @@
 thunk = require 'thunkify'
 bcrypt = require 'bcryptjs'
 
-aMethods = [
+methods = [
   'genSalt'
   'hash'
   'compare'
 ]
 
 # Wrapper
-wrapMethod = (sMethod) ->
-  unless bcrypt[sMethod]
+wrapMethod = (method) ->
+  unless bcrypt[method]
     return
-  exports[sMethod] = thunk bcrypt[sMethod]
+  exports[method] = thunk bcrypt[method]
 
 # Wrap async methods
-aMethods.forEach wrapMethod
+methods.forEach wrapMethod

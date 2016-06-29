@@ -3,7 +3,7 @@
 {realpathSync} = require 'fs'
 
 # Config cache
-oConfig = null
+config = null
 
 setEnv = (env = 'development') ->
   if env in ['pro', 'prod', 'production'] then 'production' else 'development'
@@ -13,23 +13,23 @@ configure = ->
 
   # Trying to read user-config
   try
-    __oUserConfig = readSync "#{CONFIGS_ROOT}/user"
+    __userConfig = readSync "#{CONFIGS_ROOT}/user"
   catch err
     # Set default value if user-config is not exists
-    __oUserConfig = {}
+    __userConfig = {}
 
-  __oDefaultConfig = readSync "#{CONFIGS_ROOT}/default"
-  oConfig = merge __oDefaultConfig, __oUserConfig
+  __defaultConfig = readSync "#{CONFIGS_ROOT}/default"
+  config = merge __defaultConfig, __userConfig
 
   # Set read-only property IS_DEVEL
-  Object.defineProperty oConfig, 'IS_DEVEL',
+  Object.defineProperty config, 'IS_DEVEL',
     value: do ->
-      NODE_ENV = process.env.NODE_ENV or= setEnv oConfig.app.env
+      NODE_ENV = process.env.NODE_ENV or= setEnv config.app.env
       unless NODE_ENV is 'production' then yes else no
     writable: no
     enumerable: yes
     configurable: no
 
-  return oConfig
+  return config
 
-module.exports = oConfig or do configure
+module.exports = config or do configure

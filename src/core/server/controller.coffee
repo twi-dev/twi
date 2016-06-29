@@ -10,14 +10,18 @@ NotFoundException = require '../errors/NotFound'
 NotAllwedException = require '../errors/NotAllowed'
 
 CONTROLLERS = realpathSync "#{__dirname}/../../controller"
-
-# router = new Router # Create Router instance
 router = require 'koa-routing'
 
+###
+# Throwing NotFoundException for unknown routes on GET method
+###
 actionNotFound = (next) ->
   throw new NotFoundException "Page not found on route #{@url}"
   yield next
 
+###
+# Throwing NotAllwedException for unknown methods on any routes
+###
 actionNotAllowed = (next) ->
   throw new NotAllwedException "
     Unknown method #{@method} on route #{@url}
@@ -36,6 +40,7 @@ controller = (app) ->
       warn "Controller \"#{__sName}\" is not a function."
       continue
 
+    # Init routes
     __controller app.route
 
   # Error pages

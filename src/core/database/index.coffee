@@ -11,7 +11,7 @@ sequelize = new Sequelize database.name, database.user, database.pass,
   port: database.port
   logging: info
 
-oTypes =
+types =
   STRING: Sequelize.STRING
   CHAR: Sequelize.CHAR
   TEXT: Sequelize.TEXT
@@ -40,12 +40,12 @@ oTypes =
   GEOMETRY: Sequelize.GEOMETRY
   GEOGRAPHY: Sequelize.GEOGRAPHY
 
-main = (sName, schema, oOptions = {}) ->
-  oOptions.timestamps or= off
-  oOptions.underscored = yes
+main = (name, schema, options = {}) ->
+  options.timestamps or= off
+  options.underscored = yes
 
-  return sequelize.define snakecase("#{sName}"),
-    schema(oTypes),
-    oOptions
+  return sequelize.define snakecase("#{name}"),
+    schema(types),
+    options
 
 module.exports = main
