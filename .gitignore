@@ -24,7 +24,6 @@ index.js
 *.rdb
 *.doc
 *.docx
-*.odf
 *.odt
 
 # Temporarily ignore API things
