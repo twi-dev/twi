@@ -3,7 +3,7 @@
 module.exports = (types) ->
   id:
     type: types.UUID
-    defaultValue: type.UUIDV1
+    defaultValue: types.UUIDV1
     primaryKey: yes
     allowNull: no
   serieId:
@@ -11,7 +11,7 @@ module.exports = (types) ->
     allowNull: no
     field: 'serie_id'
   storyId:
-    types: types.UUID
+    type: types.UUID
     allowNull: no
     field: 'story_id'
   number:

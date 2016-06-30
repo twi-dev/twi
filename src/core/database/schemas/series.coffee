@@ -3,7 +3,7 @@
 module.exports = (types) ->
   serieId:
     type: types.UUID
-    defaultValue: UUIDV1
+    defaultValue: types.UUIDV1
     primaryKey: yes
     notNull: yes
     field: 'serie_id'

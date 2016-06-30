@@ -8,7 +8,7 @@ module.exports = (types) ->
     allowNull: no
     field: 'character_id'
   code:
-    type: types.TEXT
+    type: types.STRING
     allowNull: no
     unique: yes
   name:

@@ -79,7 +79,9 @@ requireDir = (sPath, bRecursive = off) ->
   __ref = {}
 
   aFilename = fs.readdirSync sPath
-  for __sFilename in aFilename
+  for __sFilename in aFilename when __sFilename isnt '.DS_Store'
+    # continue if __sFilename is '.DS_Store'
+    
     __sPath = "#{sPath}#{path.sep}#{__sFilename}"
     unless do fs.statSync(__sPath).isDirectory
       __sExtname = path.extname __sFilename

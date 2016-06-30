@@ -2,113 +2,113 @@
 
 module.exports = [
   {
-    name: 'second_person',
-    title: 'Second Person',
+    code: 'second_person',
+    name: 'Second Person',
     about: null
   },
   {
-    name: 'alternate_universe',
-    title: 'Alternative Universe',
+    code: 'alternate_universe',
+    name: 'Alternative Universe',
     about: null
   },
   {
-    name: 'comedy',
-    title: 'Comedy',
+    code: 'comedy',
+    name: 'Comedy',
     about: null
   },
   {
-    name: 'dark',
-    title: 'Dark',
+    code: 'dark',
+    name: 'Dark',
     about: null
   },
   {
-    name: 'equestria_girls',
-    title: 'Equestria Girls',
+    code: 'equestria_girls',
+    name: 'Equestria Girls',
     about: null
   },
   {
-    name: 'human',
-    title: 'Human',
+    code: 'human',
+    name: 'Human',
     about: null
   },
   {
-    name: 'random',
-    title: 'Random',
+    code: 'random',
+    name: 'Random',
     about: null
   },
   {
-    name: 'sad',
-    title: 'Sad',
+    code: 'sad',
+    name: 'Sad',
     about: null
   },
   {
-    name: 'slice_of_life',
-    title: 'Slice Of Life',
+    code: 'slice_of_life',
+    name: 'Slice Of Life',
     about: null
   },
   {
-    name: 'tragedy',
-    title: 'Tragedy',
+    code: 'tragedy',
+    name: 'Tragedy',
     about: null
   },
   {
-    name: 'adventure',
-    title: 'Adventure',
+    code: 'adventure',
+    name: 'Adventure',
     about: null
   },
   {
-    name: 'anthro',
-    title: 'Anthro',
+    code: 'anthro',
+    name: 'Anthro',
     about: null
   },
   {
-    name: 'crossover',
-    title: 'Crossover',
+    code: 'crossover',
+    name: 'Crossover',
     about: null
   },
   {
-    name: 'drama',
-    title: 'Drama',
+    code: 'drama',
+    name: 'Drama',
     about: null
   },
   {
-    name: 'horror',
-    title: 'Horror',
+    code: 'horror',
+    name: 'Horror',
     about: null
   },
   {
-    name: 'mystery',
-    title: 'Mystery',
+    code: 'mystery',
+    name: 'Mystery',
     about: null
   },
   {
-    name: 'romance',
-    title: 'Romance',
+    code: 'romance',
+    name: 'Romance',
     about: null
   },
   {
-    name: 'erotic',
-    title: 'Erotic',
+    code: 'erotic',
+    name: 'Erotic',
     about: null
   },
   {
-    name: 'sex',
-    title: 'Sex',
+    code: 'sex',
+    name: 'Sex',
     about: null
   },
   {
-    name: 'scifi',
-    title: 'Sci-Fi',
+    code: 'scifi',
+    name: 'Sci-Fi',
     about: null
   },
   {
-    name: 'thriller',
-    title: 'Thriller',
+    code: 'thriller',
+    name: 'Thriller',
     about: null
   },
   {
-    name: 'fluff',
-    title: 'Fluff',
+    code: 'fluff',
+    name: 'Fluff',
     about: null
   },
 ];
