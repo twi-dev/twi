@@ -9,7 +9,7 @@
   <name>
 
 # TECHNOLOGY COLOPHON
-  Node.js, Express, IcedCoffeeScript,
+  Node.js, Koa.js, CoffeeScript,
   i18next, YAML, Jade, Stylus, CSS3,
   HTML5, SVG, Normalize.css, Jeet.gs,
   Vue.js, Browserify, Gulp, Lodash, Codemirror

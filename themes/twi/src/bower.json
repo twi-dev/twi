@@ -10,6 +10,7 @@
     "validate": "^0.9.0",
     "web-animations-js": "^2.2.0",
     "animate.styl": "^1.0.5",
-    "normalize.styl": "^4.1.1"
+    "normalize.styl": "^4.1.1",
+    "react": "^15.1.0"
   }
 }

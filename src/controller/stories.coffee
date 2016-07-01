@@ -1,3 +1,7 @@
+{t} = require '../core/i18n'
+
+ForbiddenException = require '../core/errors/Forbidden'
+
 ###
 # Response stories
 # 
@@ -13,7 +17,8 @@ actionIndex = (next) ->
 # GET
 ###
 actionStory = (next) ->
-  @body = 'Story summary'
+  @render 'stories/story',
+    title: 'Страница рассказа'
 
   yield next
 
@@ -34,8 +39,13 @@ actionRead = (next) ->
 # GET /story/new
 ###
 actionNew = (next) ->
+  unless do @req.isAuthenticated
+    throw new ForbiddenException "
+      Unauthorized access to \"Add new story\" page.
+    "
+
   @render 'stories/new',
-    title: 'Add story'
+    title: t 'stories.title.new'
 
   yield next
 
@@ -78,7 +88,7 @@ main =  (r) ->
     .get actionIndex
 
   # Read story with given id
-  r '/story/read/:slug/:chapter?'
+  r '/story/read/:slug/:chapter'
     .get actionRead
 
   # Add new story
@@ -91,7 +101,7 @@ main =  (r) ->
     .get actionEdit
     .put actionSave
 
-  # Story details/Delete story
+  # Story details/delete story
   # TODO: Node said something about EventEmitter memory leak on this.
   # I need some research.
   r '/story/:slug'
