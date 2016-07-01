@@ -1,6 +1,7 @@
 {t} = require '../core/i18n'
 
 ForbiddenException = require '../core/errors/Forbidden'
+NowFoundException = require '../core/errors/NotFound'
 
 ###
 # Response stories

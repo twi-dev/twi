@@ -16,9 +16,9 @@ csso = require 'gulp-csso'
 autoprefixer = require 'gulp-autoprefixer'
 
 # JS plugins
-iced = require 'gulp-iced'
-uglify = require 'gulp-uglify'
+cjsx = require 'coffee-reactify'
 browserify = require 'browserify'
+uglify = require 'gulp-uglify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
 
@@ -39,8 +39,13 @@ THEME_PATH = "#{__dirname}/themes/#{theme}"
 
 # Src dirs
 JADE_SRC = "#{THEME_PATH}/views/**/*.jade"
-COFFEE_SRC = "#{THEME_PATH}/src/coffee/**/*.iced"
+
+COFFEE_SRC_DIR = "#{THEME_PATH}/src/coffee"
+COFFEE_SRC = "#{COFFEE_SRC_DIR}/main.coffee"
+CJXS_SRC = "#{COFFEE_SRC_DIR}/**/*.cjsx"
+
 SVG_SRC = "#{THEME_PATH}/src/svg/**/*.svg"
+
 STYLUS_SRC_DIR = "#{THEME_PATH}/src/stylus"
 STYLUS_SRC = [
   "#{STYLUS_SRC_DIR}/common/common.styl"
@@ -97,23 +102,12 @@ gulp.task 'stylus', ->
     .pipe gulpif bIsDevel, do livereload
 
 ###
-# Compile IcedCoffeeScript
-#
-# Note: Do not use this task directly.
-###
-gulp.task 'iced:compile', ->
-  gulp.src COFFEE_SRC
-    .pipe plumber errorHandler
-    .pipe gulpif bIsDevel, newer COFFEE_SRC
-    .pipe do iced
-    .pipe gulp.dest COFFEE_TMP
-
-###
 # Build CoffeeScript with Browserify
-# Note: Do not use this task directly.
 ###
-gulp.task 'coffee', ['iced:compile'], ->
-  browserify COFFEE_TMP + '/main.js',
+gulp.task 'coffee', ->
+  browserify COFFEE_SRC,
+    transform: [cjsx]
+    extensions: ['.cjsx', '.coffee']
     insertGlobals: yes
     debug: bIsDevel
   .bundle()
@@ -135,6 +129,7 @@ gulp.task 'svg', ->
 
 ###
 # Refreshing page with livereload
+# 
 # Note: Do not use this task directly.
 ###
 gulp.task 'refresh', ->
@@ -144,7 +139,7 @@ gulp.task 'refresh', ->
 
 ###
 # Devel task with gulp.watch and livereload
-# -
+# 
 # Run: gulp devel
 ###
 gulp.task 'devel', ->
@@ -155,14 +150,6 @@ gulp.task 'devel', ->
   gulp.watch SVG_SRC, ['svg']
   gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
 
-###
-# Build coffee and clean working directory
-###
-gulp.task 'build:coffee', ['coffee'], ->
-  unless bIsDevel
-    gulp.src COFFEE_TMP, read: no
-      .pipe do clean
-
-gulp.task 'build', ['svg', 'stylus', 'build:coffee']
+gulp.task 'build', ['svg', 'stylus', 'coffee']
 
 gulp.task 'default', ['build']
