@@ -42,7 +42,7 @@ JADE_SRC = "#{THEME_PATH}/views/**/*.jade"
 
 COFFEE_SRC_DIR = "#{THEME_PATH}/src/coffee"
 COFFEE_SRC = "#{COFFEE_SRC_DIR}/main.coffee"
-CJXS_SRC = "#{COFFEE_SRC_DIR}/**/*.cjsx"
+CJSX_SRC = "#{COFFEE_SRC_DIR}/**/*.cjsx"
 
 SVG_SRC = "#{THEME_PATH}/src/svg/**/*.svg"
 
@@ -146,7 +146,10 @@ gulp.task 'devel', ->
   do livereload.listen
   bIsDevel = yes
   gulp.watch "#{STYLUS_SRC_DIR}/**/*.styl", ['stylus']
-  gulp.watch COFFEE_SRC, ['coffee']
+  gulp.watch [
+    "#{COFFEE_SRC_DIR}/**/.coffee"
+    "#{CJSX_SRC}"
+  ], ['coffee']
   gulp.watch SVG_SRC, ['svg']
   gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
 
