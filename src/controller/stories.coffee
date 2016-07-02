@@ -10,7 +10,7 @@ NowFoundException = require '../core/errors/NotFound'
 ###
 actionIndex = (next) ->
   @render 'stories/index',
-    title: 'Stories'
+    title: t 'stories.title.index'
 
   yield next
 
@@ -65,7 +65,7 @@ actionSend = (next) ->
 ###
 actionEdit = (next) ->
   @render 'stories/edit',
-    title: 'Edit story'
+    title: t 'stories.title.edit'
 
   yield next
 

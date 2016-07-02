@@ -147,7 +147,7 @@ gulp.task 'devel', ->
   bIsDevel = yes
   gulp.watch "#{STYLUS_SRC_DIR}/**/*.styl", ['stylus']
   gulp.watch [
-    "#{COFFEE_SRC_DIR}/**/.coffee"
+    "#{COFFEE_SRC_DIR}/**/*.coffee"
     "#{CJSX_SRC}"
   ], ['coffee']
   gulp.watch SVG_SRC, ['svg']
