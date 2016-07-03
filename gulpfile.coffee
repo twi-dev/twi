@@ -22,6 +22,9 @@ uglify = require 'gulp-uglify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
 
+# YAML transformer
+yaml = require 'yamlify'
+
 # SVG
 svgmin = require 'gulp-svgmin'
 
@@ -100,6 +103,12 @@ gulp.task 'stylus', ->
     .pipe gulpif not bIsDevel, do csso # Compress CSS only for production
     .pipe gulp.dest STYLUS_DEST
     .pipe gulpif bIsDevel, do livereload
+
+###
+# Transform YAML files
+###
+# gulp.task 'yaml', ->
+#   browserify
 
 ###
 # Build CoffeeScript with Browserify

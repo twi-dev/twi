@@ -40,7 +40,6 @@ form
     &-textarea
       width 100%
       height 500px
-      // overflow hidden
       resize none
       word-wrap break-word
       border none
@@ -51,6 +50,31 @@ form
     width 50%
     padding 20px 10px
     box-sizing border-box
-  
+
   &-view-container
     word-wrap break-word
+
+/**
+ * Style for story editor
+ */
+.story-editor
+  &-container
+    width 100%
+    padding 20px 18px
+    box-sizing border-box
+
+    input, textarea
+      width 100%
+      padding 8px 16px
+      box-sizing border-box
+      border none
+      border-bottom solid rgba(maneFillViolet, 0.3) 1px
+
+    textarea
+      resize none
+
+  &-field-container
+    padding 10px 0
+
+  &-synopsis
+    height 200px

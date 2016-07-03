@@ -3,8 +3,6 @@
 colors = require 'colors'
 moment = require 'moment'
 
-{app: {env}} = require '../helpers/configure-helper'
-
 write = (message) -> process.stdout.write "#{message}\n"
 
 writeErr = (message) -> process.stderr.write "#{message}\n"
