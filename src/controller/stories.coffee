@@ -57,9 +57,10 @@ actionNew = (next) ->
 # POST /story/new
 ###
 actionCreateStory = (next) ->
+  {title, characters, marks, synopsis, info} = @request.body
 
   if @isXhr
-    @body = message: 'ok'
+    @body = {title, characters, marks, synopsis, info}
 
   yield next
 

@@ -3,31 +3,59 @@ LinkedStateMixin = require 'react-addons-linked-state-mixin'
 CharacterEditor = require './CharacterEditor'
 
 co = require 'co'
-axios = require '../../vendor/axios/dist/axios'
+axios = require '../helpers/axios-instance'
 
-axios = axios.create
-  headers:
-    'X-Requested-With': 'XmlHttpRequest'
+# axios = axios.create
+#   headers:
+#     'X-Requested-With': 'XmlHttpRequest'
 
-# This is just a first draft :D
+###
+# StoryEditor component classs
+# Render story editor form into provided document element
+#
+# Note: This is just a first draft of StoryEditor.
+#   I'm not a frontend developer, so, this one may looks ugly :)
+###
 class StoryEditor extends React.Component
-  send: (e) ->
+  constructor: ->
+    @state =
+      title: ''
+      characters: ''
+      marks: ''
+      synopsis: ''
+      info: ''
+
+  ###
+  # Submit handler
+  #
+  # @params Event e 
+  ###
+  submit: (e) =>
     do e.preventDefault
     {csrf} = document.querySelector('#story-editor').dataset
+    {title, characters, marks, synopsis, info} = @state
 
-    axios.post '/story/new',
+    axios.post '/story/new', {
       _csrf: csrf
-    .then (res) -> console.log res
+      title
+      characters
+      marks
+      synopsis
+      info
+    }
+    .then (res) -> console.log res.data
     .catch (err) -> console.log err
 
+  updateStatesOfFields: (e) => @setState "#{e.target.name}": e.target.value
+
   render: ->
-    # <div>
-    <form action="/story/new" method="post" onSubmit={@send}>
+    <form action="/story/new" method="post" onSubmit={@submit}>
       <div className="story-editor-field-container">
         <input
           type="text"
-          name="storyTitle"
+          name="title"
           placeholder="Название"
+          onChange={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">
@@ -36,24 +64,28 @@ class StoryEditor extends React.Component
       <div className="story-editor-field-container">
         <input
           type="text"
-          name="storyCharacters"
+          name="characters"
           placeholder="Метки"
         />
       </div>
       <div className="story-editor-field-container">
         <textarea
           className="story-editor-synopsis"
-          name="storyInfo"
+          name="synopsis"
           placeholder="Синопсис"
+          onChange={@updateStatesOfFields}
         ></textarea>
       </div>
       <div className="story-editor-field-container">
-        <textarea name="storyInfo" placeholder="Описание"></textarea>
+        <textarea
+          name="info"
+          placeholder="Описание"
+          onChange={@updateStatesOfFields}
+        ></textarea>
       </div>
       <div className="story-editor-field-container">
         <button onSubmit={@send}>Отправить</button>
       </div>
     </form>
-    # </div>
 
 module.exports = StoryEditor

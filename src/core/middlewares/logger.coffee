@@ -1,8 +1,8 @@
 {normal} = require '../logger'
 
 logger = (next) ->
-  normal "#{@method} -> #{@url}"
+  normal "-> #{@method} #{@url}"
   yield next
-  normal "#{@status} <- #{@url}"
+  normal "<- #{@status} #{@url}"
 
 module.exports = logger
