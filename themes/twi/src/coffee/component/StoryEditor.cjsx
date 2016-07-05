@@ -1,15 +1,28 @@
 React = require 'react'
+LinkedStateMixin = require 'react-addons-linked-state-mixin'
+CharacterEditor = require './CharacterEditor'
+
 co = require 'co'
 axios = require '../../vendor/axios/dist/axios'
+
+axios = axios.create
+  headers:
+    'X-Requested-With': 'XmlHttpRequest'
 
 # This is just a first draft :D
 class StoryEditor extends React.Component
   send: (e) ->
     do e.preventDefault
-    console.log 'Sending...'
+    {csrf} = document.querySelector('#story-editor').dataset
+
+    axios.post '/story/new',
+      _csrf: csrf
+    .then (res) -> console.log res
+    .catch (err) -> console.log err
 
   render: ->
-    <form action="/story/new" method="post">
+    # <div>
+    <form action="/story/new" method="post" onSubmit={@send}>
       <div className="story-editor-field-container">
         <input
           type="text"
@@ -18,17 +31,13 @@ class StoryEditor extends React.Component
         />
       </div>
       <div className="story-editor-field-container">
-        <input
-          type="text"
-          name="storyCharacters"
-          placeholder="Персонажи"
-        />
+        <CharacterEditor />
       </div>
       <div className="story-editor-field-container">
         <input
           type="text"
           name="storyCharacters"
-          placeholder="Жанры"
+          placeholder="Метки"
         />
       </div>
       <div className="story-editor-field-container">
@@ -42,8 +51,9 @@ class StoryEditor extends React.Component
         <textarea name="storyInfo" placeholder="Описание"></textarea>
       </div>
       <div className="story-editor-field-container">
-        <button onClick={@send}>Отправить</button>
+        <button onSubmit={@send}>Отправить</button>
       </div>
     </form>
+    # </div>
 
 module.exports = StoryEditor

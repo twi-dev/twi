@@ -10,4 +10,4 @@ StoryEditor = require './component/StoryEditor'
 storyEditorRoot = document.querySelector '#story-editor'
 
 # Render components
-render <StoryEditor />, storyEditorRoot if storyEditorRoot?
+render <StoryEditor/>, storyEditorRoot if storyEditorRoot?

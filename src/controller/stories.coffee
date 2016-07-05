@@ -47,6 +47,7 @@ actionNew = (next) ->
 
   @render 'stories/new',
     title: t 'stories.title.new'
+    _csrf: @csrf
 
   yield next
 
@@ -55,7 +56,11 @@ actionNew = (next) ->
 #
 # POST /story/new
 ###
-actionSend = (next) ->
+actionCreateStory = (next) ->
+
+  if @isXhr
+    @body = message: 'ok'
+
   yield next
 
 ###
@@ -95,7 +100,7 @@ main =  (r) ->
   # Add new story
   r '/story/new'
     .get actionNew
-    .post actionSend
+    .post actionCreateStory
 
   # Edit story
   r '/story/edit/:slug/:chapter?'

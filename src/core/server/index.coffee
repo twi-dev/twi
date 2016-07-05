@@ -11,6 +11,7 @@ passport = require 'koa-passport'
 controller = require './controller'
 view = require './view'
 oConfig = require '../helpers/configure-helper'
+isXhr = require '../middlewares/xhr'
 errorHandler = require '../middlewares/error-handler'
 logger = require '../middlewares/logger'
 
@@ -23,6 +24,9 @@ app = do koa
 app.keys = [session.secret]
 
 normal 'Init Twi middlewares'
+
+# Check xhr request
+app.use isXhr
 
 # Set error handler
 app.use errorHandler
