@@ -57,6 +57,11 @@ actionNew = (next) ->
 # POST /story/new
 ###
 actionCreateStory = (next) ->
+  unless do @req.isAuthenticated
+    throw new ForbiddenException "
+      Unauthorized access to \"Add new story\" page.
+    "
+
   {title, characters, marks, synopsis, info} = @request.body
 
   if @isXhr

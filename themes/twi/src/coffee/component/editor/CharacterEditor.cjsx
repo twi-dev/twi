@@ -1,6 +1,11 @@
 React = require 'react'
 
 class CharacterEditor extends React.Component
+  constructor: ->
+    @state =
+      characters: []
+      list: {}
+
   render: ->
     <div className="character-editor-container">
       <div className="characher-editor-field">

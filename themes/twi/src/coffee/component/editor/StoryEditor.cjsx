@@ -3,11 +3,7 @@ LinkedStateMixin = require 'react-addons-linked-state-mixin'
 CharacterEditor = require './CharacterEditor'
 
 co = require 'co'
-axios = require '../helpers/axios-instance'
-
-# axios = axios.create
-#   headers:
-#     'X-Requested-With': 'XmlHttpRequest'
+axios = require '../../helpers/axios-instance'
 
 ###
 # StoryEditor component classs
@@ -49,7 +45,7 @@ class StoryEditor extends React.Component
   updateStatesOfFields: (e) => @setState "#{e.target.name}": e.target.value
 
   render: ->
-    <form action="/story/new" method="post" onSubmit={@submit}>
+    <form action={@props.action} method={@props.method} onSubmit={@submit}>
       <div className="story-editor-field-container">
         <input
           type="text"
@@ -78,13 +74,19 @@ class StoryEditor extends React.Component
       </div>
       <div className="story-editor-field-container">
         <textarea
+          className="story-editor-info"
           name="info"
           placeholder="Описание"
           onChange={@updateStatesOfFields}
         ></textarea>
       </div>
       <div className="story-editor-field-container">
-        <button onSubmit={@send}>Отправить</button>
+        <button
+          className="button button-raised button-raised-violet fr"
+          onSubmit={@send}
+        >
+          Отправить
+        </button>
       </div>
     </form>
 
