@@ -13,9 +13,11 @@ block content
           form#auth(action="/auth/signin?return=" + __return, method="post")
             .input-container
               input.form-input.auth-input(type="text", name="username", placeholder, required)
+              .field-underscore
               .input-label= t('auth.form.label.username')
             .input-container
               input.form-input.auth-input(type="password", name="pass", placeholder, required)
+              .field-underscore
               .input-label= t('auth.form.label.pass')
             input(type="hidden", name="_csrf", value="" + __csrf)
             button#auth-button.button.button-raised.button-auth.fl(type="submit")= t('auth.form.signin')

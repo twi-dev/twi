@@ -28,7 +28,7 @@ class StoryEditor extends React.Component
   ###
   submit: (e) =>
     do e.preventDefault
-    {csrf} = document.querySelector('#story-editor').dataset
+    {dataset: {csrf}} = document.querySelector '#story-editor'
     {title, characters, marks, synopsis, info} = @state
 
     axios.post '/story/new', {
@@ -46,44 +46,56 @@ class StoryEditor extends React.Component
 
   render: ->
     <form action={@props.action} method={@props.method} onSubmit={@submit}>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container input-container">
         <input
+          required
+          className="form-input"
           type="text"
           name="title"
-          placeholder="Название"
           onChange={@updateStatesOfFields}
         />
+        <div className="field-underscore"></div>
+        <div className="input-label">Название</div>
       </div>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container input-container">
         <CharacterEditor />
       </div>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container input-container">
         <input
+          required
+          className="form-input"
           type="text"
           name="characters"
-          placeholder="Метки"
+          onChange={@updateStatesOfFields}
         />
+        <div className="field-underscore"></div>
+        <div className="input-label">Метки</div>
       </div>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container input-container">
         <textarea
-          className="story-editor-synopsis"
+          required
+          className="story-editor-synopsis form-input"
           name="synopsis"
-          placeholder="Синопсис"
           onChange={@updateStatesOfFields}
         ></textarea>
+        <div className="field-underscore"></div>
+        <div className="input-label">Синопсис</div>
       </div>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container input-container">
         <textarea
-          className="story-editor-info"
+          required
+          className="story-editor-info form-input"
           name="info"
-          placeholder="Описание"
           onChange={@updateStatesOfFields}
         ></textarea>
+        <div className="field-underscore"></div>
+        <div className="input-label">Описание</div>
       </div>
       <div className="story-editor-field-container">
         <button
+          formNoValidate
           className="button button-raised button-raised-violet fr"
-          onSubmit={@send}
+          onClick={@send}
         >
           Отправить
         </button>

@@ -19,6 +19,7 @@ autoprefixer = require 'gulp-autoprefixer'
 cjsx = require 'coffee-reactify'
 browserify = require 'browserify'
 uglify = require 'gulp-uglify'
+envify = require 'gulp-envify'
 source = require 'vinyl-source-stream' # For rename js bundle
 vinylBuffer = require 'vinyl-buffer' # For gulp-uglify
 
@@ -105,15 +106,12 @@ gulp.task 'stylus', ->
     .pipe gulpif bIsDevel, do livereload
 
 ###
-# Transform YAML files
-###
-# gulp.task 'yaml', ->
-#   browserify
-
-###
 # Build CoffeeScript with Browserify
 ###
 gulp.task 'coffee', ->
+  # Set NODE_ENV for react
+  process.env.NODE_ENV = if bIsDevel then 'development' else 'production'
+
   browserify COFFEE_SRC,
     transform: [cjsx]
     extensions: ['.cjsx', '.coffee']
@@ -123,6 +121,7 @@ gulp.task 'coffee', ->
   .pipe plumber errorHandler
   .pipe source 'common.js'
   .pipe do vinylBuffer
+  .pipe gulpif not bIsDevel, envify NODE_ENV: 'production'
   .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
   .pipe gulp.dest COFFEE_DEST
   .pipe gulpif bIsDevel, do livereload
@@ -151,7 +150,7 @@ gulp.task 'refresh', ->
 # 
 # Run: gulp devel
 ###
-gulp.task 'devel', ->
+gulp.task 'devel', ['svg', 'stylus', 'coffee'], ->
   do livereload.listen
   bIsDevel = yes
   gulp.watch "#{STYLUS_SRC_DIR}/**/*.styl", ['stylus']
