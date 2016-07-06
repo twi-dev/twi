@@ -3,14 +3,14 @@ form
 
 .input-container
   position relative
-  padding 4px 0
-  margin 14px 0
+  padding 12px 0
+  margin 6px 0
   line-height 24px
   font-size 18px
 
 .input-label
   position absolute
-  top 20px
+  top 12px
   left 6px
   padding 0 2px
   pointer-events none
@@ -20,20 +20,18 @@ form
 .form-input
   background transparent
   border none
-  padding 12px 8px
+  padding 6px 8px
   box-sizing border-box
   border-bottom maneFillViolet solid 1px
   &::placeholder
     color maneFillViolet
-
-  &:focus
-    border-bottom-color maneFillViolet
 
 .form-input:focus ~ .input-label,
 .form-input:valid ~ .input-label
   top -8px
   font-size 12px
   color maneFillViolet
+  z-index 2
 
 .field-underscore, textarea
   position relative
@@ -101,13 +99,13 @@ textarea
 .story-editor
   &-container
     width 100%
-    padding 10px 26px
+    padding 20px 26px
     box-sizing border-box
 
     input, textarea
       width 100%
       color #353535
-      padding 12px 8px
+      padding 6px 8px
       box-sizing border-box
       border none
       border-bottom solid rgba(maneFillViolet, 0.3) 1px

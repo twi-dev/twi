@@ -70,6 +70,10 @@ module.exports = [
     code: 'anon',
   },
   {
+    name: 'Human',
+    code: 'human',
+  },
+  {
     name: 'Fleetfoot',
     code: 'fleetfoot',
   },
