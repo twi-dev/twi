@@ -58,14 +58,16 @@ class StoryEditor extends React.Component
         <div className="input-label">Название</div>
       </div>
       <div className="story-editor-field-container input-container">
-        <CharacterEditor />
+        <CharacterEditor
+          characters={@state.characters}
+        />
       </div>
       <div className="story-editor-field-container input-container">
         <input
           required
           className="form-input"
           type="text"
-          name="characters"
+          name="marks"
           onChange={@updateStatesOfFields}
         />
         <div className="field-underscore"></div>

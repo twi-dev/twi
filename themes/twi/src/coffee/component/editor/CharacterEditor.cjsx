@@ -1,10 +1,15 @@
 React = require 'react'
 
+axios = require '../../helpers/axios-instance'
+
 class CharacterEditor extends React.Component
   constructor: ->
     @state =
+      currentCharacter: ''
       characters: []
-      list: {}
+
+  updateState: (e) =>
+    console.log e.target.value.split ','
 
   render: ->
     <div className="character-editor-container">
@@ -13,7 +18,8 @@ class CharacterEditor extends React.Component
           required
           className="form-input"
           type="text"
-          name="character"
+          name="characters"
+          onChange={@updateState}
         />
         <div className="field-underscore"></div>
         <div className="input-label">Персонажи</div>

@@ -94,6 +94,15 @@ actionSave = (next) ->
 actionDelete = (next) ->
   yield next
 
+actionCharacters = (next) ->
+  {name} = @params
+
+  @body =
+    code: 'twilight_sparkle'
+    name: 'Твайлайт Спаркл'
+
+  yield next
+
 main =  (r) ->
   # List of all stories
   r '/stories/:page?'
@@ -119,5 +128,8 @@ main =  (r) ->
   r '/story/:slug'
     .get actionStory
     .delete actionDelete
+
+  r '/characters/:name?'
+    .get actionCharacters
 
 module.exports = main
