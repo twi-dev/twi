@@ -2,11 +2,13 @@ form
   cf()
 
 .input-container
+  cf()
   position relative
   padding 12px 0
   margin 6px 0
   line-height 24px
   font-size 18px
+  user-select none
 
 .input-label
   position absolute
@@ -60,9 +62,6 @@ textarea
     &::before, &::after
       bottom -6px
 
-// .form-input:focus ~ .field-underscore::before,
-// .form-input:focus ~ .field-underscore::after
-  // width 50%
 .form-input:focus
   ~ .field-underscore
       &::before, &::after
@@ -114,7 +113,7 @@ textarea
       resize none
 
   &-field-container
-    cf()
+    // cf()
     color #353535
 
   &-synopsis,

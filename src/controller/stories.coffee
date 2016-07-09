@@ -1,7 +1,10 @@
 {t} = require '../core/i18n'
 
+story = require '../model/Story'
+
 ForbiddenException = require '../core/errors/Forbidden'
 NowFoundException = require '../core/errors/NotFound'
+NotAllowedException = require '../core/errors/NotAllowed'
 
 ###
 # Response stories
@@ -62,10 +65,10 @@ actionCreateStory = (next) ->
       Unauthorized access to \"Add new story\" page.
     "
 
-  {title, characters, marks, synopsis, info} = @request.body
+  {title, characters, marks, synopsis, description} = @request.body
 
   if @isXhr
-    @body = {title, characters, marks, synopsis, info}
+    @body = {title, characters, marks, synopsis, description}
 
   yield next
 
@@ -97,13 +100,18 @@ actionDelete = (next) ->
 actionCharacters = (next) ->
   {name} = @params
 
-  @body =
-    code: 'twilight_sparkle'
-    name: 'Твайлайт Спаркл'
+  unless @isXhr
+    throw new NotAllowedException "Method not allowed for non-xhr requests."
+
+  @body = yield do story.getCharacters
 
   yield next
 
 main =  (r) ->
+  # Get characters
+  r '/story/characters/:name?'
+    .get actionCharacters
+
   # List of all stories
   r '/stories/:page?'
     .get actionIndex
@@ -129,7 +137,5 @@ main =  (r) ->
     .get actionStory
     .delete actionDelete
 
-  r '/characters/:name?'
-    .get actionCharacters
 
 module.exports = main

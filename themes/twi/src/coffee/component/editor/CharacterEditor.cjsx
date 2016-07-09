@@ -1,28 +1,23 @@
-React = require 'react'
+{Component} = React = require 'react'
+InputField = require '../element/InputField'
 
+{isEmpty} = require 'lodash'
 axios = require '../../helpers/axios-instance'
 
-class CharacterEditor extends React.Component
+class CharacterEditor extends Component
   constructor: ->
     @state =
-      currentCharacter: ''
+      current: ''
       characters: []
 
   updateState: (e) =>
     console.log e.target.value.split ','
+    console.log isEmpty @characters
 
   render: ->
     <div className="character-editor-container">
-      <div className="characher-editor-field input-container">
-        <input
-          required
-          className="form-input"
-          type="text"
-          name="characters"
-          onChange={@updateState}
-        />
-        <div className="field-underscore"></div>
-        <div className="input-label">Персонажи</div>
+      <div className="characher-editor-field">
+        <InputField label="Персонажи" updateState={@updateState} />
       </div>
       <div className="character-editor-list"></div>
     </div>

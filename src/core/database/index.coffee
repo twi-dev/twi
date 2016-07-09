@@ -48,4 +48,8 @@ main = (name, schema, options = {}) ->
     schema(types),
     options
 
+init = ->
+
 module.exports = main
+module.exports.init = init
+module.exports.Model = Sequelize.Model

@@ -1,14 +1,19 @@
+'use strict'
+
 _ = require 'lodash'
 moment = require 'moment'
 
 model = require '../core/database'
-story = require '../core/database/schemas/stories'
-character = require '../core/database/schemas/character'
+story = model 'story', require '../core/database/schemas/stories'
+character = model 'character', require '../core/database/schemas/character'
 
 class Story
-  getCharacterByName: (name) ->
-    characterData = yield character.findOne
-      where:
-        name: name
+  getCharacters: -> yield character.findAll raw: yes
 
-module.exports = Story
+  getCharactersById: (id) ->
+    yield character.findOne
+      where:
+        characterId: id
+      raw: yes
+
+module.exports = new Story

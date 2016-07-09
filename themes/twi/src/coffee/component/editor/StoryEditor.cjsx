@@ -1,5 +1,7 @@
 React = require 'react'
 LinkedStateMixin = require 'react-addons-linked-state-mixin'
+InputField = require '../element/InputField'
+TextareaField = require '../element/TextareaField'
 CharacterEditor = require './CharacterEditor'
 
 co = require 'co'
@@ -16,10 +18,10 @@ class StoryEditor extends React.Component
   constructor: ->
     @state =
       title: ''
-      characters: ''
-      marks: ''
+      characters: []
+      marks: []
       synopsis: ''
-      info: ''
+      description: ''
 
   ###
   # Submit handler
@@ -29,7 +31,7 @@ class StoryEditor extends React.Component
   submit: (e) =>
     do e.preventDefault
     {dataset: {csrf}} = document.querySelector '#story-editor'
-    {title, characters, marks, synopsis, info} = @state
+    {title, characters, marks, synopsis, description} = @state
 
     axios.post '/story/new', {
       _csrf: csrf
@@ -37,7 +39,7 @@ class StoryEditor extends React.Component
       characters
       marks
       synopsis
-      info
+      description
     }
     .then (res) -> console.log res.data
     .catch (err) -> console.log err
@@ -46,52 +48,40 @@ class StoryEditor extends React.Component
 
   render: ->
     <form action={@props.action} method={@props.method} onSubmit={@submit}>
-      <div className="story-editor-field-container input-container">
-        <input
-          required
-          className="form-input"
+      <div className="story-editor-field-container">
+        <InputField
           type="text"
           name="title"
-          onChange={@updateStatesOfFields}
+          label="Название"
+          updateState={@updateStatesOfFields}
         />
-        <div className="field-underscore"></div>
-        <div className="input-label">Название</div>
       </div>
-      <div className="story-editor-field-container input-container">
+      <div className="story-editor-field-container">
         <CharacterEditor
           characters={@state.characters}
         />
       </div>
-      <div className="story-editor-field-container input-container">
-        <input
-          required
-          className="form-input"
+      <div className="story-editor-field-container">
+        <InputField
           type="text"
           name="marks"
-          onChange={@updateStatesOfFields}
+          label="Метки"
+          updateState={@updateStatesOfFields}
         />
-        <div className="field-underscore"></div>
-        <div className="input-label">Метки</div>
       </div>
-      <div className="story-editor-field-container input-container">
-        <textarea
-          required
-          className="story-editor-synopsis form-input"
+      <div className="story-editor-field-container">
+        <TextareaField
           name="synopsis"
-          onChange={@updateStatesOfFields}
-        ></textarea>
-        <div className="field-underscore"></div>
-        <div className="input-label">Синопсис</div>
+          label="Синопсис"
+          updateState={@updateStatesOfFields}
+        />
       </div>
-      <div className="story-editor-field-container input-container">
-        <textarea
-          required
-          className="story-editor-info form-input"
-          name="info"
-          onChange={@updateStatesOfFields}
-        ></textarea>
-        <div className="field-underscore"></div>
-        <div className="input-label">Описание</div>
+      <div className="story-editor-field-container">
+        <TextareaField
+          name="description"
+          label="Описание"
+          updateState={@updateStatesOfFields}
+        />
       </div>
       <div className="story-editor-field-container">
         <button
