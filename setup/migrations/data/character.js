@@ -2,216 +2,216 @@
 
 module.exports = [
   {
-    pic: 'twilight-sparkle.png'
+    pic: null
   },
   {
-    pic: 'pinke-pie.png'
+    pic: null
   },
   {
-    pic: 'applejack.png'
+    pic: null
   },
   {
-    pic: 'rainbow-dash.png'
+    pic: null
   },
   {
-    pic: 'rarity.png'
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: ''
+    pic: null
   },
   {
-    pic: 'original-character.png'
+    pic: null
   },
 ];

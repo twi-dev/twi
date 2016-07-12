@@ -44,51 +44,6 @@ loadSchemas = bIsForce => {
 /**
  * Importing data
  */
-// importData = () => {
-//   return new Promise((_res, _rej) => {
-//     var oDataCollection, oModelsStructure, aModelsPromise;
-
-//     oModelsStructure = {};
-//     aModelsPromise = [];
-//     oDataCollection = requireHelper('./data');
-
-//     for (let __sModelName in oDataCollection) {
-//       oModelsStructure[__sModelName] = require(
-//         `../../core/database/schemas/${__sModelName}`
-//       );
-//     }
-
-//     // for (let __sModelName in oModelsStructure) {
-//     //   let __oModel = oModelsStructure[__sModelName];
-//     //   for (let oValues of oDataCollection[__sModelName]) {
-//     //     aModelsPromise.push(
-//     //       // model(
-//     //       //   `${__sModelName}`, __oModel, {
-//     //       //     timestamps: false
-//     //       //   }
-//     //       // ).upsert(oValues)
-
-//     //       // co(function* (){
-//     //       //   let __model = model(`${__sModelName}`, __oModel, {
-//     //       //     timestamps: false
-//     //       //   });
-
-//     //       //   yield __model.destroy({truncate: true});
-//     //       // })
-//     //     );
-//     //   }
-//     // }
-
-//     // Promise.all(aModelsPromise)
-//     //   .then(() => {
-//     //     _res();
-//     //   })
-//     //   .catch(err => _rej(err));
-
-
-//   });
-// };
-
 function importData() {
   return co(function* () {
     var langs, dataCollection, schemas = {};
