@@ -2,113 +2,69 @@
 
 module.exports = [
   {
-    code: 'second_person',
-    name: 'Second Person',
-    about: null
+    color: null
   },
   {
-    code: 'alternate_universe',
-    name: 'Alternative Universe',
-    about: null
+    color: null
   },
   {
-    code: 'comedy',
-    name: 'Comedy',
-    about: null
+    color: null
   },
   {
-    code: 'dark',
-    name: 'Dark',
-    about: null
+    color: null
   },
   {
-    code: 'equestria_girls',
-    name: 'Equestria Girls',
-    about: null
+    color: null
   },
   {
-    code: 'human',
-    name: 'Human',
-    about: null
+    color: null
   },
   {
-    code: 'random',
-    name: 'Random',
-    about: null
+    color: null
   },
   {
-    code: 'sad',
-    name: 'Sad',
-    about: null
+    color: null
   },
   {
-    code: 'slice_of_life',
-    name: 'Slice Of Life',
-    about: null
+    color: null
   },
   {
-    code: 'tragedy',
-    name: 'Tragedy',
-    about: null
+    color: null
   },
   {
-    code: 'adventure',
-    name: 'Adventure',
-    about: null
+    color: null
   },
   {
-    code: 'anthro',
-    name: 'Anthro',
-    about: null
+    color: null
   },
   {
-    code: 'crossover',
-    name: 'Crossover',
-    about: null
+    color: null
   },
   {
-    code: 'drama',
-    name: 'Drama',
-    about: null
+    color: null
   },
   {
-    code: 'horror',
-    name: 'Horror',
-    about: null
+    color: null
   },
   {
-    code: 'mystery',
-    name: 'Mystery',
-    about: null
+    color: null
   },
   {
-    code: 'romance',
-    name: 'Romance',
-    about: null
+    color: null
   },
   {
-    code: 'erotic',
-    name: 'Erotic',
-    about: null
+    color: null
   },
   {
-    code: 'sex',
-    name: 'Sex',
-    about: null
+    color: null
   },
   {
-    code: 'scifi',
-    name: 'Sci-Fi',
-    about: null
+    color: null
   },
   {
-    code: 'thriller',
-    name: 'Thriller',
-    about: null
+    color: null
   },
   {
-    code: 'fluff',
-    name: 'Fluff',
-    about: null
+    color: null
   },
 ];

@@ -1,10 +1,10 @@
-React = require 'react'
+{Component} = React = require 'react'
 LinkedStateMixin = require 'react-addons-linked-state-mixin'
 InputField = require '../element/InputField'
 TextareaField = require '../element/TextareaField'
 CharacterEditor = require './CharacterEditor'
 
-co = require 'co'
+{assign} = require 'lodash'
 axios = require '../../helpers/axios-instance'
 
 ###
@@ -14,7 +14,7 @@ axios = require '../../helpers/axios-instance'
 # Note: This is just a first draft of StoryEditor.
 #   I'm not a frontend developer, so, this one may looks ugly :)
 ###
-class StoryEditor extends React.Component
+class StoryEditor extends Component
   constructor: ->
     @state =
       title: ''
@@ -22,6 +22,7 @@ class StoryEditor extends React.Component
       marks: []
       synopsis: ''
       description: ''
+      chapters: []
 
   ###
   # Submit handler
@@ -47,7 +48,10 @@ class StoryEditor extends React.Component
   updateStatesOfFields: (e) => @setState "#{e.target.name}": e.target.value
 
   render: ->
-    <form action={@props.action} method={@props.method} onSubmit={@submit}>
+    <form
+      action={@props.action} method={@props.method}
+      onSubmit={@submit} autoComplete="off"
+    >
       <div className="story-editor-field-container">
         <InputField
           type="text"

@@ -2,287 +2,216 @@
 
 module.exports = [
   {
-    name: 'Twilight Sparkle',
-    code: 'twilight_sparkle',
+    pic: 'twilight-sparkle.png'
   },
   {
-    name: 'Pinkie Pie',
-    code: 'pinkie_pie',
+    pic: 'pinke-pie.png'
   },
   {
-    name: 'Applejack',
-    code: 'applejack',
+    pic: 'applejack.png'
   },
   {
-    name: 'Rainbow Dash',
-    code: 'rainbow_dash',
+    pic: 'rainbow-dash.png'
   },
   {
-    name: 'Rarity',
-    code: 'rarity',
+    pic: 'rarity.png'
   },
   {
-    name: 'Fluttershy',
-    code: 'fluttershy',
+    pic: ''
   },
   {
-    name: 'Apple Bloom',
-    code: 'apple_bloom',
+    pic: ''
   },
   {
-    name: 'Sweetie Belle',
-    code: 'sweetie_belle',
+    pic: ''
   },
   {
-    name: 'Scootaloo',
-    code: 'scootaloo',
+    pic: ''
   },
   {
-    name: 'Spike',
-    code: 'spike',
+    pic: ''
   },
   {
-    name: 'Princess Celestia',
-    code: 'princess_celestia',
+    pic: ''
   },
   {
-    name: 'Princess Luna',
-    code: 'princess_luna',
+    pic: ''
   },
   {
-    name: 'Princess Mi Amore Cadenza',
-    code: 'princess_cadence',
+    pic: ''
   },
   {
-    name: 'Princess Flurry Heart',
-    code: 'princess_flurry_heart',
+    pic: ''
   },
   {
-    name: 'Prince Blueblood',
-    code: 'prince_blueblood',
+    pic: ''
   },
   {
-    name: 'Owlowiscious',
-    code: 'owlowiscious',
+    pic: ''
   },
   {
-    name: 'Anon',
-    code: 'anon',
+    pic: ''
   },
   {
-    name: 'Human',
-    code: 'human',
+    pic: ''
   },
   {
-    name: 'Fleetfoot',
-    code: 'fleetfoot',
+    pic: ''
   },
   {
-    name: 'Soarin',
-    code: 'soarin',
+    pic: ''
   },
   {
-    name: 'Surprise',
-    code: 'surprise',
+    pic: ''
   },
   {
-    name: 'Spitfire',
-    code: 'spitfire',
+    pic: ''
   },
   {
-    name: 'Blaze',
-    code: 'blaze',
+    pic: ''
   },
   {
-    name: 'Fire Streak',
-    code: 'fire_streak',
+    pic: ''
   },
   {
-    name: 'High Winds',
-    code: 'high_winds',
+    pic: ''
   },
   {
-    name: 'Lightning Streak',
-    code: 'lightning_streak',
+    pic: ''
   },
   {
-    name: 'Misty Fly',
-    code: 'misty_fly',
+    pic: ''
   },
   {
-    name: 'Silver Zoom',
-    code: 'silver_zoom',
+    pic: ''
   },
   {
-    name: 'Wave Chill',
-    code: 'wave_chill',
+    pic: ''
   },
   {
-    name: 'Wind Rider',
-    code: 'wind_rider',
+    pic: ''
   },
   {
-    name: 'Lightning Dust',
-    code: 'lightning_dust',
+    pic: ''
   },
   {
-    name: 'Cloud Kicker',
-    code: 'cloud_kicker',
+    pic: ''
   },
   {
-    name: 'Cloudchaser',
-    code: 'cloudchaser',
+    pic: ''
   },
   {
-    name: 'Thunderlane',
-    code: 'thunderlane',
+    pic: ''
   },
   {
-    name: 'Meadow Flower',
-    code: 'meadow_flower',
+    pic: ''
   },
   {
-    name: 'Bulk Biceps',
-    code: 'bulk_biceps',
+    pic: ''
   },
   {
-    name: 'Snowdrop',
-    code: 'snowdrop',
+    pic: ''
   },
   {
-    name: 'Cheerilee',
-    code: 'cheerilee',
+    pic: ''
   },
   {
-    name: 'Blossomforth',
-    code: 'blossomforth',
+    pic: ''
   },
   {
-    name: 'Derpy Hooves',
-    code: 'derpy_hooves',
+    pic: ''
   },
   {
-    name: 'Discord',
-    code: 'discord',
+    pic: ''
   },
   {
-    name: 'Nightmare Moon',
-    code: 'nightmare_moon',
+    pic: ''
   },
   {
-    name: 'Octavia Melody',
-    code: 'octavia_melody',
+    pic: ''
   },
   {
-    name: 'Vinyl Scratch',
-    code: 'vinyl_scratch',
+    pic: ''
   },
   {
-    name: 'Lyra Heartstrings',
-    code: 'lyra_heartstrings',
+    pic: ''
   },
   {
-    name: 'Lemon Hearts',
-    code: 'lemon_hearts',
+    pic: ''
   },
   {
-    name: 'Twinkleshine',
-    code: 'twinkleshine',
+    pic: ''
   },
   {
-    name: 'Minuette',
-    code: 'minuette',
+    pic: ''
   },
   {
-    name: 'Moondancer',
-    code: 'moondancer',
+    pic: ''
   },
   {
-    name: 'Sweetie Drops',
-    code: 'sweetie_drops',
+    pic: ''
   },
   {
-    name: 'Golden Harvest',
-    code: 'golden_harvest',
+    pic: ''
   },
   {
-    name: 'Shining Armor',
-    code: 'shining_armor',
+    pic: ''
   },
   {
-    name: 'Zecora',
-    code: 'zecora',
+    pic: ''
   },
   {
-    name: 'Coco Pommel',
-    code: 'coco_pommel',
+    pic: ''
   },
   {
-    name: 'Angel Bunny',
-    code: 'angel_bunny',
+    pic: ''
   },
   {
-    name: 'Night Light',
-    code: 'night_light',
+    pic: ''
   },
   {
-    name: 'Twilight Velvet',
-    code: 'twilight_velvet',
+    pic: ''
   },
   {
-    name: 'Diamond Tiara',
-    code: 'diamond_tiara',
+    pic: ''
   },
   {
-    name: 'Silver Spoon',
-    code: 'silver_spoon',
+    pic: ''
   },
   {
-    name: 'King Sombra',
-    code: 'king_sombra',
+    pic: ''
   },
   {
-    name: 'Queen Chrysalis',
-    code: 'queen_chrysalis',
+    pic: ''
   },
   {
-    name: 'Lord Tirek',
-    code: 'lord_tirek',
+    pic: ''
   },
   {
-    name: 'Big Macintosh',
-    code: 'big_macintosh',
+    pic: ''
   },
   {
-    name: 'Granny Smith',
-    code: 'granny_smith',
+    pic: ''
   },
   {
-    name: 'Babs Seed',
-    code: 'babs_seed',
+    pic: ''
   },
   {
-    name: 'Roseluck',
-    code: 'roseluck',
+    pic: ''
   },
   {
-    name: 'Princess Ember',
-    code: 'princess_ember',
+    pic: ''
   },
   {
-    name: 'Littlepip',
-    code: 'littlepip',
+    pic: ''
   },
   {
-    name: 'Blackjack',
-    code: 'blackjack',
+    pic: ''
   },
   {
-    name: 'Velvet Remedy',
-    code: 'velvet_remedy',
+    pic: ''
   },
   {
-    name: 'Original Character',
-    code: 'original_character',
+    pic: 'original-character.png'
   },
 ];

@@ -210,8 +210,6 @@ configure = () => {
 };
 
 (() => {
-  var __oDatabaseConfig;
-
   try {
     logLine('Installing dependencies...');
     installDependencies();
@@ -222,7 +220,7 @@ configure = () => {
     logLine('Compiling frontend...');
     buildFrontend();
 
-    __oDatabaseConfig = configure().database;
+    configure();
   } catch(err) {
     logLine(err, LOG_ERR);
     logLine(err.stack, LOG_ERR);
@@ -230,18 +228,17 @@ configure = () => {
   }
 
   logLine('Importing database structure...');
-  require('./migrations/database')(
-    __oDatabaseConfig
-  ).then(() => {
-    logLine('Done without errors.', LOG_OK);
-    logLine('Congrats! Your Twi application has been sucessfully installed!',
-      LOG_OK
-    );
-    process.exit(0);
-  })
-  .catch(err => {
-    logLine(err, LOG_ERR);
-    logLine(err.stack, LOG_ERR);
-    process.exit(1);
-  });
+  require('./migrations')()
+    .then(() => {
+      logLine('Done without errors.', LOG_OK);
+      logLine('Congrats! Your Twi application has been sucessfully installed!',
+        LOG_OK
+      );
+      process.exit(0);
+    })
+    .catch(err => {
+      logLine(err, LOG_ERR);
+      logLine(err.stack, LOG_ERR);
+      process.exit(1);
+    });
 })();

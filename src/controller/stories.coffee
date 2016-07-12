@@ -92,7 +92,7 @@ actionSave = (next) ->
   yield next
 
 ###
-# DELETE 
+# DELETE /story/:slug
 ###
 actionDelete = (next) ->
   yield next
@@ -101,9 +101,14 @@ actionCharacters = (next) ->
   {name} = @params
 
   unless @isXhr
-    throw new NotAllowedException "Method not allowed for non-xhr requests."
+    throw new NotAllowedException "
+      Method not allowed for non-xhr requests on route #{@url}
+    "
 
-  @body = yield do story.getCharacters
+  @body = if name?
+    yield story.getCharactersByName name
+  else
+    yield do story.getCharacters
 
   yield next
 

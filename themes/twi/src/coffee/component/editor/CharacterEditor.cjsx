@@ -1,7 +1,7 @@
 {Component} = React = require 'react'
 InputField = require '../element/InputField'
 
-{isEmpty} = require 'lodash'
+{isEmpty, debounce} = require 'lodash'
 axios = require '../../helpers/axios-instance'
 
 class CharacterEditor extends Component
@@ -10,14 +10,26 @@ class CharacterEditor extends Component
       current: ''
       characters: []
 
+  pushCharacter: (tag) ->
+
+  popCharacter: -> @setState characters: do @state.characters.pop
+
   updateState: (e) =>
-    console.log e.target.value.split ','
-    console.log isEmpty @characters
+    @setState current: e.target.value
+    # e.target.value = ''
+
+    axios.get '/story/characters/' + e.target.value
+      .then (res) -> console.log res.data
+      .catch (err) -> console.log err
 
   render: ->
     <div className="character-editor-container">
       <div className="characher-editor-field">
-        <InputField label="Персонажи" updateState={@updateState} />
+        <InputField
+          name="current"
+          label="Персонажи"
+          updateState={@updateState}
+        />
       </div>
       <div className="character-editor-list"></div>
     </div>
