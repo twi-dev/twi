@@ -34,6 +34,7 @@ src/controller/api.coffee
 themes/**/views/api
 
 !setup/index.js
+!setup/migrations/index.js
 !src/controller
 !src/core
 !src/model
