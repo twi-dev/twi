@@ -62,6 +62,7 @@
   "devDependencies": {
     "ava": "^0.15.2",
     "browserify": "^13.0.0",
+    "browserify-hmr": "^0.3.1",
     "coffee-reactify": "^5.0.0",
     "coffee-script": "^1.10.0",
     "eslint": "^3.0.1",
@@ -79,6 +80,7 @@
     "gulp-svgmin": "^1.2.2",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.8",
     "iced-coffee-script": "^108.0.9",
     "jeet": "6.1.2",
     "react": "^15.2.0",

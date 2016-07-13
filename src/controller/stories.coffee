@@ -112,6 +112,11 @@ actionCharacters = (next) ->
 
   yield next
 
+actionMarks = (next) ->
+  {name} = @params
+
+  yield next
+
 main =  (r) ->
   # Get characters
   r '/story/characters/:name?'

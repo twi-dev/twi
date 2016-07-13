@@ -10,7 +10,7 @@ class CharacterEditor extends Component
       current: ''
       characters: []
 
-  pushCharacter: (tag) ->
+  pushCharacter: (id) -> @setState characters: @state.characters.push id
 
   popCharacter: -> @setState characters: do @state.characters.pop
 

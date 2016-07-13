@@ -4,6 +4,7 @@
 gulp = require 'gulp'
 gutil = require 'gulp-util'
 gulpif = require 'gulp-if'
+watch = require 'gulp-watch'
 plumber = require 'gulp-plumber'
 clean = require 'gulp-rimraf'
 rimraf = require 'rimraf'
@@ -16,8 +17,9 @@ csso = require 'gulp-csso'
 autoprefixer = require 'gulp-autoprefixer'
 
 # JS plugins
-cjsx = require 'coffee-reactify'
 browserify = require 'browserify'
+cjsx = require 'coffee-reactify'
+hmr = require 'browserify-hmr'
 uglify = require 'gulp-uglify'
 envify = require 'gulp-envify'
 source = require 'vinyl-source-stream' # For rename js bundle
@@ -89,21 +91,30 @@ errorHandler = (err) ->
   unless bIsDevel
     process.exit 1
 
+gulp.task 'env:devel', ->
+  do livereload.listen
+  bIsDevel = yes
+
 ###
 # Build Stylus
 ###
 gulp.task 'stylus', ->
-  gulp.src STYLUS_SRC
-    .pipe plumber errorHandler
-    # .pipe gulpif bIsDevel, newer STYLUS_SRC
-    .pipe stylus use: [
-      do jeet
-      do rupture
-    ]
-    .pipe autoprefixer browsers: ['last 4 versions']
-    .pipe gulpif not bIsDevel, do csso # Compress CSS only for production
-    .pipe gulp.dest STYLUS_DEST
-    .pipe gulpif bIsDevel, do livereload
+  rebuildStylus = ->
+    gulp.src STYLUS_SRC
+      .pipe plumber errorHandler
+      # .pipe gulpif bIsDevel, newer STYLUS_SRC
+      .pipe stylus use: [
+        do jeet
+        do rupture
+      ]
+      .pipe autoprefixer browsers: ['last 4 versions']
+      .pipe gulpif not bIsDevel, do csso # Compress CSS only for production
+      .pipe gulp.dest STYLUS_DEST
+      .pipe gulpif bIsDevel, do livereload
+
+  return do rebuildStylus unless bIsDevel
+
+  return watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus
 
 ###
 # Build CoffeeScript with Browserify
@@ -112,19 +123,31 @@ gulp.task 'coffee', ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if bIsDevel then 'development' else 'production'
 
-  browserify COFFEE_SRC,
+  bundler = browserify COFFEE_SRC,
     transform: [cjsx]
     extensions: ['.cjsx', '.coffee']
     insertGlobals: yes
     debug: bIsDevel
-  .bundle()
-  .pipe plumber errorHandler
-  .pipe source 'common.js'
-  .pipe do vinylBuffer
-  .pipe gulpif not bIsDevel, envify NODE_ENV: 'production'
-  .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
-  .pipe gulp.dest COFFEE_DEST
-  .pipe gulpif bIsDevel, do livereload
+    plugin: (if bIsDevel then [hmr] else [])
+
+  rebuildBundle = ->
+    bundler
+      .bundle()
+      .pipe plumber errorHandler
+      .pipe source 'common.js'
+      .pipe do vinylBuffer
+      .pipe gulpif not bIsDevel, envify NODE_ENV: 'production'
+      .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
+      .pipe gulp.dest COFFEE_DEST
+
+  # Production rebuild
+  return do rebuildBundle unless bIsDevel
+
+  # Development mode
+  return watch [
+    "#{COFFEE_SRC_DIR}/**/*.coffee"
+    "#{CJSX_SRC}"
+    ], rebuildBundle
 
 ###
 # Optimizing SVG.
@@ -150,14 +173,7 @@ gulp.task 'refresh', ->
 # 
 # Run: gulp devel
 ###
-gulp.task 'devel', ['svg', 'stylus', 'coffee'], ->
-  do livereload.listen
-  bIsDevel = yes
-  gulp.watch "#{STYLUS_SRC_DIR}/**/*.styl", ['stylus']
-  gulp.watch [
-    "#{COFFEE_SRC_DIR}/**/*.coffee"
-    "#{CJSX_SRC}"
-  ], ['coffee']
+gulp.task 'devel', ['env:devel', 'svg', 'stylus', 'coffee'], ->
   gulp.watch SVG_SRC, ['svg']
   gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
 

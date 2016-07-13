@@ -21,21 +21,25 @@ createTransport = ->
       user: smtp.user
       pass: smtp.pass
 
-# TODO: Rewrite this function using generators or thunk
-sendPlain = (sTo, sSubject, sText) ->
+###
+# Send an email to given address
+#
+# @param to
+###
+sendPlain = (to, subject, text) ->
   unless oTransporter?
     info "Email transporter is not set. Message has not sent."
     return
 
   yield oTransporter.sendMail
     from: "Пони-почтовик <#{smtp.user}>"
-    to: sTo
-    subject: sSubject
-    html: sText
+    to: to
+    subject: subject
+    html: text
 
-send = (sTo, sSubject, sTemplateName, oOptions = {}) ->
-  yield sendPlain sTo, sSubject,
-    yield renderer sTemplateName, oOptions
+send = (to, subject, templateName, oOptions = {}) ->
+  yield sendPlain to, subject,
+    yield renderer templateName, oOptions
 
 module.exports = do ->
   oTransporter ?= do createTransport
