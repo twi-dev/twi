@@ -20,6 +20,7 @@ autoprefixer = require 'gulp-autoprefixer'
 browserify = require 'browserify'
 cjsx = require 'coffee-reactify'
 hmr = require 'browserify-hmr'
+rht = require 'react-hot-transform'
 uglify = require 'gulp-uglify'
 envify = require 'gulp-envify'
 source = require 'vinyl-source-stream' # For rename js bundle
@@ -70,18 +71,6 @@ STYLUS_DEST = "#{THEME_PATH}/public/assets/css"
 bIsDevel = no
 
 ###
-# SIGINT signal listener
-# 
-# Clean frontend/gulp-runtime before exit if devel task has been running
-###
-process.on 'SIGINT', ->
-  if bIsDevel
-    rimraf COFFEE_TMP, ->
-      process.exit 0
-    return
-  process.exit 0
-
-###
 # Error Handler
 # 
 # @param Error err
@@ -94,6 +83,20 @@ errorHandler = (err) ->
 gulp.task 'env:devel', ->
   do livereload.listen
   bIsDevel = yes
+
+###
+# SIGINT signal listener
+# 
+# Clean frontend/gulp-runtime before exit if devel task has been running
+###
+process.on 'SIGINT', ->
+  if bIsDevel
+    rimraf COFFEE_TMP, ->
+      process.exit 0
+    return
+  process.exit 0
+
+process.on 'error', errorHandler
 
 ###
 # Build Stylus
@@ -124,7 +127,7 @@ gulp.task 'coffee', ->
   process.env.NODE_ENV = if bIsDevel then 'development' else 'production'
 
   bundler = browserify COFFEE_SRC,
-    transform: [cjsx]
+    transform: [cjsx, rht]
     extensions: ['.cjsx', '.coffee']
     insertGlobals: yes
     debug: bIsDevel
@@ -144,6 +147,7 @@ gulp.task 'coffee', ->
   return do rebuildBundle unless bIsDevel
 
   # Development mode
+  do rebuildBundle # Just rebuild bundle before run watcher
   return watch [
     "#{COFFEE_SRC_DIR}/**/*.coffee"
     "#{CJSX_SRC}"
