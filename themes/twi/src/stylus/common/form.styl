@@ -118,3 +118,55 @@ textarea
   &-synopsis,
   &-info
     height 128px
+
+.character-editor,
+.tag-editor,
+.comment-editor
+  &-container
+    position relative
+
+  &-list
+    list-style none
+    margin 0
+    padding 0
+
+    &-container
+      cf()
+      display none
+      position absolute
+      top 94%
+      left 0
+      width 100%
+      // min-height 50px
+      max-height 48px * 5
+      overflow-y auto
+      padding 6px 0
+      line-height 36px
+      box-sizing border-box
+      background white
+      border-radius 4px
+      box-shadow 0 1px 3px rgba(black, .12),
+        0 1px 2px rgba(black, .24)
+      z-index 4
+
+    &-active
+      display block
+
+    & li
+      cf()
+      padding 6px 8px
+      display block
+      cursor pointer
+      user-select none
+
+    &-pic
+      width 36px
+      height 36px
+      background white
+      box-sizing border-box
+      border black solid 1px
+      border-radius 100%
+      overflow hidden
+
+    &-label
+      padding-left 8px

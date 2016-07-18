@@ -2,216 +2,198 @@
 
 module.exports = [
   {
-    pic: null
+    pic: 'twilight-sparkle.png'
   },
   {
-    pic: null
+    pic: 'pinkie-pie.png'
   },
   {
-    pic: null
+    pic: 'applejack.png'
   },
   {
-    pic: null
+    pic: 'rainbow-dash.png'
   },
   {
-    pic: null
+    pic: 'rarity.png'
   },
   {
-    pic: null
+    pic: 'fluttershy.png'
   },
   {
-    pic: null
+    pic: 'apple-bloom.png'
   },
   {
-    pic: null
+    pic: 'sweetie-belle.png'
   },
   {
-    pic: null
+    pic: 'scootaloo.png'
   },
   {
-    pic: null
+    pic: 'spike.png'
   },
   {
-    pic: null
+    pic: 'princess-celestia.png'
   },
   {
-    pic: null
+    pic: 'princess-luna.png'
   },
   {
-    pic: null
+    pic: 'princess-mi-amore-cadenza.png'
   },
   {
-    pic: null
+    pic: 'princess-flurry-heart.png'
   },
   {
-    pic: null
+    pic: 'prince-Blueblood.png'
   },
   {
-    pic: null
+    pic: 'owlowiscious.png'
   },
   {
-    pic: null
+    pic: 'anon.png'
   },
   {
-    pic: null
+    pic: 'human.png'
   },
   {
-    pic: null
+    pic: 'fleetfoot.png'
   },
   {
-    pic: null
+    pic: 'soarin.png'
   },
   {
-    pic: null
+    pic: 'surprise.png'
   },
   {
-    pic: null
+    pic: 'spitfire.png'
   },
   {
-    pic: null
+    pic: 'blaze.png'
   },
   {
-    pic: null
+    pic: 'misty-fly.png'
   },
   {
-    pic: null
+    pic: 'lightning-dust.png'
   },
   {
-    pic: null
+    pic: 'cloud-kicker.png'
   },
   {
-    pic: null
+    pic: 'cloudchaser.png'
   },
   {
-    pic: null
+    pic: 'thunderlane.png'
   },
   {
-    pic: null
+    pic: 'meadow-flower.png'
   },
   {
-    pic: null
+    pic: 'bulk-biceps.png'
   },
   {
-    pic: null
+    pic: 'snowdrop.png'
   },
   {
-    pic: null
+    pic: 'cheerilee.png'
   },
   {
-    pic: null
+    pic: 'blossomforth.png'
   },
   {
-    pic: null
+    pic: 'derpy-hooves.png'
   },
   {
-    pic: null
+    pic: 'discord.png'
   },
   {
-    pic: null
+    pic: 'nightmare-moon.png'
   },
   {
-    pic: null
+    pic: 'octavia-melody.png'
   },
   {
-    pic: null
+    pic: 'vinyl-scratch.png'
   },
   {
-    pic: null
+    pic: 'lyra-heartstrings.png'
   },
   {
-    pic: null
+    pic: 'lemon-hearts.png'
   },
   {
-    pic: null
+    pic: 'twinkleshine.png'
   },
   {
-    pic: null
+    pic: 'minuette.png'
   },
   {
-    pic: null
+    pic: 'moondancer.png'
   },
   {
-    pic: null
+    pic: 'sweetie-drops.png'
   },
   {
-    pic: null
+    pic: 'golden-harvest.png'
   },
   {
-    pic: null
+    pic: 'shining-armor.png'
   },
   {
-    pic: null
+    pic: 'zecora.png'
   },
   {
-    pic: null
+    pic: 'coco-pommel.png'
   },
   {
-    pic: null
+    pic: 'angel-bunny.png'
   },
   {
-    pic: null
+    pic: 'night-light.png'
   },
   {
-    pic: null
+    pic: 'twilight-velvet.png'
   },
   {
-    pic: null
+    pic: 'diamond-tiara.png'
   },
   {
-    pic: null
+    pic: 'silver-spoon.png'
   },
   {
-    pic: null
+    pic: 'king-sombra.png'
   },
   {
-    pic: null
+    pic: 'queen-chrysalis.png'
   },
   {
-    pic: null
+    pic: 'lord-tirek.png'
   },
   {
-    pic: null
+    pic: 'big-macintosh.png'
   },
   {
-    pic: null
+    pic: 'granny-smith.png'
   },
   {
-    pic: null
+    pic: 'babs-seed.png'
   },
   {
-    pic: null
+    pic: 'roseluck.png'
   },
   {
-    pic: null
+    pic: 'princess-ember.png'
   },
   {
-    pic: null
+    pic: 'littlepip.png'
   },
   {
-    pic: null
+    pic: 'blackjack.png'
   },
   {
-    pic: null
+    pic: 'velvet-remedy.png'
   },
   {
-    pic: null
-  },
-  {
-    pic: null
-  },
-  {
-    pic: null
-  },
-  {
-    pic: null
-  },
-  {
-    pic: null
-  },
-  {
-    pic: null
-  },
-  {
-    pic: null
+    pic: 'original-character.png'
   },
 ];

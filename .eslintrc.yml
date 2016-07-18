@@ -6,6 +6,7 @@ env:
 extends: 'eslint:recommended'
 installedESLint: true
 parserOptions:
+  sourceType: module
   ecmaFeatures:
     experimentalObjectRestSpread: true
     jsx: true

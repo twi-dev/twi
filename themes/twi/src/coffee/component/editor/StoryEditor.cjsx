@@ -62,7 +62,7 @@ class StoryEditor extends Component
       </div>
       <div className="story-editor-field-container">
         <CharacterEditor
-          characters={@state.characters}
+          list={@state.characters}
         />
       </div>
       <div className="story-editor-field-container">

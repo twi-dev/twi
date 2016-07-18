@@ -20,6 +20,7 @@ logger = require '../middlewares/logger'
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
 
 PUBLIC_DIR = realpathSync "#{__dirname}/../../themes/#{theme}/public"
+UPLOADS_DIR = realpathSync "#{__dirname}/../../uploads"
 app = do koa
 app.keys = [session.secret]
 
@@ -34,6 +35,9 @@ app.use errorHandler
 # Serve favicon and static files
 app.use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
 app.use serve PUBLIC_DIR
+
+# Serve uploads
+app.use serve UPLOADS_DIR
 
 # Logger middleware for any requests
 app.use logger

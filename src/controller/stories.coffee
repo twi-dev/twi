@@ -122,6 +122,10 @@ main =  (r) ->
   r '/story/characters/:name?'
     .get actionCharacters
 
+  # Get marks
+  r '/story/marks/:title?'
+    .get actionMarks
+
   # List of all stories
   r '/stories/:page?'
     .get actionIndex

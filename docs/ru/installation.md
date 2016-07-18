@@ -1,7 +1,7 @@
 # Установка
 
 **Важно!** Прежде всего Вам необходимо установить
-Redis, Node.js, IcedCoffeeScript, Gulp и Bower.
+Redis, Node.js, CoffeeScript, Gulp и Bower.
 
 1. Скачайте архив с Twi,
   либо клонируйте репозиторий при помощи команды

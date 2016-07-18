@@ -4,15 +4,15 @@
 
 const help = () => {
   console.log(
-    "Available commands:\n" +
-    "  run, r               start Twi app\n" +
-    "  setup, s             run Twi installer\n" +
-    "  migrate, m [data|d]  run Twi migrations setup\n\n" +
-    "Options:\n" +
-    "  --version, -v  display current Twi version\n" +
-    "  --help, -h     show this help message\n\n" +
-    "Usage:\n" +
-    "  twi <command or option>\n"
+    'Available commands:\n' +
+    '  run, r               start Twi app\n' +
+    '  setup, s             run Twi installer\n' +
+    '  migrate, m [data|d]  run Twi migrations setup\n\n' +
+    'Options:\n' +
+    '  --version, -v  display current Twi version\n' +
+    '  --help, -h     show this help message\n\n' +
+    'Usage:\n' +
+    '  twi <command or option>\n'
   );
 };
 
@@ -46,7 +46,7 @@ switch (argv) {
     require('../setup');
     break;
   case 'migrate':
-    require(`../setup/migrations/migrate`);
+    require('../setup/migrations/migrate');
     break;
   case 'version':
     console.log(
@@ -57,6 +57,6 @@ switch (argv) {
     help();
     break;
   default:
-    console.log("\nUnknown command.\n");
+    console.log('\nUnknown command.\n');
     help();
 }
