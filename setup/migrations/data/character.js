@@ -196,4 +196,7 @@ module.exports = [
   {
     pic: 'original-character.png'
   },
+  {
+    pic: 'trixie-lulamoon.png'
+  }
 ];

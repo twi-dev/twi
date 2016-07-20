@@ -50,6 +50,8 @@ app.use sess
   store: do redisStore
   prefix: session.prefix
   key: "#{session.prefix}#{session.sessidName}"
+  cookie:
+    maxAge: 1000 * 60 * 60 * 24 * 360 # One year in ms
 
 # Csrf tokens
 csrf app

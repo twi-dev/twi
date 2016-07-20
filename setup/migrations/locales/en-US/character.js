@@ -196,4 +196,7 @@ module.exports = [
   {
     name: 'Original Character'
   },
+  {
+    name: 'Trixie Lulamoon'
+  }
 ];

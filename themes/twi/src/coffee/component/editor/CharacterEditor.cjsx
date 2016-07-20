@@ -53,7 +53,11 @@ class CharacterEditor extends Component
     return if isEmpty characters
 
     for character in characters
-      <li data-id={character.characterId} onClick={@chooseByClick}>
+      <li
+        key={character.characterId}
+        data-id={character.characterId}
+        onClick={@chooseByClick}
+      >
         <div className="character-editor-list-pic fl">
           <img
             src="/images/characters/#{character.pic or 'no-image.png'}"
