@@ -6,9 +6,11 @@ class InputField extends Component
       <input
         required
         className="form-input"
-        type={@props.type ? 'text'}
+        type={@props.type or 'text'}
         name={@props.name}
-        onChange={@props.updateState}
+        onChange={@props.onChangeHandler}
+        onKeyDown={@props.onKeyDownHandler}
+        value={@props.value}
       />
       <div className="field-underscore"></div>
       <div className="input-label">{@props.label}</div>

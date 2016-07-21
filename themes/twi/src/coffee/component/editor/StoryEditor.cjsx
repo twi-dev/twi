@@ -1,8 +1,7 @@
 {Component} = React = require 'react'
-LinkedStateMixin = require 'react-addons-linked-state-mixin'
 InputField = require '../element/InputField'
 TextareaField = require '../element/TextareaField'
-CharacterEditor = require './CharacterEditor'
+InputSuggestions = require '../element/InputSuggestions'
 
 {assign} = require 'lodash'
 axios = require '../../helpers/axios-instance'
@@ -61,16 +60,21 @@ class StoryEditor extends Component
         />
       </div>
       <div className="story-editor-field-container">
-        <CharacterEditor
-          list={@state.characters}
+        <InputSuggestions
+          type="text"
+          name="characters"
+          label="Персонажи"
+          url="/story/characters"
+          selected={@state.characters}
         />
       </div>
       <div className="story-editor-field-container">
-        <InputField
+        <InputSuggestions
           type="text"
           name="marks"
           label="Метки"
-          updateState={@updateStatesOfFields}
+          url="/story/marks"
+          selected={@state.marks}
         />
       </div>
       <div className="story-editor-field-container">

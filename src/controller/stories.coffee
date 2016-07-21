@@ -115,6 +115,16 @@ actionCharacters = (next) ->
 actionMarks = (next) ->
   {name} = @params
 
+  unless @isXhr
+    throw new NotAllowedException "
+      Method not allowed for non-xhr requests on route #{@url}
+    "
+
+  @body = if name?
+    yield story.getMarkByName name
+  else
+    yield do story.getMarks
+
   yield next
 
 main =  (r) ->
@@ -123,7 +133,7 @@ main =  (r) ->
     .get actionCharacters
 
   # Get marks
-  r '/story/marks/:title?'
+  r '/story/marks/:name?'
     .get actionMarks
 
   # List of all stories

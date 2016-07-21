@@ -24,6 +24,10 @@ class Story
   getCharacters: ->
     yield character.findAll
       raw: yes
+      attributes: [
+        ['character_id', 'id']
+        'pic'
+      ]
       include: [
         as: 'locale'
         model: characterLocale
@@ -35,6 +39,10 @@ class Story
   getCharactersByName: (name) ->
     yield character.findAll
       raw: yes
+      attributes: [
+        ['character_id', 'id']
+        'pic'
+      ]
       include: [
         as: 'locale'
         model: characterLocale
@@ -49,6 +57,10 @@ class Story
   getMarks: ->
     yield mark.findAll
       raw: yes
+      attributes: [
+        ['mark_id', 'id']
+        'color'
+      ]
       include: [
         as: 'locale'
         model: markLocale
@@ -60,6 +72,10 @@ class Story
   getMarkByName: (name) ->
     yield mark.findAll
       raw: yes
+      attributes: [
+        ['mark_id', 'id']
+        'color'
+      ]
       include: [
         as: 'locale'
         model: markLocale
