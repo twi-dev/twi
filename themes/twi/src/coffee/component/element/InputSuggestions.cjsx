@@ -4,6 +4,11 @@ axios = require '../../helpers/axios-instance'
 keys = require '../../helpers/keyboard'
 {isEmpty} = require 'lodash'
 
+###
+# ImputSuggestions component
+#
+# @var object state
+###
 class InputSuggestions extends Component
   constructor: ->
     @state =
@@ -17,6 +22,11 @@ class InputSuggestions extends Component
   ###
   _changeSelection: ->
 
+  ###
+  # Remove suggestion with given id
+  #
+  # @param UUID id
+  ###
   _spliceSuggestion: (id) ->
     return unless id
 
@@ -29,6 +39,12 @@ class InputSuggestions extends Component
 
     @setState selectedSuggestions: newState
 
+  ###
+  # Add selected suggestion to state
+  #
+  # @param UUID id
+  # @param string name
+  ###
   _pushSuggestion: (id, name) ->
     return unless id
     return if id in @props.selected
@@ -44,7 +60,12 @@ class InputSuggestions extends Component
     if suggestion.pic
       <div className="character-editor-list-pic fl">
         <img
-          src="/images/characters/#{suggestion.pic or 'no-image.png'}"
+          src={
+            if suggestion.pic
+              "/images/characters/#{suggestion.pic}"
+            else
+              "/img/user/no-image.png"
+          }
           alt={suggestion['locale.name']}
         />
       </div>
@@ -118,9 +139,9 @@ class InputSuggestions extends Component
       if e.keyCode in [keys.UP, keys.DOWN]
         console.log 'up or down pressed'
 
-    if e.keyCode is keys.BACKSPACE and @state.showList is no
+    if e.keyCode is keys.BACKSPACE and @state.current is ''
       do e.preventDefault
-      __ref = @state.selectedSuggestions[@state.selectedSuggestions.length - 1].id
+      __ref = @state.selectedSuggestions[@state.selectedSuggestions.length - 1]?.id
       @_spliceSuggestion __ref
 
   render: ->
