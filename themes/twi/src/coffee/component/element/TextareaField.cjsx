@@ -7,7 +7,7 @@ class TextareaField extends Component
         required
         className="story-editor-info form-input"
         name={@props.name}
-        onChange={@props.updateState}
+        onChange={@props.onChangeHandler}
       />
       <div className="field-underscore"></div>
       <div className="input-label">{@props.label}</div>

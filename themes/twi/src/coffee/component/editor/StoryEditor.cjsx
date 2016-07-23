@@ -3,7 +3,7 @@ InputField = require '../element/InputField'
 TextareaField = require '../element/TextareaField'
 InputSuggestions = require '../element/InputSuggestions'
 
-{assign} = require 'lodash'
+{assign, isEmpty} = require 'lodash'
 axios = require '../../helpers/axios-instance'
 
 ###
@@ -22,6 +22,7 @@ class StoryEditor extends Component
       synopsis: ''
       description: ''
       chapters: []
+      isItDraft: no
 
   ###
   # Submit handler
@@ -31,7 +32,19 @@ class StoryEditor extends Component
   submit: (e) =>
     do e.preventDefault
     {dataset: {csrf}} = document.querySelector '#story-editor'
-    {title, characters, marks, synopsis, description} = @state
+    {title, characters, marks, synopsis, description, chapters} = @state
+
+    # unless title
+    #   return console.info 'Рассказ должен быть озаглавлен.'
+
+    # if characters.length < 1
+    #   return console.info 'В рассказе должен быть хотя бы один персонаж.'
+
+    # if marks.length < 1
+    #   return console.info 'Рассказ должен содержать хотя бы одну метку.'
+
+    # if isEmpty chapters
+    #   return console.info 'Рассказ должен содержать хотя бы одну главу.'
 
     axios.post '/story/new', {
       _csrf: csrf
@@ -46,6 +59,45 @@ class StoryEditor extends Component
 
   updateStatesOfFields: (e) => @setState "#{e.target.name}": e.target.value
 
+  spliceFromState: (stateName, id) ->
+    newState = @state[stateName][..]
+    for value, index in newState when value is id
+      newState.splice index, 1
+
+    @setState "#{stateName}": newState
+
+  ###
+  # Push given value to state with given name o_O
+  #
+  # @param string stateName
+  # @param mixed value
+  ###
+  pushToState: (stateName, value) ->
+    return if value in @state[stateName]
+
+    newState = @state[stateName][..] # Copy old state
+    newState.push value
+
+    @setState "#{stateName}": newState
+
+  ###
+  # Add new character to characters state
+  #
+  # @param UUID characterId
+  ###
+  _pushCharacter: (characterId) => @pushToState 'characters', characterId
+
+  _spliceCharacter: (id) => @spliceFromState 'characters', id
+
+  ###
+  # Add new mark to marks state
+  #
+  # @param UUID markId
+  ###
+  _pushMark: (markId) => @pushToState 'marks', markId
+
+  _spliceMark: (id) => @spliceFromState 'marks', id
+
   render: ->
     <form
       action={@props.action} method={@props.method}
@@ -56,7 +108,7 @@ class StoryEditor extends Component
           type="text"
           name="title"
           label="Название"
-          updateState={@updateStatesOfFields}
+          onChangeHandler={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">
@@ -66,6 +118,8 @@ class StoryEditor extends Component
           label="Персонажи"
           url="/story/characters"
           selected={@state.characters}
+          onChange={@_pushCharacter}
+          onClick={@_spliceCharacter}
         />
       </div>
       <div className="story-editor-field-container">
@@ -75,20 +129,22 @@ class StoryEditor extends Component
           label="Метки"
           url="/story/marks"
           selected={@state.marks}
+          onChange={@_pushMark}
+          onClick={@_spliceMark}
         />
       </div>
       <div className="story-editor-field-container">
         <TextareaField
           name="synopsis"
           label="Синопсис"
-          updateState={@updateStatesOfFields}
+          onChangeHandler={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">
         <TextareaField
           name="description"
           label="Описание"
-          updateState={@updateStatesOfFields}
+          onChangeHandler={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">

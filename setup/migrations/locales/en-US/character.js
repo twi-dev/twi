@@ -198,5 +198,8 @@ module.exports = [
   },
   {
     name: 'Trixie Lulamoon'
+  },
+  {
+    name: 'Fleur Dis Lee'
   }
 ];

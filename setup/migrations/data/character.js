@@ -198,5 +198,8 @@ module.exports = [
   },
   {
     pic: 'trixie-lulamoon.png'
+  },
+  {
+    pic: 'fleur-dis-lee.png'
   }
 ];

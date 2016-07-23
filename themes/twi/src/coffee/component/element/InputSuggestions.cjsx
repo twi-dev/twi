@@ -9,6 +9,7 @@ class InputSuggestions extends Component
     @state =
       showList: no
       current: ''
+      selectedSuggestions: []
       suggestions: []
 
   ###
@@ -16,11 +17,28 @@ class InputSuggestions extends Component
   ###
   _changeSelection: ->
 
-  _pushSuggestion: (suggestion) ->
-    return unless suggestion
+  _spliceSuggestion: (id) ->
+    return unless id
 
-    @props.selected.push suggestion unless suggestion in @props.selected
-    @setState showList: no, current: ''
+    @props.onClick id
+
+    newState = @state.selectedSuggestions[..]
+    for suggestion, index in newState when suggestion.id is id
+      newState.splice index, 1
+      break
+
+    @setState selectedSuggestions: newState
+
+  _pushSuggestion: (id, name) ->
+    return unless id
+    return if id in @props.selected
+
+    @props.onChange id
+
+    newState = @state.selectedSuggestions[..]
+    newState.push {id, name}
+
+    @setState showList: no, current: '', selectedSuggestions: newState
 
   _renderSuggestionMark: (suggestion) ->
     if suggestion.pic
@@ -46,6 +64,24 @@ class InputSuggestions extends Component
         </div>
       </li>
 
+  _renderTagList: (tags) ->
+    for suggestion in @state.selectedSuggestions
+      <div
+        key={suggestion.id}
+        data-id={suggestion.id}
+        className="suggestion-input-tag fl"
+        onClick={@removeByClick}
+      >
+        {suggestion.name}
+      </div>
+
+  _renderTags: ->
+    return if isEmpty @state.selectedSuggestions
+
+    <div className="suggestion-input-tags">
+      {@_renderTagList @state.selectedSuggestions}
+    </div>
+
   ###
   # Get suggestions from server
   #
@@ -67,34 +103,57 @@ class InputSuggestions extends Component
           suggestions: res.data
       .catch (err) -> console.error err
 
-  chooseByClick: (e) => @_pushSuggestion e.currentTarget.dataset.id
+  removeByClick: (e) => @_spliceSuggestion e.currentTarget.dataset.id
+
+  chooseByClick: (e) =>
+    @_pushSuggestion e.currentTarget.dataset.id, do e.currentTarget.innerText.trim
 
   chooseByKeyDown: (e) =>
     if e.keyCode in [keys.TAB, keys.ENTER, keys.UP, keys.DOWN] and @state.showList
       do e.preventDefault
 
       if e.keyCode in [keys.TAB, keys.ENTER]
-        console.log 'tab on enter'
+        console.log 'tab or enter pressed'
 
       if e.keyCode in [keys.UP, keys.DOWN]
-        console.log 'up or down'
+        console.log 'up or down pressed'
+
+    if e.keyCode is keys.BACKSPACE and @state.showList is no
+      do e.preventDefault
+      __ref = @state.selectedSuggestions[@state.selectedSuggestions.length - 1].id
+      @_spliceSuggestion __ref
 
   render: ->
     <div className="input-suggestions-container">
       <div className="input-suggestions-field">
-        <InputField
-          name={@props.name}
-          label={@props.label}
-          value={@state.current}
-          onChangeHandler={@getSuggestions}
-          onKeyDownHandler={@chooseByKeyDown}
-        />
+        <div className="input-container">
+          {do @_renderTags}
+          <input
+            required
+            className="form-input"
+            type={@props.type or 'text'}
+            name={@props.name}
+            onChange={@getSuggestions}
+            onKeyDown={@chooseByKeyDown}
+            value={@state.current}
+          />
+          <div className="field-underscore"></div>
+          <div className="input-label#{
+            unless isEmpty @state.selectedSuggestions
+               ' input-label-float'
+            else ''
+          }">
+              {@props.label}
+            </div>
+        </div>
       </div>
       <div className="input-suggestions-list-container#{
           if @state.showList then ' input-suggestions-list-active' else ''
         }"
       >
-        <ul className="input-suggestions-list">{do @_renderSuggestionsList}</ul>
+        <ul className="input-suggestions-list">
+          {do @_renderSuggestionsList}
+        </ul>
       </div>
     </div>
 
