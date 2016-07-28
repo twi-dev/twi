@@ -8,6 +8,10 @@ keys = require '../../helpers/keyboard'
 # ImputSuggestions component
 #
 # @var object state
+#   - boolean showList
+#   - string current
+#   - array selectedSuggestions
+#   - array suggestions
 ###
 class InputSuggestions extends Component
   constructor: ->
