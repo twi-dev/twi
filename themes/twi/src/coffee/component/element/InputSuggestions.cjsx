@@ -1,4 +1,4 @@
-{Component} = React = require 'react'
+{Component, PropTypes} = React = require 'react'
 InputField = require './InputField'
 axios = require '../../helpers/axios-instance'
 keys = require '../../helpers/keyboard'
@@ -14,6 +14,18 @@ keys = require '../../helpers/keyboard'
 #   - array suggestions - Collection of all suggestions
 ###
 class InputSuggestions extends Component
+  @propTypes:
+    type: PropTypes.string
+    name: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired
+    url: PropTypes.string.isRequired
+    selected: PropTypes.array.isRequired
+    onChange: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired
+
+  @defaultProps:
+    type: 'text'
+
   constructor: ->
     @state =
       showList: no
@@ -165,6 +177,7 @@ class InputSuggestions extends Component
       @_spliceSuggestion __ref
 
   closeSuggectionsOnBlur: =>
+    # Close list on next tick
     setTimeout (=> @setState showList: no), 0 if @state.showList
 
   openOnFocus: =>
@@ -178,7 +191,7 @@ class InputSuggestions extends Component
           <input
             required
             className="form-input"
-            type={@props.type or 'text'}
+            type={@props.type}
             name={@props.name}
             onChange={@getSuggestions}
             onKeyDown={@chooseByKeyDown}

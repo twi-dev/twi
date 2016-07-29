@@ -1,4 +1,4 @@
-{Component} = React = require 'react'
+{Component, PropTypes} = React = require 'react'
 InputField = require '../element/InputField'
 TextareaField = require '../element/TextareaField'
 InputSuggestions = require '../element/InputSuggestions'
@@ -14,6 +14,13 @@ axios = require '../../helpers/axios-instance'
 #   I'm not a frontend developer, so, this one may looks ugly :)
 ###
 class StoryEditor extends Component
+  @propTypes:
+    action: PropTypes.string.isRequired
+    method: PropTypes.string.isRequired
+
+  @defaultProps:
+    method: 'post'
+
   constructor: ->
     @state =
       title: ''
