@@ -164,6 +164,12 @@ class InputSuggestions extends Component
       __ref = @state.selectedSuggestions[@state.selectedSuggestions.length - 1]?.id
       @_spliceSuggestion __ref
 
+  closeSuggectionsOnBlur: =>
+    setTimeout (=> @setState showList: no), 0 if @state.showList
+
+  openOnFocus: =>
+    @setState showList: yes if @state.current and not isEmpty @state.suggestions
+
   render: ->
     <div className="input-suggestions-container">
       <div className="input-suggestions-field">
@@ -176,6 +182,8 @@ class InputSuggestions extends Component
             name={@props.name}
             onChange={@getSuggestions}
             onKeyDown={@chooseByKeyDown}
+            onBlur={@closeSuggectionsOnBlur}
+            onFocus={@openOnFocus}
             value={@state.current}
           />
           <div className="field-underscore"></div>
