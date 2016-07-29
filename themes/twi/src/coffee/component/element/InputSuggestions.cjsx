@@ -76,6 +76,7 @@ class InputSuggestions extends Component
       current: ''
       actve: 0
       selectedSuggestions: newState
+      suggestions: []
 
   _renderSuggestionMark: (suggestion) ->
     if suggestion.pic
