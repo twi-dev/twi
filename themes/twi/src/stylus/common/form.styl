@@ -157,6 +157,7 @@ textarea
     list-style none
     margin 0
     padding 0
+    overflow hidden
 
     &-container
       cf()
@@ -168,7 +169,7 @@ textarea
       // min-height 50px
       max-height 48px * 5
       overflow-y auto
-      padding 6px 0
+      // padding 6px 0
       line-height 36px
       box-sizing border-box
       background white
@@ -186,6 +187,10 @@ textarea
       display block
       cursor pointer
       user-select none
+
+    & li#selected-suggestion
+      // background #dadada
+      background rgba(black, .12)
 
     &-pic
       width 36px

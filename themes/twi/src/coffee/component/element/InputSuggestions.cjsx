@@ -8,16 +8,17 @@ keys = require '../../helpers/keyboard'
 # ImputSuggestions component
 #
 # @var object state
-#   - boolean showList
-#   - string current
-#   - array selectedSuggestions
-#   - array suggestions
+#   - boolean showList - Show list of suggestions?
+#   - string current - Current suggestion value in input
+#   - array selectedSuggestions - Collection of all selected suggestions
+#   - array suggestions - Collection of all suggestions
 ###
 class InputSuggestions extends Component
   constructor: ->
     @state =
       showList: no
       current: ''
+      active: 0
       selectedSuggestions: []
       suggestions: []
 
@@ -58,7 +59,11 @@ class InputSuggestions extends Component
     newState = @state.selectedSuggestions[..]
     newState.push {id, name}
 
-    @setState showList: no, current: '', selectedSuggestions: newState
+    @setState
+      showList: no
+      current: ''
+      actve: 0
+      selectedSuggestions: newState
 
   _renderSuggestionMark: (suggestion) ->
     if suggestion.pic
@@ -77,8 +82,9 @@ class InputSuggestions extends Component
   _renderSuggestionsList: ->
     return if isEmpty @state.suggestions
 
-    for suggestion in @state.suggestions when not (suggestion.id in @props.selected)
+    for suggestion, index in @state.suggestions when not (suggestion.id in @props.selected)
       <li
+        id={"selected-suggestion" if index is @state.active}
         key={suggestion.id}
         data-id={suggestion.id}
         onClick={@chooseByClick}
@@ -90,7 +96,7 @@ class InputSuggestions extends Component
       </li>
 
   _renderTagList: (tags) ->
-    for suggestion in @state.selectedSuggestions
+    for suggestion, index in @state.selectedSuggestions
       <div
         key={suggestion.id}
         data-id={suggestion.id}
@@ -137,11 +143,21 @@ class InputSuggestions extends Component
     if e.keyCode in [keys.TAB, keys.ENTER, keys.UP, keys.DOWN] and @state.showList
       do e.preventDefault
 
+      selected = document.querySelector '#selected-suggestion'
       if e.keyCode in [keys.TAB, keys.ENTER]
-        console.log 'tab or enter pressed'
+        @_pushSuggestion selected.dataset.id, do selected.innerText.trim
+        return
 
       if e.keyCode in [keys.UP, keys.DOWN]
-        console.log 'up or down pressed'
+        __nodes = selected.parentNode.childNodes
+        for element, index in __nodes when element is selected
+          __nextIndex = if e.keyCode is keys.UP
+            if index <= 0 then __nodes.length - 1 else index - 1
+          else if e.keyCode is keys.DOWN
+            if index >= __nodes.length - 1 then 0 else index + 1
+
+          @setState active: __nextIndex
+          break
 
     if e.keyCode is keys.BACKSPACE and @state.current is ''
       do e.preventDefault
