@@ -94,7 +94,7 @@ class InputSuggestions extends Component
   _renderSuggestionsList: ->
     return if isEmpty @state.suggestions
 
-    for suggestion, index in @state.suggestions when not (suggestion.id in @props.selected)
+    for suggestion, index in @state.suggestions
       <li
         id={"selected-suggestion" if index is @state.active}
         key={suggestion.id}
