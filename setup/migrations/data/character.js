@@ -44,7 +44,7 @@ module.exports = [
     pic: 'princess-flurry-heart.png'
   },
   {
-    pic: 'prince-Blueblood.png'
+    pic: 'prince-blueblood.png'
   },
   {
     pic: 'owlowiscious.png'

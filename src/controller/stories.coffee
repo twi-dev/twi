@@ -11,38 +11,38 @@ NotAllowedException = require '../core/errors/NotAllowed'
 # 
 # GET /stories/:page?
 ###
-actionIndex = (next) ->
+actionIndex = ->
   @render 'stories/index',
     title: t 'stories.title.index'
 
-  yield next
+  yield return
 
 ###
 # GET
 ###
-actionStory = (next) ->
+actionStory = ->
   @render 'stories/story',
     title: 'Страница рассказа'
 
-  yield next
+  yield return
 
 ###
 # Read story with given id
 # 
 # GET /story/read/:slug/:chapter?
 ###
-actionRead = (next) ->
+actionRead = ->
   @render 'stories/read',
     title: 'Story title'
 
-  yield next
+  yield return
 
 ###
 # Response Add Story page
 # 
 # GET /story/new
 ###
-actionNew = (next) ->
+actionNew = ->
   unless do @req.isAuthenticated
     throw new ForbiddenException "
       Unauthorized access to \"Add new story\" page.
@@ -52,14 +52,14 @@ actionNew = (next) ->
     title: t 'stories.title.new'
     _csrf: @csrf
 
-  yield next
+  yield return
 
 ###
 # Add new story
 #
 # POST /story/new
 ###
-actionCreateStory = (next) ->
+actionCreateStory = ->
   unless do @req.isAuthenticated
     throw new ForbiddenException "
       Unauthorized access to \"Add new story\" page.
@@ -80,34 +80,34 @@ actionCreateStory = (next) ->
       isItDraft, chapters
     }
 
-  yield next
+  yield return
 
 ###
 # Response Edit Story page
 #
 # GET /story/edit/:slug
 ###
-actionEdit = (next) ->
+actionEdit = ->
   @render 'stories/edit',
     title: t 'stories.title.edit'
 
-  yield next
+  yield return
 
 ###
 # Save changes for story with given id
 # 
 # PUT /story/edit/:slug
 ###
-actionSave = (next) ->
-  yield next
+actionSave = ->
+  yield return
 
 ###
 # DELETE /story/:slug
 ###
-actionDelete = (next) ->
-  yield next
+actionDelete = ->
+  yield return
 
-actionCharacters = (next) ->
+actionCharacters = ->
   {name} = @params
 
   unless @isXhr
@@ -120,9 +120,9 @@ actionCharacters = (next) ->
   else
     yield do story.getCharacters
 
-  yield next
+  yield return
 
-actionMarks = (next) ->
+actionMarks = ->
   {name} = @params
 
   unless @isXhr
@@ -135,7 +135,7 @@ actionMarks = (next) ->
   else
     yield do story.getMarks
 
-  yield next
+  yield return
 
 main =  (r) ->
   # Get characters

@@ -5,7 +5,7 @@ blog = require '../model/Blog'
 ForbiddenException = require '../core/errors/Forbidden'
 NotFoundException = require '../core/errors/NotFound'
 
-actionTag = (next) ->
+actionTag = ->
   {tagName} = @params
 
   oTag = yield blog.getTagByName tagName
@@ -13,15 +13,15 @@ actionTag = (next) ->
   @render 'blog/tag',
     title: "Поиск по тегу #{oTag?.name}"
 
-  yield next
+  yield return
 
-actionIndex = (next) ->
+actionIndex = ->
   @render 'blog/index',
     title: 'Блог'
 
-  yield next
+  yield return
 
-actionNew = (next) ->
+actionNew = ->
   {user} = @req
 
   unless user? or user?.role < 3
@@ -30,26 +30,23 @@ actionNew = (next) ->
   @render 'blog/new',
     title: 'Новая запись в блог'
 
-  yield next
+  yield return
 
-actionCreate = (next) ->
-  yield next
+actionCreate = -> yield return
 
-actionEdit = (next) ->
+actionEdit = ->
   {user} = @req
 
   unless user? or user?.role < 3
     throw new ForbiddenException "Unauthorized access to #{@url}"
 
-  yield next
+  yield return
 
-actionSave = (next) ->
-  yield next
+actionSave = -> yield return
 
-actionDelete = (next) ->
-  yield next
+actionDelete = -> yield return
 
-actionRead = (next) ->
+actionRead = ->
   # oPost = yield blog.getPostById @params.postId
   # @render 'blog/post',
   #   title: oPost.title
@@ -59,27 +56,27 @@ actionRead = (next) ->
   # for same specific exceptions.
   throw new NotFoundException "Posts is not implemented right now."
 
-  yield next
+  yield return
 
-module.exports = (route) ->
-  route '/blog/tag/:tagName'
+module.exports = (r) ->
+  r '/blog/tag/:tagName'
     .get actionTag
 
-  route '/blog/post/:postId'
+  r '/blog/post/:postId'
     .get actionRead
 
-  route '/blog/new'
+  r '/blog/new'
     .get actionNew
     .post actionCreate
 
-  route '/blog/edit/:postId'
+  r '/blog/edit/:postId'
     .get actionEdit
     .put actionSave
 
-  route '/blog/delete/:postId'
+  r '/blog/delete/:postId'
     .delete actionDelete
 
-  route '/blog/:page?'
+  r '/blog/:page?'
     .get actionIndex
 
   return

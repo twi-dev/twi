@@ -23,7 +23,7 @@ passport.use new Strategy
 # 
 # GET /auth/signin
 ###
-actionLogin = (next) ->
+actionLogin = ->
   if do @isAuthenticated
     return @redirect '/'
 
@@ -32,22 +32,22 @@ actionLogin = (next) ->
     __csrf: @csrf
     __return: @query.return or '/'
 
-  yield next
+  yield return
 
 ###
 # POST /auth/signin
 ###
-actionSignin = (next) ->
+actionSignin = ->
   @redirect @query.return or '/'
 
-  yield next
+  yield return
 
 ###
 # Response signup page for GET method
 # 
 # GET /auth/signup
 ###
-actionRegister = (next) ->
+actionRegister = ->
   {inviteHash} = @params
   unless enableSignup
     return @render 'auth/signup-disabled',
@@ -61,14 +61,14 @@ actionRegister = (next) ->
     __csrf: @csrf
     __return: @query.return or '/'
 
-    yield next
+  yield return
 
 ###
 # Register new user
 # 
 # POST /auth/signup
 ###
-actionSignup = (next) ->
+actionSignup = ->
   {inviteHash} = @params
   unless enableSignup
     throw new ForbiddenException "Unauthorized access to registration form."
@@ -79,14 +79,14 @@ actionSignup = (next) ->
 
   @redirect @query.return or '/'
 
-  yield next
+  yield return
 
 ###
 # Confirm account via email
 #
 # GET /auth/confirm/:confirmationHash
 ###
-actionConfirm = (next) ->
+actionConfirm = ->
   {confirmationHash} = @params
 
   unless yield user.activate confirmationHash
@@ -97,33 +97,33 @@ actionConfirm = (next) ->
   @render 'auth/confirm-success',
     title: t 'auth.title.confirm.success'
 
-  yield next
+  yield return
 
 ###
 # Logout
 #
 # POST /auth/logout
 ###
-actionLogout = (next) ->
+actionLogout = ->
   do @logout
   @redirect @query.return or '/'
 
-  yield next
+  yield return
 
-module.exports = (route) ->
-  route '/auth/signin'
+module.exports = (r) ->
+  r '/auth/signin'
     .get actionLogin
     .post passport.authenticate('local'), actionSignin
 
-  route '/auth/signup/:inviteHash?'
+  r '/auth/signup/:inviteHash?'
     .get actionRegister
     .post actionSignup
 
   # Confirmation link
-  route '/auth/confirm/:confirmationHash'
+  r '/auth/confirm/:confirmationHash'
     .get actionConfirm
 
-  route '/auth/logout'
+  r '/auth/logout'
     .get actionLogout
 
   return

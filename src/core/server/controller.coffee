@@ -15,18 +15,18 @@ router = require 'koa-routing'
 ###
 # Throwing NotFoundException for unknown routes on GET method
 ###
-actionNotFound = (next) ->
+actionNotFound = ->
   throw new NotFoundException "Page not found on route #{@url}"
-  yield next
+  yield return
 
 ###
 # Throwing NotAllwedException for unknown methods on any routes
 ###
-actionNotAllowed = (next) ->
+actionNotAllowed = ->
   throw new NotAllwedException "
     Unknown method #{@method} on route #{@url}
   "
-  yield next
+  yield return
 
 controller = (app) ->
   # Set router middleware

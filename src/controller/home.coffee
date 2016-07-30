@@ -8,79 +8,78 @@ i18n = require '../core/i18n'
 # 
 # GET /
 ###
-actionIndex = (next) ->
+actionIndex = ->
   @render 'home/home',
     title: i18n.t 'home.title.index',
       name: name
 
-  yield next
+  yield return
 
 ###
 # Response Site Help page
 # 
 # GET /help
 ###
-actionHelp = (next) ->
+actionHelp = ->
   @render 'home/help',
     title: i18n.t 'home.title.help'
 
-  yield next
+  yield return
 
 ###
 # Response Site Feedback page
 # 
 # GET /feedback
 ###
-actionFeedback = (next) ->
+actionFeedback = ->
   @render 'home/feedback',
     title: i18n.t 'home.title.feedback'
 
-  yield next
+  yield return
 
 ###
 # Send a feedback message
 # 
 # POST /feedback
 ###
-actionSend = (next) ->
-  yield next
+actionSend = -> yield return
 
 ###
 # Response Site Rules page
 # 
 # GET /rules
 ###
-actionRules = (next) ->
+actionRules = ->
   @render 'home/rules',
     title: i18n.t 'home.title.rules'
 
-  yield next
+  yield return
 
-actionOutdated = (next) ->
+actionOutdated = ->
   @render 'errors/outdated',
     title: 'You are using an outdated browser'
 
-  yield next
+  yield return
 
-module.exports = (route) ->
+module.exports = (r) ->
   # Home page
-  route '/'
+  r '/'
     .get actionIndex
 
   # Site help & FAQ
-  route '/help'
+  r '/help'
     .get actionHelp
 
   # Site feedback
-  route '/feedback'
+  r '/feedback'
     .get actionFeedback
     .post actionSend
 
   # Site rules
-  route '/rules'
+  r '/rules'
     .get actionRules
 
-  route '/outdated'
+  r '/outdated'
     .get actionOutdated
 
   return

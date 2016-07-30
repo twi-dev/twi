@@ -10,7 +10,7 @@ keys = require '../../helpers/keyboard'
 # @var object state
 #   - boolean showList - Show list of suggestions?
 #   - string current - Current suggestion value in input
-#   - array selectedSuggestions - Collection of all selected suggestions
+#   - array selected - Collection of all selected suggestions
 #   - array suggestions - Collection of all suggestions
 ###
 class InputSuggestions extends Component
@@ -31,7 +31,7 @@ class InputSuggestions extends Component
       showList: no
       current: ''
       active: 0
-      selectedSuggestions: []
+      selected: []
       suggestions: []
 
   ###
@@ -49,12 +49,12 @@ class InputSuggestions extends Component
 
     @props.onClick id
 
-    newState = @state.selectedSuggestions[..]
+    newState = @state.selected[..]
     for suggestion, index in newState when suggestion.id is id
       newState.splice index, 1
       break
 
-    @setState selectedSuggestions: newState
+    @setState selected: newState
 
   ###
   # Add selected suggestion to state
@@ -68,14 +68,14 @@ class InputSuggestions extends Component
 
     @props.onChange id
 
-    newState = @state.selectedSuggestions[..]
+    newState = @state.selected[..]
     newState.push {id, name}
 
     @setState
       showList: no
       current: ''
       actve: 0
-      selectedSuggestions: newState
+      selected: newState
       suggestions: []
 
   _renderSuggestionMark: (suggestion) ->
@@ -109,7 +109,7 @@ class InputSuggestions extends Component
       </li>
 
   _renderTagList: (tags) ->
-    for suggestion, index in @state.selectedSuggestions
+    for suggestion, index in @state.selected
       <div
         key={suggestion.id}
         data-id={suggestion.id}
@@ -120,10 +120,10 @@ class InputSuggestions extends Component
       </div>
 
   _renderTags: ->
-    return if isEmpty @state.selectedSuggestions
+    return if isEmpty @state.selected
 
     <div className="suggestion-input-tags">
-      {@_renderTagList @state.selectedSuggestions}
+      {@_renderTagList @state.selected}
     </div>
 
   ###
@@ -174,8 +174,7 @@ class InputSuggestions extends Component
 
     if e.keyCode is keys.BACKSPACE and @state.current is ''
       do e.preventDefault
-      __ref = @state.selectedSuggestions[@state.selectedSuggestions.length - 1]?.id
-      @_spliceSuggestion __ref
+      @_spliceSuggestion @state.selected[@state.selected.length - 1]?.id
 
   closeSuggectionsOnBlur: =>
     # Close list on next tick
@@ -202,7 +201,7 @@ class InputSuggestions extends Component
           />
           <div className="field-underscore"></div>
           <div className="input-label#{
-            unless isEmpty @state.selectedSuggestions
+            unless isEmpty @state.selected
                ' input-label-float'
             else ''
           }">

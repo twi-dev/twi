@@ -11,18 +11,18 @@ ForbiddenException = require '../core/errors/Forbidden'
 # 
 # GET /users/:page?
 ###
-actionUsers = (next) ->
+actionUsers = ->
   @render 'user/users',
     title: 'Users'
 
-  yield next
+  yield return
 
 ###
 # Response user profile
 # 
 # GET /user/:login?
 ###
-actionProfile = (next) ->
+actionProfile = ->
   {login} = @params
 
   oUserData = yield user.profile login
@@ -32,25 +32,25 @@ actionProfile = (next) ->
       username: oUserData.login
     profile: oUserData
 
-  yield next
+  yield return
 
-actionSettings = (next) ->
+actionSettings = ->
   unless do @req.isAuthenticated
     throw new ForbiddenException "Unauthorized access to user settings."
 
   @render 'user/settings',
     title: i18n.t 'user.title.settings'
 
-  yield next
+  yield return
 
-module.exports = (route) ->
-  route '/users/:page?'
+module.exports = (r) ->
+  r '/users/:page?'
     .get actionUsers
 
-  route '/user/:login?'
+  r '/user/:login?'
     .get actionProfile
 
-  route '/settings'
+  r '/settings'
     .get actionSettings
 
   return
