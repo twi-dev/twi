@@ -62,7 +62,8 @@
     "snake-case": "^2.1.0",
     "then-redis": "^2.0.1",
     "thunkify": "^2.1.2",
-    "uuid": "^2.0.2"
+    "uuid": "^2.0.2",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "ava": "^0.15.2",

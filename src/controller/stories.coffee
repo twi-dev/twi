@@ -65,10 +65,20 @@ actionCreateStory = (next) ->
       Unauthorized access to \"Add new story\" page.
     "
 
-  {title, characters, marks, synopsis, description} = @request.body
+  {
+    title, characters
+    marks, synopsis
+    description, chapters
+    isItDraft, chapters
+  } = @request.body
 
   if @isXhr
-    @body = {title, characters, marks, synopsis, description}
+    @body = {
+      title, characters
+      marks, synopsis
+      description, chapters
+      isItDraft, chapters
+    }
 
   yield next
 

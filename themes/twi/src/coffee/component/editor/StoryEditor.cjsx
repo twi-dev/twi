@@ -39,7 +39,12 @@ class StoryEditor extends Component
   submit: (e) =>
     do e.preventDefault
     {dataset: {csrf}} = document.querySelector '#story-editor'
-    {title, characters, marks, synopsis, description, chapters} = @state
+    {
+      title, characters
+      marks, synopsis
+      description, chapters
+      isItDraft, chapters
+    } = @state
 
     # unless title
     #   return console.info 'Рассказ должен быть озаглавлен.'
@@ -57,9 +62,11 @@ class StoryEditor extends Component
       _csrf: csrf
       title
       characters
+      chapters
       marks
       synopsis
       description
+      isItDraft
     }
     .then (res) -> console.log res.data
     .catch (err) -> console.log err
