@@ -1,6 +1,17 @@
-{Component} = React = require 'react'
+{Component, PropTypes} = React = require 'react'
 
 class InputField extends Component
+  @propTypes:
+    type: PropTypes.string
+    value: PropTypes.string
+    name: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired
+    onChange: PropTypes.func.isRequired
+    onKeyDown: PropTypes.func
+
+  @defaultProps:
+    type: ''
+
   render: ->
     <div className="input-container">
       <input
@@ -8,8 +19,8 @@ class InputField extends Component
         className="form-input"
         type={@props.type or 'text'}
         name={@props.name}
-        onChange={@props.onChangeHandler}
-        onKeyDown={@props.onKeyDownHandler}
+        onChange={@props.onChange}
+        onKeyDown={@props.onKeyDown}
         value={@props.value}
       />
       <div className="field-underscore"></div>

@@ -181,7 +181,7 @@ class InputSuggestions extends Component
     setTimeout (=> @setState showList: no), 0 if @state.showList
 
   openOnFocus: =>
-    @setState showList: yes if @state.current and not isEmpty @state.suggestions
+    @setState showList: on if @state.current and not isEmpty @state.suggestions
 
   render: ->
     <div className="input-suggestions-container">

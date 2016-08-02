@@ -28,9 +28,9 @@
   "dependencies": {
     "axios": "^0.13.1",
     "bcryptjs": "^2.3.0",
-    "camelcase": "^3.0.0",
-    "co": "^4.6.0",
-    "co-fs": "^1.2.0",
+    "camelcase": "3.0.0",
+    "co": "4.6.0",
+    "co-fs": "1.2.0",
     "colors": "^1.1.2",
     "elasticsearch": "^11.0.1",
     "googleapis": "^12.0.0",
@@ -94,6 +94,7 @@
     "react-hot-transform": "^1.0.2",
     "rimraf": "^2.5.2",
     "rupture": "0.6.1",
+    "svg-reactify": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yamlify": "^0.1.3"

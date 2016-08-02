@@ -20,6 +20,7 @@ autoprefixer = require 'gulp-autoprefixer'
 browserify = require 'browserify'
 cjsx = require 'coffee-reactify'
 hmr = require 'browserify-hmr'
+svg = require 'svg-reactify'
 rht = require 'react-hot-transform'
 uglify = require 'gulp-uglify'
 envify = require 'gulp-envify'
@@ -103,6 +104,7 @@ process.on 'error', errorHandler
 ###
 gulp.task 'stylus', ->
   rebuildStylus = ->
+    gutil.log 'Rebuild stylus...'
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
       # .pipe gulpif bIsDevel, newer STYLUS_SRC
@@ -125,17 +127,22 @@ gulp.task 'stylus', ->
 gulp.task 'coffee', ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if bIsDevel then 'development' else 'production'
-
   bundler = browserify COFFEE_SRC,
-    transform: [cjsx, rht]
+    transform: [
+      [svg, default: 'image']
+      cjsx
+      rht
+    ]
     extensions: ['.cjsx', '.coffee']
     insertGlobals: yes
     debug: bIsDevel
     plugin: (if bIsDevel then [hmr] else [])
 
   rebuildBundle = ->
+    gutil.log 'Rebuild coffee...'
     bundler
       .bundle()
+      .on 'error', errorHandler
       .pipe plumber errorHandler
       .pipe source 'common.js'
       .pipe do vinylBuffer
@@ -157,10 +164,15 @@ gulp.task 'coffee', ->
 # Optimizing SVG.
 ###
 gulp.task 'svg', ->
-  gulp.src SVG_SRC
-    .pipe plumber errorHandler
-    .pipe do svgmin
-    .pipe gulp.dest SVG_DEST
+  rebuildSvg = ->
+    gutil.log 'Rebuild svg...'
+    gulp.src SVG_SRC
+      .pipe plumber errorHandler
+      .pipe do svgmin
+      .pipe gulp.dest SVG_DEST
+
+  do rebuildSvg
+  watch SVG_SRC, rebuildSvg
 
 ###
 # Refreshing page with livereload
@@ -178,7 +190,6 @@ gulp.task 'refresh', ->
 # Run: gulp devel
 ###
 gulp.task 'devel', ['env:devel', 'svg', 'stylus', 'coffee'], ->
-  gulp.watch SVG_SRC, ['svg']
   gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
 
 gulp.task 'build', ['svg', 'stylus', 'coffee']

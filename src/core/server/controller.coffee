@@ -33,11 +33,11 @@ controller = (app) ->
   app.use router app
 
   # Require all controllers
-  oControllers = requireHelper CONTROLLERS
+  controllers = requireHelper CONTROLLERS
 
-  for __sName, __controller of oControllers
+  for __name, __controller of controllers
     unless isFunction __controller
-      warn "Controller \"#{__sName}\" is not a function."
+      warn "Controller \"#{__name}\" is not a function."
       continue
 
     # Init routes

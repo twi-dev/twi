@@ -2,6 +2,7 @@
 InputField = require '../element/InputField'
 TextareaField = require '../element/TextareaField'
 InputSuggestions = require '../element/InputSuggestions'
+ChapterConstructor = require './ChapterConstructor'
 
 {assign, isEmpty} = require 'lodash'
 axios = require '../../helpers/axios-instance'
@@ -94,6 +95,8 @@ class StoryEditor extends Component
 
     @setState "#{stateName}": newState
 
+  _chaptersRegister: (chapter) ->
+
   ###
   # Add new character to characters state
   #
@@ -122,7 +125,7 @@ class StoryEditor extends Component
           type="text"
           name="title"
           label="Название"
-          onChangeHandler={@updateStatesOfFields}
+          onChange={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">
@@ -151,14 +154,20 @@ class StoryEditor extends Component
         <TextareaField
           name="synopsis"
           label="Синопсис"
-          onChangeHandler={@updateStatesOfFields}
+          onChange={@updateStatesOfFields}
         />
       </div>
       <div className="story-editor-field-container">
         <TextareaField
           name="description"
           label="Описание"
-          onChangeHandler={@updateStatesOfFields}
+          onChange={@updateStatesOfFields}
+        />
+      </div>
+      <div className="story-editor-field-container">
+        <ChapterConstructor
+          chaptersRegister={@_chaptersRegister}
+          chapters={@state.chapters}
         />
       </div>
       <div className="story-editor-field-container">
