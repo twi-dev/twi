@@ -170,10 +170,18 @@ class StoryEditor extends Component
           chapters={@state.chapters}
         />
       </div>
-      <div className="story-editor-field-container">
+      <div className="story-editor-field-container story-editor-buttons">
         <button
           formNoValidate
-          className="button button-raised button-raised-violet fr"
+          type="button"
+          className="button button-flat button-white"
+          onClick={@send}
+        >
+          Сохранить
+        </button>
+        <button
+          formNoValidate
+          className="button button-raised button-raised-violet"
           onClick={@send}
         >
           Отправить
