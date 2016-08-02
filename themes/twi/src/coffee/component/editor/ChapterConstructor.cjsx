@@ -13,7 +13,7 @@ chapterTemplate =
 
 class ChapterConstructor extends Component
   @propTypes:
-    chaptersRegister: PropTypes.func.isRequired
+    updateChapters: PropTypes.func.isRequired
     chapters: PropTypes.array.isRequired
 
   constructor: ->
@@ -23,9 +23,14 @@ class ChapterConstructor extends Component
 
   addChapterBlock: (e) => @_pushChapter e.currentTarget.dataset.type
 
-  updateCurrentTitle: (e) => console.log e.target.value
+  updateChapterState: (e) =>
+    {id} = e.target.parentNode.parentNode.dataset
+    {name, value} = e.target
 
-  updateChapterState: (e) => console.log e.target.value
+    newState = @state.chapters[..]
+    newState[id][name] = do value.trim
+    @setState chapters: newState
+    @props.updateChapters newState
 
   _pushChapter: (type) =>
     newState = @state.chapters[..]
@@ -44,7 +49,7 @@ class ChapterConstructor extends Component
         <InputField
           name="title"
           label="Название главы"
-          onChange={@updateCurrentTitle}
+          onChange={@updateChapterState}
         />
         {
           if chapter.type is 'text'

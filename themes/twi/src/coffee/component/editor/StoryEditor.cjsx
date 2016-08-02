@@ -95,7 +95,7 @@ class StoryEditor extends Component
 
     @setState "#{stateName}": newState
 
-  _chaptersRegister: (chapter) ->
+  _updateChapters: (chapters) => @setState {chapters}
 
   ###
   # Add new character to characters state
@@ -166,7 +166,7 @@ class StoryEditor extends Component
       </div>
       <div className="story-editor-field-container">
         <ChapterConstructor
-          chaptersRegister={@_chaptersRegister}
+          updateChapters={@_updateChapters}
           chapters={@state.chapters}
         />
       </div>
