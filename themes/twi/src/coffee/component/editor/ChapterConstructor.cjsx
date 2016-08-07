@@ -37,7 +37,7 @@ class ChapterConstructor extends Component
     newState.push assign {}, chapterTemplate, {type}
     @setState chapters: newState
 
-  _spliceChapter: (id) =>
+  _spliceChapter: (index) =>
 
   _renderChapterBlock: ->
     for chapter, index in @state.chapters

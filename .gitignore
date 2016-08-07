@@ -11,6 +11,8 @@ public/img/**/*.svg
 foo
 bar
 
+deploy/sandbox
+
 themes/**/public/img/**/*.svg
 themes/**/public/assets
 themes/**/src/vendor

@@ -11,58 +11,6 @@ user = model 'user', require '../core/database/schemas/user'
 NotFoundException = require '../core/errors/NotFound'
 ForbiddenException = require '../core/errors/Forbidden'
 
-post.belongsTo user,
-  foreignKey: 'userId'
-
-# postTags.belongsTo tag
-
-# tag.belongsTo postTags,
-#   as: 'postTags'
-#   foreignKey: 'tagId'
-
-# postTags.find
-#   include: [{
-#     model: postTags
-#     as: 'postTags'
-#   }]
-# .then (oData) -> console.log oData
-# .catch (err) -> console.log err
-
-# post.belongsToMany tag,
-#   as: 'tag'
-#   through:
-#     model: postTags
-#     as: 'postTags'
-#     foreignKey: 'tagId'
-
-# tag.belongsToMany post,
-#   as: 'post'
-#   through:
-#     model: postTags
-#     as: 'postTags'
-#     foreignKey: 'postId'
-
-# post.find
-#   attributes:
-#     exclude: [
-#       'userId'
-#     ]
-#   where:
-#     userId: 1
-#   include: [
-#     # model: user
-#     # as: 'user'
-#     # attributes: [
-#     #   'login'
-#     # ]
-#     all: yes
-#   ]
-# .then (oData) ->
-#   console.log oData = oData.get plain: yes
-# #   tag.findAll()
-# # .then (oData) -> console.log oData
-# .catch (err) -> console.log err
-
 ###
 # Get tag his name
 #
@@ -77,7 +25,7 @@ getTagByName = (sName) ->
         'tagId'
       ]
     where:
-      name: unescape sName # I'm not sure is that secure
+      name: decodeURI sName # I'm not sure is that secure
 
   unless oTagData?
     throw new NotFoundException "Tag \"#{sName}\" is not found."

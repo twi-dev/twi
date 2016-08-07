@@ -8,6 +8,7 @@ sess = require 'koa-generic-session'
 redisStore = require 'koa-redis'
 csrf = require 'koa-csrf'
 passport = require 'koa-passport'
+compress = require 'koa-compress'
 controller = require './controller'
 view = require './view'
 oConfig = require '../helpers/configure-helper'
@@ -31,6 +32,9 @@ app.use isXhr
 
 # Set error handler
 app.use errorHandler
+
+# Compress static
+app.use do compress
 
 # Serve favicon and static files
 app.use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
