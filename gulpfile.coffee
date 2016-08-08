@@ -130,8 +130,7 @@ gulp.task 'coffee', ->
   bundler = browserify COFFEE_SRC,
     transform: [
       [svg, default: 'image']
-      cjsx
-      rht
+      yaml, cjsx, rht
     ]
     extensions: ['.cjsx', '.coffee']
     insertGlobals: yes
