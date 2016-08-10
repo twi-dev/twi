@@ -1,19 +1,19 @@
 {warn, err} = require '../logger'
 
-errorHandler = (next) ->
+errorHandler = (ctx, next) ->
   try
-    yield next
+    await do next
   catch e
     {stack, status, properties} = e
 
     err stack
 
     status ?= 500
-    @status = status
+    ctx.status = status
 
-    unless @isXhr
-      @render "errors/http/#{status}", code: status, props: properties or null
+    unless ctx.isXhr
+      ctx.render "errors/http/#{status}", code: status, props: properties or null
     else
-      @body = properties or {message: 'Something\'s broke'}
+      ctx.body = properties or {message: 'Something\'s broke'}
 
 module.exports = errorHandler

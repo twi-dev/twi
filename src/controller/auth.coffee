@@ -23,95 +23,95 @@ passport.use new Strategy
 # 
 # GET /auth/signin
 ###
-actionLogin = ->
-  if do @isAuthenticated
-    return @redirect '/'
+actionLogin = (ctx) ->
+  if do ctx.isAuthenticated
+    return ctx.redirect '/'
 
-  @render 'auth/signin',
+  ctx.render 'auth/signin',
     title: t 'auth.title.signin'
-    __csrf: @csrf
-    __return: @query.return or '/'
+    __csrf: ctx.csrf
+    __return: ctx.query.return or '/'
 
-  yield return
+  await return
 
 ###
 # POST /auth/signin
 ###
-actionSignin = ->
-  @redirect @query.return or '/'
+actionSignin = (ctx) ->
+  ctx.redirect ctx.query.return or '/'
 
-  yield return
+  await return
 
 ###
 # Response signup page for GET method
 # 
 # GET /auth/signup
 ###
-actionRegister = ->
-  {inviteHash} = @params
+actionRegister = (ctx) ->
+  {inviteHash} = ctx.params
   unless enableSignup
-    return @render 'auth/signup-disabled',
+    return ctx.render 'auth/signup-disabled',
       title: t 'auth.title.inviteOnly'
 
-  if do @isAuthenticated
-    return @redirect '/'
+  if do ctx.isAuthenticated
+    return ctx.redirect '/'
 
-  @render 'auth/signup',
+  ctx.render 'auth/signup',
     title: t 'user.title.signup'
-    __csrf: @csrf
-    __return: @query.return or '/'
+    __csrf: ctx.csrf
+    __return: ctx.query.return or '/'
 
-  yield return
+  await return
 
 ###
 # Register new user
 # 
 # POST /auth/signup
 ###
-actionSignup = ->
-  {inviteHash} = @params
+actionSignup = (ctx) ->
+  {inviteHash} = ctx.params
   unless enableSignup
     throw new ForbiddenException "Unauthorized access to registration form."
 
-  {login, email, pass, repass} = @request.body
+  {login, email, pass, repass} = ctx.request.body
 
-  yield user.signup login, email, pass, repass
+  await user.signup login, email, pass, repass
 
-  @redirect @query.return or '/'
+  ctx.redirect ctx.query.return or '/'
 
-  yield return
+  await return
 
 ###
 # Confirm account via email
 #
 # GET /auth/confirm/:confirmationHash
 ###
-actionConfirm = ->
-  {confirmationHash} = @params
+actionConfirm = (ctx) ->
+  {confirmationHash} = ctx.params
 
-  unless yield user.activate confirmationHash
-    @render 'auth/confirm-fail',
+  unless await user.activate confirmationHash
+    ctx.render 'auth/confirm-fail',
       title: t 'auth.title.confirm.fail'
     return
 
-  @render 'auth/confirm-success',
+  ctx.render 'auth/confirm-success',
     title: t 'auth.title.confirm.success'
 
-  yield return
+  await return
 
 ###
 # Logout
 #
 # POST /auth/logout
 ###
-actionLogout = ->
-  do @logout
-  @redirect @query.return or '/'
+actionLogout = (ctx) ->
+  do ctx.logout
+  ctx.redirect ctx.query.return or '/'
 
-  yield return
+  await return
 
 module.exports = (r) ->
-  r '/auth/signin'
+  foo = r '/auth/signin'
     .get actionLogin
     .post passport.authenticate('local'), actionSignin
 

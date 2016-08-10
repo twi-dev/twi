@@ -1,4 +1,5 @@
-thunk = require 'thunkify'
+# thunk = require 'thunkify'
+pify = require 'pify'
 bcrypt = require 'bcryptjs'
 
 methods = [
@@ -11,7 +12,7 @@ methods = [
 wrapMethod = (method) ->
   unless bcrypt[method]
     return
-  exports[method] = thunk bcrypt[method]
+  exports[method] = pify bcrypt[method]
 
 # Wrap async methods
 methods.forEach wrapMethod

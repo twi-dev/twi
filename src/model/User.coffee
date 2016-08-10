@@ -54,8 +54,8 @@ confirm = (sEmail, sId) ->
     .update "#{+moment()}#{sEmail}"
     .digest 'hex'
 
-  yield redis.set sHash, sId, 'EX', CONFIRMATION_EXPIRE
-  yield mailer.send sEmail, "Добро пожаловать!", 'welcome',
+  await redis.set sHash, sId, 'EX', CONFIRMATION_EXPIRE
+  await mailer.send sEmail, "Добро пожаловать!", 'welcome',
     activationLink: sHash
   info "Confirmation message has been sent to #{sEmail}"
   return
@@ -99,10 +99,11 @@ class User
     ]
 
   _getUser: (oOptions) ->
-    yield user.findOne oOptions
+    await Promise.resolve user.findOne oOptions
 
   profile: (sUserId) ->
-    oUserData = yield @_getUser
+    oUserData = await @_getUser
+      raw: yes
       attributes:
         exclude: [
           'contactsId'
@@ -126,36 +127,33 @@ class User
     unless oUserData?
       throw new NotFoundException "User \"#{sUserId}\" is not found."
 
-    yield oUserData.get plain: yes
+    return oUserData
 
   signup: (sLogin, sEmail, sPass, sRepass) ->
-    # unless sPass is sRepass and isValidPassword sPass
-    #   throw new UnauthorizedException ""
-
-    oUserData = yield user.create
+    oUserData = await Promise.resolve user.create
       login: sLogin
       email: sEmail
-      password: (yield bcrypt.hash sPass, 10)
+      password: (await bcrypt.hash sPass, 10)
       registeredAt: do moment().format
       role: @ROLE_USER
       status: @STATUS_INACTIVE
 
     {userId} = oUserData.get plain: yes
-    yield contacts.create userId: userId
-    yield confirm sEmail, userId
+    await contacts.create userId: userId
+    await confirm sEmail, userId
 
   activate: (sHash) ->
-    sId = yield redis.get sHash
+    sId = await redis.get sHash
     return no unless sId?
 
-    yield user.update {
+    await Promise.resolve user.update {
       status: @STATUS_ACTIVE
     }, {
       where:
         userId: sId
     }
 
-    yield redis.del sHash
+    await redis.del sHash
 
     return yes
 

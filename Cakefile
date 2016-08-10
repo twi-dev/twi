@@ -32,7 +32,9 @@ LOG_MESSAGES = [
   "[#{COLOR_RED}err#{COLOR_DEF}]"
 ]
 
-ICED_EXTNAME = [
+COFFEE_COMPILER = './node_modules/coffee-script/bin/coffee'
+
+COFFEE_EXTNAME = [
   '.coffee'
   '.litcoffee'
   '.coffee.md'
@@ -52,7 +54,7 @@ logLine = (sMessage, iLevel) -> log "#{sMessage}\n", iLevel
 
 clean = (filename) ->
   extname = path.extname filename
-  if extname in ICED_EXTNAME
+  if extname in COFFEE_EXTNAME
     filename = path.dirname(filename) + '/' +
     path.basename(filename, extname) + '.js'
 
@@ -115,14 +117,14 @@ getPaths = (sPath) ->
 
 # Compile file
 compile = (file, output) ->
-  exec "coffee -b --no-header -c -o #{output} #{file}",
+  exec "#{COFFEE_COMPILER} -b --no-header -c -o #{output} #{file}",
     encoding: 'utf-8'
 
 # Build files
 build = (files) ->
   unless Array.isArray files
     output = (files.replace /\/[A-Za-z-_\.]+$/, '').replace '/src', ''
-    unless path.extname(files) in ICED_EXTNAME
+    unless path.extname(files) in COFFEE_EXTNAME
       if (fs.statSync files).isDirectory()
         return
       logLine "Copy #{files} -> #{output}", LOG_INFO
@@ -141,7 +143,7 @@ build = (files) ->
 
   for file in files
     output = (file.replace /\/[A-Za-z-_\.]+$/, '').replace '/src', ''
-    unless path.extname(file) in ICED_EXTNAME
+    unless path.extname(file) in COFFEE_EXTNAME
       logLine "Copy #{file} -> #{output}", LOG_INFO
       fs.createReadStream file
         .pipe fs.createWriteStream(file.replace '/src', '')

@@ -15,11 +15,9 @@ ForbiddenException = require '../core/errors/Forbidden'
 # Get tag his name
 #
 # @param string sName
-#
-# @yield object
 ###
 getTagByName = (sName) ->
-  oTagData = yield tag.findOne
+  oTagData = await Promise.resolve tag.findOne
     attributes:
       exclude: [
         'tagId'
@@ -30,7 +28,7 @@ getTagByName = (sName) ->
   unless oTagData?
     throw new NotFoundException "Tag \"#{sName}\" is not found."
 
-  yield oTagData.get plain: yes
+  await oTagData.get plain: yes
 
 # module.exports = new Blog
 module.exports = {
