@@ -11,56 +11,56 @@ NotAllowedException = require '../core/errors/NotAllowed'
 # 
 # GET /stories/:page?
 ###
-actionIndex = ->
-  @render 'stories/index',
+actionIndex = (ctx) ->
+  ctx.render 'stories/index',
     title: t 'stories.title.index'
 
-  yield return
+  await return
 
 ###
 # GET
 ###
-actionStory = ->
-  @render 'stories/story',
+actionStory = (ctx) ->
+  ctx.render 'stories/story',
     title: 'Страница рассказа'
 
-  yield return
+  await return
 
 ###
 # Read story with given id
 # 
 # GET /story/read/:slug/:chapter?
 ###
-actionRead = ->
-  @render 'stories/read',
+actionRead = (ctx) ->
+  ctx.render 'stories/read',
     title: 'Story title'
 
-  yield return
+  await return
 
 ###
 # Response Add Story page
 # 
 # GET /story/new
 ###
-actionNew = ->
-  unless do @req.isAuthenticated
+actionNew = (ctx) ->
+  unless do ctx.req.isAuthenticated
     throw new ForbiddenException "
       Unauthorized access to \"Add new story\" page.
     "
 
-  @render 'stories/new',
+  ctx.render 'stories/new',
     title: t 'stories.title.new'
-    _csrf: @csrf
+    _csrf: ctx.csrf
 
-  yield return
+  await return
 
 ###
 # Add new story
 #
 # POST /story/new
 ###
-actionCreateStory = ->
-  unless do @req.isAuthenticated
+actionCreateStory = (ctx) ->
+  unless do ctx.req.isAuthenticated
     throw new ForbiddenException "
       Unauthorized access to \"Add new story\" page.
     "
@@ -70,72 +70,72 @@ actionCreateStory = ->
     marks, synopsis
     description, chapters
     isItDraft, chapters
-  } = @request.body
+  } = ctx.request.body
 
-  if @isXhr
-    @body = {
+  if ctx.isXhr
+    ctx.body = {
       title, characters
       marks, synopsis
       description, chapters
       isItDraft, chapters
     }
 
-  yield return
+  await return
 
 ###
 # Response Edit Story page
 #
 # GET /story/edit/:slug
 ###
-actionEdit = ->
-  @render 'stories/edit',
+actionEdit = (ctx) ->
+  ctx.render 'stories/edit',
     title: t 'stories.title.edit'
 
-  yield return
+  await return
 
 ###
 # Save changes for story with given id
 # 
 # PUT /story/edit/:slug
 ###
-actionSave = ->
-  yield return
+actionSave = (ctx) ->
+  await return
 
 ###
 # DELETE /story/:slug
 ###
-actionDelete = ->
-  yield return
+actionDelete = (ctx) ->
+  await return
 
-actionCharacters = ->
-  {name} = @params
+actionCharacters = (ctx) ->
+  {name} = ctx.params
 
-  unless @isXhr
+  unless ctx.isXhr
     throw new NotAllowedException "
-      Method not allowed for non-xhr requests on route #{@url}
+      Method not allowed for non-xhr requests on route #{ctx.url}
     "
 
-  @body = if name?
-    yield story.getCharactersByName name
+  ctx.body = if name?
+    await story.getCharactersByName name
   else
-    yield do story.getCharacters
+    await do story.getCharacters
 
-  yield return
+  await return
 
-actionMarks = ->
-  {name} = @params
+actionMarks = (ctx) ->
+  {name} = ctx.params
 
-  unless @isXhr
+  unless ctx.isXhr
     throw new NotAllowedException "
-      Method not allowed for non-xhr requests on route #{@url}
+      Method not allowed for non-xhr requests on route #{ctx.url}
     "
 
-  @body = if name?
-    yield story.getMarkByName name
+  ctx.body = if name?
+    await story.getMarkByName name
   else
-    yield do story.getMarks
+    await do story.getMarks
 
-  yield return
+  await return
 
 main =  (r) ->
   # Get characters

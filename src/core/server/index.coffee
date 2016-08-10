@@ -1,6 +1,7 @@
 'use strict'
 
-koa = require 'koa'
+Koa = require 'koa'
+convert = require 'koa-convert'
 serve = require 'koa-static'
 favicon = require 'koa-favicon'
 bodyparser = require 'koa-bodyparser'
@@ -19,10 +20,9 @@ logger = require '../middlewares/logger'
 {ok, info, normal}  = require '../logger'
 {readFileSync, realpathSync} = require 'fs'
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
-
 PUBLIC_DIR = realpathSync "#{__dirname}/../../themes/#{theme}/public"
 UPLOADS_DIR = realpathSync "#{__dirname}/../../uploads"
-app = do koa
+app = new Koa
 app.keys = [session.secret]
 
 normal 'Init Twi middlewares'
@@ -50,7 +50,7 @@ app.use logger
 app.use do bodyparser
 
 # Session
-app.use sess
+app.use convert sess
   store: do redisStore
   prefix: session.prefix
   key: "#{session.prefix}#{session.sessidName}"
@@ -59,7 +59,7 @@ app.use sess
 
 # Csrf tokens
 csrf app
-app.use csrf.middleware
+app.use convert csrf.middleware
 
 # Passport
 app

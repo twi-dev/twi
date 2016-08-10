@@ -12,11 +12,11 @@ statusColor = (status) ->
   return "#{status}".yellow if 400 >= status < 500
   return "#{status}".red if status >= 500
 
-logger = (next) ->
-  normal "#{arrowRight} #{@method} #{decodeURI @url}"
-  yield next
+logger = (ctx, next) ->
+  normal "#{arrowRight} #{ctx.method} #{decodeURI ctx.url}"
+  await do next
   normal "
-    #{arrowLeft} #{statusColor @status} #{decodeURI @url}
+    #{arrowLeft} #{statusColor ctx.status} #{decodeURI ctx.url}
   "
 
 module.exports = logger

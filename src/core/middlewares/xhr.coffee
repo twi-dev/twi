@@ -1,6 +1,8 @@
-isXhr = (next) ->
-  @isXhr = @request.get('x-requested-with').toLowerCase() is 'xmlhttprequest'
+isXhr = (ctx, next) ->
+  ctx.isXhr = ctx.request.get(
+    'x-requested-with'
+  ).toLowerCase() is 'xmlhttprequest'
 
-  yield next
+  await do next
 
 module.exports = isXhr

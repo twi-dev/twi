@@ -8,58 +8,58 @@ i18n = require '../core/i18n'
 # 
 # GET /
 ###
-actionIndex = ->
-  @render 'home/home',
+actionIndex = (ctx) ->
+  ctx.render 'home/home',
     title: i18n.t 'home.title.index',
       name: name
 
-  yield return
+  await return
 
 ###
 # Response Site Help page
 # 
 # GET /help
 ###
-actionHelp = ->
-  @render 'home/help',
+actionHelp = (ctx) ->
+  ctx.render 'home/help',
     title: i18n.t 'home.title.help'
 
-  yield return
+  await return
 
 ###
 # Response Site Feedback page
 # 
 # GET /feedback
 ###
-actionFeedback = ->
-  @render 'home/feedback',
+actionFeedback = (ctx) ->
+  ctx.render 'home/feedback',
     title: i18n.t 'home.title.feedback'
 
-  yield return
+  await return
 
 ###
 # Send a feedback message
 # 
 # POST /feedback
 ###
-actionSend = -> yield return
+actionSend = (ctx) -> await return
 
 ###
 # Response Site Rules page
 # 
 # GET /rules
 ###
-actionRules = ->
-  @render 'home/rules',
+actionRules = (ctx) ->
+  ctx.render 'home/rules',
     title: i18n.t 'home.title.rules'
 
-  yield return
+  await return
 
 actionOutdated = ->
-  @render 'errors/outdated',
+  ctx.render 'errors/outdated',
     title: 'You are using an outdated browser'
 
-  yield return
+  await return
 
 module.exports = (r) ->
   # Home page

@@ -5,50 +5,50 @@ blog = require '../model/Blog'
 ForbiddenException = require '../core/errors/Forbidden'
 NotFoundException = require '../core/errors/NotFound'
 
-actionTag = ->
-  {tagName} = @params
+actionTag = (ctx) ->
+  {tagName} = ctx.params
 
-  oTag = yield blog.getTagByName tagName
+  oTag = await blog.getTagByName tagName
 
-  @render 'blog/tag',
+  ctx.render 'blog/tag',
     title: "Поиск по тегу #{oTag?.name}"
 
-  yield return
+  await return
 
-actionIndex = ->
-  @render 'blog/index',
+actionIndex = (ctx) ->
+  ctx.render 'blog/index',
     title: 'Блог'
 
-  yield return
+  await return
 
-actionNew = ->
-  {user} = @req
+actionNew = (ctx) ->
+  {user} = ctx.req
 
   unless user? or user?.role < 3
-    throw new ForbiddenException "Unauthorized access to #{@url}"
+    throw new ForbiddenException "Unauthorized access to #{ctx.url}"
 
-  @render 'blog/new',
+  ctx.render 'blog/new',
     title: 'Новая запись в блог'
 
-  yield return
+  await return
 
-actionCreate = -> yield return
+actionCreate = (ctx) -> await return
 
-actionEdit = ->
-  {user} = @req
+actionEdit = (ctx) ->
+  {user} = ctx.req
 
   unless user? or user?.role < 3
-    throw new ForbiddenException "Unauthorized access to #{@url}"
+    throw new ForbiddenException "Unauthorized access to #{ctx.url}"
 
-  yield return
+  await return
 
-actionSave = -> yield return
+actionSave = (ctx) -> await return
 
-actionDelete = -> yield return
+actionDelete = (ctx) -> await return
 
-actionRead = ->
-  # oPost = yield blog.getPostById @params.postId
-  # @render 'blog/post',
+actionRead = (ctx) ->
+  # oPost = await blog.getPostById ctx.params.postId
+  # ctx.render 'blog/post',
   #   title: oPost.title
   #   post: oPost
 
@@ -56,7 +56,7 @@ actionRead = ->
   # for same specific exceptions.
   throw new NotFoundException "Posts is not implemented right now."
 
-  yield return
+  await return
 
 module.exports = (r) ->
   r '/blog/tag/:tagName'
