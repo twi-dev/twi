@@ -107,7 +107,7 @@ gulp.task 'stylus', ->
     gutil.log 'Rebuild stylus...'
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
-      # .pipe gulpif bIsDevel, newer STYLUS_SRC
+      .pipe gulpif bIsDevel, newer STYLUS_SRC
       .pipe stylus use: [
         do jeet
         do rupture
@@ -117,9 +117,8 @@ gulp.task 'stylus', ->
       .pipe gulp.dest STYLUS_DEST
       .pipe gulpif bIsDevel, do livereload
 
-  return do rebuildStylus unless bIsDevel
-
-  return watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus
+  do rebuildStylus
+  watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus if bIsDevel
 
 ###
 # Build CoffeeScript with Browserify
@@ -149,15 +148,11 @@ gulp.task 'coffee', ->
       .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
       .pipe gulp.dest COFFEE_DEST
 
-  # Production rebuild
-  return do rebuildBundle unless bIsDevel
-
-  # Development mode
   do rebuildBundle # Just rebuild bundle before run watcher
   return watch [
     "#{COFFEE_SRC_DIR}/**/*.coffee"
     "#{CJSX_SRC}"
-    ], rebuildBundle
+    ], rebuildBundle if bIsDevel
 
 ###
 # Optimizing SVG.
@@ -171,7 +166,7 @@ gulp.task 'svg', ->
       .pipe gulp.dest SVG_DEST
 
   do rebuildSvg
-  watch SVG_SRC, rebuildSvg
+  watch SVG_SRC, rebuildSvg if bIsDevel
 
 ###
 # Refreshing page with livereload
@@ -179,18 +174,28 @@ gulp.task 'svg', ->
 # Note: Do not use this task directly.
 ###
 gulp.task 'refresh', ->
-  gulp.src "#{THEME_PATH}/views/**/*.jade"
-    .pipe newer "#{THEME_PATH}/views/**/*.jade"
-    .pipe do livereload
+  refresh ->
+    gulp.src "#{THEME_PATH}/views/**/*.jade", read: no
+      .pipe newer "#{THEME_PATH}/views/**/*.jade"
+      .pipe do livereload
+
+  watch "#{THEME_PATH}/views/**/*.jade", refresh if bIsDevel
 
 ###
-# Devel task with gulp.watch and livereload
+# Devel task with gulp-watch and livereload
 # 
 # Run: gulp devel
 ###
-gulp.task 'devel', ['env:devel', 'svg', 'stylus', 'coffee'], ->
-  gulp.watch "#{THEME_PATH}/views/**/*.jade", ['refresh']
+gulp.task 'devel', ['env:devel', 'svg', 'stylus', 'coffee']
 
+###
+# Build frontend app for probuction
+#
+# Run: gulp or gulp build
+###
 gulp.task 'build', ['svg', 'stylus', 'coffee']
 
+###
+# Execute task 'build'
+###
 gulp.task 'default', ['build']

@@ -10,7 +10,6 @@ NotFoundException = require '../errors/NotFound'
 NotAllwedException = require '../errors/NotAllowed'
 
 CONTROLLERS = realpathSync "#{__dirname}/../../controller"
-# router = require 'koa-routing'
 
 Router = require 'koa-router'
 router = new Router
@@ -53,10 +52,7 @@ actionNotAllowed = (ctx) ->
   await return
 
 controller = (app) ->
-  # Set router middleware
-  # app.use router app
-
-  # # Require all controllers
+  # Require all controllers
   controllers = requireHelper CONTROLLERS
 
   for __name, __controller of controllers
@@ -74,6 +70,7 @@ controller = (app) ->
 
   # return router
 
+  # Set router middleware
   app
     .use do router.routes
     .use do router.allowedMethods
