@@ -1,5 +1,3 @@
-thunk = require 'thunkify'
-co = require 'co'
 mailer = require 'nodemailer'
 renderer = require './renderer'
 i18n = require '../i18n'
@@ -31,15 +29,15 @@ sendPlain = (to, subject, text) ->
     info "Email transporter is not set. Message has not sent."
     return
 
-  yield oTransporter.sendMail
+  await oTransporter.sendMail
     from: "Пони-почтовик <#{smtp.user}>"
     to: to
     subject: subject
     html: text
 
-send = (to, subject, templateName, oOptions = {}) ->
-  yield sendPlain to, subject,
-    yield renderer templateName, oOptions
+send = (to, subject, templateName, options = {}) ->
+  await sendPlain to, subject,
+    await renderer templateName, options
 
 module.exports = do ->
   oTransporter ?= do createTransport

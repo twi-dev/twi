@@ -1,10 +1,10 @@
-{warn, err} = require '../logger'
+{warn, err} = logger = require '../logger'
 
 errorHandler = (ctx, next) ->
   try
     await do next
-  catch e
-    {stack, status, properties} = e
+  catch error
+    {stack, status, properties} = error
 
     err stack
 

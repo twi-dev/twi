@@ -65,6 +65,7 @@
     "snake-case": "2.1.0",
     "then-redis": "^2.0.1",
     "uuid": "2.0.2",
+    "whatwg-fetch": "^1.0.0",
     "xml2js": "0.4.17"
   },
   "devDependencies": {
@@ -82,7 +83,6 @@
     "gulp-envify": "1.0.0",
     "gulp-if": "2.0.0",
     "gulp-livereload": "3.8.1",
-    "gulp-newer": "1.1.0",
     "gulp-plumber": "1.1.0",
     "gulp-rimraf": "0.2.0",
     "gulp-stylus": "2.3.0",

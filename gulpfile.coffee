@@ -8,7 +8,6 @@ watch = require 'gulp-watch'
 plumber = require 'gulp-plumber'
 clean = require 'gulp-rimraf'
 rimraf = require 'rimraf'
-newer = require 'gulp-newer'
 livereload = require 'gulp-livereload'
 
 # Stylus plugins
@@ -107,7 +106,6 @@ gulp.task 'stylus', ->
     gutil.log 'Rebuild stylus...'
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
-      .pipe gulpif bIsDevel, newer STYLUS_SRC
       .pipe stylus use: [
         do jeet
         do rupture
