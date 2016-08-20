@@ -68,8 +68,6 @@ controller = (app) ->
     .get actionNotFound
     .all actionNotAllowed
 
-  # return router
-
   # Set router middleware
   app
     .use do router.routes

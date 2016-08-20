@@ -58,7 +58,7 @@
     "nodemailer": "2.3.2",
     "passport-local": "1.0.0",
     "pify": "^2.3.0",
-    "promise-fs": "^1.0.0",
+    "promise-fs": "^1.1.0",
     "readline-sync": "1.4.1",
     "redis": "2.6.0",
     "sequelize": "3.23.6",
