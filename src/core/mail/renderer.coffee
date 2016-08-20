@@ -4,7 +4,7 @@
 {readFile, readdir} = require 'promise-fs'
 {basename, extname, dirname} = require 'path'
 {render} = require 'jade'
-{app: {host, name, theme}} = require '../helpers/configure-helper'
+{app: {host, name, theme}} = require '../helper/configure'
 
 _ = require 'lodash'
 i18n = require '../i18n'

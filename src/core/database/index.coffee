@@ -1,7 +1,7 @@
 'use strict'
 
 snakecase = require 'snake-case'
-{database} = require '../helpers/configure-helper'
+{database} = require '../helper/configure'
 {info} = require '../logger'
 
 Sequelize = require 'sequelize'

@@ -4,8 +4,8 @@ fs = require 'fs'
 i18next = require 'i18next'
 yaml = require 'node-yaml'
 
-requireHelper = require '../helpers/require-helper'
-{app: {lang}} = require '../helpers/configure-helper'
+requireHelper = require '../helper/require'
+{app: {lang}} = require '../helper/configure'
 
 i18n = null
 sCurrentLang = lang

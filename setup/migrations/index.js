@@ -1,13 +1,13 @@
 'use strict';
 
 // Modules
-const model = require('../../core/database/index');
-const requireHelper = require('../../core/helpers/require-helper');
-const question = require('readline-sync').question;
-const logger = require('../../core/logger');
-const co = require('co');
-const fs = require('co-fs');
-const _ = require('lodash');
+var model = require('../../core/database/index');
+var requireHelper = require('../../core/helper/require');
+var question = require('readline-sync').question;
+var logger = require('../../core/logger');
+var co = require('co');
+var fs = require('co-fs');
+var _ = require('lodash');
 
 // Functions
 var createSuperUser, loadSchemas;
@@ -105,8 +105,8 @@ function importData() {
  */
 createSuperUser = () => {
   return new Promise((_res, _rej) => {
-    var user, contacts, sUsername, sEmail, sPass;
-    const validationHelper = require('../../core/helpers/validation-helper');
+    var user, contacts, sUsername, sEmail, sPass,
+      validationHelper = require('../../core/helper/validation');
 
     user = model(
       'user',

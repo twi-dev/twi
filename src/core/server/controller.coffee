@@ -1,6 +1,6 @@
 'use strict'
 
-requireHelper = require '../helpers/require-helper'
+requireHelper = require '../helper/require'
 
 {realpathSync} = require 'fs'
 {isFunction} = require 'lodash'

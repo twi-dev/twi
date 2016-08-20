@@ -1,7 +1,7 @@
 'use strict'
 
 i18n = require '../core/i18n'
-{app: {name}} = require '../core/helpers/configure-helper'
+{app: {name}} = require '../core/helper/configure'
 
 ###
 # Response a home page

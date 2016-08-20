@@ -4,11 +4,8 @@
 const COLOR_DEF = '\x1b[0m';
 const COLOR_RED = '\x1B[0;31m';
 const COLOR_GEEN = '\x1B[0;32m';
-const COLOR_BLUE = '\x1b[34;01m';
 const COLOR_YELLOW = '\x1b[33;01m';
 const COLOR_CYAN = '\x1b[36;01m';
-const RESET = '\x1B[0m';
-const BOLD = '\x1B[0;1m';
 
 // Log levels
 const LOG_NORMAL = 0;
@@ -18,10 +15,9 @@ const LOG_WARN = 3;
 const LOG_ERR = 4;
 
 // Modules
-var exec, fs, dirname, readlineSync, oConfigPhrases;
+var exec, fs, readlineSync, oConfigPhrases;
 exec = require('child_process').execSync;
 fs = require('fs');
-dirname = require('path').dirname;
 
 // Variables
 // var aLabels;
@@ -35,24 +31,24 @@ const aLabels = [
 
 oConfigPhrases = {
   app: {
-    name: "Name for your library",
-    host: "Host",
-    port: "Port",
+    name: 'Name for your library',
+    host: 'Host',
+    port: 'Port',
   },
   database: {
-    driver: "Database driver",
-    host: "Database host",
-    port: "Database port",
-    user: "Database user",
-    pass: "Database password",
-    name: "Database name",
-    prefix: "Table prefix"
+    driver: 'Database driver',
+    host: 'Database host',
+    port: 'Database port',
+    user: 'Database user',
+    pass: 'Database password',
+    name: 'Database name',
+    prefix: 'Table prefix'
   }
 };
 
 // Functions
 var configure, setUserConfig, question, write, writeErr, log, logLine,
-installDependencies, buildBackand, buildFrontend;
+  installDependencies, buildBackand, buildFrontend;
 
 write = str => process.stdout.write(str);
 
@@ -105,14 +101,13 @@ buildFrontend = () => {
  *
  * @return mixed
  **/
-question = (sQuestion, bUseMask) => {
-  const readlineSync = require('readline-sync');
-  return readlineSync.question(
+question = (sQuestion, bUseMask) => (
+  readlineSync.question(
     `[${aLabels[LOG_NORMAL]}] ${sQuestion}: `, {
       hideEchoBack: !!bUseMask || false
     }
-  );
-};
+  )
+);
 
 /**
  * Set user config
@@ -123,7 +118,7 @@ question = (sQuestion, bUseMask) => {
  * @return object
  */
 setUserConfig = (oDefaultConfig, __sParentKey) => {
-  var __ref, __mValue, __sAnswer, _, isEmpty;
+  var __ref, __mValue, __sAnswer, isEmpty;
   isEmpty = require('lodash').isEmpty;
   __ref = {};
 
@@ -167,7 +162,7 @@ configure = () => {
   isEmpty = require('lodash').isEmpty;
   __oDefaultConfig = yaml.readSync(`${CONFIGS_DIR}/default`);
 
-  // Create user-config if not exists.
+  // Create user config if not exists.
   try {
     fs.statSync(`${CONFIGS_DIR}/user.yaml`);
   } catch (err) {
@@ -185,7 +180,7 @@ configure = () => {
       break;
     }
 
-     __oUserConfig = setUserConfig(__oDefaultConfig);
+    __oUserConfig = setUserConfig(__oDefaultConfig);
     logLine('Your config:');
     console.log(__oUserConfig);
     __sAnswer = question('Looks good? (Y/n)').toLowerCase() || null;
@@ -206,7 +201,7 @@ configure = () => {
     logLine(`${CONFIGS_DIR}/user.yaml`, LOG_INFO);
   }
 
-  return require('lodash').merge(__oDefaultConfig, __oUserConfig);
+  return require('lodash').assign({}, __oDefaultConfig, __oUserConfig);
 };
 
 (() => {

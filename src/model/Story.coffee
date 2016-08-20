@@ -2,7 +2,7 @@
 
 _ = require 'lodash'
 moment = require 'moment'
-{app: {lang}} = require '../core/helpers/configure-helper'
+{app: {lang}} = require '../core/helper/configure'
 
 model = require '../core/database'
 story = model 'story', require '../core/database/schemas/stories'

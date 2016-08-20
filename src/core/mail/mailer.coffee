@@ -2,7 +2,7 @@ mailer = require 'nodemailer'
 renderer = require './renderer'
 i18n = require '../i18n'
 
-{smtp} = require '../helpers/configure-helper'
+{smtp} = require '../helper/configure'
 {info} = require '../logger'
 
 oTransporter = null

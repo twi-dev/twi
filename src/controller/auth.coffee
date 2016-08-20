@@ -5,7 +5,7 @@ passport = require 'koa-passport'
 
 {t} = i18n = require '../core/i18n'
 user = new User = require '../model/User'
-{app: {enableSignup}} = require '../core/helpers/configure-helper'
+{app: {enableSignup}} = require '../core/helper/configure'
 
 NotFoundException = require '../core/errors/NotFound'
 ForbiddenException = require '../core/errors/Forbidden'
