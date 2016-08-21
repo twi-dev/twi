@@ -1,6 +1,10 @@
 require "codemirror/mode/markdown/markdown"
 require "codemirror/keymap/sublime"
 
+require "codemirror/addon/edit/matchbrackets"
+require "codemirror/addon/edit/closebrackets"
+require "codemirror/addon/edit/closetag"
+
 {Component, PropTypes} = React = require "react"
 Markdown = require "markdown-it"
 Codemirror = require "react-codemirror"
@@ -8,6 +12,7 @@ hljs = require 'highlight.js'
 
 md = new Markdown
   breaks: on
+  linkify: on
   highlight: (string, lang) ->
     unless lang and hljs.getLanguage lang
       return "
@@ -66,6 +71,7 @@ class BlogEditor extends Component
               mode: "markdown"
               tabSize: 2
               keyMap: "sublime"
+              autoCloseTags: on
               matchBrackets: on
               autoCloseBrackets: on
               cursorBlinkRate: 0
