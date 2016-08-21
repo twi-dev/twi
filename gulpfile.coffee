@@ -38,7 +38,7 @@ jeet = require 'jeet'
 # Breakpoint system
 rupture = require 'rupture'
 
-{app: {theme}} = require './core/helpers/configure-helper'
+{app: {theme}} = require './core/helper/configure'
 theme or= 'twi'
 
 # Theme path
@@ -106,10 +106,12 @@ gulp.task 'stylus', ->
     gutil.log 'Rebuild stylus...'
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
-      .pipe stylus use: [
-        do jeet
-        do rupture
-      ]
+      .pipe stylus
+        "include css": on
+        use: [
+          do jeet
+          do rupture
+        ]
       .pipe autoprefixer browsers: ['last 4 versions']
       .pipe gulpif not bIsDevel, do csso # Compress CSS only for production
       .pipe gulp.dest STYLUS_DEST
