@@ -6,7 +6,24 @@ Markdown = require "markdown-it"
 Codemirror = require "react-codemirror"
 hljs = require 'highlight.js'
 
-md = new Markdown breaks: on, highlight: hljs
+md = new Markdown
+  breaks: on
+  highlight: (string, lang) ->
+    unless lang and hljs.getLanguage lang
+      return "
+        <pre class=\"hljs\">
+          <code>#{md.utils.escapeHtml string}</code>
+        </pre>
+      "
+
+    try
+      return "
+        <pre class=\"hljs\">
+          <code>#{hljs.highlight(lang, string, true).value}</code>
+        </pre>
+      "
+    catch e
+      console.log e
 
 class BlogEditor extends Component
   constructor: ->
@@ -29,29 +46,40 @@ class BlogEditor extends Component
   render: ->
     <div className="blog-editor" style={{height: @state.height}}>
       <div className="blog-editor-container fl">
-        <input
-          type="text"
-          name="title"
-          placeholder="Type note title here..."
-          onChange={@updateTitle}
-        />
-        <Codemirror
-          name="content"
-          value={@state.content}
-          onChange={@updateContent}
-          options={
-            mode: "markdown"
-            tabSize: 2
-            keyMap: "sublime"
-            matchBrackets: on
-            autoCloseBrackets: on
-            cursorBlinkRate: 0
-          }
-        />
+        <div className="blog-editor-field-title">
+          <input
+            type="text"
+            name="title"
+            onChange={@updateTitle}
+            placeholder="Type note title here..."
+          />
+        </div>
+        <div
+          className="blog-editor-field-content"
+          style={{height: parseInt(@state.height) - 49}}
+        >
+          <Codemirror
+            name="content"
+            value={@state.content}
+            onChange={@updateContent}
+            options={
+              mode: "markdown"
+              tabSize: 2
+              keyMap: "sublime"
+              matchBrackets: on
+              autoCloseBrackets: on
+              cursorBlinkRate: 0
+            }
+          />
+        </div>
       </div>
       <div className="blog-editor-preview fl">
         <h4>{@state.title}</h4>
-        <div dangerouslySetInnerHTML={do @_renderPreview}></div>
+        <div
+          className="blog-editor-preview-content"
+          style={{height: parseInt(@state.height) - 49}}
+          dangerouslySetInnerHTML={do @_renderPreview}
+        ></div>
       </div>
     </div>
 

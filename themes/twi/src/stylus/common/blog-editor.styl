@@ -4,7 +4,39 @@
     box-sizing border-box
     width 50%
     height inherit
-    padding 20px 16px
+
+  &-field
+    &-title
+      line-height 28px
+      border-bottom rgba(black, .150) solid 1px
+      box-sizing border-box
+
+      input
+        width 100%
+        padding 10px 16px
+        border 0
+
+    &-content
+      padding 10px 16px
+      .ReactCodeMirror,
+      .CodeMirror
+        height inherit
 
   &-preview
+    overflow hidden
     border-left rgba(black, .150) solid 1px
+    img
+      max-width 100%
+
+    & h4
+      height 28px
+      line-height 28px
+      padding 10px 16px
+      margin 0
+      border-bottom rgba(black, .150) solid 1px
+
+    &-content
+      // font-family monospace
+      font-size 80%
+      padding 0 16px
+      overflow-y auto
