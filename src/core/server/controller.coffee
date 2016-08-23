@@ -1,38 +1,38 @@
-'use strict'
+"use strict"
 
-requireHelper = require '../helper/require'
+requireHelper = require "../helper/require"
 
-{realpathSync} = require 'fs'
-{isFunction} = require 'lodash'
-{warn} = require '../logger'
+{realpathSync} = require "fs"
+{isFunction} = require "lodash"
+{warn} = require "../logger"
 
-NotFoundException = require '../errors/NotFound'
-NotAllwedException = require '../errors/NotAllowed'
+NotFoundException = require "../errors/NotFound"
+NotAllwedException = require "../errors/NotAllowed"
 
 CONTROLLERS = realpathSync "#{__dirname}/../../controller"
 
-Router = require 'koa-router'
+Router = require "koa-router"
 router = new Router
 
 wrapRouter = (path) ->
   return methods =
     get: (actions...) ->
-      router.get.apply router, [path, actions...]
+      router.get path, actions...
       return methods
     post: (actions...) ->
-      router.post.apply router, [path, actions...]
+      router.post path, actions...
       return methods
     patch: (actions...) ->
-      router.patch.apply router, [path, actions...]
+      router.patch path, actions...
       return methods
     put: (actions...) ->
-      router.put.apply router, [path, actions...]
+      router.put path, actions...
       return methods
     delete: (actions...) ->
-      router.delete.apply router, [path, actions...]
+      router.delete path, actions...
       return methods
     all: (actions...) ->
-      router.all.apply router, [path, actions...]
+      router.all path, actions...
       return methods
 
 ###
@@ -64,7 +64,7 @@ controller = (app) ->
     __controller wrapRouter
 
   # Error pages
-  wrapRouter '*'
+  wrapRouter "*"
     .get actionNotFound
     .all actionNotAllowed
 
