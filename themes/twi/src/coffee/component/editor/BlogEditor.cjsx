@@ -28,24 +28,30 @@ md = new Markdown
         </pre>
       "
     catch e
-      console.log e
+      console.error e
 
 class BlogEditor extends Component
   constructor: ->
+    {documentElement: {offsetWidth, offsetHeight}} = document
     @state =
+      width: offsetWidth
+      height: offsetHeight - (52 * 2)
       title: ""
       content: ""
-      width: "#{outerWidth}px"
-      height: "#{outerHeight - (56 + 124)}px"
+      buttonAction: "submit"
 
   componentWillMount: -> addEventListener "resize", @resizeComponent
 
   resizeComponent: =>
-    @setState width: "#{outerWidth}px", height: "#{outerHeight - (56 + 124)}px"
+    {documentElement: {offsetWidth, offsetHeight}} = document
+    @setState width: offsetWidth, height: offsetHeight - (52 * 2)
 
   submit: (e) =>
     do e.preventDefault
-    console.log @state
+    {title, content, tags} = @state
+    console.log title, content
+
+  handleAction: ({currentTarget}) => console.log currentTarget.dataset.action
 
   updateTitle: ({target: {value}}) => @setState title: value
 
@@ -56,48 +62,43 @@ class BlogEditor extends Component
 
   render: ->
     <div>
-      <form onSubmit={@submit}>
-        <div className="blog-editor" style={{height: @state.height}}>
-          <div className="blog-editor-container fl">
-            <div className="blog-editor-field-title">
-              <input
-                type="text"
-                name="title"
-                onChange={@updateTitle}
-                placeholder="Type note title here..."
-              />
-            </div>
-            <div
-              className="blog-editor-field-content"
-              style={{height: parseInt(@state.height) - 49}}
-            >
-              <Codemirror
-                name="content"
-                value={@state.content}
-                onChange={@updateContent}
-                options={
-                  mode: "markdown"
-                  tabSize: 2
-                  keyMap: "sublime"
-                  autoCloseTags: on
-                  matchBrackets: on
-                  cursorBlinkRate: 0
-                  autoCloseBrackets: on
-                }
-              />
-            </div>
+      <form onSubmit={(e) -> do e.preventDefault} autoComplete="off">
+        <div className="blog-editor" style={{height: parseInt(@state.height)}}>
+          <div className="blog-editor-field-title">
+            <input
+              type="text"
+              name="title"
+              onChange={@updateTitle}
+              placeholder="Type note title here..."
+              style={{width: @state.width - 100}}
+            />
           </div>
-          <div className="blog-editor-preview fl">
-            <h4>{@state.title}</h4>
-            <div
-              className="blog-editor-preview-content"
-              style={{height: parseInt(@state.height) - 49}}
-              dangerouslySetInnerHTML={do @_renderPreview}
-            ></div>
+          <div
+            className="blog-editor-field blog-editor-field-content fl"
+            style={{height: parseInt(@state.height) - 50}}
+          >
+            <Codemirror
+              name="content"
+              value={@state.content}
+              onChange={@updateContent}
+              options={
+                mode: "markdown"
+                tabSize: 2
+                keyMap: "sublime"
+                lineWrapping: on
+                autoCloseTags: on
+                matchBrackets: on
+                cursorBlinkRate: 0
+                autoCloseBrackets: on
+              }
+            />
           </div>
+          <div
+            className="blog-editor-preview fl"
+            dangerouslySetInnerHTML={do @_renderPreview}
+            style={{height: parseInt(@state.height) - 50}}></div>
         </div>
         <div className="blog-editor-controls">
-          Editor controls and tags input will be right there...
         </div>
       </form>
     </div>
