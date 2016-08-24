@@ -5,12 +5,10 @@ button-colored(bgc, fgc)
 .button
   position relative
   display inline-block
-  overflow hidden
   user-select none
-  padding 0 2rem
+  padding .5rem 1.5rem
   cursor pointer
   text-transform uppercase
-  line-height 36px
   text-align center
   border none
   border-radius 2px
@@ -44,6 +42,7 @@ button-colored(bgc, fgc)
       button-colored(maneFillViolet, white)
 
   &-floating
+    overflow hidden
     width 45px
     height 45px
     border-radius 100%
@@ -54,3 +53,36 @@ button-colored(bgc, fgc)
 
     &:hover
       box-shadow: 0 5px 11px 0 rgba(black, .18), 0 4px 15px 0 rgba(black, .15)
+
+  // Styles for component ActionButton
+  &-action
+    display inline-block
+    user-select none
+    padding .5rem 0
+    cursor pointer
+    text-transform uppercase
+    text-align center
+    &-label
+      padding .5rem 0 .5rem 1.5rem
+
+    &-icon
+      position relative
+      padding .5rem 1.3rem .5rem
+
+      // &::before
+      //   content ""
+      //   position absolute
+      //   left 6px
+      //   top 9.5px
+      //   width 1px
+      //   height 14px
+      //   background rgba(white, .7)
+
+      svg
+        right .75rem
+        // right .49rem
+        position absolute
+        width 20px
+        height 20px
+        fill white
+

@@ -6,6 +6,9 @@ require "codemirror/addon/edit/closebrackets"
 require "codemirror/addon/edit/closetag"
 
 {Component, PropTypes} = React = require "react"
+ActionButton = require "../element/button/ActionButton"
+ArrowDown = require "../../../../public/img/layout/arrow-down.svg"
+
 Markdown = require "markdown-it"
 Codemirror = require "react-codemirror"
 hljs = require 'highlight.js'
@@ -70,7 +73,11 @@ class BlogEditor extends Component
               name="title"
               onChange={@updateTitle}
               placeholder="Type note title here..."
-              style={{width: @state.width - 100}}
+              style={{width: @state.width - 170}}
+            />
+            <ActionButton
+              actions={["submit", "save"]}
+              onClick={@handleAction}
             />
           </div>
           <div
