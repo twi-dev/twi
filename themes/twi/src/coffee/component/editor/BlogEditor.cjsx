@@ -49,12 +49,12 @@ class BlogEditor extends Component
     {documentElement: {offsetWidth, offsetHeight}} = document
     @setState width: offsetWidth, height: offsetHeight - (52 * 2)
 
-  submit: (e) =>
-    do e.preventDefault
+  submit: ->
     {title, content, tags} = @state
-    console.log title, content
+    console.log title
+    console.log content
 
-  handleAction: ({currentTarget}) => console.log currentTarget.dataset.action
+  doAction: (act) => do this[act] if act of this
 
   updateTitle: ({target: {value}}) => @setState title: value
 
@@ -77,7 +77,7 @@ class BlogEditor extends Component
             />
             <ActionButton
               actions={["submit", "save"]}
-              onClick={@handleAction}
+              doAction={@doAction}
             />
           </div>
           <div

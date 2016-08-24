@@ -7,7 +7,7 @@ class ActionButton extends Component
 
   @propTypes:
     actions: PropTypes.array.isRequired
-    onClick: PropTypes.func.isRequired
+    doAction: PropTypes.func.isRequired
 
   constructor: -> @state = action: "submit", showPanel: no
 
@@ -15,11 +15,16 @@ class ActionButton extends Component
 
   hideActions: => setTimeout (=> @setState showPanel: no), 0 if @state.showPanel
 
+  submitAction: ({currentTarget}) =>
+    @props.doAction currentTarget?.dataset?.action
+
   renderActions: ->
 
   render: ->
     <div className="button-action button-violet">
       <span
+        data-action="submit"
+        onClick={@submitAction}
         className="button-action-label"
       >Отправить</span>
       <span
