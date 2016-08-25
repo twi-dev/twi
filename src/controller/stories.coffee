@@ -1,10 +1,10 @@
-{t} = require '../core/i18n'
+{t} = require "../core/i18n"
 
-story = require '../model/Story'
+story = require "../model/Story"
 
-ForbiddenException = require '../core/errors/Forbidden'
-NowFoundException = require '../core/errors/NotFound'
-NotAllowedException = require '../core/errors/NotAllowed'
+ForbiddenException = require "../core/errors/Forbidden"
+NowFoundException = require "../core/errors/NotFound"
+NotAllowedException = require "../core/errors/NotAllowed"
 
 ###
 # Response stories
@@ -12,8 +12,8 @@ NotAllowedException = require '../core/errors/NotAllowed'
 # GET /stories/:page?
 ###
 actionIndex = (ctx) ->
-  ctx.render 'stories/index',
-    title: t 'stories.title.index'
+  ctx.render "stories/index",
+    title: t "stories.title.index"
 
   await return
 
@@ -21,8 +21,8 @@ actionIndex = (ctx) ->
 # GET
 ###
 actionStory = (ctx) ->
-  ctx.render 'stories/story',
-    title: 'Страница рассказа'
+  ctx.render "stories/story",
+    title: "Страница рассказа"
 
   await return
 
@@ -32,8 +32,8 @@ actionStory = (ctx) ->
 # GET /story/read/:slug/:chapter?
 ###
 actionRead = (ctx) ->
-  ctx.render 'stories/read',
-    title: 'Story title'
+  ctx.render "stories/read",
+    title: "Story title"
 
   await return
 
@@ -48,8 +48,8 @@ actionNew = (ctx) ->
       Unauthorized access to \"Add new story\" page.
     "
 
-  ctx.render 'stories/new',
-    title: t 'stories.title.new'
+  ctx.render "stories/new",
+    title: t "stories.title.new"
     _csrf: ctx.csrf
 
   await return
@@ -88,8 +88,8 @@ actionCreateStory = (ctx) ->
 # GET /story/edit/:slug
 ###
 actionEdit = (ctx) ->
-  ctx.render 'stories/edit',
-    title: t 'stories.title.edit'
+  ctx.render "stories/edit",
+    title: t "stories.title.edit"
 
   await return
 
@@ -139,35 +139,35 @@ actionMarks = (ctx) ->
 
 main =  (r) ->
   # Get characters
-  r '/story/characters/:name?'
+  r "/story/characters/:name?"
     .get actionCharacters
 
   # Get marks
-  r '/story/marks/:name?'
+  r "/story/marks/:name?"
     .get actionMarks
 
   # List of all stories
-  r '/stories/:page?'
+  r "/stories/:page?"
     .get actionIndex
 
   # Read story with given id
-  r '/story/read/:slug/:chapter'
+  r "/story/read/:slug/:chapter"
     .get actionRead
 
   # Add new story
-  r '/story/new'
+  r "/story/new"
     .get actionNew
     .post actionCreateStory
 
   # Edit story
-  r '/story/edit/:slug/:chapter?'
+  r "/story/edit/:slug/:chapter?"
     .get actionEdit
     .put actionSave
 
   # Story details/delete story
   # TODO: Node said something about EventEmitter memory leak on this.
   # I need some research.
-  r '/story/:slug'
+  r "/story/:slug"
     .get actionStory
     .delete actionDelete
 

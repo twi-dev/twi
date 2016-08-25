@@ -1,5 +1,5 @@
-{normal} = require '../logger'
-colors = require 'colors'
+{normal} = require "../logger"
+colors = require "colors"
 
 arrowRight = "->".grey
 arrowLeft = "<-".grey

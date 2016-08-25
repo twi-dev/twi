@@ -1,43 +1,46 @@
-'use strict'
+"use strict"
 
-{readdirSync, realpathSync} = require 'fs'
-{readFile, readdir} = require 'promise-fs'
-{basename, extname, dirname} = require 'path'
-{render} = require 'jade'
-{app: {host, name, theme}} = require '../helper/configure'
+junk = require 'junk'
+{readdirSync, realpathSync} = require "fs"
+{readFile, readdir} = require "promise-fs"
+{basename, extname, dirname} = require "path"
+{render} = require "jade"
+{app: {host, name, theme}} = require "../helper/configure"
 
-_ = require 'lodash'
-i18n = require '../i18n'
+{assign, isPlainObject} = require "lodash"
+{t} = i18n = require "../i18n"
 
-PUG_EXT = ['.jade', '.pug']
+PUG_EXT = [".jade", ".pug"]
 EMAIL_TEMPLATES = realpathSync "#{__dirname}/../../themes/#{theme}/views/mail"
 
-oLocals =
-  name: name
-  host: host
-  t: i18n.t
+oLocals = {name, host, t}
 
-normalizePath = (sPath) ->
-  aFiles = await readdir dirname sPath
+normalizePath = (path) ->
+  files = await readdir dirname path
+  for file in files when (__extname = extname file) in PUG_EXT and junk.not file
+    __filename = "#{basename file, __extname}"
+    if __filename is basename path
+      return "#{dirname path}/#{__filename}#{__extname}"
 
-  for sFile in aFiles when (__sExtname = extname sFile) in PUG_EXT
-    __sFilename = "#{basename sFile, __sExtname}"
-    if __sFilename is basename sPath
-      return "#{dirname sPath}/#{__sFilename}.jade"
+  return path
 
-  return sPath
-
-renderer = (sName, oOptions = {}) ->
-  unless typeof sName is 'string'
+###
+# Render template with given name and options
+#
+# @param string name
+# @param object
+###
+renderer = (name, options = {}) ->
+  unless typeof name is "string"
     throw new TypeError "Name must be a string."
 
-  oOptions = _.assign oOptions, oLocals
-  sPath = await normalizePath "#{EMAIL_TEMPLATES}/#{sName}"
-  sContent = await readFile sPath
+  unless isPlainObject options
+    throw new TypeError "Options must be a plain object."
 
-  oOptions.filename = sPath
-  sContent = render sContent, oOptions
+  options = assign options, oLocals
+  path = await normalizePath "#{EMAIL_TEMPLATES}/#{name}"
+  content = await readFile path
 
-  return sContent
+  return render content, assign options, filename: path
 
 module.exports = renderer

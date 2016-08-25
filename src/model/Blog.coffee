@@ -1,15 +1,15 @@
-'use strict'
+"use strict"
 
-md = new (require 'markdown-it')
-moment = require 'moment'
-model = require '../core/database'
-post = model 'post', require '../core/database/schemas/post'
-tag = model 'tag', require '../core/database/schemas/tag'
-postTags = model 'postTags', require '../core/database/schemas/postTags'
-user = model 'user', require '../core/database/schemas/user'
+md = new (require "markdown-it")
+moment = require "moment"
+model = require "../core/database"
+post = model "post", require "../core/database/schemas/post"
+tag = model "tag", require "../core/database/schemas/tag"
+postTags = model "postTags", require "../core/database/schemas/postTags"
+user = model "user", require "../core/database/schemas/user"
 
-NotFoundException = require '../core/errors/NotFound'
-ForbiddenException = require '../core/errors/Forbidden'
+NotFoundException = require "../core/errors/NotFound"
+ForbiddenException = require "../core/errors/Forbidden"
 
 ###
 # Get tag his name
@@ -20,7 +20,7 @@ getTagByName = (sName) ->
   oTagData = await Promise.resolve tag.findOne
     attributes:
       exclude: [
-        'tagId'
+        "tagId"
       ]
     where:
       name: decodeURI sName # I'm not sure is that secure

@@ -28,7 +28,7 @@ LOG_LABELS = [
 ]
 
 log = (message, iLevel = 0) ->
-  now = moment().format 'DD MMM YYYY h:mm:ss a'
+  now = (do moment).format 'DD MMM YYYY h:mm:ss a'
   if iLevel in [LOG_NORMAL, LOG_OK, LOG_INFO]
     write "[#{LOG_LABELS[[iLevel]]}] #{message} at #{now}"
   else

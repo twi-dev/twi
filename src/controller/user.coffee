@@ -1,10 +1,10 @@
-'use strict'
+"use strict"
 
-i18n = require '../core/i18n'
-user = new User = require '../model/User'
+i18n = require "../core/i18n"
+user = new User = require "../model/User"
 
-NotFoundException = require '../core/errors/NotFound'
-ForbiddenException = require '../core/errors/Forbidden'
+NotFoundException = require "../core/errors/NotFound"
+ForbiddenException = require "../core/errors/Forbidden"
 
 ###
 # List of all registered users
@@ -12,8 +12,8 @@ ForbiddenException = require '../core/errors/Forbidden'
 # GET /users/:page?
 ###
 actionUsers = (ctx) ->
-  ctx.render 'user/users',
-    title: 'Users'
+  ctx.render "user/users",
+    title: "Users"
 
   await return
 
@@ -27,8 +27,8 @@ actionProfile = (ctx) ->
 
   oUserData = await user.profile login
 
-  ctx.render 'user/profile',
-    title: i18n.t 'user.title.profile',
+  ctx.render "user/profile",
+    title: i18n.t "user.title.profile",
       username: oUserData.login
     profile: oUserData
 
@@ -38,19 +38,19 @@ actionSettings = (ctx) ->
   unless do ctx.req.isAuthenticated
     throw new ForbiddenException "Unauthorized access to user settings."
 
-  ctx.render 'user/settings',
-    title: i18n.t 'user.title.settings'
+  ctx.render "user/settings",
+    title: i18n.t "user.title.settings"
 
   await return
 
 module.exports = (r) ->
-  r '/users/:page?'
+  r "/users/:page?"
     .get actionUsers
 
-  r '/user/:login?'
+  r "/user/:login?"
     .get actionProfile
 
-  r '/settings'
+  r "/settings"
     .get actionSettings
 
   return

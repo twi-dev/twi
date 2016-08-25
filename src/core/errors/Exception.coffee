@@ -1,8 +1,8 @@
-'use strict'
+"use strict"
 
 class Exception
   constructor: (name, @message, @status = 500, props) ->
-    @name = 'Exception'
+    @name = "Exception"
     @properties =
       error: props ? {
         status: @status

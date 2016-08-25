@@ -1,31 +1,31 @@
-'use strict'
+"use strict"
 
-Koa = require 'koa'
-convert = require 'koa-convert'
-serve = require 'koa-static'
-favicon = require 'koa-favicon'
-bodyparser = require 'koa-bodyparser'
-sess = require 'koa-generic-session'
-redisStore = require 'koa-redis'
-csrf = require 'koa-csrf'
-passport = require 'koa-passport'
-compress = require 'koa-compress'
-controller = require './controller'
-view = require './view'
-oConfig = require '../helper/configure'
-isXhr = require '../middleware/xhr'
-errorHandler = require '../middleware/error-handler'
-logger = require '../middleware/logger'
+Koa = require "koa"
+convert = require "koa-convert"
+serve = require "koa-static"
+favicon = require "koa-favicon"
+bodyparser = require "koa-bodyparser"
+sess = require "koa-generic-session"
+redisStore = require "koa-redis"
+csrf = require "koa-csrf"
+passport = require "koa-passport"
+compress = require "koa-compress"
+controller = require "./controller"
+view = require "./view"
+oConfig = require "../helper/configure"
+isXhr = require "../middleware/xhr"
+errorHandler = require "../middleware/error-handler"
+logger = require "../middleware/logger"
 
-{ok, info, normal}  = require '../logger'
-{readFileSync, realpathSync} = require 'fs'
+{ok, info, normal}  = require "../logger"
+{readFileSync, realpathSync} = require "fs"
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
 PUBLIC_DIR = realpathSync "#{__dirname}/../../themes/#{theme}/public"
 UPLOADS_DIR = realpathSync "#{__dirname}/../../uploads"
 app = new Koa
 app.keys = [session.secret]
 
-normal 'Init Twi middlewares'
+normal "Init Twi middlewares"
 
 # Check xhr request
 app.use isXhr
@@ -73,7 +73,7 @@ controller app
 view app, debug: off
 
 normal "
-  Run Twi server for #{process.env.NODE_ENV or 'development'} environment
+  Run Twi server for #{process.env.NODE_ENV or "development"} environment
 "
 
 # Run server
@@ -84,7 +84,7 @@ do ->
     oOptions =
       key: readFileSync "#{CERTS}/twi.key"
       cert: readFileSync "#{CERTS}/twi.crt"
-    require 'http2'
+    require "http2"
       .cteateServer oOptions, do app.callback
       .listen port
     info "Starting with HTTP2 server."

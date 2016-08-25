@@ -1,38 +1,38 @@
-'use strict'
+"use strict"
 
-_ = require 'lodash'
-moment = require 'moment'
-{app: {lang}} = require '../core/helper/configure'
+_ = require "lodash"
+moment = require "moment"
+{app: {lang}} = require "../core/helper/configure"
 
-model = require '../core/database'
-story = model 'story', require '../core/database/schemas/stories'
-character = model 'character', require '../core/database/schemas/character'
-characterLocale = model 'characterLocale',
-  require '../core/database/schemas/characterLocale'
-mark = model 'mark', require '../core/database/schemas/mark'
-markLocale = model 'markLocale', require '../core/database/schemas/markLocale'
+model = require "../core/database"
+story = model "story", require "../core/database/schemas/stories"
+character = model "character", require "../core/database/schemas/character"
+characterLocale = model "characterLocale",
+  require "../core/database/schemas/characterLocale"
+mark = model "mark", require "../core/database/schemas/mark"
+markLocale = model "markLocale", require "../core/database/schemas/markLocale"
 
 character.hasMany characterLocale,
-  as: 'locale'
-  foreignKey: 'character_id'
+  as: "locale"
+  foreignKey: "character_id"
 
 mark.hasMany markLocale,
-  as: 'locale'
-  foreignKey: 'mark_id'
+  as: "locale"
+  foreignKey: "mark_id"
 
 class Story
   getCharacters: ->
     await Promise.resolve character.findAll
       raw: yes
       attributes: [
-        ['character_id', 'id']
-        'pic'
+        ["character_id", "id"]
+        "pic"
       ]
       include: [
-        as: 'locale'
+        as: "locale"
         model: characterLocale
         attributes: [
-          'name'
+          "name"
         ]
       ]
 
@@ -40,14 +40,14 @@ class Story
     await Promise.resolve character.findAll
       raw: yes
       attributes: [
-        ['character_id', 'id']
-        'pic'
+        ["character_id", "id"]
+        "pic"
       ]
       include: [
-        as: 'locale'
+        as: "locale"
         model: characterLocale
         attributes: [
-          'name'
+          "name"
         ]
         where:
           name:
@@ -58,14 +58,14 @@ class Story
     await Promise.resolve mark.findAll
       raw: yes
       attributes: [
-        ['mark_id', 'id']
-        'color'
+        ["mark_id", "id"]
+        "color"
       ]
       include: [
-        as: 'locale'
+        as: "locale"
         model: markLocale
         attributes: [
-          'name'
+          "name"
         ]
       ]
 
@@ -73,14 +73,14 @@ class Story
     await Promise.resolve mark.findAll
       raw: yes
       attributes: [
-        ['mark_id', 'id']
-        'color'
+        ["mark_id", "id"]
+        "color"
       ]
       include: [
-        as: 'locale'
+        as: "locale"
         model: markLocale
         attributes: [
-          'name'
+          "name"
         ]
         where:
           name:

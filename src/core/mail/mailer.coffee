@@ -1,9 +1,9 @@
-mailer = require 'nodemailer'
-renderer = require './renderer'
-i18n = require '../i18n'
+mailer = require "nodemailer"
+renderer = require "./renderer"
+{t} = i18n = require "../i18n"
 
-{smtp} = require '../helper/configure'
-{info} = require '../logger'
+{smtp} = require "../helper/configure"
+{info} = require "../logger"
 
 oTransporter = null
 
@@ -30,7 +30,7 @@ sendPlain = (to, subject, text) ->
     return
 
   await oTransporter.sendMail
-    from: "Пони-почтовик <#{smtp.user}>"
+    from: "#{t 'mail.from'} <#{smtp.user}>"
     to: to
     subject: subject
     html: text

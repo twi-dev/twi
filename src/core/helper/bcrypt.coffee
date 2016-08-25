@@ -1,11 +1,10 @@
-# thunk = require 'thunkify'
-pify = require 'pify'
-bcrypt = require 'bcryptjs'
+pify = require "pify"
+bcrypt = require "bcryptjs"
 
 methods = [
-  'genSalt'
-  'hash'
-  'compare'
+  "genSalt"
+  "hash"
+  "compare"
 ]
 
 # Wrapper

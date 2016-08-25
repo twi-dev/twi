@@ -1,40 +1,52 @@
-'use strict'
+"use strict"
 
-fs = require 'fs'
-i18next = require 'i18next'
-yaml = require 'node-yaml'
+i18next = require "i18next"
+yaml = require "node-yaml"
+junk = require "junk"
+{readdirSync, realpathSync} = require "fs"
 
-requireHelper = require '../helper/require'
-{app: {lang}} = require '../helper/configure'
+{warn} = require "../logger"
+requireHelper = require "../helper/require"
+{app: {lang}} = require "../helper/configure"
 
 i18n = null
-sCurrentLang = lang
+currentLang = lang
 
-getLang = -> sCurrentLang
+LANGS_ROOT = realpathSync "#{__dirname}/../../langs"
+
+getLang = -> currentLang
 
 setLang = (sLang) ->
-  sCurrentLang = sLang
+  currentLang = sLang
   return
 
 loadLangs = ->
-  __oLangs = requireHelper '../../langs', on
-  __aLangs = Object.keys __oLangs
   __ref = {}
-  for __sLangName in __aLangs
-    __ref[__sLangName] = {}
-    __ref[__sLangName].translation = __oLangs[__sLangName]
+  langs = readdirSync LANGS_ROOT
+
+  for __lang in langs when junk.not __lang
+    try
+      phrases = requireHelper "#{LANGS_ROOT}/#{__lang}/backend"
+    catch err
+      throw err unless err.code is "ENOENT"
+
+      warn "Directory of lang \"#{__lang}\" is empty"
+      continue
+
+    __ref[__lang] = {}
+    __ref[__lang].translation = phrases
 
   return __ref
 
 init = -> i18next.init resources: do loadLangs
 
-t = (sKey, oOptions = {}) ->
-  oOptions.lng or= lang
+t = (key, options = {}) ->
+  options.lng or= lang
 
   unless i18n?
     i18n = do init
 
-  return i18n.t sKey, oOptions
+  return i18n.t key, options
 
 module.exports =
   init: init

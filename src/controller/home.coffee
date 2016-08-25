@@ -1,7 +1,7 @@
-'use strict'
+"use strict"
 
-i18n = require '../core/i18n'
-{app: {name}} = require '../core/helper/configure'
+i18n = require "../core/i18n"
+{app: {name}} = require "../core/helper/configure"
 
 ###
 # Response a home page
@@ -9,8 +9,8 @@ i18n = require '../core/i18n'
 # GET /
 ###
 actionIndex = (ctx) ->
-  ctx.render 'home/home',
-    title: i18n.t 'home.title.index',
+  ctx.render "home/home",
+    title: i18n.t "home.title.index",
       name: name
 
   await return
@@ -21,8 +21,8 @@ actionIndex = (ctx) ->
 # GET /help
 ###
 actionHelp = (ctx) ->
-  ctx.render 'home/help',
-    title: i18n.t 'home.title.help'
+  ctx.render "home/help",
+    title: i18n.t "home.title.help"
 
   await return
 
@@ -32,8 +32,8 @@ actionHelp = (ctx) ->
 # GET /feedback
 ###
 actionFeedback = (ctx) ->
-  ctx.render 'home/feedback',
-    title: i18n.t 'home.title.feedback'
+  ctx.render "home/feedback",
+    title: i18n.t "home.title.feedback"
 
   await return
 
@@ -50,36 +50,36 @@ actionSend = (ctx) -> await return
 # GET /rules
 ###
 actionRules = (ctx) ->
-  ctx.render 'home/rules',
-    title: i18n.t 'home.title.rules'
+  ctx.render "home/rules",
+    title: i18n.t "home.title.rules"
 
   await return
 
 actionOutdated = ->
-  ctx.render 'errors/outdated',
-    title: 'You are using an outdated browser'
+  ctx.render "errors/outdated",
+    title: "You are using an outdated browser"
 
   await return
 
 module.exports = (r) ->
   # Home page
-  r '/'
+  r "/"
     .get actionIndex
 
   # Site help & FAQ
-  r '/help'
+  r "/help"
     .get actionHelp
 
   # Site feedback
-  r '/feedback'
+  r "/feedback"
     .get actionFeedback
     .post actionSend
 
   # Site rules
-  r '/rules'
+  r "/rules"
     .get actionRules
 
-  r '/outdated'
+  r "/outdated"
     .get actionOutdated
 
   return

@@ -1,16 +1,14 @@
-'use strict'
+"use strict"
 
-# Jade = require 'koa-jade'
-{compile} = require 'jade'
-{assign, merge} = require 'lodash'
+{compile} = require "jade"
+{assign, merge} = require "lodash"
 
-# {readFile} = require 'co-fs'
-{realpathSync, readFileSync} = require 'fs'
-{app: {name, credits, theme}, IS_DEVEL} = require '../helper/configure'
-{version, codename} = require '../../package.json'
-{t} = require '../i18n'
+{realpathSync, readFileSync} = require "fs"
+{app: {name, credits, theme}, IS_DEVEL} = require "../helper/configure"
+{version, codename} = require "../../package.json"
+{t} = require "../i18n"
 
-theme or= 'twi'
+theme or= "twi"
 VIEWS = realpathSync "#{__dirname}/../../themes/#{theme}/views"
 {NODE_ENV} = process.env
 

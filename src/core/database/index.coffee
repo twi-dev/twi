@@ -1,10 +1,10 @@
-'use strict'
+"use strict"
 
-snakecase = require 'snake-case'
-{database} = require '../helper/configure'
-{info} = require '../logger'
+snakecase = require "snake-case"
+{database} = require "../helper/configure"
+{info} = require "../logger"
 
-Sequelize = require 'sequelize'
+Sequelize = require "sequelize"
 sequelize = new Sequelize database.name, database.user, database.pass,
   dialect: database.driver
   host: database.host

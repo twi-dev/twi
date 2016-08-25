@@ -1,33 +1,34 @@
-'use strict'
+"use strict"
 
-_ = require 'lodash'
-co = require 'co'
-redis = require 'then-redis'
-moment = require 'moment'
-crypto = require 'crypto'
-bcrypt = require '../core/helper/bcrypt'
-mailer = require '../core/mail/mailer'
-model = require '../core/database'
-user = model 'user', require '../core/database/schemas/user'
-contacts = model 'contacts', require '../core/database/schemas/contacts'
-{isEmail, isValidPassword} = require '../core/helper/validation'
+_ = require "lodash"
+co = require "co"
+redis = require "then-redis"
+moment = require "moment"
+crypto = require "crypto"
+bcrypt = require "../core/helper/bcrypt"
+mailer = require "../core/mail/mailer"
+model = require "../core/database"
+user = model "user", require "../core/database/schemas/user"
+contacts = model "contacts", require "../core/database/schemas/contacts"
+{isEmail, isValidPassword} = require "../core/helper/validation"
+{t} = require "../core/i18n"
 
-ForbiddenException = require '../core/errors/Forbidden'
-NotFoundException = require '../core/errors/NotFound'
+ForbiddenException = require "../core/errors/Forbidden"
+NotFoundException = require "../core/errors/NotFound"
 
 redis = do redis.createClient
-{info} = require '../core/logger'
+{info} = require "../core/logger"
 
 # Associate contacts with users
-contacts.hasOne user, foreignKey: 'contacts_id'
-user.belongsTo contacts, foreignKey: 'contacts_id'
+contacts.hasOne user, foreignKey: "contacts_id"
+user.belongsTo contacts, foreignKey: "contacts_id"
 
 # Authenticate user by login/email and pass
 _authenticate = (sUsername, sPass) ->
   oOptions =
     attributes: [
-      'userId'
-      'password'
+      "userId"
+      "password"
     ]
     where: (if isEmail sUsername then email: sUsername else login: sUsername)
 
@@ -50,12 +51,12 @@ CONFIRMATION_EXPIRE = 60 * 60 * 24
 # Sending confirmation message via email
 ###
 confirm = (sEmail, sId) ->
-  sHash = crypto.createHash 'sha256'
+  sHash = crypto.createHash "sha256"
     .update "#{+moment()}#{sEmail}"
-    .digest 'hex'
+    .digest "hex"
 
-  await redis.set sHash, sId, 'EX', CONFIRMATION_EXPIRE
-  await mailer.send sEmail, "Добро пожаловать!", 'welcome',
+  await redis.set sHash, sId, "EX", CONFIRMATION_EXPIRE
+  await mailer.send sEmail, t("mail.welcome.subject"), "welcome",
     activationLink: sHash
   info "Confirmation message has been sent to #{sEmail}"
   return
@@ -93,9 +94,9 @@ class User
     # Reserved.
     ###
     @RESERVED = [
-      'admin'
-      'moderator'
-      'root'
+      "admin"
+      "moderator"
+      "root"
     ]
 
   _getUser: (oOptions) ->
@@ -106,18 +107,18 @@ class User
       raw: yes
       attributes:
         exclude: [
-          'contactsId'
-          'userId'
-          'email'
-          'password'
-          'role'
+          "contactsId"
+          "userId"
+          "email"
+          "password"
+          "role"
         ]
       include: [
         model: contacts
         attributes:
           exclude: [
-            'contactsId'
-            'userId'
+            "contactsId"
+            "userId"
           ]
       ]
       where:
@@ -160,10 +161,10 @@ class User
   getAuthenticated: (id, cb) ->
     user.findOne
       attributes: [
-        'userId'
-        'login'
-        'role'
-        'status'
+        "userId"
+        "login"
+        "role"
+        "status"
       ]
       where:
         userId: id

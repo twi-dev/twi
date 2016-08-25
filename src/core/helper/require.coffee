@@ -1,9 +1,10 @@
-'use strict'
+"use strict"
 
-fs = require 'fs'
-path = require 'path'
-yaml = require 'node-yaml'
-{isEmpty, isBoolean, isFunction} = require 'lodash'
+fs = require "fs"
+path = require "path"
+yaml = require "node-yaml"
+junk = require "junk"
+{isEmpty, isBoolean, isFunction} = require "lodash"
 
 {parent} = module
 sParentFile = parent.filename
@@ -13,8 +14,8 @@ sParentDir = path.dirname sParentFile
 # Object of require functions
 ###
 oExtensions =
-  '.yaml': yaml.readSync
-  '.yml': yaml.readSync
+  ".yaml": yaml.readSync
+  ".yml": yaml.readSync
 
 ###
 # Normalize given path
@@ -79,9 +80,7 @@ requireDir = (sPath, bRecursive = off) ->
   __ref = {}
 
   aFilename = fs.readdirSync sPath
-  for __sFilename in aFilename when __sFilename isnt '.DS_Store'
-    # continue if __sFilename is '.DS_Store'
-    
+  for __sFilename in aFilename when junk.not __sFilename
     __sPath = "#{sPath}#{path.sep}#{__sFilename}"
     unless do fs.statSync(__sPath).isDirectory
       __sExtname = path.extname __sFilename
@@ -105,20 +104,20 @@ requireDir = (sPath, bRecursive = off) ->
 # 
 # Example:
 # ```
-# {setRequireFunction} = require './require-helper'
-# {readSync} = require 'node-yaml'
+# {setRequireFunction} = require "./require-helper"
+# {readSync} = require "node-yaml"
 # 
-# setRequireFunction '.yaml', readSync
+# setRequireFunction ".yaml", readSync
 # ```
 ###
 setRequireFunction = (sExtname, func) ->
-  if typeof sExtname isnt 'string' or isEmpty sExtname
+  if typeof sExtname isnt "string" or isEmpty sExtname
     throw new TypeError "Name must be a string and cannot be empty."
 
   unless isFunction func
     throw new TypeError "The second parameter must be a function."
 
-  unless sExtname of oExtensions and sExtname in ['.yaml', '.yml']
+  unless sExtname of oExtensions and sExtname in [".yaml", ".yml"]
     oExtensions[sExtname] = func
     return
 
@@ -128,10 +127,10 @@ setRequireFunction = (sExtname, func) ->
 # @param string sExtname
 ###
 unsetRequireFunction = (sExtname) ->
-  if typeof sExtname isnt 'string' or isEmpty sExtname
+  if typeof sExtname isnt "string" or isEmpty sExtname
     throw new TypeError "Name must be a string and cannot be empty."
 
-  unless sExtname in ['.yaml', '.yml']
+  unless sExtname in [".yaml", ".yml"]
     delete oExtensions[sExtname]
     return
 
@@ -149,16 +148,16 @@ unsetRequireFunction = (sExtname) ->
 # 
 # Example:
 # ```
-# requireHelper = require '../helpers/require-helper'
+# requireHelper = require "../helpers/require-helper"
 # 
-# oControllers = requireHelper '../../controller'
+# oControllers = requireHelper "../../controller"
 # # Return controllers as key-value pair
 # # => home: [Function]
 # ```
 # You can found this example in src/core/controller.iced
 ###
-requireHelper = (sPath = '.', mOptions = {}) ->
-  unless typeof sPath is 'string'
+requireHelper = (sPath = ".", mOptions = {}) ->
+  unless typeof sPath is "string"
     throw new TypeError "Path must be a string."
 
   mOptions = normalizeOptions mOptions

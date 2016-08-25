@@ -1,4 +1,4 @@
-{warn, err} = logger = require '../logger'
+{warn, err} = logger = require "../logger"
 
 errorHandler = (ctx, next) ->
   try
@@ -15,6 +15,6 @@ errorHandler = (ctx, next) ->
       ctx.render "errors/http/#{status}",
         code: status, props: properties or null
     else
-      ctx.body = properties or {message: 'Something\'s broke'}
+      ctx.body = properties or {message: "Something\"s broke"}
 
 module.exports = errorHandler

@@ -1,21 +1,21 @@
-'use strict'
+"use strict"
 
-passport = require 'koa-passport'
-{Strategy} = require 'passport-local'
+passport = require "koa-passport"
+{Strategy} = require "passport-local"
 
-{t} = i18n = require '../core/i18n'
-user = new User = require '../model/User'
-{app: {enableSignup}} = require '../core/helper/configure'
+{t} = i18n = require "../core/i18n"
+user = new User = require "../model/User"
+{app: {enableSignup}} = require "../core/helper/configure"
 
-NotFoundException = require '../core/errors/NotFound'
-ForbiddenException = require '../core/errors/Forbidden'
+NotFoundException = require "../core/errors/NotFound"
+ForbiddenException = require "../core/errors/Forbidden"
 
 passport.serializeUser (iUserId, cb) -> cb null, iUserId
 passport.deserializeUser user.getAuthenticated
 
 passport.use new Strategy
-  usernameField: 'username'
-  passwordField: 'pass',
+  usernameField: "username"
+  passwordField: "pass",
   user.signin
 
 ###
@@ -25,12 +25,12 @@ passport.use new Strategy
 ###
 actionLogin = (ctx) ->
   if do ctx.isAuthenticated
-    return ctx.redirect '/'
+    return ctx.redirect "/"
 
-  ctx.render 'auth/signin',
-    title: t 'auth.title.signin'
+  ctx.render "auth/signin",
+    title: t "auth.title.signin"
     __csrf: ctx.csrf
-    __return: ctx.query.return or '/'
+    __return: ctx.query.return or "/"
 
   await return
 
@@ -38,7 +38,7 @@ actionLogin = (ctx) ->
 # POST /auth/signin
 ###
 actionSignin = (ctx) ->
-  ctx.redirect ctx.query.return or '/'
+  ctx.redirect ctx.query.return or "/"
 
   await return
 
@@ -50,16 +50,16 @@ actionSignin = (ctx) ->
 actionRegister = (ctx) ->
   {inviteHash} = ctx.params
   unless enableSignup
-    return ctx.render 'auth/signup-disabled',
-      title: t 'auth.title.inviteOnly'
+    return ctx.render "auth/signup-disabled",
+      title: t "auth.title.inviteOnly"
 
   if do ctx.isAuthenticated
-    return ctx.redirect '/'
+    return ctx.redirect "/"
 
-  ctx.render 'auth/signup',
-    title: t 'user.title.signup'
+  ctx.render "auth/signup",
+    title: t "user.title.signup"
     __csrf: ctx.csrf
-    __return: ctx.query.return or '/'
+    __return: ctx.query.return or "/"
 
   await return
 
@@ -77,7 +77,7 @@ actionSignup = (ctx) ->
 
   await user.signup login, email, pass, repass
 
-  ctx.redirect ctx.query.return or '/'
+  ctx.redirect ctx.query.return or "/"
 
   await return
 
@@ -90,12 +90,12 @@ actionConfirm = (ctx) ->
   {confirmationHash} = ctx.params
 
   unless await user.activate confirmationHash
-    ctx.render 'auth/confirm-fail',
-      title: t 'auth.title.confirm.fail'
+    ctx.render "auth/confirm-fail",
+      title: t "auth.title.confirm.fail"
     return
 
-  ctx.render 'auth/confirm-success',
-    title: t 'auth.title.confirm.success'
+  ctx.render "auth/confirm-success",
+    title: t "auth.title.confirm.success"
 
   await return
 
@@ -106,24 +106,24 @@ actionConfirm = (ctx) ->
 ###
 actionLogout = (ctx) ->
   do ctx.logout
-  ctx.redirect ctx.query.return or '/'
+  ctx.redirect ctx.query.return or "/"
 
   await return
 
 module.exports = (r) ->
-  foo = r '/auth/signin'
+  foo = r "/auth/signin"
     .get actionLogin
-    .post passport.authenticate('local'), actionSignin
+    .post passport.authenticate("local"), actionSignin
 
-  r '/auth/signup/:inviteHash?'
+  r "/auth/signup/:inviteHash?"
     .get actionRegister
     .post actionSignup
 
   # Confirmation link
-  r '/auth/confirm/:confirmationHash'
+  r "/auth/confirm/:confirmationHash"
     .get actionConfirm
 
-  r '/auth/logout'
+  r "/auth/logout"
     .get actionLogout
 
   return
