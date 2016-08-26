@@ -1,0 +1,5 @@
+editor:
+  actions:
+    save: Сохранить
+    submit: Отправить
+    remvoe: Удалить

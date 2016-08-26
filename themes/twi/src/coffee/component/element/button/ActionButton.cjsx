@@ -33,6 +33,12 @@ class ActionButton extends Component
         onFocus={@showActions}
         onBlur={@hideActions}
       ><ArrowDown /></span>
+      <div className="button-action-list">
+        <ul>
+          <li>Foo</li>
+          <li>Bar</li>
+        </ul>
+      </div>
     </div>
 
 module.exports = ActionButton

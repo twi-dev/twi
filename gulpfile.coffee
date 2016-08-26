@@ -77,7 +77,7 @@ bIsDevel = no
 # @param Error err
 ###
 errorHandler = (err) ->
-  gutil.log do err.toString
+  gutil.log err.stack
   unless bIsDevel
     process.exit 1
 
@@ -128,12 +128,18 @@ gulp.task "stylus", ->
 gulp.task "coffee", ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if bIsDevel then "development" else "production"
+  
   bundler = browserify COFFEE_SRC,
     transform: [
       [svg, default: "image"]
       yaml, cjsx, rht
     ]
     extensions: [".cjsx", ".coffee"]
+    paths: [
+      "#{__dirname}/langs"
+      "#{THEME_PATH}/src/coffee"
+      "#{THEME_PATH}/public"
+    ]
     insertGlobals: yes
     debug: bIsDevel
     plugin: (if bIsDevel then [hmr] else [])
