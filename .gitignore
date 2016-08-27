@@ -1,4 +1,5 @@
 api
+build
 controller
 configs/user.yaml
 configs/user.yml
@@ -37,6 +38,7 @@ themes/**/views/api
 
 !setup/index.js
 !setup/migrations/index.js
+!src/build
 !src/controller
 !src/core
 !src/model

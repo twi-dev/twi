@@ -5,7 +5,7 @@ InputSuggestions = require '../element/InputSuggestions'
 ChapterConstructor = require './ChapterConstructor'
 
 {assign, isEmpty} = require 'lodash'
-axios = require '../../helpers/axios-instance'
+axios = require '../../helper/axios-instance'
 
 ###
 # StoryEditor component classs

@@ -18,6 +18,7 @@ autoprefixer = require "gulp-autoprefixer"
 
 # JS plugins
 browserify = require "browserify"
+langify = require "./build/helper/langify"
 cjsx = require "coffee-reactify"
 hmr = require "browserify-hmr"
 svg = require "svg-reactify"
@@ -128,15 +129,14 @@ gulp.task "stylus", ->
 gulp.task "coffee", ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if bIsDevel then "development" else "production"
-  
+
   bundler = browserify COFFEE_SRC,
     transform: [
       [svg, default: "image"]
-      yaml, cjsx, rht
+      cjsx, yaml, langify, rht
     ]
     extensions: [".cjsx", ".coffee"]
     paths: [
-      "#{__dirname}/langs"
       "#{THEME_PATH}/src/coffee"
       "#{THEME_PATH}/public"
     ]

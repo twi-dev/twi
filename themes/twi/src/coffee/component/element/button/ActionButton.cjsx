@@ -1,5 +1,5 @@
 {Component, PropTypes} = React = require "react"
-ArrowDown = require "../../../../../public/img/layout/arrow-down.svg"
+ArrowDown = require "img/layout/arrow-down.svg"
 
 class ActionButton extends Component
   @defaultProps:

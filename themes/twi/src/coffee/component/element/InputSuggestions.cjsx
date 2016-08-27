@@ -1,7 +1,7 @@
 {Component, PropTypes} = React = require 'react'
 InputField = require './InputField'
-axios = require '../../helpers/axios-instance'
-keys = require '../../helpers/keyboard'
+axios = require '../../helper/axios-instance'
+keys = require '../../helper/keyboard'
 {isEmpty} = require 'lodash'
 
 ###

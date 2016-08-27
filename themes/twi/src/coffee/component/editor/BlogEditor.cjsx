@@ -5,9 +5,12 @@ require "codemirror/addon/edit/matchbrackets"
 require "codemirror/addon/edit/closebrackets"
 require "codemirror/addon/edit/closetag"
 
+t = require "../../i18n"
+console.log t "blog.editor.actions.save"
+
 {Component, PropTypes} = React = require "react"
 ActionButton = require "../element/button/ActionButton"
-ArrowDown = require "../../../../public/img/layout/arrow-down.svg"
+ArrowDown = require "img/layout/arrow-down.svg"
 
 Markdown = require "markdown-it"
 Codemirror = require "react-codemirror"
