@@ -1,6 +1,8 @@
 {Component, PropTypes} = React = require "react"
 ArrowDown = require "img/layout/arrow-down.svg"
 
+t = require "i18n"
+
 class ActionButton extends Component
   @defaultProps:
     actions: ["submit"]
@@ -13,32 +15,56 @@ class ActionButton extends Component
 
   showActions: => @setState showPanel: yes
 
-  hideActions: => setTimeout (=> @setState showPanel: no), 0 if @state.showPanel
+  hideActions: => @setState showPanel: no
 
+  ###
+  # Update "action" state
+  #
+  # @param Event
+  ###
+  chooseAction: ({currentTarget: {dataset: {action}}}) =>
+    do document.activeElement.blur
+    @setState {action} if action
+
+  ###
+  # Execute action handler by his name
+  #
+  # @param Event
+  ###
   submitAction: ({currentTarget}) =>
     @props.doAction currentTarget?.dataset?.action
 
+  ###
+  # Render actions list
+  ###
   renderActions: ->
+    for act, idx in @props.actions when act isnt @state.action
+      <li key={idx} data-action={act} onClick={@chooseAction}>
+        {t "blog.editor.actions.#{act}"}
+      </li>
 
   render: ->
     <div className="button-action button-violet">
       <span
-        data-action="submit"
+        data-action={@state.action}
         onClick={@submitAction}
         className="button-action-label"
-      >Отправить</span>
+      >{t "blog.editor.actions.#{@state.action}"}</span>
       <span
-        tabIndex="0"
+        tabIndex={-1}
         className="button-action-icon"
         onFocus={@showActions}
         onBlur={@hideActions}
-      ><ArrowDown /></span>
-      <div className="button-action-list">
-        <ul>
-          <li>Foo</li>
-          <li>Bar</li>
-        </ul>
-      </div>
+      >
+        <ArrowDown />
+        <div className="
+          button-action-list#{if @state.showPanel then ' active' else ''}
+        ">
+          <ul>
+            {do @renderActions}
+          </ul>
+        </div>
+      </span>
     </div>
 
 module.exports = ActionButton

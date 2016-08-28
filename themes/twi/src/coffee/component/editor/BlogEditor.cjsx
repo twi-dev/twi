@@ -5,9 +5,6 @@ require "codemirror/addon/edit/matchbrackets"
 require "codemirror/addon/edit/closebrackets"
 require "codemirror/addon/edit/closetag"
 
-t = require "../../i18n"
-console.log t "blog.editor.actions.save"
-
 {Component, PropTypes} = React = require "react"
 ActionButton = require "../element/button/ActionButton"
 ArrowDown = require "img/layout/arrow-down.svg"
@@ -54,8 +51,9 @@ class BlogEditor extends Component
 
   submit: ->
     {title, content, tags} = @state
-    console.log title
-    console.log content
+    console.log "Send post..."
+
+  save: -> console.log "Save draft"
 
   doAction: (act) => do this[act] if act of this
 
@@ -63,8 +61,7 @@ class BlogEditor extends Component
 
   updateContent: (content) => @setState {content}
 
-  _renderPreview: ->
-    __html: md.render @state.content
+  _renderPreview: -> __html: md.render @state.content
 
   render: ->
     <div>

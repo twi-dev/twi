@@ -69,25 +69,25 @@ button-colored(bgc, fgc)
       position relative
       padding .5rem 1.3rem .5rem
 
-      // &::before
-      //   content ""
-      //   position absolute
-      //   left 6px
-      //   top 9.5px
-      //   width 1px
-      //   height 14px
-      //   background rgba(white, .7)
+      &::before
+        content ""
+        position absolute
+        left .5rem
+        top 9.5px
+        width 1px
+        height 14px
+        background rgba(white, .7)
 
       svg
-        right .75rem
-        // right .49rem
+        // right .75rem
+        right .49rem
         position absolute
         width 20px
         height 20px
         fill white
 
     &-list
-      display none // tmp
+      display none
       position absolute
       overflow hidden
       top 40px
@@ -97,8 +97,16 @@ button-colored(bgc, fgc)
       text-align left
       background white
       color #353535
+      box-shadow 1px 2px 5px rgba(black, .26)
+      border-radius 2px
+
+      &.active
+        display block
 
       ul
         list-style none
         padding 0
         margin 0
+
+        li
+          padding .5rem 1.5rem
