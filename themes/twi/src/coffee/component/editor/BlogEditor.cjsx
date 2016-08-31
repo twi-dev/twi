@@ -11,7 +11,9 @@ ArrowDown = require "img/layout/arrow-down.svg"
 
 Markdown = require "markdown-it"
 Codemirror = require "react-codemirror"
-hljs = require 'highlight.js'
+hljs = require "highlight.js"
+
+axios = require "helper/axios-instance"
 
 md = new Markdown
   breaks: on
@@ -30,8 +32,8 @@ md = new Markdown
           <code>#{hljs.highlight(lang, string, true).value}</code>
         </pre>
       "
-    catch e
-      console.error e
+    catch err
+      console.error err
 
 class BlogEditor extends Component
   constructor: ->
@@ -50,8 +52,11 @@ class BlogEditor extends Component
     @setState width: offsetWidth, height: offsetHeight - (52 * 2)
 
   submit: ->
+    {dataset: {csrf}} = document.querySelector "#blog-editor"
     {title, content, tags} = @state
-    console.log "Send post..."
+    axios.post "/blog/new", {_csrf: csrf, title, content}
+      .then ({data}) -> console.log data
+      .catch (err) -> console.log err
 
   save: -> console.log "Save draft"
 

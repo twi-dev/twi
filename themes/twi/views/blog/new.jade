@@ -1,10 +1,4 @@
 extends ../layout/layout
 
 block content
-  .blog-form-main-container#blog-editor(data-csrf="")
-    //- .blog-form-container.fl
-    //-   .blog-form-fields
-    //-     form#blog-form(action="/blog/new", method="post")
-    //-       textarea.blog-form-textarea(name="post")
-    //- .blog-view-container.fl
-    //-   .blog-view-content(v-html="postContent | md")
+  .blog-form-main-container#blog-editor(data-csrf="" + _csrf)

@@ -19,7 +19,7 @@ module.exports = makeRequireTransform "langify", (args, opts, cb) ->
 
     return cb null if isEmpty files
 
-    onFullfiled = (res) -> cb null, "#{res}"
+    onFulfiled = (res) -> cb null, "#{res}"
 
     onRejected = (err) -> cb err
 

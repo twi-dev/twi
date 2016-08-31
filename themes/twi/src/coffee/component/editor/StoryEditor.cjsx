@@ -47,18 +47,6 @@ class StoryEditor extends Component
       isItDraft, chapters
     } = @state
 
-    # unless title
-    #   return console.info 'Рассказ должен быть озаглавлен.'
-
-    # if characters.length < 1
-    #   return console.info 'В рассказе должен быть хотя бы один персонаж.'
-
-    # if marks.length < 1
-    #   return console.info 'Рассказ должен содержать хотя бы одну метку.'
-
-    # if isEmpty chapters
-    #   return console.info 'Рассказ должен содержать хотя бы одну главу.'
-
     axios.post '/story/new', {
       _csrf: csrf
       title

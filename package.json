@@ -19,7 +19,7 @@
     "setup": "bin/twi setup",
     "twi": "bin/twi run",
     "start": "npm run setup && npm run run",
-    "test": "ava"
+    "test": "./node_modules/ava/cli.js"
   },
   "ava": {
     "verbose": true,
@@ -72,7 +72,7 @@
     "xml2js": "0.4.17"
   },
   "devDependencies": {
-    "ava": "0.15.2",
+    "ava": "0.16.0",
     "browserify": "13.0.0",
     "browserify-hmr": "0.3.1",
     "browserify-transform-tools": "1.6.0",
@@ -103,7 +103,6 @@
     "rimraf": "2.5.2",
     "rupture": "0.6.1",
     "svg-reactify": "2.0.0",
-    "through2": "2.0.1",
     "vinyl-buffer": "1.0.0",
     "vinyl-source-stream": "1.1.0",
     "yamlify": "0.1.3"

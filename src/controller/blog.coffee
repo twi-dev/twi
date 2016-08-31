@@ -30,10 +30,16 @@ actionNew = (ctx) ->
 
   ctx.render "blog/new",
     title: t "blog.title.new"
+    _csrf: ctx.csrf
 
   await return
 
-actionCreate = (ctx) -> await return
+actionCreate = (ctx) ->
+  console.log ctx.request.body
+
+  ctx.body = ctx.request.body
+
+  await return
 
 actionEdit = (ctx) ->
   {user} = ctx.req
