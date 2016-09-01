@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 // Colors
-const COLOR_DEF = '\x1b[0m';
-const COLOR_RED = '\x1B[0;31m';
-const COLOR_GEEN = '\x1B[0;32m';
-const COLOR_YELLOW = '\x1b[33;01m';
-const COLOR_CYAN = '\x1b[36;01m';
+const COLOR_DEF = "\x1b[0m";
+const COLOR_RED = "\x1B[0;31m";
+const COLOR_GEEN = "\x1B[0;32m";
+const COLOR_YELLOW = "\x1b[33;01m";
+const COLOR_CYAN = "\x1b[36;01m";
 
 // Log levels
 const LOG_NORMAL = 0;
@@ -16,39 +16,39 @@ const LOG_ERR = 4;
 
 // Modules
 var exec, fs, readlineSync, oConfigPhrases;
-exec = require('child_process').execSync;
-fs = require('fs');
+exec = require("child_process").execSync;
+fs = require("fs");
 
 // Variables
 // var aLabels;
 const aLabels = [
-  COLOR_DEF + 'log' + COLOR_DEF,
-  COLOR_GEEN + 'ok' + COLOR_DEF,
-  COLOR_CYAN + 'info' + COLOR_DEF,
-  COLOR_YELLOW + 'warn' + COLOR_DEF,
-  COLOR_RED + 'err' + COLOR_DEF
+  COLOR_DEF + "log" + COLOR_DEF,
+  COLOR_GEEN + "ok" + COLOR_DEF,
+  COLOR_CYAN + "info" + COLOR_DEF,
+  COLOR_YELLOW + "warn" + COLOR_DEF,
+  COLOR_RED + "err" + COLOR_DEF
 ];
 
 oConfigPhrases = {
   app: {
-    name: 'Name for your library',
-    host: 'Host',
-    port: 'Port',
+    name: "Name for your library",
+    host: "Host",
+    port: "Port",
   },
   database: {
-    driver: 'Database driver',
-    host: 'Database host',
-    port: 'Database port',
-    user: 'Database user',
-    pass: 'Database password',
-    name: 'Database name',
-    prefix: 'Table prefix'
+    driver: "Database driver",
+    host: "Database host",
+    port: "Database port",
+    user: "Database user",
+    pass: "Database password",
+    name: "Database name",
+    prefix: "Table prefix"
   }
 };
 
 // Functions
 var configure, setUserConfig, question, write, writeErr, log, logLine,
-  installDependencies, buildBackand, buildFrontend;
+  installDependencies, buildBackend, buildFrontend;
 
 write = str => process.stdout.write(str);
 
@@ -66,31 +66,31 @@ log = (message, lvl) => {
 logLine = (message, lvl) => log(`${message}\n`, lvl);
 
 installDependencies = () => {
-  exec('bower install --config.cwd=themes/twi/src', {
-    encoding: 'utf-8',
-    stdio: 'inherit'
+  exec("bower install --config.cwd=themes/twi/src", {
+    encoding: "utf-8",
+    stdio: "inherit"
   });
 
-  exec('npm install', {
-    encoding: 'utf-8',
-    stdio: 'inherit'
+  exec("npm install", {
+    encoding: "utf-8",
+    stdio: "inherit"
   });
-  logLine('Done without errors.', LOG_OK);
+  logLine("Done without errors.", LOG_OK);
 };
 
-buildBackand = () => {
-  exec('cake build', {
-    encoding: 'utf-8',
-    stdio: 'inherit'
+buildBackend = () => {
+  exec("cake build", {
+    encoding: "utf-8",
+    stdio: "inherit"
   });
 };
 
 buildFrontend = () => {
-  exec('gulp', {
-    encoding: 'utf-8',
-    stdio: 'inherit'
+  exec("gulp", {
+    encoding: "utf-8",
+    stdio: "inherit"
   });
-  logLine('Done without errors.', LOG_OK);
+  logLine("Done without errors.", LOG_OK);
 };
 
 /**
@@ -119,12 +119,12 @@ question = (sQuestion, bUseMask) => (
  */
 setUserConfig = (oDefaultConfig, __sParentKey) => {
   var __ref, __mValue, __sAnswer, isEmpty;
-  isEmpty = require('lodash').isEmpty;
+  isEmpty = require("lodash").isEmpty;
   __ref = {};
 
   for (let __sKey in oDefaultConfig) {
     __mValue = oDefaultConfig[__sKey];
-    if (typeof __mValue === 'object' && __mValue !== null) {
+    if (typeof __mValue === "object" && __mValue !== null) {
       __ref[__sKey] = setUserConfig(__mValue, __sKey);
       if (isEmpty(__ref[__sKey])) {
         delete __ref[__sKey];
@@ -136,7 +136,7 @@ setUserConfig = (oDefaultConfig, __sParentKey) => {
 
       __sAnswer = question(
         oConfigPhrases[__sParentKey][__sKey],
-        (__sKey === 'pass') ? true : false
+        (__sKey === "pass") ? true : false
       ) || null;
 
       if (__sAnswer === null) {
@@ -158,35 +158,35 @@ setUserConfig = (oDefaultConfig, __sParentKey) => {
 configure = () => {
   const CONFIGS_DIR = fs.realpathSync(`${__dirname}/../configs`);
   var __oDefaultConfig, __oUserConfig, __sAnswer, yaml, isEmpty;
-  yaml = require('node-yaml');
-  isEmpty = require('lodash').isEmpty;
+  yaml = require("node-yaml");
+  isEmpty = require("lodash").isEmpty;
   __oDefaultConfig = yaml.readSync(`${CONFIGS_DIR}/default`);
 
   // Create user config if not exists.
   try {
     fs.statSync(`${CONFIGS_DIR}/user.yaml`);
   } catch (err) {
-    fs.writeFileSync(`${CONFIGS_DIR}/user.yaml`, '');
+    fs.writeFileSync(`${CONFIGS_DIR}/user.yaml`, "");
   }
 
   while (true) {
     __sAnswer = question(
-        'Do you want to configure your app right now? (Y/n)'
+        "Do you want to configure your app right now? (Y/n)"
     ).toLowerCase() || null;
 
-    if (__sAnswer === 'n' || __sAnswer === 'no' ||
-        __sAnswer === 'н' || __sAnswer === 'нет') {
+    if (__sAnswer === "n" || __sAnswer === "no" ||
+        __sAnswer === "н" || __sAnswer === "нет") {
       __oUserConfig = yaml.readSync(`${CONFIGS_DIR}/user`);
       break;
     }
 
     __oUserConfig = setUserConfig(__oDefaultConfig);
-    logLine('Your config:');
+    logLine("Your config:");
     console.log(__oUserConfig);
-    __sAnswer = question('Looks good? (Y/n)').toLowerCase() || null;
+    __sAnswer = question("Looks good? (Y/n)").toLowerCase() || null;
 
-    if (__sAnswer === 'y' || __sAnswer === 'yes' ||
-        __sAnswer === 'д' || __sAnswer === 'да' ||
+    if (__sAnswer === "y" || __sAnswer === "yes" ||
+        __sAnswer === "д" || __sAnswer === "да" ||
         __sAnswer === null) {
       break;
     }
@@ -197,22 +197,22 @@ configure = () => {
       `${CONFIGS_DIR}/user.yaml`,
       __oUserConfig
     );
-    logLine('Config file has been saved at:', LOG_INFO);
+    logLine("Config file has been saved at:", LOG_INFO);
     logLine(`${CONFIGS_DIR}/user.yaml`, LOG_INFO);
   }
 
-  return require('lodash').assign({}, __oDefaultConfig, __oUserConfig);
+  return require("lodash").assign({}, __oDefaultConfig, __oUserConfig);
 };
 
 (() => {
   try {
-    logLine('Installing dependencies...');
+    logLine("Installing dependencies...");
     installDependencies();
 
-    logLine('Compiling backend...');
-    buildBackand();
+    logLine("Compiling backend...");
+    buildBackend();
 
-    logLine('Compiling frontend...');
+    logLine("Compiling frontend...");
     buildFrontend();
 
     configure();
@@ -222,11 +222,11 @@ configure = () => {
     process.exit(1);
   }
 
-  logLine('Importing database structure...');
-  require('./migrations')()
+  logLine("Importing database structure...");
+  require("./migrations")()
     .then(() => {
-      logLine('Done without errors.', LOG_OK);
-      logLine('Congrats! Your Twi application has been sucessfully installed!',
+      logLine("Done without errors.", LOG_OK);
+      logLine("Congrats! Your Twi application has been sucessfully installed!",
         LOG_OK
       );
       process.exit(0);

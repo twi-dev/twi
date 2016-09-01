@@ -1,205 +1,205 @@
-'use strict';
+"use strict";
 
 module.exports = [
   {
-    name: 'Twilight Sparkle'
+    name: "Twilight Sparkle"
   },
   {
-    name: 'Pinkie Pie'
+    name: "Pinkie Pie"
   },
   {
-    name: 'Applejack'
+    name: "Applejack"
   },
   {
-    name: 'Rainbow Dash'
+    name: "Rainbow Dash"
   },
   {
-    name: 'Rarity'
+    name: "Rarity"
   },
   {
-    name: 'Fluttershy'
+    name: "Fluttershy"
   },
   {
-    name: 'Apple Bloom'
+    name: "Apple Bloom"
   },
   {
-    name: 'Sweetie Belle'
+    name: "Sweetie Belle"
   },
   {
-    name: 'Scootaloo'
+    name: "Scootaloo"
   },
   {
-    name: 'Spike'
+    name: "Spike"
   },
   {
-    name: 'Princess Celestia'
+    name: "Princess Celestia"
   },
   {
-    name: 'Princess Luna'
+    name: "Princess Luna"
   },
   {
-    name: 'Princess Mi Amore Cadenza'
+    name: "Princess Mi Amore Cadenza"
   },
   {
-    name: 'Princess Flurry Heart'
+    name: "Princess Flurry Heart"
   },
   {
-    name: 'Prince Blueblood'
+    name: "Prince Blueblood"
   },
   {
-    name: 'Owlowiscious'
+    name: "Owlowiscious"
   },
   {
-    name: 'Anon'
+    name: "Anon"
   },
   {
-    name: 'Human'
+    name: "Human"
   },
   {
-    name: 'Fleetfoot'
+    name: "Fleetfoot"
   },
   {
-    name: 'Soarin'
+    name: "Soarin"
   },
   {
-    name: 'Surprise'
+    name: "Surprise"
   },
   {
-    name: 'Spitfire'
+    name: "Spitfire"
   },
   {
-    name: 'Blaze'
+    name: "Blaze"
   },
   {
-    name: 'Misty Fly'
+    name: "Misty Fly"
   },
   {
-    name: 'Lightning Dust'
+    name: "Lightning Dust"
   },
   {
-    name: 'Cloud Kicker'
+    name: "Cloud Kicker"
   },
   {
-    name: 'Cloudchaser'
+    name: "Cloudchaser"
   },
   {
-    name: 'Thunderlane'
+    name: "Thunderlane"
   },
   {
-    name: 'Meadow Flower'
+    name: "Meadow Flower"
   },
   {
-    name: 'Bulk Biceps'
+    name: "Bulk Biceps"
   },
   {
-    name: 'Snowdrop'
+    name: "Snowdrop"
   },
   {
-    name: 'Cheerilee'
+    name: "Cheerilee"
   },
   {
-    name: 'Blossomforth'
+    name: "Blossomforth"
   },
   {
-    name: 'Derpy Hooves'
+    name: "Derpy Hooves"
   },
   {
-    name: 'Discord'
+    name: "Discord"
   },
   {
-    name: 'Nightmare Moon'
+    name: "Nightmare Moon"
   },
   {
-    name: 'Octavia Melody'
+    name: "Octavia Melody"
   },
   {
-    name: 'Vinyl Scratch'
+    name: "Vinyl Scratch"
   },
   {
-    name: 'Lyra Heartstrings'
+    name: "Lyra Heartstrings"
   },
   {
-    name: 'Lemon Hearts'
+    name: "Lemon Hearts"
   },
   {
-    name: 'Twinkleshine'
+    name: "Twinkleshine"
   },
   {
-    name: 'Minuette'
+    name: "Minuette"
   },
   {
-    name: 'Moondancer'
+    name: "Moondancer"
   },
   {
-    name: 'Sweetie Drops'
+    name: "Sweetie Drops"
   },
   {
-    name: 'Golden Harvest'
+    name: "Golden Harvest"
   },
   {
-    name: 'Shining Armor'
+    name: "Shining Armor"
   },
   {
-    name: 'Zecora'
+    name: "Zecora"
   },
   {
-    name: 'Coco Pommel'
+    name: "Coco Pommel"
   },
   {
-    name: 'Angel Bunny'
+    name: "Angel Bunny"
   },
   {
-    name: 'Night Light'
+    name: "Night Light"
   },
   {
-    name: 'Twilight Velvet'
+    name: "Twilight Velvet"
   },
   {
-    name: 'Diamond Tiara'
+    name: "Diamond Tiara"
   },
   {
-    name: 'Silver Spoon'
+    name: "Silver Spoon"
   },
   {
-    name: 'King Sombra'
+    name: "King Sombra"
   },
   {
-    name: 'Queen Chrysalis'
+    name: "Queen Chrysalis"
   },
   {
-    name: 'Lord Tirek'
+    name: "Lord Tirek"
   },
   {
-    name: 'Big Macintosh'
+    name: "Big Macintosh"
   },
   {
-    name: 'Granny Smith'
+    name: "Granny Smith"
   },
   {
-    name: 'Babs Seed'
+    name: "Babs Seed"
   },
   {
-    name: 'Roseluck'
+    name: "Roseluck"
   },
   {
-    name: 'Princess Ember'
+    name: "Princess Ember"
   },
   {
-    name: 'Littlepip'
+    name: "Littlepip"
   },
   {
-    name: 'Blackjack'
+    name: "Blackjack"
   },
   {
-    name: 'Velvet Remedy'
+    name: "Velvet Remedy"
   },
   {
-    name: 'Original Character'
+    name: "Original Character"
   },
   {
-    name: 'Trixie Lulamoon'
+    name: "Trixie Lulamoon"
   },
   {
-    name: 'Fleur Dis Lee'
+    name: "Fleur Dis Lee"
   }
 ];

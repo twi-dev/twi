@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 // Modules
-var model = require('../../core/database/index');
-var requireHelper = require('../../core/helper/require');
-var question = require('readline-sync').question;
-var logger = require('../../core/logger');
-var co = require('co');
-var fs = require('co-fs');
-var _ = require('lodash');
+var model = require("../../core/database/index");
+var requireHelper = require("../../core/helper/require");
+var question = require("readline-sync").question;
+var logger = require("../../core/logger");
+var co = require("co");
+var fs = require("co-fs");
+var _ = require("lodash");
 
 // Functions
 var createSuperUser, loadSchemas;
@@ -19,7 +19,7 @@ loadSchemas = bIsForce => {
   var oSchemas, __ref;
 
   __ref = [];
-  oSchemas = requireHelper('../../core/database/schemas');
+  oSchemas = requireHelper("../../core/database/schemas");
 
   for (let __sName in oSchemas) {
     let __schema = oSchemas[__sName];
@@ -48,13 +48,13 @@ function importData() {
   return co(function* () {
     var langs, dataCollection, schemas = {};
 
-    langs = yield fs.readdir(__dirname + '/locales');
-    dataCollection = requireHelper('./data');
+    langs = yield fs.readdir(__dirname + "/locales");
+    dataCollection = requireHelper("./data");
     for (let __name in dataCollection) {
       schemas[__name] = require(`../../core/database/schemas/${__name}`);
     }
 
-    // I think that's looks ugly ._.
+    // I think that"s looks ugly ._.
     // Attention: NSFW code below!!
     for (let __name in schemas) {
       if (__name === `${__name}Locale`) continue; // Just skip locale models...
@@ -90,7 +90,7 @@ function importData() {
             ));
           }
         } catch (err) {
-          if (err.code !== 'ENOENT') {
+          if (err.code !== "ENOENT") {
             logger.err(err.stack);
             process.exit(1);
           }
@@ -106,53 +106,53 @@ function importData() {
 createSuperUser = () => {
   return new Promise((_res, _rej) => {
     var user, contacts, sUsername, sEmail, sPass,
-      validationHelper = require('../../core/helper/validation');
+      validationHelper = require("../../core/helper/validation");
 
     user = model(
-      'user',
-      require('../../core/database/schemas/user')
+      "user",
+      require("../../core/database/schemas/user")
     );
 
     contacts = model(
-      'contacts',
-      require('../../core/database/schemas/contacts')
+      "contacts",
+      require("../../core/database/schemas/contacts")
     );
 
     while (true) {
-      sUsername = question('Your login: ');
+      sUsername = question("Your login: ");
 
       // Checking login
       if (validationHelper.isValidLogin(sUsername)) break;
 
       logger.warn(
-        'Username may contain only letters, digits, underscores and dots.'
+        "Username may contain only letters, digits, underscores and dots."
       );
     }
 
     while (true) {
-      sEmail = question('Your email: ');
+      sEmail = question("Your email: ");
 
       // Checking email
       if (validationHelper.isEmail(sEmail)) break;
 
-      logger.warn('Wrong email format.');
+      logger.warn("Wrong email format.");
     }
 
     while (true) {
       let sRepass;
 
-      sPass = question('Your password: ', {
+      sPass = question("Your password: ", {
         hideEchoBack: true
       });
 
-      sRepass = question('Repeat your password: ', {
+      sRepass = question("Repeat your password: ", {
         hideEchoBack: true
       });
 
       // Checking password
       if (validationHelper.isValidPassword(sPass) && sPass === sRepass) break;
 
-      logger.err('Passwords are not equal.');
+      logger.err("Passwords are not equal.");
     }
 
     user.find({
@@ -162,7 +162,7 @@ createSuperUser = () => {
     })
     .then(oUser => {
       if (_.isEmpty(oUser) === false) {
-        logger.info('Owner account is already exists.');
+        logger.info("Owner account is already exists.");
         return _res();
       }
 
@@ -172,8 +172,8 @@ createSuperUser = () => {
       user.create({
         login: sUsername,
         email: sEmail,
-        password: require('bcryptjs').hashSync(sPass),
-        registeredAt: require('moment')().format(),
+        password: require("bcryptjs").hashSync(sPass),
+        registeredAt: require("moment")().format(),
         role: 3,
         status: 1,
         contactsId: oContact.get({plain: true}).contactsId
@@ -189,23 +189,23 @@ module.exports = function() {
     var bIsForce, bCreateSuperUser;
 
     bIsForce = question(
-      'Drop and database structure? (Y/n): '
-    ) || 'y';
+      "Drop and database structure? (Y/n): "
+    ) || "y";
 
     bIsForce = (
-      bIsForce === 'y' || bIsForce === 'yes' ||
-      bIsForce === 'д' || bIsForce === 'да'
+      bIsForce === "y" || bIsForce === "yes" ||
+      bIsForce === "д" || bIsForce === "да"
     ) ? true : false;
 
     if (bIsForce === false) {
       bCreateSuperUser = question(
-        'Create owner account? (Y/n): '
-      ) || 'y';
+        "Create owner account? (Y/n): "
+      ) || "y";
     }
 
     bCreateSuperUser = (
-      bCreateSuperUser === 'y' || bCreateSuperUser === 'yes' ||
-      bCreateSuperUser === 'д' || bCreateSuperUser === 'да'
+      bCreateSuperUser === "y" || bCreateSuperUser === "yes" ||
+      bCreateSuperUser === "д" || bCreateSuperUser === "да"
     ) ? true : false;
 
     Promise.all(loadSchemas(bIsForce))

@@ -55,7 +55,7 @@ controller = (app) ->
   # Require all controllers
   controllers = requireHelper CONTROLLERS
 
-  for __name, __controller of controllers
+  for own __name, __controller of controllers
     unless isFunction __controller
       warn "Controller \"#{__name}\" is not a function."
       continue

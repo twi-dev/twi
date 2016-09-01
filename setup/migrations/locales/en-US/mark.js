@@ -1,70 +1,70 @@
-'use strict';
+"use strict";
 
 module.exports = [
   {
-    name: 'Second Person'
+    name: "Second Person"
   },
   {
-    name: 'Alternative Universe'
+    name: "Alternative Universe"
   },
   {
-    name: 'Comedy'
+    name: "Comedy"
   },
   {
-    name: 'Dark'
+    name: "Dark"
   },
   {
-    name: 'Equestria Girls'
+    name: "Equestria Girls"
   },
   {
-    name: 'Human'
+    name: "Human"
   },
   {
-    name: 'Random'
+    name: "Random"
   },
   {
-    name: 'Sad'
+    name: "Sad"
   },
   {
-    name: 'Slice Of Life'
+    name: "Slice Of Life"
   },
   {
-    name: 'Tragedy'
+    name: "Tragedy"
   },
   {
-    name: 'Adventure'
+    name: "Adventure"
   },
   {
-    name: 'Anthro'
+    name: "Anthro"
   },
   {
-    name: 'Crossover'
+    name: "Crossover"
   },
   {
-    name: 'Drama'
+    name: "Drama"
   },
   {
-    name: 'Horror'
+    name: "Horror"
   },
   {
-    name: 'Mystery'
+    name: "Mystery"
   },
   {
-    name: 'Romance'
+    name: "Romance"
   },
   {
-    name: 'Erotic'
+    name: "Erotic"
   },
   {
-    name: 'Sex'
+    name: "Sex"
   },
   {
-    name: 'Sci-Fi'
+    name: "Sci-Fi"
   },
   {
-    name: 'Thriller'
+    name: "Thriller"
   },
   {
-    name: 'Fluff'
+    name: "Fluff"
   },
 ];
