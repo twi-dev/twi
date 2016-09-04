@@ -73,7 +73,7 @@ log = (string, level = 0) ->
 onProcessExitOrError = (err) ->
   if err?
     log "Compilation error:", LOG_ERR
-    console.log err.stack
+    console.error err.stack
     log "Watching for changes...", LOG_ERR if isDevel
 
     process.exit 1 unless isDevel
@@ -126,7 +126,7 @@ transform = (file, enc, cb) ->
 ###
 # Compile files using streams
 #
-# @param string|array files
+# @param array files
 ###
 compile = (files) ->
   vfs.src files
