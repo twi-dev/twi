@@ -46,4 +46,4 @@ module.exports = makeRequireTransform "langify", (args, opts, cb) ->
       res += "})"
 
       return res
-    .then onFullfiled, onRejected
+    .then onFulfiled, onRejected

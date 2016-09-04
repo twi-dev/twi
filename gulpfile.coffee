@@ -70,7 +70,7 @@ SVG_DEST = "#{THEME_PATH}/public/img"
 STYLUS_DEST = "#{THEME_PATH}/public/assets/css"
 
 # Is devel task running?
-bIsDevel = no
+isDevel = no
 
 ###
 # Error Handler
@@ -79,12 +79,12 @@ bIsDevel = no
 ###
 errorHandler = (err) ->
   gutil.log err.stack
-  unless bIsDevel
+  unless isDevel
     process.exit 1
 
 gulp.task "env:devel", ->
   do livereload.listen
-  bIsDevel = yes
+  isDevel = yes
 
 ###
 # SIGINT signal listener
@@ -92,7 +92,7 @@ gulp.task "env:devel", ->
 # Clean frontend/gulp-runtime before exit if devel task has been running
 ###
 process.on "SIGINT", ->
-  if bIsDevel
+  if isDevel
     rimraf COFFEE_TMP, ->
       process.exit 0
     return
@@ -108,7 +108,7 @@ gulp.task "stylus", ->
     gutil.log "Rebuild stylus..."
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
-      .pipe gulpif bIsDevel, newer STYLUS_DEST
+      .pipe gulpif isDevel, newer STYLUS_DEST
       .pipe stylus
         "include css": on
         use: [
@@ -116,19 +116,19 @@ gulp.task "stylus", ->
           do rupture
         ]
       .pipe autoprefixer browsers: ["last 4 versions"]
-      .pipe gulpif not bIsDevel, do csso # Compress CSS only for production
+      .pipe gulpif not isDevel, do csso # Compress CSS only for production
       .pipe gulp.dest STYLUS_DEST
-      .pipe gulpif bIsDevel, do livereload
+      .pipe gulpif isDevel, do livereload
 
   do rebuildStylus
-  watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus if bIsDevel
+  watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus if isDevel
 
 ###
 # Build CoffeeScript with Browserify
 ###
 gulp.task "coffee", ->
   # Set NODE_ENV for react
-  process.env.NODE_ENV = if bIsDevel then "development" else "production"
+  process.env.NODE_ENV = if isDevel then "development" else "production"
 
   bundler = browserify COFFEE_SRC,
     transform: [
@@ -141,8 +141,8 @@ gulp.task "coffee", ->
       "#{THEME_PATH}/public"
     ]
     insertGlobals: yes
-    debug: bIsDevel
-    plugin: (if bIsDevel then [hmr] else [])
+    debug: isDevel
+    plugin: (if isDevel then [hmr] else [])
 
   rebuildBundle = ->
     gutil.log "Rebuild coffee..."
@@ -152,15 +152,15 @@ gulp.task "coffee", ->
       .pipe plumber errorHandler
       .pipe source "common.js"
       .pipe do vinylBuffer
-      .pipe gulpif not bIsDevel, envify NODE_ENV: "production"
-      .pipe gulpif not bIsDevel, do uglify # Optimize JS for production
+      .pipe gulpif not isDevel, envify NODE_ENV: "production"
+      .pipe gulpif not isDevel, do uglify # Optimize JS for production
       .pipe gulp.dest COFFEE_DEST
 
   do rebuildBundle # Just rebuild bundle before run watcher
   return watch [
     "#{COFFEE_SRC_DIR}/**/*.coffee"
     "#{CJSX_SRC}"
-    ], rebuildBundle if bIsDevel
+    ], rebuildBundle if isDevel
 
 ###
 # Optimizing SVG.
@@ -174,7 +174,7 @@ gulp.task "svg", ->
       .pipe gulp.dest SVG_DEST
 
   do rebuildSvg
-  watch SVG_SRC, rebuildSvg if bIsDevel
+  watch SVG_SRC, rebuildSvg if isDevel
 
 ###
 # Refreshing page with livereload
@@ -187,7 +187,7 @@ gulp.task "refresh", ->
       .pipe newer "#{THEME_PATH}/views/**/*.jade"
       .pipe do livereload
 
-  watch "#{THEME_PATH}/views/**/*.jade", refresh if bIsDevel
+  watch "#{THEME_PATH}/views/**/*.jade", refresh if isDevel
 
 ###
 # Devel task with gulp-watch and livereload

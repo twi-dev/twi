@@ -54,8 +54,6 @@ function importData() {
       schemas[__name] = require(`../../core/database/schemas/${__name}`);
     }
 
-    // I think that"s looks ugly ._.
-    // Attention: NSFW code below!!
     for (let __name in schemas) {
       if (__name === `${__name}Locale`) continue; // Just skip locale models...
 
