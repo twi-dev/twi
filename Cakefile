@@ -11,7 +11,7 @@ coffee = require "coffee-script"
 rimraf = require "rimraf"
 through = require "through2"
 {dirname} = path = require "path"
-{realpathSync, statSync, mkdirSync} = require "fs"
+{realpathSync, statSync, mkdirSync, watch} = require "fs"
 
 COLOR_DEF = "\x1b[0m"
 COLOR_BOLD = "\x1B[0;1m"
@@ -171,7 +171,7 @@ task "devel", "Run Cakefile with watcher", ->
   isDevel = yes
   log "Starting watcher..."
   log "Press Control+C to exit.", LOG_INFO
-  fs.watch SRC_DIR, recursive: yes, watcher
+  watch SRC_DIR, recursive: yes, watcher
 
 process.on "error", onProcessExitOrError
 process.on "SIGINT", onProcessExitOrError

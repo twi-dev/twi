@@ -3,7 +3,7 @@ env:
   commonjs: true
   es6: true
   node: true
-extends: 'airbnb'
+extends: 'eslint:recommended'
 installedESLint: true
 parserOptions:
   sourceType: module

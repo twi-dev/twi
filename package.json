@@ -23,9 +23,7 @@
   },
   "ava": {
     "verbose": true,
-    "files": "test/**/*.{js,coffee}",
-    "babel": "inherit",
-    "require": "./node_modules/coffee-script/register.js"
+    "files": "test/**/*.js"
   },
   "dependencies": {
     "async-busboy": "0.1.1",
@@ -82,7 +80,6 @@
     "coffee-reactify": "5.0.0",
     "coffee-script": "git+https://github.com/octet-stream/coffeescript.git",
     "eslint": "3.2.2",
-    "eslint-config-airbnb": "^10.0.1",
     "eslint-plugin-react": "5.2.2",
     "glob": "^7.0.6",
     "gulp": "3.9.1",
@@ -107,7 +104,7 @@
     "rupture": "0.6.1",
     "svg-reactify": "2.0.0",
     "vinyl-buffer": "1.0.0",
-    "vinyl-fs": "^2.4.3",
+    "vinyl-fs": "2.4.3",
     "vinyl-source-stream": "1.1.0",
     "yamlify": "0.1.3"
   },
