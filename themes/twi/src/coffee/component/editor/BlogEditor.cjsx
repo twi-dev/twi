@@ -35,6 +35,7 @@ md = new Markdown
     catch err
       console.error err
 
+# TODO: Add component for tags input
 class BlogEditor extends Component
   constructor: ->
     {documentElement: {offsetWidth, offsetHeight}} = document
@@ -43,7 +44,7 @@ class BlogEditor extends Component
       height: offsetHeight - (52 * 2)
       title: ""
       content: ""
-      buttonAction: "submit"
+      tags: null
 
   componentWillMount: -> addEventListener "resize", @resizeComponent
 
@@ -54,7 +55,7 @@ class BlogEditor extends Component
   submit: ->
     {dataset: {csrf}} = document.querySelector "#blog-editor"
     {title, content, tags} = @state
-    axios.post "/blog/new", {_csrf: csrf, title, content}
+    axios.post "/blog/new", {_csrf: csrf, title, content, tags: tags.split ","}
       .then ({data}) -> console.log data
       .catch (err) -> console.log err
 
@@ -65,6 +66,8 @@ class BlogEditor extends Component
   updateTitle: ({target: {value}}) => @setState title: value
 
   updateContent: (content) => @setState {content}
+
+  updateTags: ({target: {value}}) => @setState tags: value # TMP
 
   _renderPreview: -> __html: md.render @state.content
 
@@ -111,6 +114,11 @@ class BlogEditor extends Component
             style={{height: parseInt(@state.height) - 50}}></div>
         </div>
         <div className="blog-editor-controls">
+          <input
+            type="text"
+            value={@state.tags}
+            onChange={@updateTags}
+          />
         </div>
       </form>
     </div>

@@ -10,7 +10,3 @@ module.exports = (types) ->
   name:
     type: types.STRING
     allowNull: no
-  about:
-    type: types.TEXT
-    allowNull: yes
-    defaultValue: null

@@ -2,9 +2,10 @@
 
 {t} = require "../core/i18n"
 blog = require "../model/Blog"
+md = new MD = require "markdown-it"
 
-ForbiddenException = require "../core/errors/Forbidden"
-NotFoundException = require "../core/errors/NotFound"
+ForbiddenException = require "../core/error/Forbidden"
+NotFoundException = require "../core/error/NotFound"
 
 actionTag = (ctx) ->
   {tagName} = ctx.params
@@ -35,9 +36,16 @@ actionNew = (ctx) ->
   await return
 
 actionCreate = (ctx) ->
-  console.log ctx.request.body
+  {user} = ctx.req
 
-  ctx.body = ctx.request.body
+  unless user? or user?.role < 3
+    throw new ForbiddenException "Unauthorized access to #{ctx.url}"
+
+  {title, content, tags} = ctx.request.body
+
+  post = await blog.createPost user.userId, title, content, tags
+
+  ctx.body = post
 
   await return
 
@@ -54,14 +62,11 @@ actionSave = (ctx) -> await return
 actionDelete = (ctx) -> await return
 
 actionRead = (ctx) ->
-  # oPost = await blog.getPostById ctx.params.postId
-  # ctx.render "blog/post",
-  #   title: oPost.title
-  #   post: oPost
-
   # TODO: Don't forget to add NotImplementedException class
   # for same specific exceptions.
-  throw new NotFoundException "Posts is not implemented right now."
+  # throw new NotFoundException "Posts is not implemented right now."
+
+  ctx.body = await blog.getPost ctx.params.slug
 
   await return
 
@@ -69,18 +74,18 @@ module.exports = (r) ->
   r "/blog/tag/:tagName"
     .get actionTag
 
-  r "/blog/post/:postId"
+  r "/blog/post/:slug"
     .get actionRead
 
   r "/blog/new"
     .get actionNew
     .post actionCreate
 
-  r "/blog/edit/:postId"
+  r "/blog/edit/:slug"
     .get actionEdit
     .put actionSave
 
-  r "/blog/delete/:postId"
+  r "/blog/delete/:slug"
     .delete actionDelete
 
   r "/blog/:page?"

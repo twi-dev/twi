@@ -13,8 +13,8 @@ contacts = model "contacts", require "../core/database/schemas/contacts"
 {isEmail, isValidPassword} = require "../core/helper/validation"
 {t} = require "../core/i18n"
 
-ForbiddenException = require "../core/errors/Forbidden"
-NotFoundException = require "../core/errors/NotFound"
+ForbiddenException = require "../core/error/Forbidden"
+NotFoundException = require "../core/error/NotFound"
 
 redis = do redis.createClient
 {info} = require "../core/logger"

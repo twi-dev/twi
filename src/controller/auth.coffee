@@ -7,8 +7,8 @@ passport = require "koa-passport"
 user = new User = require "../model/User"
 {app: {enableSignup}} = require "../core/helper/configure"
 
-NotFoundException = require "../core/errors/NotFound"
-ForbiddenException = require "../core/errors/Forbidden"
+NotFoundException = require "../core/error/NotFound"
+ForbiddenException = require "../core/error/Forbidden"
 
 passport.serializeUser (iUserId, cb) -> cb null, iUserId
 passport.deserializeUser user.getAuthenticated

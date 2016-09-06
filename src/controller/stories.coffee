@@ -2,9 +2,9 @@
 
 story = require "../model/Story"
 
-ForbiddenException = require "../core/errors/Forbidden"
-NowFoundException = require "../core/errors/NotFound"
-NotAllowedException = require "../core/errors/NotAllowed"
+ForbiddenException = require "../core/error/Forbidden"
+NowFoundException = require "../core/error/NotFound"
+NotAllowedException = require "../core/error/NotAllowed"
 
 ###
 # Response stories

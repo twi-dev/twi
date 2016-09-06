@@ -3,8 +3,8 @@
 i18n = require "../core/i18n"
 user = new User = require "../model/User"
 
-NotFoundException = require "../core/errors/NotFound"
-ForbiddenException = require "../core/errors/Forbidden"
+NotFoundException = require "../core/error/NotFound"
+ForbiddenException = require "../core/error/Forbidden"
 
 ###
 # List of all registered users

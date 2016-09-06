@@ -6,8 +6,8 @@ requireHelper = require "../helper/require"
 {isFunction} = require "lodash"
 {warn} = require "../logger"
 
-NotFoundException = require "../errors/NotFound"
-NotAllwedException = require "../errors/NotAllowed"
+NotFoundException = require "../error/NotFound"
+NotAllwedException = require "../error/NotAllowed"
 
 CONTROLLERS = realpathSync "#{__dirname}/../../controller"
 
