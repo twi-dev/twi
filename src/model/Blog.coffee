@@ -94,7 +94,6 @@ getPost = (slug) ->
       attributes: ["login"]
     ]
     attributes: [
-      "userId"
       "title"
       "renderedContent"
       "createdAt"
@@ -107,7 +106,7 @@ getPost = (slug) ->
       It's seems like there is no post with given slug: \"#{slug}\". Wrong url?
     "
 
-  postData.tags = (tag['tags.name'] for tag in postTagsData)
+  postData.tags = (tag["tags.name"] for tag in postTagsData)
 
   return postData
 
