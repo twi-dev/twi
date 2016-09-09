@@ -22,55 +22,56 @@ logger = require "../middleware/logger"
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
 PUBLIC_DIR = realpathSync "#{__dirname}/../../themes/#{theme}/public"
 UPLOADS_DIR = realpathSync "#{__dirname}/../../uploads"
-app = new Koa
-app.keys = [session.secret]
+koa = new Koa
+koa.keys = [session.secret]
 
 normal "Init Twi middlewares"
+csrf koa
 
 # Check xhr request
-app.use isXhr
+koa
+  .use isXhr
 
-# Set error handler
-app.use errorHandler
+  # Set error handler
+  .use errorHandler
 
-# Compress static
-app.use do compress
+  # Compress static
+  .use do compress
 
-# Serve favicon and static files
-app.use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
-app.use serve PUBLIC_DIR
+  # Serve favicon and static files
+  .use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
+  .use serve PUBLIC_DIR
 
-# Serve uploads
-app.use serve UPLOADS_DIR
+  # Serve uploads
+  .use serve UPLOADS_DIR
 
-# Logger middleware for any requests
-app.use logger
+  # Logger middleware for any requests
+  .use logger
 
-# Bodyparser
-app.use do bodyparser
+  # Bodyparser
+  .use do bodyparser
 
-# Session
-app.use convert sess
-  store: do redisStore
-  prefix: session.prefix
-  key: "#{session.prefix}#{session.sessidName}"
-  cookie:
-    maxAge: 1000 * 60 * 60 * 24 * 360 # One year in ms
+  # Session
+  .use convert sess
+    store: do redisStore
+    prefix: session.prefix
+    key: "#{session.prefix}#{session.sessidName}"
+    cookie:
+      maxAge: 1000 * 60 * 60 * 24 * 360 # One year in ms
 
-# Csrf tokens
-csrf app
-app.use convert csrf.middleware
+  # Csrf tokens
+  .use convert csrf.middleware
 
-# Passport
-app
+  # Passport
   .use do passport.initialize
   .use do passport.session
 
-# Set controllers
-controller app
+  # Set controllers
+  .use do controller.routes
+  .use do controller.allowedMethods
 
 # Set view engine
-view app, debug: off
+view koa, debug: off
 
 normal "
   Run Twi server for #{process.env.NODE_ENV or "development"} environment
@@ -81,13 +82,13 @@ do ->
   CERTS = realpathSync "#{__dirname}/../../configs/cert"
   try
     # TODO: Test this code with "Let's encrypt!" certificates.
-    oOptions =
+    options =
       key: readFileSync "#{CERTS}/twi.key"
       cert: readFileSync "#{CERTS}/twi.crt"
     require "http2"
-      .cteateServer oOptions, do app.callback
+      .cteateServer options, do koa.callback
       .listen port
     info "Starting with HTTP2 server."
   catch err
-    app.listen port
+    koa.listen port
   ok "Twi started on http://localhost:#{port}"

@@ -15,7 +15,7 @@ Router = require "koa-router"
 router = new Router
 
 wrapRouter = (path) ->
-  return methods =
+  methods =
     get: (actions...) ->
       router.get path, actions...
       return methods
@@ -51,7 +51,7 @@ actionNotAllowed = (ctx) ->
   "
   await return
 
-controller = (app) ->
+controller = ->
   # Require all controllers
   controllers = requireHelper CONTROLLERS
 
@@ -68,11 +68,6 @@ controller = (app) ->
     .get actionNotFound
     .all actionNotAllowed
 
-  # Set router middleware
-  app
-    .use do router.routes
-    .use do router.allowedMethods
+  return router
 
-  return
-
-module.exports = controller
+module.exports = do controller
