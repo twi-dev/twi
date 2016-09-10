@@ -10,10 +10,11 @@ NotFoundException = require "../core/error/NotFound"
 actionTag = (ctx) ->
   {tagName} = ctx.params
 
-  oTag = await blog.getTagByName tagName
+  data = await blog.getByTagByName tagName
 
   ctx.render "blog/tag",
-    title: "Поиск по тегу #{oTag?.name}"
+    title: "Поиск по тегу #{tagName}"
+    post: data
 
   await return
 
@@ -62,11 +63,9 @@ actionSave = (ctx) -> await return
 actionDelete = (ctx) -> await return
 
 actionRead = (ctx) ->
-  # TODO: Don't forget to add NotImplementedException class
-  # for same specific exceptions.
-  # throw new NotFoundException "Posts is not implemented right now."
+  {title} = post = await blog.getPost ctx.params.slug
 
-  ctx.body = await blog.getPost ctx.params.slug
+  ctx.render 'blog/post', {title, post}
 
   await return
 

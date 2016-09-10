@@ -29,24 +29,46 @@ postUser = post.belongsTo user, foreignKey: "user_id"
 userPost = user.belongsTo post, foreignKey: "user_id"
 
 ###
-# Get tag his name
+# Get posts by tag name
 #
 # @param string name
+# @param int page
+#
+# @return array
 ###
-getTagByName = (name) ->
-  tagData = await Promise.resolve tag.findOne
+getByTagByName = (name, page) ->
+  postsData = await Promise.resolve post.findAll
     raw: on
     attributes:
-      exclude: [
-        "tagId"
+      exclude: ["userId", "content"]
+    include: [{
+      model: tag
+      attributes: []
+      where: {name: decodeURI name}
+    }, {
+      model: user
+      attributes: ["login"]
+    }]
+
+  unless postsData?
+    throw new NotFoundException "There is no post with given tag \"#{name}\"."
+
+  for __post in postsData
+    {postId} = __post
+    postTagsData = await Promise.resolve post.findAll
+      raw: on
+      include: [
+        model: tag
+        attributes: [
+          "name"
+        ]
       ]
-    where:
-      name: decodeURI name # I'm not sure is that secure
+      attributes: []
+      where: {postId}
 
-  unless tagData?
-    throw new NotFoundException "Tag \"#{name}\" is not found."
+    __post.tags = (tag["tags.name"] for tag in postTagsData)
 
-  return tagData
+  return postsData
 
 createPost = (userId, title, content, tags) ->
   renderedContent = md.render content
@@ -75,6 +97,13 @@ createPost = (userId, title, content, tags) ->
 
   return slug
 
+###
+# Get one post by slug
+#
+# @param string slug
+#
+# @return object
+###
 getPost = (slug) ->
   postTagsData = await Promise.resolve post.findAll
     raw: on
@@ -108,10 +137,12 @@ getPost = (slug) ->
 
   postData.tags = (tag["tags.name"] for tag in postTagsData)
 
+  # TODO: Don't forget to fix following issue:
+  # TypeError: self.$expandAttributes is not a function
   return postData
 
 module.exports = {
-  getTagByName
+  getByTagByName
   createPost
   getPost
 }

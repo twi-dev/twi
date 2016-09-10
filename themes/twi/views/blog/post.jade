@@ -5,7 +5,6 @@ block content
     .post-header
       h3= post.title
       .post-owner
-        | Пришло от 
-        a(href="/user/" + post.user.login.toLowerCase())= post.user.login
+
   //- This is NOT secure. I have to find another way.
   .post-content !{post.content}
