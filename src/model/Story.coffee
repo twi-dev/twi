@@ -22,7 +22,7 @@ mark.hasMany markLocale,
 
 class Story
   getCharacters: ->
-    await Promise.resolve character.findAll
+    await character.findAll
       raw: yes
       attributes: [
         ["character_id", "id"]
@@ -37,7 +37,7 @@ class Story
       ]
 
   getCharactersByName: (name) ->
-    await Promise.resolve character.findAll
+    await character.findAll
       raw: yes
       attributes: [
         ["character_id", "id"]
@@ -55,7 +55,7 @@ class Story
       ]
 
   getMarks: ->
-    await Promise.resolve mark.findAll
+    await mark.findAll
       raw: yes
       attributes: [
         ["mark_id", "id"]
@@ -70,7 +70,7 @@ class Story
       ]
 
   getMarkByName: (name) ->
-    await Promise.resolve mark.findAll
+    await mark.findAll
       raw: yes
       attributes: [
         ["mark_id", "id"]

@@ -37,7 +37,7 @@ userPost = user.belongsTo post, foreignKey: "user_id"
 # @return array
 ###
 getByTagByName = (name, page) ->
-  postsData = await Promise.resolve post.findAll
+  postsData = await post.findAll
     raw: on
     attributes:
       exclude: ["userId", "content"]
@@ -55,7 +55,7 @@ getByTagByName = (name, page) ->
 
   for __post in postsData
     {postId} = __post
-    postTagsData = await Promise.resolve post.findAll
+    postTagsData = await post.findAll
       raw: on
       include: [
         model: tag
@@ -66,7 +66,7 @@ getByTagByName = (name, page) ->
       attributes: []
       where: {postId}
 
-    __post.tags = (tag["tags.name"] for tag in postTagsData)
+    __post.tags = (__tag["tags.name"] for __tag in postTagsData)
 
   return postsData
 
@@ -83,14 +83,14 @@ createPost = (userId, title, content, tags) ->
   }, raw: on
 
   tagsData = await for name in tags
-    await Promise.resolve tag.findOrCreate
+    await tag.findOrCreate
       raw: on
       where: {name}
       defaults: {name}
 
   for tag in tagsData
     {tagId} = tag[0]
-    await Promise.resolve postTags.findOrCreate
+    await postTags.findOrCreate
       raw: on
       where: {postId, tagId}
       defaults: {postId, tagId}
@@ -105,18 +105,7 @@ createPost = (userId, title, content, tags) ->
 # @return object
 ###
 getPost = (slug) ->
-  postTagsData = await Promise.resolve post.findAll
-    raw: on
-    include: [
-      model: tag
-      attributes: [
-        "name"
-      ]
-    ]
-    attributes: []
-    where: {slug}
-
-  postData = await Promise.resolve post.findOne
+  postData = await post.findOne
     raw: on
     include: [
       model: user
@@ -132,13 +121,20 @@ getPost = (slug) ->
 
   unless postData?
     throw new NotFoundException "
-      It's seems like there is no post with given slug: \"#{slug}\". Wrong url?
+      It's seems like there is no post with given slug: \"#{slug}\".
     "
 
-  postData.tags = (tag["tags.name"] for tag in postTagsData)
+  postTagsData = (await post.findAll
+    raw: on
+    include: [
+      model: tag
+      attributes: ["name"]
+    ]
+    attributes: []
+    where: {slug}) ? []
 
-  # TODO: Don't forget to fix following issue:
-  # TypeError: self.$expandAttributes is not a function
+  postData.tags = (__tag["tags.name"] for __tag in postTagsData) ? []
+
   return postData
 
 module.exports = {

@@ -100,7 +100,7 @@ class User
     ]
 
   _getUser: (oOptions) ->
-    await Promise.resolve user.findOne oOptions
+    await user.findOne oOptions
 
   profile: (sUserId) ->
     oUserData = await @_getUser
@@ -131,7 +131,7 @@ class User
     return oUserData
 
   signup: (sLogin, sEmail, sPass, sRepass) ->
-    oUserData = await Promise.resolve user.create
+    oUserData = await user.create
       login: sLogin
       email: sEmail
       password: (await bcrypt.hash sPass, 10)
@@ -147,7 +147,7 @@ class User
     sId = await redis.get sHash
     return no unless sId?
 
-    await Promise.resolve user.update {
+    await user.update {
       status: @STATUS_ACTIVE
     }, {
       where:
