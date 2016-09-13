@@ -25,6 +25,7 @@ tagAssoc = post.belongsToMany tag,
     model: postTags
     unique: no
 
+# Associate users with posts
 postUser = post.belongsTo user, foreignKey: "user_id"
 userPost = user.belongsTo post, foreignKey: "user_id"
 
@@ -70,6 +71,14 @@ getByTagByName = (name, page) ->
 
   return postsData
 
+###
+# Create a new post
+#
+# @param string userId
+# @param string title
+# @param string content
+# @param array tags
+###
 createPost = (userId, title, content, tags) ->
   renderedContent = md.render content
 

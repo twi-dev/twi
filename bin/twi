@@ -1,62 +1,62 @@
 #!/usr/bin/env node
 
-'use strict';
+"use strict";
 
 const help = () => {
   console.log(
-    'Available commands:\n' +
-    '  run, r               start Twi app\n' +
-    '  setup, s             run Twi installer\n' +
-    '  migrate, m [data|d]  run Twi migrations setup\n\n' +
-    'Options:\n' +
-    '  --version, -v  display current Twi version\n' +
-    '  --help, -h     show this help message\n\n' +
-    'Usage:\n' +
-    '  twi <command or option>\n'
+    "Available commands:\n" +
+    "  run, r               start Twi app\n" +
+    "  setup, s             run Twi installer\n" +
+    "  migrate, m [data|d]  run Twi migrations setup\n\n" +
+    "Options:\n" +
+    "  --version, -v  display current Twi version\n" +
+    "  --help, -h     show this help message\n\n" +
+    "Usage:\n" +
+    "  twi <command or option>\n"
   );
 };
 
-var argv = process.argv.slice(2)[0] || 'run';
+var argv = process.argv.slice(2)[0] || "run";
 
-if (argv === 'r') {
-  argv = 'run';
+if (argv === "r") {
+  argv = "run";
 }
 
-if (argv === 's') {
-  argv = 'setup';
+if (argv === "s") {
+  argv = "setup";
 }
 
-if (argv === 'migrate' || argv === 'migrations' || argv === 'm') {
-  argv = 'migrate';
+if (argv === "migrate" || argv === "migrations" || argv === "m") {
+  argv = "migrate";
 }
 
-if (argv === '--version' || argv === '-v') {
-  argv = 'version';
+if (argv === "--version" || argv === "-v") {
+  argv = "version";
 }
 
-if (argv === '--help' || argv === '-h') {
-  argv = 'help';
+if (argv === "--help" || argv === "-h") {
+  argv = "help";
 }
 
 switch (argv) {
-  case 'run':
-    require('..');
-    break;
-  case 'setup':
-    require('../setup');
-    break;
-  case 'migrate':
-    require('../setup/migrations/migrate');
-    break;
-  case 'version':
-    console.log(
-      `It's Twi v${require('../package.json').version}!`
-    );
-    break;
-  case 'help':
-    help();
-    break;
-  default:
-    console.log('\nUnknown command.\n');
-    help();
+case "run":
+  require("..");
+  break;
+case "setup":
+  require("../setup");
+  break;
+case "migrate":
+  require("../setup/migrations/migrate");
+  break;
+case "version":
+  console.log(
+    `It"s Twi v${require("../package.json").version}!`
+  );
+  break;
+case "help":
+  help();
+  break;
+default:
+  console.log("\nUnknown command.\n");
+  help();
 }

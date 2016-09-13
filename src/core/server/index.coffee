@@ -92,3 +92,5 @@ do ->
   catch err
     koa.listen port
   ok "Twi started on http://localhost:#{port}"
+
+process.on "SIGINT", -> process.exit 0

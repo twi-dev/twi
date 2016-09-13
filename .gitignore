@@ -9,6 +9,7 @@ model
 node_modules
 public/assets
 public/img/**/*.svg
+test
 foo
 bar
 
@@ -42,3 +43,6 @@ themes/**/views/api
 !src/controller
 !src/core
 !src/model
+!src/test
+!src/test/core
+!src/test/helper

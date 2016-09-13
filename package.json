@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/octet-stream/twi-js/issues"
   },
-  "main": "index.js",
+  "main": "./core/server/index.js",
   "bin": {
     "twi": "bin/twi"
   },
@@ -19,11 +19,16 @@
     "setup": "bin/twi setup",
     "twi": "bin/twi run",
     "start": "npm run setup && npm run run",
-    "test": "./node_modules/ava/cli.js"
+    "test": "./node_modules/ava/cli.js",
+    "test:devel": "./node_modules/ava/cli.js --watch",
+    "td": "./node_modules/ava/cli.js --watch"
   },
   "ava": {
     "verbose": true,
-    "files": "test/**/*.js"
+    "files": [
+      "./test/**/*.js",
+      "!./test/helper/**/*.js"
+    ]
   },
   "dependencies": {
     "async-busboy": "0.1.1",
