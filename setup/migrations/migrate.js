@@ -3,7 +3,6 @@
 /*
  * Migrate command implementation
  */
-
 var migrate = require(".");
 var logger = require("../../core/logger");
 var argv = process.argv.slice(3)[0];
