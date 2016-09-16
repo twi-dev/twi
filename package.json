@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "async-busboy": "0.1.1",
+    "async-busboy": "^0.3.2",
     "axios": "0.13.1",
     "bcryptjs": "2.3.0",
     "camelcase": "3.0.0",

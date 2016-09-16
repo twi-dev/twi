@@ -43,7 +43,8 @@ SRC_DIR = realpathSync "#{__dirname}/src"
 isDevel = no
 
 # Promisify glob using pify
-globby = pify glob
+glob = pify glob
+rimraf = pify rimraf
 
 ###
 # @param string
@@ -115,20 +116,20 @@ transform = (file, enc, cb) ->
       sourceRoot: no
       sourceFiles: [file.relative]
       generatedFile: replaceExtname file.relative
+
+    file.contents = Buffer contents
+    file.path = replaceExtname file.path
+
+    cb null, file
   catch err
     return cb err
-
-  file.contents = Buffer contents
-  file.path = replaceExtname file.path
-
-  cb null, file
 
 ###
 # Compile files using streams
 #
 # @param array files
 ###
-compile = (files) ->
+make = (files) ->
   vfs.src files
     .on "error", onProcessExitOrError
     .pipe through objectMode: on, transform
@@ -151,23 +152,25 @@ watcher = (e, filename) ->
   filename = "#{SRC_DIR}/#{filename}"
   try
     stat = statSync filename
+
+    return mkdirSync getDestFilename filename if do stat.isDirectory
+
+    __ext = extname filename
+    return make [filename] if __ext in [".coffee", ".litcoffee", ".coffee.md"]
   catch err
     unless err? and err.code is "ENOENT"
       return process.emit "error", err
 
-    filename = getDestFilename filename
-    return rimraf filename, (err) ->
-      if err? then process.emit "error", err else log "Remove #{filename}"
+    onFulfilled = -> log "Remove #{filename}"
 
-  return compile [filename] unless do stat.isDirectory
+    return rimraf getDestFilename filename
+      .then onFulfilled, onProcessExitOrError
 
-  mkdirSync getDestFilename filename
+task "make", "Build app from the source", ->
+  glob "#{SRC_DIR}/**/*.coffee"
+    .then make, onProcessExitOrError
 
-task "build", "Build app from the source", ->
-  globby "#{SRC_DIR}/**/*.coffee"
-    .then compile, onProcessExitOrError
-
-task "devel", "Run Cakefile with watcher", ->
+task "watch", "Run Cakefile with watcher", ->
   isDevel = yes
   log "Starting watcher..."
   log "Press Control+C to exit.", LOG_INFO

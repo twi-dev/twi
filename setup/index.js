@@ -79,7 +79,7 @@ installDependencies = () => {
 };
 
 buildBackend = () => {
-  exec("cake build", {
+  exec("cake make", {
     encoding: "utf-8",
     stdio: "inherit"
   });

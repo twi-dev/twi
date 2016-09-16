@@ -58,16 +58,3 @@ smtp:
 
   # Password of noreply bot account
   pass: null
-
-# List of supported browsers and their major version
-browsers:
-  # Desktop
-  chrome: 42
-  firefox: 30
-  opera: 30
-  safari: 9
-
-  # Mobile
-  chromeMobile: 40
-  firefoxMobile: 40
-  mobileSafari: 5

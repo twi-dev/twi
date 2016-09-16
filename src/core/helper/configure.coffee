@@ -13,13 +13,15 @@ configure = ->
 
   # Trying to read user-config
   try
-    __userConfig = readSync "#{CONFIGS_ROOT}/user"
+    userConfig = readSync "#{CONFIGS_ROOT}/user"
   catch err
-    # Set default value if user-config is not exists
-    __userConfig = {}
+    throw err unless err.code is "ENOENT"
 
-  __defaultConfig = readSync "#{CONFIGS_ROOT}/default"
-  config = merge __defaultConfig, __userConfig
+    # Set default value if user-config is not exists
+    userConfig = {}
+
+  defaultConfig = readSync "#{CONFIGS_ROOT}/default"
+  config = merge {}, defaultConfig, userConfig
 
   # Set read-only property IS_DEVEL
   Object.defineProperty config, "IS_DEVEL",
