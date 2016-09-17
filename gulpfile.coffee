@@ -194,7 +194,7 @@ gulp.task "refresh", ->
 # 
 # Run: gulp devel
 ###
-gulp.task "devel", ["env:devel", "svg", "stylus", "coffee"]
+gulp.task "watch", ["env:devel", "svg", "stylus", "coffee"]
 
 ###
 # Build frontend app for probuction

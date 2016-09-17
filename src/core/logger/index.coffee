@@ -1,7 +1,8 @@
-'use strict'
+"use strict"
 
-colors = require 'colors'
-moment = require 'moment'
+figures = require "figures"
+chalk = require "chalk"
+moment = require "moment"
 
 write = (message) -> process.stdout.write "#{message}\n"
 
@@ -20,19 +21,19 @@ LOG_ERR = 4
 # Labels
 ###
 LOG_LABELS = [
-  "log"
-  "ok".green
-  "info".cyan
-  "warn".yellow
-  "err".red
+  chalk.white figures.pointer
+  chalk.green figures.tick
+  chalk.cyan figures.info
+  chalk.yellow figures.warning
+  chalk.red figures.cross
 ]
 
 log = (message, iLevel = 0) ->
-  now = (do moment).format 'DD MMM YYYY h:mm:ss a'
+  mark = chalk.grey (do moment).format "hh:mm:ss"
   if iLevel in [LOG_NORMAL, LOG_OK, LOG_INFO]
-    write "[#{LOG_LABELS[[iLevel]]}] #{message} at #{now}"
+    write  "[#{mark}] #{LOG_LABELS[[iLevel]]} #{message}"
   else
-    writeErr "[#{LOG_LABELS[[iLevel]]}] #{message} at #{now}"
+    writeErr "[#{mark}] #{LOG_LABELS[[iLevel]]} #{message}"
 
 normal = (message) -> log message, LOG_NORMAL
 

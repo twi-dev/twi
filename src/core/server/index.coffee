@@ -7,16 +7,17 @@ favicon = require "koa-favicon"
 bodyparser = require "koa-bodyparser"
 sess = require "koa-generic-session"
 redisStore = require "koa-redis"
-csrf = require "koa-csrf"
 passport = require "koa-passport"
 compress = require "koa-compress"
 controller = require "./controller"
 view = require "./view"
 oConfig = require "../helper/configure"
 isXhr = require "../middleware/xhr"
+multipart = require "../middleware/multipart"
 errorHandler = require "../middleware/error-handler"
 logger = require "../middleware/logger"
 
+{default: CSRF} = require "koa-csrf"
 {ok, info, normal}  = require "../logger"
 {readFileSync, realpathSync} = require "fs"
 {app: {name, port, theme, lang}, session, IS_DEVEL} = oConfig
@@ -26,7 +27,6 @@ koa = new Koa
 koa.keys = [session.secret]
 
 normal "Init Twi middlewares"
-csrf koa
 
 # Check xhr request
 koa
@@ -50,6 +50,7 @@ koa
 
   # Bodyparser
   .use do bodyparser
+  .use multipart
 
   # Session
   .use convert sess
@@ -60,7 +61,7 @@ koa
       maxAge: 1000 * 60 * 60 * 24 * 360 # One year in ms
 
   # Csrf tokens
-  .use convert csrf.middleware
+  .use new CSRF
 
   # Passport
   .use do passport.initialize

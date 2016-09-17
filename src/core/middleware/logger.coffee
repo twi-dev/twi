@@ -1,16 +1,16 @@
 {normal} = require "../logger"
-colors = require "colors"
+{grey, green, yellow, red} = require "chalk"
 
-arrowRight = "->".grey
-arrowLeft = "<-".grey
+arrowRight = grey "->"
+arrowLeft = grey "<-"
 
 statusColor = (status) ->
-  return "#{status}".green if 200 >= status < 300
-  return "#{status}".grey if 300 >= status < 400
+  return green "#{status}" if 200 >= status < 300
+  return grey "#{status}" if 300 >= status < 400
 
   # Maybe I don't need this code.
-  return "#{status}".yellow if 400 >= status < 500
-  return "#{status}".red if status >= 500
+  return yellow "#{status}" if 400 >= status < 500
+  return red "#{status}" if status >= 500
 
 logger = (ctx, next) ->
   normal "#{ctx.request.ip} #{arrowRight} #{ctx.method} #{decodeURI ctx.url}"

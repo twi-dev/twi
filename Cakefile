@@ -10,7 +10,7 @@ pify = require "pify"
 coffee = require "coffee-script"
 rimraf = require "rimraf"
 through = require "through2"
-{dirname} = path = require "path"
+{dirname, extname} = require "path"
 {realpathSync, statSync, mkdirSync, watch} = require "fs"
 
 COLOR_DEF = "\x1b[0m"
