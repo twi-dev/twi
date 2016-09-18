@@ -15,7 +15,6 @@ ArrowDown = require "img/layout/arrow-down.svg"
 md = require "helper/md"
 axios = require "helper/axios"
 
-# TODO: Add component for tags input
 class BlogEditor extends Component
   constructor: ->
     {documentElement: {offsetWidth, offsetHeight}} = document
@@ -45,13 +44,15 @@ class BlogEditor extends Component
 
   updateContent: (content) => @setState {content}
 
-  updateTags: ({target: {value}}) => @setState tags: value # TMP
+  updateTags: (tags) => @setState {tags}
+
+  _onSubmitPrevent: (e) -> do e.preventDefault
 
   _renderPreview: -> __html: md.render @state.content
 
   render: ->
     <div>
-      <form onSubmit={(e) -> do e.preventDefault} autoComplete="off">
+      <form onSubmit={@_onSubmitPrevent} autoComplete="off">
         <div className="blog-editor" style={{height: parseInt(@state.height)}}>
           <div className="blog-editor-field-title">
             <input
@@ -95,6 +96,8 @@ class BlogEditor extends Component
           <TagSuggestion
             name="tag"
             label="Tags"
+            selected={@state.tags}
+            onChange={@updateTags}
           />
         </div>
       </form>

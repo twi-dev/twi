@@ -30,6 +30,13 @@ postUser = post.belongsTo user, foreignKey: "user_id"
 userPost = user.belongsTo post, foreignKey: "user_id"
 
 ###
+# Get tag by given name
+###
+getTagsByName = (name) -> (
+    await tag.findAll raw: on, limit: 10, attributes: ["name"], where: {name}
+  ) or []
+
+###
 # Get posts by tag name
 #
 # @param string name
@@ -37,9 +44,14 @@ userPost = user.belongsTo post, foreignKey: "user_id"
 #
 # @return array
 ###
-getByTagByName = (name, page) ->
+getByTagName = (name, page = 1) ->
+  if "#{(page = Number page)}" is "NaN"
+    throw new TypeError "Page value must be a number"
+
   postsData = await post.findAll
     raw: on
+    limit: 10 # 10 records per page
+    offset: page * 10 - 9 # ...with offset 10 per page
     attributes:
       exclude: ["userId", "content"]
     include: [{
@@ -52,7 +64,7 @@ getByTagByName = (name, page) ->
     }]
 
   unless postsData?
-    throw new NotFoundException "There is no post with given tag \"#{name}\"."
+    throw new NotFoundException "There is no posts with given tag \"#{name}\"."
 
   for __post in postsData
     {postId} = __post
@@ -147,7 +159,8 @@ getPost = (slug) ->
   return postData
 
 module.exports = {
-  getByTagByName
+  getTagsByName
+  getByTagName
   createPost
   getPost
 }

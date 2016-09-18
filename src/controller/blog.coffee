@@ -7,16 +7,14 @@ ForbiddenException = require "../core/error/Forbidden"
 NotFoundException = require "../core/error/NotFound"
 
 actionTag = (ctx) ->
-  {tagName} = ctx.params
+  {tagName, page} = ctx.params
   {ref} = ctx.query
 
-  return ctx.body = {tagName} if ref is "ed"
+  return ctx.body = await blog.getTagsByName tagName if ref is "ed"
 
-  data = await blog.getByTagByName tagName
+  post = await blog.getByTagName tagName, page
 
-  ctx.render "blog/tag",
-    title: "Поиск по тегу #{tagName}"
-    post: data
+  ctx.render "blog/tag", {title: "Поиск по тегу #{tagName}", post}
 
   await return
 
@@ -73,7 +71,7 @@ actionRead = (ctx) ->
   await return
 
 module.exports = (r) ->
-  r "/blog/tag/:tagName"
+  r "/blog/tag/:tagName/:page?"
     .get actionTag
 
   r "/blog/post/:slug"
