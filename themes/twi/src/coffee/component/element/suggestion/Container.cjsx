@@ -20,6 +20,7 @@ class SuggestionContainer extends Component
     selected: PropTypes.array.isRequired
     onChange: PropTypes.func.isRequired
     onClick: PropTypes.func.isRequired
+    listStyle: PropTypes.object
     listPosition: PropTypes.string
 
   @defaultProps:
@@ -33,10 +34,7 @@ class SuggestionContainer extends Component
       selected: []
       suggestions: []
 
-  ###
-  # Change selected item in list
-  ###
-  _changeSelection: ->
+  getUrl: -> # noop
 
   ###
   # Remove suggestion with given id
@@ -107,7 +105,7 @@ class SuggestionContainer extends Component
         </div>
       </li>
 
-  _renderTagList: (tags) ->
+  _renderSelectedList: (tags) ->
     for suggestion, index in @state.selected
       <div
         key={suggestion.id}
@@ -118,20 +116,20 @@ class SuggestionContainer extends Component
         {suggestion.name}
       </div>
 
-  _renderTags: ->
+  _renderSuggestions: ->
     return if isEmpty @state.selected
 
     <div className="suggestion-input-tags">
-      {@_renderTagList @state.selected}
+      {@_renderSelectedList @state.selected}
     </div>
 
-  getUrl: -> "" # noop
 
   ###
   # @return Promise
   ###
   _requestSuggestions: (value) ->
-    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and (do @getUrl)?
+    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and do @getUrl
+
 
   ###
   # Get suggestions from server
@@ -183,11 +181,11 @@ class SuggestionContainer extends Component
       do e.preventDefault
       @_spliceSuggestion @state.selected[@state.selected.length - 1]?.id
 
-  closeSuggectionsOnBlur: =>
+  closeListOnBlur: =>
     # Close list on next tick
     setTimeout (=> @setState showList: no), 0 if @state.showList
 
-  openOnFocus: =>
+  openListOnFocus: =>
     @setState showList: on if @state.current and not isEmpty @state.suggestions
 
   render: ->
@@ -198,12 +196,17 @@ class SuggestionContainer extends Component
           value={@state.current}
           style={@props.style}
           onChange={@getSuggestions}
+          onKeyDown={@chooseByKeyDown}
+          onBlur={@closeListOnBlur}
+          onFocus={@openListOnFocus}
           placeholder={@props.label}
         />
       </div>
       <div className="input-suggestions-list-container #{@props.listPosition}#{
           if @state.showList then ' active' else ''
-      }">
+        }"
+        style={@props.listStyle}
+      >
         <ul className="input-suggestions-list">
           {do @_renderSuggestionsList}
         </ul>

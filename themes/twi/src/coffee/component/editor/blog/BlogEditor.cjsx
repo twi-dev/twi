@@ -102,6 +102,10 @@ class BlogEditor extends Component
             onChange={@updateTags}
             onClick={@removeTag}
             listPosition="top"
+            listStyle={{
+              left: "16px"
+              width: "200px"
+            }}
           ></TagSuggestion>
         </div>
       </form>
