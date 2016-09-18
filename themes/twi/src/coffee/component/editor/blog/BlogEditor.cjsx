@@ -46,6 +46,8 @@ class BlogEditor extends Component
 
   updateTags: (tags) => @setState {tags}
 
+  removeTag: (tag) => console.log "noop"
+
   _onSubmitPrevent: (e) -> do e.preventDefault
 
   _renderPreview: -> __html: md.render @state.content
@@ -98,8 +100,9 @@ class BlogEditor extends Component
             label="Tags"
             selected={@state.tags}
             onChange={@updateTags}
+            onClick={@removeTag}
             listPosition="top"
-          />
+          ></TagSuggestion>
         </div>
       </form>
     </div>

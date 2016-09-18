@@ -14,16 +14,16 @@ keys = require "helper/keyboard"
 ###
 class SuggestionContainer extends Component
   @propTypes:
-    type: PropTypes.string
     name: PropTypes.string.isRequired
     label: PropTypes.string.isRequired
     style: PropTypes.object
     selected: PropTypes.array.isRequired
     onChange: PropTypes.func.isRequired
     onClick: PropTypes.func.isRequired
+    listPosition: PropTypes.string
 
   @defaultProps:
-    type: "text"
+    listPosition: "bottom"
 
   constructor: ->
     @state =
@@ -125,13 +125,13 @@ class SuggestionContainer extends Component
       {@_renderTagList @state.selected}
     </div>
 
-  _getUrl: -> "" # noop
+  getUrl: -> "" # noop
 
   ###
   # @return Promise
   ###
   _requestSuggestions: (value) ->
-    axios.get "#{do @_getUrl}/#{value}?ref=ed" if value? and (do @_getUrl)?
+    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and (do @getUrl)?
 
   ###
   # Get suggestions from server
@@ -139,7 +139,7 @@ class SuggestionContainer extends Component
   # @params Event e
   ###
   getSuggestions: ({target}) =>
-    return unless (do @_getUrl)?
+    return unless (do @getUrl)?
 
     unless target.value
       @setState suggestions: [], showList: no, current: ""
@@ -147,7 +147,7 @@ class SuggestionContainer extends Component
 
     @setState current: target.value
 
-    axios.get "#{do @_getUrl}/#{target.value}?ref=ed"
+    axios.get "#{do @getUrl}/#{target.value}?ref=ed"
       .then ({data}) =>
         @setState
           showList: if isEmpty data then no else yes
@@ -201,10 +201,9 @@ class SuggestionContainer extends Component
           placeholder={@props.label}
         />
       </div>
-      <div className="input-suggestions-list-container#{
-          if @state.showList then ' input-suggestions-list-active' else ''
-        }"
-      >
+      <div className="input-suggestions-list-container #{@props.listPosition}#{
+          if @state.showList then ' active' else ''
+      }">
         <ul className="input-suggestions-list">
           {do @_renderSuggestionsList}
         </ul>

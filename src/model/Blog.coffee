@@ -35,7 +35,7 @@ userPost = user.belongsTo post, foreignKey: "user_id"
 getTagsByName = (name) -> (
   await tag.findAll
     raw: on
-    limit: 10
+    limit: 5
     attributes: ["name"]
     where:
       name:

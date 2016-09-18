@@ -20,71 +20,47 @@ mark.hasMany markLocale,
   as: "locale"
   foreignKey: "mark_id"
 
-class Story
-  getCharacters: ->
-    await character.findAll
-      raw: yes
+getCharactersByName = (name) ->
+  await character.findAll
+    raw: yes
+    limit: 5
+    subQuery: off
+    attributes: [
+      ["character_id", "id"]
+      "pic"
+    ]
+    include: [
+      as: "locale"
+      model: characterLocale
       attributes: [
-        ["character_id", "id"]
-        "pic"
+        "name"
       ]
-      include: [
-        as: "locale"
-        model: characterLocale
-        attributes: [
-          "name"
-        ]
-      ]
+      where:
+        name:
+          $like: "%#{decodeURI name}%"
+    ]
 
-  getCharactersByName: (name) ->
-    await character.findAll
-      raw: yes
+getMarkByName = (name) ->
+  await mark.findAll
+    raw: yes
+    limit: 5
+    subQuery: off
+    attributes: [
+      ["mark_id", "id"]
+      "color"
+    ]
+    include: [
+      as: "locale"
+      model: markLocale
       attributes: [
-        ["character_id", "id"]
-        "pic"
+        "name"
       ]
-      include: [
-        as: "locale"
-        model: characterLocale
-        attributes: [
-          "name"
-        ]
-        where:
-          name:
-            $like: "%#{decodeURI name}%"
-      ]
+      where:
+        name:
+          $like: "%#{decodeURI name}%"
+    ]
 
-  getMarks: ->
-    await mark.findAll
-      raw: yes
-      attributes: [
-        ["mark_id", "id"]
-        "color"
-      ]
-      include: [
-        as: "locale"
-        model: markLocale
-        attributes: [
-          "name"
-        ]
-      ]
-
-  getMarkByName: (name) ->
-    await mark.findAll
-      raw: yes
-      attributes: [
-        ["mark_id", "id"]
-        "color"
-      ]
-      include: [
-        as: "locale"
-        model: markLocale
-        attributes: [
-          "name"
-        ]
-        where:
-          name:
-            $like: "%#{decodeURI name}%"
-      ]
-
-module.exports = new Story
+module.exports = {
+  getCharactersByName
+  getMarkByName
+}
