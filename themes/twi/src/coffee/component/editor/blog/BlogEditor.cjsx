@@ -6,34 +6,14 @@ require "codemirror/addon/edit/closebrackets"
 require "codemirror/addon/edit/closetag"
 
 {Component, PropTypes} = React = require "react"
-ActionButton = require "../element/button/ActionButton"
+
+Codemirror = require "react-codemirror"
+TagSuggestion = require "../../element/suggestion/Tag"
+ActionButton = require "../../element/button/ActionButton"
 ArrowDown = require "img/layout/arrow-down.svg"
 
-Markdown = require "markdown-it"
-Codemirror = require "react-codemirror"
-hljs = require "highlight.js"
-
-axios = require "helper/axios-instance"
-
-md = new Markdown
-  breaks: on
-  linkify: on
-  highlight: (string, lang) ->
-    unless lang and hljs.getLanguage lang
-      return "
-        <pre class=\"hljs\">
-          <code>#{md.utils.escapeHtml string}</code>
-        </pre>
-      "
-
-    try
-      return "
-        <pre class=\"hljs\">
-          <code>#{hljs.highlight(lang, string, true).value}</code>
-        </pre>
-      "
-    catch err
-      console.error err
+md = require "helper/md"
+axios = require "helper/axios"
 
 # TODO: Add component for tags input
 class BlogEditor extends Component
@@ -44,7 +24,8 @@ class BlogEditor extends Component
       height: offsetHeight - (52 * 2)
       title: ""
       content: ""
-      tags: null
+      currentTag: ""
+      tags: []
 
   componentWillMount: -> addEventListener "resize", @resizeComponent
 
@@ -52,14 +33,11 @@ class BlogEditor extends Component
     {documentElement: {offsetWidth, offsetHeight}} = document
     @setState width: offsetWidth, height: offsetHeight - (52 * 2)
 
-  submit: ->
-    {dataset: {csrf}} = document.querySelector "#blog-editor"
-    {title, content, tags} = @state
-    axios.post "/blog/new", {_csrf: csrf, title, content, tags: tags.split ","}
-      .then ({data}) -> console.log data
-      .catch (err) -> console.log err
+  submit: -> # noop
 
-  save: -> console.log "Save draft"
+  save: -> # noop
+
+  remove: -> # noop
 
   doAction: (act) => do this[act] if act of this
 
@@ -114,13 +92,13 @@ class BlogEditor extends Component
             style={{height: parseInt(@state.height) - 50}}></div>
         </div>
         <div className="blog-editor-controls">
-          <input
-            type="text"
-            value={@state.tags}
-            onChange={@updateTags}
+          <TagSuggestion
+            name="tag"
+            label="Tags"
           />
         </div>
       </form>
     </div>
 
 module.exports = BlogEditor
+

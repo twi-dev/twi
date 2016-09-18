@@ -1,19 +1,19 @@
-'use strict'
+"use strict"
 
-require './nav-menu'
+require "./nav-menu"
 
-React = require 'react'
-{render} = ReactDOM = require 'react-dom'
-StoryEditor = require './component/editor/StoryEditor'
-BlogEditor = require './component/editor/BlogEditor'
+React = require "react"
+{render} = ReactDOM = require "react-dom"
+StoryEditor = require "./component/editor/StoryEditor"
+BlogAddPost = require "./component/editor/blog/AddPost"
 
 # Components containers
-storyEditorRoot = document.querySelector '#story-editor'
-blogEditorRoot = document.querySelector '#blog-editor'
+storyEditorRoot = document.querySelector "#story-editor"
+blogEditorRoot = document.querySelector "#blog-editor"
 
 # Render components
 render <StoryEditor
   action="/story/new" method="post"
 />, storyEditorRoot if storyEditorRoot?
 
-render <BlogEditor />, blogEditorRoot if blogEditorRoot?
+render <BlogAddPost />, blogEditorRoot if blogEditorRoot?

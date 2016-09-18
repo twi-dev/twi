@@ -1,6 +1,7 @@
 i18next = require "i18next"
 i18n = null
 
+# Langs hack
 langs = require "twi/langs"
 
 init = -> i18next.init resources: langs

@@ -2,13 +2,15 @@
 
 {t} = require "../core/i18n"
 blog = require "../model/Blog"
-md = new MD = require "markdown-it"
 
 ForbiddenException = require "../core/error/Forbidden"
 NotFoundException = require "../core/error/NotFound"
 
 actionTag = (ctx) ->
   {tagName} = ctx.params
+  {ref} = ctx.query
+
+  return ctx.body = {tagName} if ref is "ed"
 
   data = await blog.getByTagByName tagName
 
@@ -44,9 +46,10 @@ actionCreate = (ctx) ->
 
   {title, content, tags} = ctx.request.body
 
-  post = await blog.createPost user.userId, title, content, tags
+  # post = await blog.createPost user.userId, title, content, tags
 
-  ctx.body = post
+  # ctx.body = post
+  ctx.body = {title, content, tags}
 
   await return
 

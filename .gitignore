@@ -1,6 +1,7 @@
 api
 build
 controller
+coverage
 configs/user.yaml
 configs/user.yml
 configs/cert

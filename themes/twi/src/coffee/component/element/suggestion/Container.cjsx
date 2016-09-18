@@ -1,11 +1,10 @@
-{Component, PropTypes} = React = require 'react'
-InputField = require './InputField'
-axios = require '../../helper/axios'
-keys = require '../../helper/keyboard'
-{isEmpty} = require 'lodash'
+{Component, PropTypes} = React = require "react"
+{isEmpty} = require "lodash"
+axios = require "helper/axios"
+keys = require "helper/keyboard"
 
 ###
-# ImputSuggestions component
+# SuggestionContainer component
 #
 # @var object state
 #   - boolean showList - Show list of suggestions?
@@ -13,23 +12,23 @@ keys = require '../../helper/keyboard'
 #   - array selected - Collection of all selected suggestions
 #   - array suggestions - Collection of all suggestions
 ###
-class InputSuggestions extends Component
+class SuggestionContainer extends Component
   @propTypes:
     type: PropTypes.string
     name: PropTypes.string.isRequired
     label: PropTypes.string.isRequired
-    url: PropTypes.string.isRequired
+    style: PropTypes.object
     selected: PropTypes.array.isRequired
     onChange: PropTypes.func.isRequired
     onClick: PropTypes.func.isRequired
 
   @defaultProps:
-    type: 'text'
+    type: "text"
 
   constructor: ->
     @state =
       showList: no
-      current: ''
+      current: ""
       active: 0
       selected: []
       suggestions: []
@@ -73,7 +72,7 @@ class InputSuggestions extends Component
 
     @setState
       showList: no
-      current: ''
+      current: ""
       actve: 0
       selected: newState
       suggestions: []
@@ -104,7 +103,7 @@ class InputSuggestions extends Component
       >
         {@_renderSuggestionMark suggestion}
         <div className="input-suggestions-list-label fl">
-          {suggestion['locale.name']}
+          {suggestion["locale.name"]}
         </div>
       </li>
 
@@ -126,25 +125,33 @@ class InputSuggestions extends Component
       {@_renderTagList @state.selected}
     </div>
 
+  _getUrl: -> "" # noop
+
+  ###
+  # @return Promise
+  ###
+  _requestSuggestions: (value) ->
+    axios.get "#{do @_getUrl}/#{value}?ref=ed" if value? and (do @_getUrl)?
+
   ###
   # Get suggestions from server
   #
   # @params Event e
   ###
-  getSuggestions: (e) =>
-    return unless @props.url
+  getSuggestions: ({target}) =>
+    return unless (do @_getUrl)?
 
-    unless e.target.value
-      @setState suggestions: [], showList: no, current: ''
+    unless target.value
+      @setState suggestions: [], showList: no, current: ""
       return
 
-    @setState current: e.target.value
+    @setState current: target.value
 
-    axios.get "#{@props.url}/#{e.target.value}"
-      .then (res) =>
+    axios.get "#{do @_getUrl}/#{target.value}?ref=ed"
+      .then ({data}) =>
         @setState
-          showList: if isEmpty res.data then no else yes
-          suggestions: res.data
+          showList: if isEmpty data then no else yes
+          suggestions: data
       .catch (err) -> console.error err
 
   removeByClick: (e) => @_spliceSuggestion e.currentTarget.dataset.id
@@ -163,16 +170,16 @@ class InputSuggestions extends Component
 
       if e.keyCode in [keys.UP, keys.DOWN]
         __nodes = selected.parentNode.childNodes
-        for element, index in __nodes when element is selected
-          __nextIndex = if e.keyCode is keys.UP
-            if index <= 0 then __nodes.length - 1 else index - 1
+        for __el, __idx in __nodes when __el is selected
+          __next = if e.keyCode is keys.UP
+            if __idx <= 0 then __nodes.length - 1 else __idx - 1
           else if e.keyCode is keys.DOWN
-            if index >= __nodes.length - 1 then 0 else index + 1
+            if __idx >= __nodes.length - 1 then 0 else __idx + 1
 
-          @setState active: __nextIndex
+          @setState active: __next
           break
 
-    if e.keyCode is keys.BACKSPACE and @state.current is ''
+    if e.keyCode is keys.BACKSPACE and @state.current is ""
       do e.preventDefault
       @_spliceSuggestion @state.selected[@state.selected.length - 1]?.id
 
@@ -186,28 +193,13 @@ class InputSuggestions extends Component
   render: ->
     <div className="input-suggestions-container">
       <div className="input-suggestions-field">
-        <div className="input-container">
-          {do @_renderTags}
-          <input
-            required
-            className="form-input"
-            type={@props.type}
-            name={@props.name}
-            onChange={@getSuggestions}
-            onKeyDown={@chooseByKeyDown}
-            onBlur={@closeSuggectionsOnBlur}
-            onFocus={@openOnFocus}
-            value={@state.current}
-          />
-          <div className="field-underscore"></div>
-          <div className="input-label#{
-            unless isEmpty @state.selected
-               ' input-label-float'
-            else ''
-          }">
-              {@props.label}
-            </div>
-        </div>
+        <input
+          type="text"
+          value={@state.current}
+          style={@props.style}
+          onChange={@getSuggestions}
+          placeholder={@props.label}
+        />
       </div>
       <div className="input-suggestions-list-container#{
           if @state.showList then ' input-suggestions-list-active' else ''
@@ -219,4 +211,4 @@ class InputSuggestions extends Component
       </div>
     </div>
 
-module.exports = InputSuggestions
+module.exports = SuggestionContainer
