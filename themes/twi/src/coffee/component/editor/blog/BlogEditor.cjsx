@@ -98,6 +98,7 @@ class BlogEditor extends Component
             label="Tags"
             selected={@state.tags}
             onChange={@updateTags}
+            listPosition="top"
           />
         </div>
       </form>

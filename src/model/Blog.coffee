@@ -33,8 +33,14 @@ userPost = user.belongsTo post, foreignKey: "user_id"
 # Get tag by given name
 ###
 getTagsByName = (name) -> (
-    await tag.findAll raw: on, limit: 10, attributes: ["name"], where: {name}
-  ) or []
+  await tag.findAll
+    raw: on
+    limit: 10
+    attributes: ["name"]
+    where:
+      name:
+        $like: "%#{decodeURI name}%"
+) or []
 
 ###
 # Get posts by tag name
@@ -92,11 +98,10 @@ getByTagName = (name, page = 1) ->
 # @param array tags
 ###
 createPost = (userId, title, content, tags) ->
-  renderedContent = md.render content
-
   if isEmpty tags
     throw new Error "Tags cannot be empty"
 
+  renderedContent = md.render content
   {postId, slug} = await Promise.resolve post.create {
     userId, title
     content, renderedContent
