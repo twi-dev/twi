@@ -23,7 +23,6 @@ class BlogEditor extends Component
       height: offsetHeight - (52 * 2)
       title: ""
       content: ""
-      currentTag: ""
       tags: []
 
   componentWillMount: -> addEventListener "resize", @resizeComponent
@@ -44,7 +43,10 @@ class BlogEditor extends Component
 
   updateContent: (content) => @setState {content}
 
-  updateTags: (tags) => @setState {tags}
+  updateTags: (tag) =>
+    newState = [@state.tags...]
+    newState.push tag
+    @setState tags: newState
 
   removeTag: (tag) => console.log "noop"
 

@@ -66,7 +66,7 @@ class SuggestionContainer extends Component
     @props.onChange id
 
     newState = @state.selected[..]
-    newState.push {id, name}
+    newState.push if name? then {id, name} else id
 
     @setState
       showList: no
@@ -75,7 +75,13 @@ class SuggestionContainer extends Component
       selected: newState
       suggestions: []
 
-  _renderSuggestionMark: (suggestion) ->
+  ###
+  # @return Promise
+  ###
+  _requestSuggestions: (value) ->
+    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and do @getUrl
+
+  renderSuggestionMark: (suggestion) ->
     if suggestion.pic
       <div className="character-editor-list-pic fl">
         <img
@@ -89,9 +95,10 @@ class SuggestionContainer extends Component
         />
       </div>
 
-  _renderSuggestionsList: ->
-    return if isEmpty @state.suggestions
-
+  ###
+  # Render suggestions list items
+  ###
+  renderListItems: ->
     for suggestion, index in @state.suggestions
       <li
         id={"selected-suggestion" if index is @state.active}
@@ -99,13 +106,29 @@ class SuggestionContainer extends Component
         data-id={suggestion.id}
         onClick={@chooseByClick}
       >
-        {@_renderSuggestionMark suggestion}
+        {@renderSuggestionMark suggestion}
         <div className="input-suggestions-list-label fl">
           {suggestion["locale.name"]}
         </div>
       </li>
 
-  _renderSelectedList: (tags) ->
+  ###
+  # Render suggestions list container
+  ###
+  renderList: ->
+    return if isEmpty @state.suggestions
+
+    <div className="input-suggestions-list-container #{@props.listPosition}#{
+        if @state.showList then ' active' else ''
+      }"
+      style={@props.listStyle}
+    >
+      <ul className="input-suggestions-list">
+        {do @renderListItems}
+      </ul>
+    </div>
+
+  renderSelectedList: (tags) ->
     for suggestion, index in @state.selected
       <div
         key={suggestion.id}
@@ -116,20 +139,12 @@ class SuggestionContainer extends Component
         {suggestion.name}
       </div>
 
-  _renderSuggestions: ->
+  renderSuggestions: ->
     return if isEmpty @state.selected
 
     <div className="suggestion-input-tags">
-      {@_renderSelectedList @state.selected}
+      {@renderSelectedList @state.selected}
     </div>
-
-
-  ###
-  # @return Promise
-  ###
-  _requestSuggestions: (value) ->
-    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and do @getUrl
-
 
   ###
   # Get suggestions from server
@@ -148,14 +163,15 @@ class SuggestionContainer extends Component
     axios.get "#{do @getUrl}/#{target.value}?ref=ed"
       .then ({data}) =>
         @setState
+          active: 0
           showList: if isEmpty data then no else yes
           suggestions: data
       .catch (err) -> console.error err
 
   removeByClick: (e) => @_spliceSuggestion e.currentTarget.dataset.id
 
-  chooseByClick: (e) =>
-    @_pushSuggestion e.currentTarget.dataset.id, do e.currentTarget.innerText.trim
+  chooseByClick: ({currentTarget: {dataset, innerText}}) =>
+    @_pushSuggestion dataset.id, do innerText.trim
 
   chooseByKeyDown: (e) =>
     if e.keyCode in [keys.TAB, keys.ENTER, keys.UP, keys.DOWN] and @state.showList
@@ -181,35 +197,28 @@ class SuggestionContainer extends Component
       do e.preventDefault
       @_spliceSuggestion @state.selected[@state.selected.length - 1]?.id
 
-  closeListOnBlur: =>
-    # Close list on next tick
-    setTimeout (=> @setState showList: no), 0 if @state.showList
+  closeListOnBlur: => @setState showList: no
 
   openListOnFocus: =>
     @setState showList: on if @state.current and not isEmpty @state.suggestions
 
   render: ->
     <div className="input-suggestions-container">
-      <div className="input-suggestions-field">
+      <div
+        className="input-suggestions-field"
+        tabIndex={-1}
+        onFocus={@openListOnFocus}
+        onBlur={@closeListOnBlur}
+      >
         <input
           type="text"
           value={@state.current}
           style={@props.style}
           onChange={@getSuggestions}
           onKeyDown={@chooseByKeyDown}
-          onBlur={@closeListOnBlur}
-          onFocus={@openListOnFocus}
           placeholder={@props.label}
         />
-      </div>
-      <div className="input-suggestions-list-container #{@props.listPosition}#{
-          if @state.showList then ' active' else ''
-        }"
-        style={@props.listStyle}
-      >
-        <ul className="input-suggestions-list">
-          {do @_renderSuggestionsList}
-        </ul>
+        {do @renderList}
       </div>
     </div>
 
