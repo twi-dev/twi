@@ -23,6 +23,7 @@ multipart = (ctx, next) ->
     catch err
       throw err unless err is "ENOENT"
 
+  formData = null
   return
 
 module.exports = multipart
