@@ -3,7 +3,6 @@
 # Common plugins
 gulp = require "gulp"
 gutil = require "gulp-util"
-gulpif = require "gulp-if"
 watch = require "gulp-watch"
 newer = require "gulp-newer"
 plumber = require "gulp-plumber"
@@ -108,7 +107,7 @@ gulp.task "stylus", ->
     gutil.log "Rebuild stylus..."
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
-      .pipe gulpif isDevel, newer STYLUS_DEST
+      .pipe if isDevel then newer STYLUS_DEST else do gutil.noop
       .pipe stylus
         "include css": on
         use: [
@@ -116,9 +115,9 @@ gulp.task "stylus", ->
           do rupture
         ]
       .pipe autoprefixer browsers: ["last 4 versions"]
-      .pipe gulpif not isDevel, do csso # Compress CSS only for production
+      .pipe if isDevel then do gutil.noop else do csso
       .pipe gulp.dest STYLUS_DEST
-      .pipe gulpif isDevel, do livereload
+      .pipe if isDevel then do livereload else do gutil.noop
 
   do rebuildStylus
   watch "#{STYLUS_SRC_DIR}/**/*.styl", rebuildStylus if isDevel
@@ -142,7 +141,7 @@ gulp.task "coffee", ->
     ]
     insertGlobals: yes
     debug: isDevel
-    plugin: (if isDevel then [hmr] else [])
+    plugin: if isDevel then [hmr] else []
 
   rebuildBundle = ->
     gutil.log "Rebuild coffee..."
@@ -152,8 +151,8 @@ gulp.task "coffee", ->
       .pipe plumber errorHandler
       .pipe source "common.js"
       .pipe do vinylBuffer
-      .pipe gulpif not isDevel, envify NODE_ENV: "production"
-      .pipe gulpif not isDevel, do uglify # Optimize JS for production
+      .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
+      .pipe if isDevel then do gutil.noop else do uglify
       .pipe gulp.dest COFFEE_DEST
 
   do rebuildBundle # Just rebuild bundle before run watcher
