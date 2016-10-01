@@ -79,6 +79,7 @@ onProcessExitOrError = (err) ->
 
     process.exit 1 unless isDevel
   else
+    write "\n"
     log "Done without errors.", LOG_OK
     process.exit 0
 

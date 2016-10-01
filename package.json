@@ -19,9 +19,20 @@
     "setup": "bin/twi setup",
     "twi": "bin/twi run",
     "start": "npm run setup && npm run run",
+    "cake:make": "./node_modules/coffee-script/bin/cake make",
+    "cm": "npm run cake:make",
+    "cake:watch": "./node_modules/coffee-script/bin/cake watch",
+    "cw": "npm run cake:watch",
+    "gulp": "./node_modules/gulp/bin/gulp.js",
+    "gulp:make": "npm run gulp",
+    "gm": "npm run gulp",
+    "gulp:watch": "./node_modules/gulp/bin/gulp.js watch",
+    "gw": "npm run gulp:watch",
+    "make": "npm run cake:make && npm run gulp:make",
+    "m": "npm run make",
     "test": "./node_modules/ava/cli.js",
-    "test:devel": "./node_modules/ava/cli.js --watch",
-    "td": "./node_modules/ava/cli.js --watch"
+    "test:watch": "./node_modules/ava/cli.js --watch",
+    "tw": "npm run test:watch"
   },
   "ava": {
     "verbose": true,
