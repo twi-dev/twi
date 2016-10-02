@@ -8,8 +8,10 @@ require "codemirror/addon/edit/closetag"
 {Component, PropTypes} = React = require "react"
 
 Codemirror = require "react-codemirror"
-TagSuggestion = require "../../element/suggestion/Tag"
-ActionButton = require "../../element/button/ActionButton"
+TagSuggestion = require "component/element/suggestion/Tag"
+Tabs = require "component/element/common/tab/TabsContainer"
+Tab = require "component/element/common/tab/TabContent"
+ActionButton = require "component/element/button/ActionButton"
 ArrowDown = require "img/layout/arrow-down.svg"
 
 md = require "helper/md"
@@ -55,7 +57,7 @@ class BlogEditor extends Component
   _renderPreview: -> __html: md.render @state.content
 
   render: ->
-    <div>
+    <div className="blog-editor-main-container">
       <form onSubmit={@_onSubmitPrevent} autoComplete="off">
         <div className="blog-editor" style={{height: parseInt(@state.height)}}>
           <div className="blog-editor-field-title">
