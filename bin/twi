@@ -2,77 +2,116 @@
 
 "use strict";
 
-const help = () => {
-  console.log(
-    "Available commands:\n" +
-    "  run, r               start Twi app\n" +
-    "  setup, s             run Twi installer\n" +
-    "  migrate, m [data|d]  run Twi migrations setup\n\n" +
-    "Options:\n" +
-    "  --version, -v  display current Twi version\n" +
-    "  --help, -h     show this help message\n\n" +
-    "Usage:\n" +
-    "  twi <command or option>\n"
-  );
-};
+process.title = "twi";
 
-var argv = process.argv[2] || "run";
-var flag = String.prototype.replace.call(
-  process.argv[3] || "",
-  /-{1,2}([a-z]+)/, "$1"
-);
+const fs = require("fs");
+const join = require("path").join;
+const exec = require("child_process").execSync;
 
-console.log(argv, flag);
+// install deps beofre continue
+try {
+  fs.statSync(join(__dirname, "../node_modules"));
+} catch (err) {
+  if (err.code !== "ENOENT") {
+    throw err;
+  }
 
-// Arguments
-if (argv === "r") {
-  argv = "run";
+  exec("npm install", {
+    encoding: "utf-8",
+    stdio: "inherit"
+  });
 }
 
-if (argv === "s") {
-  argv = "setup";
-}
+// And then we can use deps from NPM
+const commander = require("commander");
 
-if (argv === "migrate" || argv === "migrations" || argv === "m") {
-  argv = "migrate";
-}
+function runSetup() {}
 
-if (argv === "--version" || argv === "-v") {
-  argv = "version";
-}
+commander
+  .version(require(join(__dirname, "../package.json")).version);
 
-if (argv === "--help" || argv === "-h") {
-  argv = "help";
-}
+commander
+  .command("setup")
+  .option("--silent -s")
+  .action(runSetup);
 
-// Flags
-if (flag === "silent" || flag === "s") {
-  flag = "silent";
-}
+commander.parse(process.argv);
 
-if (flag === "clean" || flag === "c") {
-  flag = "clean";
-}
+// console.log(commander);
 
-switch (argv) {
-case "run":
-  require("..");
-  break;
-case "setup":
-  require("../setup")(flag);
-  break;
-case "migrate":
-  require("../setup/migrations/migrate");
-  break;
-case "version":
-  console.log(
-    `It"s Twi v${require("../package.json").version}!`
-  );
-  break;
-case "help":
-  help();
-  break;
-default:
-  console.log("\nUnknown command.\n");
-  help();
-}
+// DEPRECATED CODE
+
+// const help = () => {
+//   console.log(
+//     "Available commands:\n" +
+//     "  run, r               start Twi app\n" +
+//     "  setup, s             run Twi installer\n" +
+//     "  migrate, m [data|d]  run Twi migrations setup\n\n" +
+//     "Options:\n" +
+//     "  --version, -v  display current Twi version\n" +
+//     "  --help, -h     show this help message\n\n" +
+//     "Usage:\n" +
+//     "  twi <command or option>\n"
+//   );
+// };
+
+// var argv = process.argv[2] || "run";
+// var flag = String.prototype.replace.call(
+//   process.argv[3] || "",
+//   /-{1,2}([a-z]+)/, "$1"
+// );
+
+// console.log(argv, flag);
+
+// // Arguments
+// if (argv === "r") {
+//   argv = "run";
+// }
+
+// if (argv === "s") {
+//   argv = "setup";
+// }
+
+// if (argv === "migrate" || argv === "migrations" || argv === "m") {
+//   argv = "migrate";
+// }
+
+// if (argv === "--version" || argv === "-v") {
+//   argv = "version";
+// }
+
+// if (argv === "--help" || argv === "-h") {
+//   argv = "help";
+// }
+
+// // Flags
+// if (flag === "silent" || flag === "s") {
+//   flag = "silent";
+// }
+
+// if (flag === "clean" || flag === "c") {
+//   flag = "clean";
+// }
+
+// switch (argv) {
+// case "run":
+//   require("..");
+//   break;
+// case "setup":
+//   require("../setup")(flag);
+//   break;
+// case "migrate":
+//   require("../setup/migrations/migrate");
+//   break;
+// case "version":
+//   console.log(
+//     `It"s Twi v${require("../package.json").version}!`
+//   );
+//   break;
+// case "help":
+//   help();
+//   break;
+// default:
+//   console.log("\nUnknown command.\n");
+//   help();
+// }
