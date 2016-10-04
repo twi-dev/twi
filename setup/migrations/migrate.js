@@ -5,7 +5,7 @@
  */
 var migrate = require(".");
 var logger = require("../../core/logger");
-var argv = process.argv.slice(3)[0];
+var argv = process.argv[3];
 var IS_DATA_ONLY = argv === "data" || argv === "d" ? true : false;
 
 function onFulfilled() {

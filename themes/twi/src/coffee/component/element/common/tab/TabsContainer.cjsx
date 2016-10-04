@@ -6,13 +6,13 @@ class TabsContainer extends Component
     children: PropTypes.arrayOf(PropTypes.element.isRequired).isRequired
     defaultActive: PropTypes.number
 
-  _renderTabs: ->
+  _renderTabsTitles: ->
     for child, idx in @props.children
       <div key={idx + 1} className="tabs-title">{child.props.title}</div>
 
   render: ->
     <div className="tabs-main-container">
-      {do @_renderTabs}
+      {do @_renderTabsTitles}
     </div>
 
 module.exports = TabsContainer

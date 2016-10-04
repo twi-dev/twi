@@ -204,7 +204,12 @@ configure = () => {
   return require("lodash").assign({}, __oDefaultConfig, __oUserConfig);
 };
 
-(() => {
+/**
+ * Execute setup script
+ *
+ * @param string mode
+ */
+function setup() {
   try {
     logLine("Installing dependencies...");
     installDependencies();
@@ -216,6 +221,7 @@ configure = () => {
     buildFrontend();
 
     configure();
+
   } catch(err) {
     logLine(err, LOG_ERR);
     logLine(err.stack, LOG_ERR);
@@ -236,4 +242,6 @@ configure = () => {
       logLine(err.stack, LOG_ERR);
       process.exit(1);
     });
-})();
+}
+
+module.exports = setup;

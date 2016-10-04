@@ -16,8 +16,15 @@ const help = () => {
   );
 };
 
-var argv = process.argv.slice(2)[0] || "run";
+var argv = process.argv[2] || "run";
+var flag = String.prototype.replace.call(
+  process.argv[3] || "",
+  /-{1,2}([a-z]+)/, "$1"
+);
 
+console.log(argv, flag);
+
+// Arguments
 if (argv === "r") {
   argv = "run";
 }
@@ -38,12 +45,21 @@ if (argv === "--help" || argv === "-h") {
   argv = "help";
 }
 
+// Flags
+if (flag === "silent" || flag === "s") {
+  flag = "silent";
+}
+
+if (flag === "clean" || flag === "c") {
+  flag = "clean";
+}
+
 switch (argv) {
 case "run":
   require("..");
   break;
 case "setup":
-  require("../setup");
+  require("../setup")(flag);
   break;
 case "migrate":
   require("../setup/migrations/migrate");
