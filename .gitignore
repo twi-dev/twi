@@ -30,6 +30,7 @@ index.js
 *.doc
 *.docx
 *.odt
+*.old
 
 # Temporarily ignore API things
 langs/**/api.yml
