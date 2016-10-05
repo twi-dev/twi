@@ -17,6 +17,8 @@ silent = (clean = off) ->
 
   await return
 
+setup = ->
+
 module.exports = {
   silent
 }
