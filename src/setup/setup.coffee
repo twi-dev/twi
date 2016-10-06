@@ -1,24 +1,22 @@
 "use strict"
 
-{execSync} = require "child_process"
+pify = require "pify"
 migrate = require "./migrate"
+
+{exec} = pify require "child_process"
+ora = do require "ora"
 
 linkTwi = ->
   try
-    execSync "which twi" # temporarily way
+    await exec "which twi" # temporarily way
   catch err
-    process.stdout.write String execSync "npm link"
+    process.stdout.write String await exec "npm link"
 
-clean = ->
+setup = (cmd) ->
+  unless cmd.S
+    console.log "Silent mode is off"
 
-silent = (clean = off) ->
-  migrate clean
-  do linkTwi
+  await migrate cmd
+  await do linkTwi
 
-  await return
-
-setup = ->
-
-module.exports = {
-  silent
-}
+module.exports = setup

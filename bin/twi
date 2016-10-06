@@ -35,52 +35,31 @@ const exec = pify(childProcess.exec);
 function onError(err) {
   ora.text = String(err);
   ora.fail();
-  console.log("");
+  console.log(err.stack);
   process.exit(1);
 }
 
 function onFulfilled() {
-  ora.text = "Done without errors...";
+  ora.text = "Done without errors.";
   ora.succeed();
   process.exit(0);
 }
 
 function runSetup(cmd) {
-  // try {
-  //   console.log("Make backend app...");
-  //   execSync(`${TWI_ROOT}/node_modules/coffee-script/bin/cake make`);
-
-  //   console.log("Make frontend app...");
-  //   execSync(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
-
-  // } catch (err) {
-  //   console.log(err);
-  //   process.exit(1);
-  // }
-
   ora.color = "cyan";
   ora.text = "Making backend app...";
   ora.start();
   exec(`${TWI_ROOT}/node_modules/coffee-script/bin/cake make`)
+    // .then(() => {
+    //   ora.color = "yellow";
+    //   ora.text = "Making frontend app...";
+    //   return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
+    // })
     .then(() => {
-      ora.color = "yellow";
-      ora.text = "Making frontend app...";
-      return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
+      ora.stop();
+      return require(`${TWI_ROOT}/setup/setup`)(cmd);
     })
     .then(onFulfilled, onError);
-
-  // const setup = require(`${TWI_ROOT}/setup/setup`);
-  // var __fulfill;
-
-  // if (cmd.S === true) {
-  //   __fulfill = setup.silent(cmd.C);
-  // } else if (cmd.C === true) {
-  //   __fulfill = setup.clean();
-  // } else {
-  //   __fulfill = setup();
-  // }
-
-  // __fulfill.then(onFulfilled, onError);
 }
 
 commander
@@ -91,7 +70,7 @@ commander
   .command("setup")
   .description("run installer script")
   .option("--silent, -s", "run installer in silent mode")
-  .option("--clean, -s", "run installer in clean mode")
+  .option("--not-erase, -e", "run installer in clean mode")
   .action(runSetup);
 
 commander
