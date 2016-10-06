@@ -59,38 +59,39 @@ loadSchemas = asyncWrap(function*(notErase) {
  */
 
 importData = asyncWrap(function*(notErase) {
-  var __arr, __data, __idx, __k, __lang, __localeData, __model, __name, __sch, __values, i, len, obj, ret;
+  var __arr, __data, __id, __idx, __k, __lang, __localeData, __model, __models, __sch, __values, i, len, obj, obj1, ret;
   if (notErase == null) {
     notErase = false;
   }
   ora.text = "Importing data...";
-  ret = {};
-  yield (asyncWrap(function*() {
-    var results;
-    results = [];
-    for (__k in schemas) {
-      if (!hasProp.call(schemas, __k)) continue;
-      __sch = schemas[__k];
-      if (isFunction(__sch) && !__k.endsWith("Locale")) {
-        if ((__data = data[__k]) != null) {
-          __model = db(__k, __sch);
-          if (!notErase) {
-            yield __model.destroy({
-              truncate: true,
-              logging: false
-            });
-          }
-          results.push(ret[__k] = (yield __model.bulkCreate(__data, {
-            logging: false,
-            returning: true
-          })));
-        } else {
-          continue;
-        }
-      }
+  __models = {};
+  for (__k in schemas) {
+    if (!hasProp.call(schemas, __k)) continue;
+    __sch = schemas[__k];
+    if (!(isFunction(__sch))) {
+      continue;
     }
-    return results;
-  }))();
+    __model = db(__k, __sch);
+    __models[__k] = __model;
+    if (!notErase) {
+      yield __model.destroy({
+        truncate: true,
+        logging: false
+      });
+    }
+  }
+  ret = {};
+  for (__k in __models) {
+    if (!hasProp.call(__models, __k)) continue;
+    __model = __models[__k];
+    if (!__k.endsWith("Locale") && ((__data = data[__k]) != null)) {
+      ret[__k] = (yield __model.bulkCreate(__data, {
+        logging: false,
+        returning: true
+      }));
+    }
+  }
+  ora.text = "Importing data locales...";
   for (__lang in locales) {
     __localeData = locales[__lang];
     for (__k in ret) {
@@ -98,22 +99,23 @@ importData = asyncWrap(function*(notErase) {
       if (!((__data = __localeData[__k]) != null)) {
         continue;
       }
-      __name = __k + "Locale";
-      __model = db(__name, schemas[__name]);
-      if (!notErase) {
-        yield __model.destroy({
-          truncate: true,
-          logging: false
-        });
-      }
+      __model = __models[__k + "Locale"];
       for (__idx = i = 0, len = __data.length; i < len; __idx = ++i) {
         __values = __data[__idx];
-        yield __model.create(assign({}, (
-          obj = {},
-          obj[__k + "Id"] = __arr[__idx].dataValues[__k + "_id"],
-          obj.lang = __lang,
-          obj
-        ), __values), {
+        __id = __arr[__idx].dataValues[__k + "_id"];
+        yield __model.findOrCreate({
+          where: (
+            obj = {},
+            obj[__k + "Id"] = __id,
+            obj.lang = __lang,
+            obj
+          ),
+          defaults: assign({}, (
+            obj1 = {},
+            obj1[__k + "Id"] = __id,
+            obj1.lang = __lang,
+            obj1
+          ), __values),
           logging: false
         });
       }

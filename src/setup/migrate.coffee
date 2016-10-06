@@ -34,31 +34,34 @@ loadSchemas = (notErase = off) ->
 importData = (notErase = off) ->
   ora.text = "Importing data..."
 
+  # Creating models
+  __models = {}
+  for own __k, __sch of schemas when isFunction __sch
+    __model = db __k, __sch
+    __models[__k] = __model
+    await __model.destroy truncate: on, logging: no unless notErase
+
+  # Importing data
   ret = {}
-  await for own __k, __sch of schemas when isFunction(__sch) and
-  not __k.endsWith "Locale"
-    if (__data = data[__k])?
-      __model = db __k, __sch
+  for own __k, __model of __models when not __k.endsWith("Locale") and
+  (__data = data[__k])?
+    ret[__k] = await __model.bulkCreate __data, logging: off, returning: on
 
-      await __model.destroy truncate: on, logging: no unless notErase
-      ret[__k] = await __model.bulkCreate __data, logging: off, returning: on
-    else
-      continue
-
+  # Importing locales
+  ora.text = "Importing data locales..."
   for __lang, __localeData of locales
     for __k, __arr of ret when (__data = __localeData[__k])?
-      __name = "#{__k}Locale"
-      __model = db(__name, schemas[__name])
-
-      await __model.destroy truncate: on, logging: no unless notErase
+      __model = __models["#{__k}Locale"]
       for __values, __idx in __data
-        await __model.create assign(
+        __id = __arr[__idx].dataValues["#{__k}_id"]
+        await __model.findOrCreate
+          where: "#{__k}Id": __id, lang: __lang
+          defaults: assign(
             {}, {
-              "#{__k}Id": __arr[__idx].dataValues["#{__k}_id"]
+              "#{__k}Id": __id
               lang: __lang
             }, __values
           ), logging: no
-
 
   await return
 
