@@ -9,4 +9,5 @@ module.exports = (types) ->
     field: 'character_id'
   pic:
     type: types.STRING
-    allowNull: yes
+    allowNull: no
+    unique: yes

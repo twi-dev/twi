@@ -27,3 +27,5 @@ rules:
     - warn
   no-console: 0
   no-constant-condition: 0
+  no-empty:
+    - warn

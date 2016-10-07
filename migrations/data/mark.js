@@ -2,69 +2,69 @@
 
 module.exports = [
   {
-    color: null
+    color: "02a1db"
   },
   {
-    color: null
+    color: "888888"
   },
   {
-    color: null
+    color: "f59c00"
   },
   {
-    color: null
+    color: "b93737"
   },
   {
-    color: null
+    color: "4d3281"
   },
   {
-    color: null
+    color: "b5835a"
   },
   {
-    color: null
+    color: "3f74ce"
   },
   {
-    color: null
+    color: "bd42a7"
   },
   {
-    color: null
+    color: "4b86ff"
   },
   {
-    color: null
+    color: "ffb54b"
   },
   {
-    color: null
+    color: "45c950"
   },
   {
-    color: null
+    color: "b5695a"
   },
   {
-    color: null
+    color: "47b8a0"
   },
   {
-    color: null
+    color: "ec50ca"
   },
   {
-    color: null
+    color: "6d232f"
   },
   {
-    color: null
+    color: "444444"
   },
   {
-    color: null
+    color: "974bff"
   },
   {
-    color: null
+    color: "d84a9d"
   },
   {
-    color: null
+    color: "992584"
   },
   {
-    color: null
+    color: "5d63a5"
   },
   {
-    color: null
+    color: "d62b2b"
   },
   {
-    color: null
+    color: "ca6565"
   },
 ];
