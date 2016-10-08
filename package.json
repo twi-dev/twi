@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/octet-stream/twi-js/issues"
   },
-  "main": "./core/server/index.js",
+  "main": "./bin/twi",
   "bin": {
     "twi": "bin/twi"
   },

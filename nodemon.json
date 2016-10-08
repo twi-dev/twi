@@ -10,5 +10,6 @@
     "frontend",
     "public"
   ],
-  "ext": "js json yml yaml key cert"
+  "ext": "js json yml yaml key cert",
+  "exec": "./bin/twi run"
 }
