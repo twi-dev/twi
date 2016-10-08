@@ -4,8 +4,10 @@ pify = require "pify"
 migrate = require "./migrate"
 
 ora = do require "ora"
+{red} = require "chalk"
 {exec} = pify require "child_process"
 {read} = require "node-yaml"
+{cross} = require "figures"
 {prompt} = require "inquirer"
 {isPlainObject, isArray} = require "lodash"
 
@@ -23,13 +25,12 @@ QUESTIONS =
 # @thorws Error
 ###
 tryPrompt = (q) ->
+  {log} = console
   loop
     try
       return await prompt if isArray q then q else [q]
     catch err
-      {constructor: {name}} = err
-      unless name is "TypeError" and err.message.endsWith "is not a promise"
-        throw err
+      if typeof err is "string" then log "#{red cross} #{err}" else throw err
 
 ###
 # Normalize given questions obj due to Inquirer question format
