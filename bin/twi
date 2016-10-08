@@ -49,11 +49,11 @@ function runSetup(cmd) {
   ora.text = "Making backend app...";
   ora.start();
   exec(`${TWI_ROOT}/node_modules/coffee-script/bin/cake make`)
-    // .then(() => {
-    //   ora.color = "yellow";
-    //   ora.text = "Making frontend app...";
-    //   return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
-    // })
+    .then(() => {
+      ora.color = "yellow";
+      ora.text = "Making frontend app...";
+      return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
+    })
     .then(() => {
       ora.stop();
       return require(`${TWI_ROOT}/setup/setup`)(cmd);
