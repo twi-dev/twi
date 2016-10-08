@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 module.exports = (types) ->
   id:
@@ -9,7 +9,7 @@ module.exports = (types) ->
   characterId:
     type: types.UUID
     allowNull: no
-    field: 'character_id'
+    field: "character_id"
   lang:
     type: types.CHAR 5
     allowNull: no

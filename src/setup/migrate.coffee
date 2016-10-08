@@ -1,12 +1,17 @@
 fs = require "promise-fs"
 db = require "../core/database"
 redis = require "then-redis"
+moment = require "moment"
 shortid = require "shortid"
+prompt = require "./helper/prompt"
+bcrypt = require "../core/helper/bcrypt"
 requireHelper = require "../core/helper/require"
 
 ora = do require "ora"
 {realpathSync} = require "fs"
 {isFunction, assign} = require "lodash"
+{info} = require "figures"
+{cyan} = require "chalk"
 
 TWI_ROOT = realpathSync "#{__dirname}/../"
 schemas = requireHelper "#{TWI_ROOT}/core/database/schemas"
@@ -72,10 +77,39 @@ importData = (notErase = off) ->
 
 ###
 # Create super user account
-#
-# @param boolean silent
 ###
-createSu = (silent = off) ->
+createSu = ->
+  user = db "user", require "../core/database/schemas/user"
+  contacts = db "contacts", require "../core/database/schemas/contacts"
+
+  {login} = await prompt login: "Type your login for Twi app:"
+  {email} = await prompt email: "Type your email:"
+
+  loop
+    {password} = await prompt password: [
+      type: "password"
+      message: "Enter your password:"
+    ]
+    {repass} = await prompt repass: [
+      type: "password"
+      message: "Reenter your password:"
+    ]
+
+    break if password is repass
+
+  if (__user = await user.findOne raw: on, logging: no, where: role: 3)?
+    console.log "#{cyan info}Owner account is already exists: #{__user.login}"
+    return
+
+  ora.text = "Creating your account..."
+  do ora.start
+  {dataValues: {userId}} = await user.create {
+    login, email, password: await bcrypt.hash password, 10
+    registeredAt: (do moment().format), role: 3, status: 1
+  }, logging: no
+
+  await contacts.create {userId}, logging: no
+
   await return
 
 ###
@@ -89,6 +123,9 @@ migrate = (cmd) ->
 
   await loadSchemas cmd.E
   await importData cmd.E
+
+  do ora.stop
+  await do createSu
 
   do ora.stop
   await return

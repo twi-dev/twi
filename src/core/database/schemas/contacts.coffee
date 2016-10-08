@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 module.exports = (types) ->
   contactsId:
@@ -6,7 +6,12 @@ module.exports = (types) ->
     primaryKey: yes
     defaultValue: types.UUIDV1
     allowNull: no
-    field: 'contacts_id'
+    field: "contacts_id"
+  userId:
+    type: types.UUID
+    unique: yes
+    allowNull: no
+    field: "user_id"
   email:
     type: types.STRING
     allowNull: yes
