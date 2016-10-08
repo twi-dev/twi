@@ -1,7 +1,7 @@
 fs = require "promise-fs"
 db = require "../core/database"
-shortid = require "shortid"
 redis = require "then-redis"
+shortid = require "shortid"
 requireHelper = require "../core/helper/require"
 
 ora = do require "ora"
@@ -75,7 +75,8 @@ importData = (notErase = off) ->
 #
 # @param boolean silent
 ###
-createSu = (silent = off) -> await return
+createSu = (silent = off) ->
+  await return
 
 ###
 # Migrations command implementation
@@ -85,9 +86,6 @@ createSu = (silent = off) -> await return
 migrate = (cmd) ->
   do ora.start
   ora.color = "magenta"
-
-  unless cmd.S
-    console.log "Silent mode is off"
 
   await loadSchemas cmd.E
   await importData cmd.E
