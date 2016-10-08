@@ -75,7 +75,7 @@
     "markdown-it": "8.0.0",
     "moment": "2.15.1",
     "mysql": "2.11.1",
-    "node-yaml": "3.0.2",
+    "node-yaml": "3.0.3",
     "nodemailer": "2.6.4",
     "ora": "0.3.0",
     "passport-local": "1.0.0",

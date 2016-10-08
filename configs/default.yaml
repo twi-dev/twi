@@ -30,7 +30,6 @@ database:
   user: root
   pass: null
   name: twi
-  prefix: fim_
 
 # Sesstion storage configs
 session:

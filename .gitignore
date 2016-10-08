@@ -4,6 +4,8 @@ controller
 coverage
 configs/user.yaml
 configs/user.yml
+configs/test.yaml
+configs/test.yml
 configs/cert
 core
 model

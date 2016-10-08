@@ -6,26 +6,72 @@ migrate = require "./migrate"
 ora = do require "ora"
 {red} = require "chalk"
 {exec} = pify require "child_process"
-{read} = require "node-yaml"
+{read, write} = require "node-yaml"
 {cross} = require "figures"
 {prompt} = require "inquirer"
 {isPlainObject, isArray} = require "lodash"
+{log} = console
 
 QUESTIONS =
   app:
     name: "Your project name:"
+    host: "Host (like https://example.com):"
+    port: [
+      message: "Port:"
+      validate: (port) -> new Promise (resolve, reject) ->
+        unless /^[0-9]+$/.test port
+          return reject "Port value should be an integer."
+
+        resolve yes
+    ]
+    enableSignup: [
+      type: "confirm"
+      message: "Do you want to enable signup service?"
+    ]
+  database:
+    driver: [
+      type: "list"
+      message: "Chosse database driver:"
+      choices: [
+        "mysql"
+        "pg"
+      ]
+    ]
+    host: "Database server host:"
+    port: [
+      message: "Database server port:"
+      validate: (port) -> new Promise (resolve, reject) ->
+        unless /^[0-9]+$/.test port
+          return reject "Port value should be an integer."
+
+        resolve yes
+    ]
+    user: "Database connection username:"
+    pass: "Database connection password:"
+    name: "Database name:"
+
+rescueTypes = (value) ->
+  if value in ["null", null]
+    return value = null
+  else if value in ["false", no]
+    return value = no
+  else if value in ["true", yes]
+    return value = on
+  else if "#{Number value}" isnt "NaN" and value isnt ""
+    return value = Number value
+  else
+    return value
 
 ###
-# Try to run prompt with error handling
+# Run prompt with error handling for each questions
 #
-# @param object q
+# @param object|array q
 #
 # @return object
 #
 # @thorws Error
 ###
 tryPrompt = (q) ->
-  {log} = console
   loop
     try
       return await prompt if isArray q then q else [q]
@@ -52,6 +98,7 @@ normalizeQuestions = (obj) ->
       continue
 
     res[__k] = [
+      type: "input"
       message: "#{__v}"
     ]
 
@@ -70,13 +117,16 @@ runQuestions = (obj) ->
       continue
 
     __v[0].name = __k
-    res[__k] = (await tryPrompt __v)[__k]
+    res[__k] = rescueTypes (await tryPrompt __v)[__k]
 
   await return res
 
+###
+# Generate user config
+###
 configure = ->
-  answ = await runQuestions normalizeQuestions QUESTIONS
-  await return
+  userConfig = await runQuestions normalizeQuestions QUESTIONS
+  await write "../configs/user.yaml", userConfig
 
 ###
 # Create Twi symbolic link if not exists
