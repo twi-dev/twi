@@ -198,11 +198,11 @@ gulp.task "watch", ["env:devel", "svg", "stylus", "coffee"]
 ###
 # Build frontend app for probuction
 #
-# Run: gulp or gulp build
+# Run: gulp or gulp make
 ###
-gulp.task "build", ["svg", "stylus", "coffee"]
+gulp.task "make", ["svg", "stylus", "coffee"]
 
 ###
-# Execute task "build"
+# Execute task "make"
 ###
-gulp.task "default", ["build"]
+gulp.task "default", ["make"]

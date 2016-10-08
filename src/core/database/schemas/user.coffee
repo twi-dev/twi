@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 module.exports = (types) ->
   userId:
@@ -6,12 +6,7 @@ module.exports = (types) ->
     defaultValue: types.UUIDV1
     primaryKey: yes
     allowNull: no
-    field: 'user_id'
-  contactsId:
-    type: types.UUID
-    unique: yes
-    allowNull: no
-    field: 'contacts_id'
+    field: "user_id"
   login:
     type: types.STRING 32
     unique: yes
@@ -40,11 +35,11 @@ module.exports = (types) ->
     type: types.DATE
     allowNull: no
     defaultValue: types.NOW
-    field: 'registered_at'
+    field: "registered_at"
   lastVisit:
     type: types.DATE
     allowNull: yes
-    field: 'last_visit'
+    field: "last_visit"
   role:
     type: types.INTEGER 1
     allowNull: no

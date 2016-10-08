@@ -4,9 +4,12 @@ controller
 coverage
 configs/user.yaml
 configs/user.yml
+configs/test.yaml
+configs/test.yml
 configs/cert
 core
 model
+setup
 node_modules
 public/assets
 public/img/**/*.svg
@@ -30,6 +33,7 @@ index.js
 *.doc
 *.docx
 *.odt
+*.old
 
 # Temporarily ignore API things
 langs/**/api.yml
@@ -44,6 +48,7 @@ themes/**/views/api
 !src/controller
 !src/core
 !src/model
+!src/setup
 !src/test
 !src/test/core
 !src/test/helper

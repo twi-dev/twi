@@ -20,8 +20,8 @@ redis = do redis.createClient
 {info} = require "../core/logger"
 
 # Associate contacts with users
-contacts.hasOne user, foreignKey: "contacts_id"
-user.belongsTo contacts, foreignKey: "contacts_id"
+user.hasOne contacts, foreignKey: "user_id"
+contacts.belongsTo user, foreignKey: "user_id"
 
 # Authenticate user by login/email and pass
 _authenticate = (sUsername, sPass) ->
@@ -123,6 +123,7 @@ class User
       ]
       where:
         login: sUserId
+
 
     # Throwing error if user is not found
     unless oUserData?

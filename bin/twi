@@ -2,77 +2,104 @@
 
 "use strict";
 
-const help = () => {
-  console.log(
-    "Available commands:\n" +
-    "  run, r               start Twi app\n" +
-    "  setup, s             run Twi installer\n" +
-    "  migrate, m [data|d]  run Twi migrations setup\n\n" +
-    "Options:\n" +
-    "  --version, -v  display current Twi version\n" +
-    "  --help, -h     show this help message\n\n" +
-    "Usage:\n" +
-    "  twi <command or option>\n"
-  );
-};
+const fs = require("fs");
+const childProcess = require("child_process");
+const join = require("path").join;
 
-var argv = process.argv[2] || "run";
-var flag = String.prototype.replace.call(
-  process.argv[3] || "",
-  /-{1,2}([a-z]+)/, "$1"
-);
+const TWI_ROOT =  join(__dirname, "../");
+const execSync = childProcess.execSync;
 
-console.log(argv, flag);
+process.title = "twi";
+process.chdir(TWI_ROOT); // Change process.cwd() to Twi root path
 
-// Arguments
-if (argv === "r") {
-  argv = "run";
+// Install deps before continue
+try {
+  fs.statSync(`${TWI_ROOT}/node_modules`);
+} catch (err) {
+  if (err.code !== "ENOENT") {
+    throw err;
+  }
+
+  execSync("npm install", {
+    encoding: "utf-8",
+    stdio: "inherit"
+  });
 }
 
-if (argv === "s") {
-  argv = "setup";
+// And then we can use deps from NPM
+const commander = require("commander");
+const ora = require("ora")();
+const pify = require("pify");
+const exec = pify(childProcess.exec);
+
+function onError(err) {
+  ora.text = String(err);
+  ora.fail();
+  process.exit(1);
 }
 
-if (argv === "migrate" || argv === "migrations" || argv === "m") {
-  argv = "migrate";
+function onFulfilled() {
+  ora.text = "Done without errors.";
+  ora.succeed();
+  process.exit(0);
 }
 
-if (argv === "--version" || argv === "-v") {
-  argv = "version";
+function runSetup(cmd) {
+  ora.color = "cyan";
+  ora.text = "Making backend app...";
+  ora.start();
+  exec(`${TWI_ROOT}/node_modules/coffee-script/bin/cake make`)
+    .then(() => {
+      ora.color = "yellow";
+      ora.text = "Making frontend app...";
+      return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
+    })
+    .then(() => {
+      ora.stop();
+      return require(`${TWI_ROOT}/setup/setup`)(cmd);
+    })
+    .then(onFulfilled, onError);
 }
 
-if (argv === "--help" || argv === "-h") {
-  argv = "help";
+function runMigrate(cmd) {
+  const migrate = require(`${TWI_ROOT}/setup/migrate`);
+  var __fulfill;
+
+  if (cmd.D === true) {
+    __fulfill = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.S));
+  } else {
+    __fulfill = migrate(cmd);
+  }
+
+  __fulfill.then(onFulfilled, onError);
 }
 
-// Flags
-if (flag === "silent" || flag === "s") {
-  flag = "silent";
-}
+commander
+  .version(require(`${TWI_ROOT}/package.json`).version)
+  .usage("<command> [options]");
 
-if (flag === "clean" || flag === "c") {
-  flag = "clean";
-}
+commander
+  .command("setup")
+  .alias("s")
+  .description("run installer script")
+  .option("--silent, -s", "run installer in silent mode")
+  .option("--not-erase, -e", "run installer without data erasing")
+  .action(runSetup);
 
-switch (argv) {
-case "run":
-  require("..");
-  break;
-case "setup":
-  require("../setup")(flag);
-  break;
-case "migrate":
-  require("../setup/migrations/migrate");
-  break;
-case "version":
-  console.log(
-    `It"s Twi v${require("../package.json").version}!`
-  );
-  break;
-case "help":
-  help();
-  break;
-default:
-  console.log("\nUnknown command.\n");
-  help();
-}
+commander
+  .command("migrate")
+  .alias("m")
+  .description("run only migrations script")
+  .option("--silent, -s", "run migrate in silent mode")
+  .option("--not-erase, -e", "run migrate without data erasing")
+  .option("--data-only, -d", "run only data imports")
+  .action(runMigrate);
+
+commander
+  .command("run")
+  .alias("r")
+  .description("run Twi app")
+  .action(() => require(`${TWI_ROOT}/core/server`));
+
+commander.parse(process.argv);
+process.on("error", onError);
