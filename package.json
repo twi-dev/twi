@@ -43,7 +43,6 @@
     ]
   },
   "dependencies": {
-    "async-busboy": "0.3.2",
     "axios": "0.14.0",
     "bcryptjs": "2.3.0",
     "camelcase": "3.0.0",
@@ -87,6 +86,7 @@
     "sequelize": "3.24.3",
     "shortid": "2.2.6",
     "snake-case": "2.1.0",
+    "then-busboy": "1.0.1",
     "then-redis": "2.0.1",
     "uuid": "2.0.2",
     "whatwg-fetch": "1.0.0",
