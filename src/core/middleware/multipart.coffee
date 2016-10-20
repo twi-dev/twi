@@ -1,4 +1,5 @@
 busboy = require "then-busboy"
+mapFiles = require "../helper/upload/mapFiles"
 {unlink} = require "promise-fs"
 
 ALLOWED_TYPES = [
@@ -9,20 +10,14 @@ ALLOWED_TYPES = [
 multipart = (ctx, next) ->
   return await do next unless ctx.get "multipart/*"
 
-  formData = await busboy ctx.req
-
-  # for file in formData.files when not file in ALLOWED_TYPES
-  #   await unlink file.path
-  #   throw new Error "Unallowed file type #{file.mime}"
+  data = await busboy ctx.req
+  ctx.multipart = data
 
   await do next
 
-  # for file in formData.files
-  #   try
-  #     await unlink file.path
-  #   catch err
-  #     throw err unless err is "ENOENT"
-
-  return
+  try
+    await mapFiles data, ({path}) -> await unlink path
+  catch err
+    throw err unless err.code is "ENOENT"
 
 module.exports = multipart
