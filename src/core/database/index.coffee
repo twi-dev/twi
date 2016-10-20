@@ -3,13 +3,14 @@
 snakecase = require "snake-case"
 {database} = require "../helper/configure"
 {info} = require "../logger"
+{IS_DEVEL} = require "../helper/configure"
 
 Sequelize = require "sequelize"
 sequelize = new Sequelize database.name, database.user, database.pass,
   dialect: database.driver
   host: database.host
   port: database.port
-  logging: info
+  logging: if IS_DEVEL then info else off
 
 types =
   STRING: Sequelize.STRING
