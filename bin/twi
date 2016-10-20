@@ -48,12 +48,16 @@ function runSetup(cmd) {
   ora.color = "cyan";
   ora.text = "Making backend app...";
   ora.start();
-  exec(`${TWI_ROOT}/node_modules/coffee-script/bin/cake make`)
+  exec(`${TWI_ROOT}/node_modules/.bin/cake make`)
     .then(() => {
       ora.color = "yellow";
       ora.text = "Making frontend app...";
-      return exec(`${TWI_ROOT}/node_modules/gulp/bin/gulp.js`);
+      return exec(
+        `${TWI_ROOT}/node_modules/.bin/bower install ` +
+        `--config.cwd=${TWI_ROOT}/themes/twi/src`
+      );
     })
+    .then(() => exec(`${TWI_ROOT}/node_modules/.bin/gulp`))
     .then(() => {
       ora.stop();
       return require(`${TWI_ROOT}/setup/setup`)(cmd);

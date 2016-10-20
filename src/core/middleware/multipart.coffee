@@ -1,4 +1,4 @@
-busboy = require "async-busboy"
+busboy = require "then-busboy"
 {unlink} = require "promise-fs"
 
 ALLOWED_TYPES = [
@@ -17,13 +17,12 @@ multipart = (ctx, next) ->
 
   await do next
 
-  for file in formData.files
-    try
-      await unlink file.path
-    catch err
-      throw err unless err is "ENOENT"
+  # for file in formData.files
+  #   try
+  #     await unlink file.path
+  #   catch err
+  #     throw err unless err is "ENOENT"
 
-  formData = null
   return
 
 module.exports = multipart
