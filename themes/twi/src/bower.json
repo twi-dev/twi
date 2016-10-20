@@ -1,9 +1,0 @@
-{
-  "name": "twi",
-  "dependencies": {
-    "codemirror": "^5.12.0",
-    "web-animations-js": "^2.2.0",
-    "animate.styl": "^1.0.5",
-    "normalize.styl": "^4.1.1"
-  }
-}

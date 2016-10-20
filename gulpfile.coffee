@@ -39,6 +39,9 @@ jeet = require "jeet"
 # Breakpoint system
 rupture = require "rupture"
 
+# Normalize
+# console.log normalize = require "normalize.styl"
+
 {app: {theme}} = require "./core/helper/configure"
 theme or= "twi"
 
@@ -110,6 +113,11 @@ gulp.task "stylus", ->
       .pipe if isDevel then newer STYLUS_DEST else do gutil.noop
       .pipe stylus
         "include css": on
+        paths: [
+          "#{__dirname}/node_modules/normalize.styl"
+          "#{__dirname}/node_modules/codemirror/lib"
+          "#{__dirname}/node_modules/highlight.js/styles"
+        ]
         use: [
           do jeet
           do rupture

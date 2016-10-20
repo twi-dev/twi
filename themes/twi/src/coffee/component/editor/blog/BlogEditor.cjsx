@@ -1,5 +1,5 @@
 require "codemirror/mode/markdown/markdown"
-require "codemirror/keymap/sublime"
+require "codemirror/keymap/sublime" # Broken
 
 require "codemirror/addon/edit/matchbrackets"
 require "codemirror/addon/edit/closebrackets"
@@ -84,7 +84,6 @@ class BlogEditor extends Component
               options={
                 mode: "markdown"
                 tabSize: 2
-                keyMap: "sublime"
                 lineWrapping: on
                 autoCloseTags: on
                 matchBrackets: on

@@ -1,63 +1,63 @@
-'use strict'
+"use strict"
 
-require '../vendor/web-animations-js/web-animations-next.min.js'
+require "web-animations-js"
 
-navMenu = document.querySelector '#nav-menu'
-vertMenu = document.querySelector '#vert-menu'
+navMenu = document.querySelector "#nav-menu"
+vertMenu = document.querySelector "#vert-menu"
 
-vertMenuList = document.querySelector '.nav-vert'
-headerNav = document.querySelector '#header-nav-button'
+vertMenuList = document.querySelector ".nav-vert"
+headerNav = document.querySelector "#header-nav-button"
 
-# I'm not sure is that good way.
+# I"m not sure is that good way.
 menuAnimation = ->
   navMenu.animate [{
-    transform: 'translate(0px)'
+    transform: "translate(0px)"
     offset: 0
   }, {
-    transform: 'translate(322px)'
+    transform: "translate(322px)"
     offset: 1
   }],
   duration: 180
-  fill: 'forwards'
-  easing: 'ease-in-out'
+  fill: "forwards"
+  easing: "ease-in-out"
 
 reverseMenuAnimation = ->
   navMenu.animate [{
-    transform: 'translate(322px)'
+    transform: "translate(322px)"
     offset: 0
   }, {
-    transform: 'translate(0px)'
+    transform: "translate(0px)"
     offset: 1
   }],
   duration: 180
-  fill: 'forwards'
+  fill: "forwards"
 
 vertMenuAnimation = ->
   vertMenu.animate [{
-    width: '0px'
+    width: "0px"
     opacity: 1
     offset: 0
   }, {
-    width: '220px'
+    width: "220px"
     opacity: 1
     offset: 1
   }], {
     duration: 180
-    fill: 'forwards'
+    fill: "forwards"
   }
   vertMenu.animate [{
-    height: '56px'
+    height: "56px"
     offset: 0
   }, {
-    height: vertMenuList.offsetHeight + 'px'
+    height: vertMenuList.offsetHeight + "px"
     offset: 1
   }], {
     delay: 96
     duration: 180
-    fill: 'forwards'
+    fill: "forwards"
   }
 
-  aLinks = for el in vertMenu.childNodes when 'nav-vert' in el.classList
+  aLinks = for el in vertMenu.childNodes when "nav-vert" in el.classList
     el.childNodes
 
   iDelay = 100
@@ -71,25 +71,25 @@ vertMenuAnimation = ->
     }], {
       delay: iDelay += 30
       duration: 180
-      fill: 'forwards'
+      fill: "forwards"
     }
 
 reverseVertMenuAnimation = ->
   vertMenu.animate [{
-    height: vertMenuList.offsetHeight + 'px'
+    height: vertMenuList.offsetHeight + "px"
     opacity: 1
     offset: 0
   }, {
-    height: '0px'
+    height: "0px"
     opacity: 0
     offset: 1
   }], {
     delay: 120
     duration: 180
-    fill: 'forwards'
+    fill: "forwards"
   }
 
-  aLinks = for el in vertMenu.childNodes when 'nav-vert' in el.classList
+  aLinks = for el in vertMenu.childNodes when "nav-vert" in el.classList
     el.childNodes
 
   for link in aLinks[0]
@@ -102,35 +102,35 @@ reverseVertMenuAnimation = ->
     }], {
       delay: 180
       duration: 180
-      fill: 'forwards'
+      fill: "forwards"
     }
 
 
 animateMenu = ->
-  unless 'active' in @classList
+  unless "active" in @classList
     do menuAnimation
-    @classList.add 'active'
+    @classList.add "active"
   else
     do reverseMenuAnimation
-    @classList.remove 'active'
+    @classList.remove "active"
 
 animateMoreVertMenu = (e) ->
-  unless 'active' in @classList
-    if 'active' in headerNav.classList
+  unless "active" in @classList
+    if "active" in headerNav.classList
       animateMenu.call headerNav
 
     do vertMenuAnimation
-    @classList.add 'active'
+    @classList.add "active"
     do @focus if @focus?
   else
     do reverseVertMenuAnimation
-    @classList.remove 'active'
+    @classList.remove "active"
     do @blur if @blur?
 
 headerNav.onclick = animateMenu
 
-document.querySelector '.more-vert-container'
+document.querySelector ".more-vert-container"
   .onclick = animateMoreVertMenu
 
-document.querySelector '.more-vert-container'
+document.querySelector ".more-vert-container"
   .onblur = animateMoreVertMenu

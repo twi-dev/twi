@@ -52,12 +52,8 @@ function runSetup(cmd) {
     .then(() => {
       ora.color = "yellow";
       ora.text = "Making frontend app...";
-      return exec(
-        `${TWI_ROOT}/node_modules/.bin/bower install ` +
-        `--config.cwd=${TWI_ROOT}/themes/twi/src`
-      );
+      return exec(`${TWI_ROOT}/node_modules/.bin/gulp`)
     })
-    .then(() => exec(`${TWI_ROOT}/node_modules/.bin/gulp`))
     .then(() => {
       ora.stop();
       return require(`${TWI_ROOT}/setup/setup`)(cmd);
