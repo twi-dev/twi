@@ -113,6 +113,7 @@
     "gulp-newer": "1.2.0",
     "gulp-plumber": "1.1.0",
     "gulp-rimraf": "0.2.0",
+    "gulp-sourcemaps": "2.1.1",
     "gulp-stylus": "2.3.0",
     "gulp-svgmin": "1.2.2",
     "gulp-uglify": "2.0.0",
@@ -134,6 +135,7 @@
     "vinyl-buffer": "1.0.0",
     "vinyl-fs": "2.4.3",
     "vinyl-source-stream": "1.1.0",
+    "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",
     "yamlify": "0.1.3"
   },

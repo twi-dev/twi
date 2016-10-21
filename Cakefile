@@ -10,6 +10,8 @@ pify = require "pify"
 coffee = require "coffee-script"
 rimraf = require "rimraf"
 through = require "through2"
+sourcemaps = require "gulp-sourcemaps"
+applySourceMap = require "vinyl-sourcemaps-apply"
 {dirname, extname} = require "path"
 {realpathSync, statSync, mkdirSync, watch} = require "fs"
 
@@ -113,12 +115,18 @@ transform = (file, enc, cb) ->
     contents = coffee.compile "#{file.contents}",
       bare: on
       header: off
-      filename: file.path
+      sourceMap: !!isDevel
       sourceRoot: no
+      filename: file.path
       sourceFiles: [file.relative]
       generatedFile: replaceExtname file.relative
 
-    file.contents = Buffer contents
+    if contents and contents.v3SourceMap and isDevel
+      applySourceMap file, contents.v3SourceMap
+      file.contents = new Buffer contents.js
+    else
+      file.contents = Buffer contents
+
     file.path = replaceExtname file.path
 
     cb null, file
@@ -133,8 +141,10 @@ transform = (file, enc, cb) ->
 make = (files) ->
   vfs.src files
     .on "error", onProcessExitOrError
+    .pipe do sourcemaps.init
     .pipe through objectMode: on, transform
     .on "error", onProcessExitOrError
+    .pipe do sourcemaps.write
     .pipe vfs.dest (filename) -> dirname getDestFilename filename.path
     .on "error", onProcessExitOrError
     .on "end",

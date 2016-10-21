@@ -49,5 +49,4 @@ main = (name, schema, options = {}) ->
     schema(types),
     options
 
-
 module.exports = main
