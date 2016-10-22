@@ -76,10 +76,23 @@ class SuggestionContainer extends Component
       suggestions: []
 
   ###
-  # @return Promise
+  # Get suggestions from remote Twi server
+  #
+  # @param Event
   ###
-  _requestSuggestions: (value) ->
-    axios.get "#{do @getUrl}/#{value}?ref=ed" if value? and do @getUrl
+  _requestSuggestions: ({target: {value}}) =>
+    return unless do @getUrl
+
+    return @setState suggestions: [], showList: no, current: "" unless value
+
+    onFulfilled = ({data}) => @getSuggestions data, value
+
+    # FIXME: tmp err handler, should be fix in future
+    onRejected = (err) => console.error err
+
+    if value? and do @getUrl
+      axios.get "#{do @getUrl}/#{value}?ref=ed"
+        .then onFulfilled, onRejected
 
   renderSuggestionMark: (suggestion) ->
     if suggestion.pic
@@ -147,26 +160,11 @@ class SuggestionContainer extends Component
     </div>
 
   ###
-  # Get suggestions from server
+  # Get suggestions responsed from server
   #
   # @params Event e
   ###
-  getSuggestions: ({target}) =>
-    return unless (do @getUrl)?
-
-    unless target.value
-      @setState suggestions: [], showList: no, current: ""
-      return
-
-    @setState current: target.value
-
-    axios.get "#{do @getUrl}/#{target.value}?ref=ed"
-      .then ({data}) =>
-        @setState
-          active: 0
-          showList: if isEmpty data then no else yes
-          suggestions: data
-      .catch (err) -> console.error err
+  getSuggestions: ({data}, current) => # noop
 
   removeByClick: (e) => @_spliceSuggestion e.currentTarget.dataset.id
 
@@ -174,10 +172,12 @@ class SuggestionContainer extends Component
     @_pushSuggestion dataset.id, do innerText.trim
 
   chooseByKeyDown: (e) =>
-    if e.keyCode in [keys.TAB, keys.ENTER, keys.UP, keys.DOWN] and @state.showList
+    if e.keyCode in [
+      keys.TAB, keys.ENTER, keys.UP, keys.DOWN
+    ] and @state.showList
       do e.preventDefault
 
-      selected = document.querySelector '#selected-suggestion'
+      selected = document.querySelector "#selected-suggestion"
       if e.keyCode in [keys.TAB, keys.ENTER]
         @_pushSuggestion selected.dataset.id, do selected.innerText.trim
         return
@@ -214,7 +214,7 @@ class SuggestionContainer extends Component
           type="text"
           value={@state.current}
           style={@props.style}
-          onChange={@getSuggestions}
+          onChange={@_requestSuggestions}
           onKeyDown={@chooseByKeyDown}
           placeholder={@props.label}
         />

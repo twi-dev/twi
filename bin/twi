@@ -52,7 +52,7 @@ function runSetup(cmd) {
     .then(() => {
       ora.color = "yellow";
       ora.text = "Making frontend app...";
-      return exec(`${TWI_ROOT}/node_modules/.bin/gulp`)
+      return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
     })
     .then(() => {
       ora.stop();

@@ -5,6 +5,7 @@
 # @license MIT
 ###
 vfs = require "vinyl-fs"
+ora = do require "ora"
 glob = require "glob"
 pify = require "pify"
 coffee = require "coffee-script"
@@ -13,16 +14,9 @@ through = require "through2"
 sourcemaps = require "gulp-sourcemaps"
 applySourceMap = require "vinyl-sourcemaps-apply"
 {dirname, extname} = require "path"
+{red, yellow, green, cyan} = require "chalk"
+{cross, tick, pointer, warning, info} = require "figures"
 {realpathSync, statSync, mkdirSync, watch} = require "fs"
-
-COLOR_DEF = "\x1b[0m"
-COLOR_BOLD = "\x1B[0;1m"
-COLOR_RED = "\x1B[0;31m"
-COLOR_GREEN = "\x1B[0;32m"
-COLOR_RESET = "\x1B[0m"
-COLOR_YELLOW = "\x1b[33;01m"
-COLOR_BLUE = "\x1b[34;01m"
-COLOR_CYAN = "\x1b[36;01m"
 
 LOG_NORMAL = 0
 LOG_OK = 1
@@ -31,11 +25,11 @@ LOG_WARN = 3
 LOG_ERR = 4
 
 LOG_MESSAGES = [
-  "#{COLOR_DEF}cake#{COLOR_DEF}"
-  "#{COLOR_GREEN}ok#{COLOR_DEF}"
-  "#{COLOR_CYAN}info#{COLOR_DEF}"
-  "#{COLOR_YELLOW}warn#{COLOR_DEF}"
-  "#{COLOR_RED}err#{COLOR_DEF}"
+  pointer
+  green tick
+  cyan info
+  yellow warning
+  red cross
 ]
 
 # Src dirname
@@ -64,9 +58,9 @@ writeErr = (string) -> process.stderr.write string
 ###
 log = (string, level = 0) ->
   if level in [LOG_NORMAL, LOG_OK, LOG_INFO]
-    write "[#{LOG_MESSAGES[level]}] #{string}\n"
+    write "#{LOG_MESSAGES[level]} #{string}\n"
   else
-    writeErr "[#{LOG_MESSAGES[level]}] #{string}\n"
+    writeErr "#{LOG_MESSAGES[level]} #{string}\n"
 
 ###
 # Handler for errors and SIGINT event
@@ -78,12 +72,17 @@ onProcessExitOrError = (err) ->
     log "Compilation error:", LOG_ERR
     console.error err.stack
     log "Watching for changes...", LOG_ERR if isDevel
-
     process.exit 1 unless isDevel
-  else
+    return
+  
+  if isDevel
     write "\n"
-    log "Done without errors.", LOG_OK
-    process.exit 0
+    log "Done.", LOG_OK
+  else
+    ora.text = "Done without errors."
+    do ora.succeed
+
+  process.exit 0
 
 ###
 # Replace .coffee extname to .js
@@ -109,7 +108,10 @@ getDestFilename = (filename) -> replaceExtname filename.replace "src/", ""
 # @param function cb
 ###
 transform = (file, enc, cb) ->
-  log "Compile #{file.path}", LOG_INFO
+  if isDevel
+    log "Compile: #{file.path}"
+  else
+    ora.text = "Compile: #{file.path}"
 
   try
     contents = coffee.compile "#{file.contents}",
@@ -178,6 +180,8 @@ watcher = (e, filename) ->
       .then onFulfilled, onProcessExitOrError
 
 task "make", "Build app from the source", ->
+  do ora.start
+
   glob "#{SRC_DIR}/**/*.coffee"
     .then make, onProcessExitOrError
 

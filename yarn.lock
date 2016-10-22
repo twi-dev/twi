@@ -1231,10 +1231,6 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bower:
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/bower/-/bower-1.7.9.tgz#b7296c2393e0d75edaa6ca39648132dd255812b0"
-
 boxen@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/boxen/-/boxen-0.6.0.tgz#8364d4248ac34ff0ef1b2f2bf49a6c60ce0d81b6"
@@ -3508,6 +3504,21 @@ gulp-sourcemaps@^1.5.2:
     graceful-fs "4.X"
     source-map "0.X"
     strip-bom "2.X"
+    through2 "2.X"
+    vinyl "1.X"
+
+gulp-sourcemaps@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/gulp-sourcemaps/-/gulp-sourcemaps-2.1.1.tgz#ddfeabc285b7b6eb82fd13cb1cfb5b50e14797ae"
+  dependencies:
+    acorn "4.X"
+    convert-source-map "1.X"
+    css "2.X"
+    debug-fabulous "0.0.X"
+    detect-newline "2.X"
+    graceful-fs "4.X"
+    source-map "0.X"
+    strip-bom "3.X"
     through2 "2.X"
     vinyl "1.X"
 
@@ -7185,7 +7196,7 @@ strip-bom@^2.0.0, strip-bom@2.X:
   dependencies:
     is-utf8 "^0.2.0"
 
-strip-bom@^3.0.0:
+strip-bom@^3.0.0, strip-bom@3.X:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/strip-bom/-/strip-bom-3.0.0.tgz#2334c18e9c759f7bdd56fdef7e9ae3d588e68ed3"
 
@@ -7343,9 +7354,9 @@ the-argv@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/the-argv/-/the-argv-1.0.0.tgz#0084705005730dd84db755253c931ae398db9522"
 
-then-busboy@1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/then-busboy/-/then-busboy-1.2.2.tgz#b6417eae83a0ad8a11b0e1916ef76e9625917205"
+then-busboy@1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/then-busboy/-/then-busboy-1.2.3.tgz#81056a97327a406dce9be784b2869a9b00c742a2"
   dependencies:
     busboy "0.2.13"
     lodash.assign "4.2.0"
@@ -7789,7 +7800,7 @@ vinyl-source-stream@1.1.0:
     through2 "^0.6.1"
     vinyl "^0.4.3"
 
-vinyl-sourcemaps-apply@^0.2.0, vinyl-sourcemaps-apply@^0.2.1:
+vinyl-sourcemaps-apply@^0.2.0, vinyl-sourcemaps-apply@^0.2.1, vinyl-sourcemaps-apply@0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/vinyl-sourcemaps-apply/-/vinyl-sourcemaps-apply-0.2.1.tgz#ab6549d61d172c2b1b87be5c508d239c8ef87705"
   dependencies:

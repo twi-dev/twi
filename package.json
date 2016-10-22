@@ -35,7 +35,6 @@
     "tw": "npm run test:watch"
   },
   "ava": {
-    "verbose": true,
     "require": "./test/helper/browser",
     "files": [
       "./test/**/*.js",
@@ -87,7 +86,7 @@
     "sequelize": "3.24.3",
     "shortid": "2.2.6",
     "snake-case": "2.1.0",
-    "then-busboy": "1.2.2",
+    "then-busboy": "1.2.3",
     "then-redis": "2.0.1",
     "uuid": "2.0.2",
     "whatwg-fetch": "1.0.0",

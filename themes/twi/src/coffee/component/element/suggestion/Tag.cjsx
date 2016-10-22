@@ -20,4 +20,12 @@ class TagSuggestion extends SuggestionContainer
         </div>
       </li>
 
+  getSuggestions: (suggestions, current) =>
+    @setState {active: 0, showList: yes, suggestions, current}
+
+  closeListOnBlur: => @setState showList: no
+
+  openListOnFocus: =>
+    @setState showList: on if @state.current
+
 module.exports = TagSuggestion
