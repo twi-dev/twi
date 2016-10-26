@@ -44,7 +44,7 @@ function onFulfilled() {
   process.exit(0);
 }
 
-function runSetup(cmd) {
+function actionSetup(cmd) {
   ora.color = "cyan";
   ora.text = "Making backend app...";
   ora.start();
@@ -61,7 +61,7 @@ function runSetup(cmd) {
     .then(onFulfilled, onError);
 }
 
-function runMigrate(cmd) {
+function actionMigrate(cmd) {
   const migrate = require(`${TWI_ROOT}/setup/migrate`);
   var __fulfill;
 
@@ -84,7 +84,7 @@ commander
   .description("run installer script")
   .option("--silent, -s", "run installer in silent mode")
   .option("--not-erase, -e", "run installer without data erasing")
-  .action(runSetup);
+  .action(actionSetup);
 
 commander
   .command("migrate")
@@ -93,7 +93,7 @@ commander
   .option("--silent, -s", "run migrate in silent mode")
   .option("--not-erase, -e", "run migrate without data erasing")
   .option("--data-only, -d", "run only data imports")
-  .action(runMigrate);
+  .action(actionMigrate);
 
 commander
   .command("run")
