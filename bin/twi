@@ -74,6 +74,14 @@ function actionMigrate(cmd) {
   __fulfill.then(onFulfilled, onError);
 }
 
+function actionRun(cmd) {
+  try {
+    require(`${TWI_ROOT}/core/server`);
+  } catch (err) {
+    onError(err, cmd.parent.T);
+  }
+}
+
 commander
   .version(require(`${TWI_ROOT}/package.json`).version)
   .usage("<command> [options]");
@@ -99,7 +107,7 @@ commander
   .command("run")
   .alias("r")
   .description("run Twi app")
-  .action(() => require(`${TWI_ROOT}/core/server`));
+  .action(actionRun);
 
 commander.parse(process.argv);
 process.on("error", onError);
