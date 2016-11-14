@@ -1,11 +1,11 @@
 fs = require "promise-fs"
-db = require "../core/database"
+db = require "../../core/database"
 redis = require "then-redis"
 moment = require "moment"
 shortid = require "shortid"
 prompt = require "./helper/prompt"
-bcrypt = require "../core/helper/bcrypt"
-requireHelper = require "../core/helper/require"
+bcrypt = require "../../core/helper/bcrypt"
+requireHelper = require "../../core/helper/require"
 
 ora = do require "ora"
 {realpathSync} = require "fs"
@@ -13,7 +13,7 @@ ora = do require "ora"
 {info} = require "figures"
 {cyan} = require "chalk"
 
-TWI_ROOT = realpathSync "#{__dirname}/../"
+TWI_ROOT = do process.cwd
 schemas = requireHelper "#{TWI_ROOT}/core/database/schemas"
 data = requireHelper "#{TWI_ROOT}/migrations/data"
 locales = requireHelper "#{TWI_ROOT}/migrations/locales", yes
@@ -79,8 +79,8 @@ importData = (notErase = off) ->
 # Create super user account
 ###
 createSu = ->
-  user = db "user", require "../core/database/schemas/user"
-  contacts = db "contacts", require "../core/database/schemas/contacts"
+  user = db "user", require "../../core/database/schemas/user"
+  contacts = db "contacts", require "../../core/database/schemas/contacts"
 
   {login} = await prompt login: "Type your login for Twi app:"
   {email} = await prompt email: "Type your email:"

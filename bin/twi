@@ -2,26 +2,35 @@
 
 "use strict";
 
-const fs = require("fs");
+const {realpathSync, statSync} = require("fs");
 const childProcess = require("child_process");
-const join = require("path").join;
 
-const TWI_ROOT =  join(__dirname, "../");
+const TWI_ROOT =  realpathSync(`${__dirname}/../`);
 const execSync = childProcess.execSync;
 
-process.title = "twi";
-process.chdir(TWI_ROOT); // Change process.cwd() to Twi root path
+const IS_YARN_EXISTS = (function() {
+  try {
+    execSync("which yarn");
+    return true;
+  } catch (err) {
+    return false;
+  }
+})();
 
-// Install deps before continue
+process.title = "twi";
+process.chdir(TWI_ROOT); // Change process.cwd() to Twi root directory
+
+// Install deps (if not exists) before continue
 try {
-  fs.statSync(`${TWI_ROOT}/node_modules`);
+  statSync(`${TWI_ROOT}/node_modules`);
 } catch (err) {
   if (err.code !== "ENOENT") {
     throw err;
   }
 
-  execSync("npm install", {
-    encoding: "utf-8",
+  console.log("Install dependencies before you begin.");
+  console.log("Please, be patient.");
+  execSync(IS_YARN_EXISTS === true ? "yarn" : "npm i", {
     stdio: "inherit"
   });
 }
@@ -30,39 +39,88 @@ try {
 const commander = require("commander");
 const ora = require("ora")();
 const pify = require("pify");
+const {cross} = require("figures");
+const {red} = require("chalk");
+
 const exec = pify(childProcess.exec);
 
-function onError(err) {
-  ora.text = String(err);
-  ora.fail();
+/**
+ * Process error handler
+ *
+ * @access private
+ */
+function _onError(err, stackTrace = false) {
+  if (stackTrace) {
+    console.log(red(cross), err.stack);
+  } else {
+    ora.text = String(err);
+    ora.fail();
+  }
+
   process.exit(1);
 }
 
-function onFulfilled() {
+/**
+ * Success callback
+ *
+ * @access private
+ */
+function _onFulfilled() {
   ora.text = "Done without errors.";
   ora.succeed();
   process.exit(0);
 }
 
-function actionSetup(cmd) {
+/**
+ * Make backend app
+ *
+ * @return Promise
+ */
+function _makeBackend() {
   ora.color = "cyan";
   ora.text = "Making backend app...";
   ora.start();
-  exec(`${TWI_ROOT}/node_modules/.bin/cake make`)
-    .then(() => {
-      ora.color = "yellow";
-      ora.text = "Making frontend app...";
-      return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
-    })
-    .then(() => {
-      ora.stop();
-      return require(`${TWI_ROOT}/setup/setup`)(cmd);
-    })
-    .then(onFulfilled, onError);
+
+  return exec(`${TWI_ROOT}/node_modules/.bin/cake make`);
+}
+
+/**
+ * Make frontend app
+ *
+ * @return Promise
+ */
+function _makeFrontend() {
+  ora.color = "yellow";
+  ora.text = "Making frontend app...";
+  ora.start();
+
+  // const fulfill = function(err, stats) {};
+
+  return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
+}
+
+/**
+ * Make app components
+ *
+ * @return Promise
+ */
+function _make(component = "") {
+  switch (component) {
+  case "backend":
+    return _makeBackend();
+  case "frontend":
+    return _makeFrontend();
+  default:
+    return _makeBackend().then(() => _makeFrontend());
+  }
+}
+
+function actionMake(component, cmd) {
+  _make(component).then(_onFulfilled, err => _onError(err, cmd.T));
 }
 
 function actionMigrate(cmd) {
-  const migrate = require(`${TWI_ROOT}/setup/migrate`);
+  const migrate = require(`${TWI_ROOT}/setup/backend/migrate`);
   var __fulfill;
 
   if (cmd.D === true) {
@@ -71,20 +129,32 @@ function actionMigrate(cmd) {
     __fulfill = migrate(cmd);
   }
 
-  __fulfill.then(onFulfilled, onError);
+  __fulfill.then(_onFulfilled, _onError);
+}
+
+function actionSetup(cmd) {
+  _make()
+    .then(() => {
+      ora.stop();
+      return require(`${TWI_ROOT}/setup/backend/setup`)(cmd);
+    })
+    .then(_onFulfilled, _onError);
 }
 
 function actionRun(cmd) {
   try {
     require(`${TWI_ROOT}/core/server`);
   } catch (err) {
-    onError(err, cmd.parent.T);
+    _onError(err, cmd.parent.T);
   }
 }
 
 commander
   .version(require(`${TWI_ROOT}/package.json`).version)
   .usage("<command> [options]");
+
+commander
+  .option("--stack-trace, -t", "show stack trace on errors");
 
 commander
   .command("setup")
@@ -104,10 +174,16 @@ commander
   .action(actionMigrate);
 
 commander
+  .command("make [component]")
+  .alias("m")
+  .description("Build Twi components")
+  .action(actionMake);
+
+commander
   .command("run")
   .alias("r")
   .description("run Twi app")
   .action(actionRun);
 
 commander.parse(process.argv);
-process.on("error", onError);
+process.on("error", _onError);
