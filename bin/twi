@@ -90,24 +90,11 @@ function _makeBackend() {
  * @return Promise
  */
 function _makeFrontend() {
-  // ora.color = "yellow";
-  // ora.text = "Making frontend app...";
-  // ora.start();
+  ora.color = "yellow";
+  ora.text = "Making frontend app...";
+  ora.start();
 
-  // return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
-
-  return new Promise(function(resolve, reject) {
-    const webpack = require("../setup/frontend/make");
-    const fulfill = (err, stats) => (
-      err == null ? resolve(stats) : reject(err)
-    );
-
-    ora.color = "yellow";
-    ora.text = "Making frontend app...";
-    ora.start();
-
-    webpack.run(fulfill);
-  });
+  return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
 }
 
 /**

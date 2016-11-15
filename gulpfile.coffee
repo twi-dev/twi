@@ -17,7 +17,7 @@ autoprefixer = require "gulp-autoprefixer"
 
 # JS plugins
 browserify = require "browserify"
-langify = require "./build/helper/langify"
+langify = require "#{__dirname}/setup/frontend/i18n"
 cjsx = require "coffee-reactify"
 hmr = require "browserify-hmr"
 svg = require "svg-reactify"
@@ -38,9 +38,6 @@ jeet = require "jeet"
 
 # Breakpoint system
 rupture = require "rupture"
-
-# Normalize
-# console.log normalize = require "normalize.styl"
 
 {app: {theme}} = require "./core/helper/configure"
 theme or= "twi"
@@ -106,7 +103,7 @@ process.on "error", errorHandler
 # Build Stylus
 ###
 gulp.task "stylus", ->
-  rebuildStylus = (vinyl) ->
+  rebuildStylus = ->
     gutil.log "Rebuild stylus..."
     gulp.src STYLUS_SRC
       .pipe plumber errorHandler
