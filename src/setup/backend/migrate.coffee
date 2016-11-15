@@ -10,8 +10,8 @@ requireHelper = require "../../core/helper/require"
 ora = do require "ora"
 {realpathSync} = require "fs"
 {isFunction, assign} = require "lodash"
-{info} = require "figures"
-{cyan} = require "chalk"
+{info, warning} = require "figures"
+{cyan, yellow} = require "chalk"
 
 TWI_ROOT = do process.cwd
 models = require "#{TWI_ROOT}/core/server/model"
@@ -40,25 +40,29 @@ loadSchemas = (notErase = off) ->
 importData = (notErase = off) ->
   ora.text = "Importing data..."
 
+  unless notErase
+    await __m.destroy truncate: on, logging: no for _, __m of models
+
   # Importing data
   ret = {}
-  for own __k, __model of models when not __k.endsWith("Locale") and
+  for own __k, __m of models when not __k.endsWith("Locale") and
   (__data = data[__k])?
     ret[__k] = []
     for __values, __idx in __data
-      [ret[__k][__idx]] = await __model.findOrCreate
+      [ret[__k][__idx]] = await __m.findOrCreate
         where: __values
         defaults: __values
         logging: no
 
   # Importing locales
+  # Awful code below. Please, don't touch it or you will fired :D
   ora.text = "Importing data locales..."
   for __lang, __localeData of locales
     for __k, __arr of ret when (__data = __localeData[__k])?
-      __model = models["#{__k}Locale"]
+      __m = models["#{__k}Locale"]
       for __values, __idx in __data
         __id = __arr[__idx].dataValues["#{__k}Id"]
-        await __model.findOrCreate
+        await __m.findOrCreate
           where: "#{__k}Id": __id, lang: __lang
           defaults: assign(
             {}, {
@@ -72,7 +76,10 @@ importData = (notErase = off) ->
 ###
 # Create super user account
 ###
-createSu = ->
+createSu = (cmd) ->
+  return console.warn "#{yellow warning} Warn: Skip owner registration" if cmd.S
+  return await spawnServer cmd unless cmd.R is on
+
   {user, contacts} = models
 
   {login} = await prompt login: "Type your login for Twi app:"
@@ -91,7 +98,7 @@ createSu = ->
     break if password is repass
 
   if (__user = await user.findOne raw: on, logging: no, where: role: 3)?
-    console.log "#{cyan info}Owner account is already exists: #{__user.login}"
+    console.info "#{cyan info}Owner account is already exists: #{__user.login}"
     return
 
   ora.text = "Creating your account..."
@@ -118,7 +125,7 @@ migrate = (cmd) ->
   await importData cmd.E
 
   do ora.stop
-  await do createSu
+  await createSu cmd
 
   do ora.stop
   await return

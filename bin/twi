@@ -122,7 +122,7 @@ function actionMigrate(cmd) {
   var __fulfill;
 
   if (cmd.D === true) {
-    __fulfill = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.S));
+    __fulfill = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R));
   } else {
     __fulfill = migrate(cmd);
   }
@@ -158,15 +158,28 @@ commander
   .command("setup")
   .alias("s")
   .description("run installer script")
-  .option("--silent, -s", "run installer in silent mode")
+  .option(
+    "--skip-register, -s",
+    "skip owner account registration (use it ONLY for CI)"
+  )
+  .option(
+    "--register, -r", "create owner account while installation using console"
+  )
   .option("--not-erase, -e", "run installer without data erasing")
+  .option("--configure, -c", "configure app while installation using console")
   .action(actionSetup);
 
 commander
   .command("migrate")
   .alias("m")
   .description("run only migrations script")
-  .option("--silent, -s", "run migrate in silent mode")
+  .option(
+    "--skip-register, -s",
+    "skip owner account registration (use it ONLY for CI)"
+  )
+  .option(
+    "--register, -r", "create owner account while installation using console"
+  )
   .option("--not-erase, -e", "run migrate without data erasing")
   .option("--data-only, -d", "run only data imports")
   .action(actionMigrate);

@@ -69,10 +69,11 @@ linkTwi = ->
 # @param Command cmd
 ###
 setup = (cmd) ->
-  unless cmd.S
-    await do configure
+  await do configure if cmd.C is on
 
   await migrate cmd
   await do linkTwi
+
+  return
 
 module.exports = setup
