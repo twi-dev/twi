@@ -7,9 +7,8 @@ moment = require "moment"
 crypto = require "crypto"
 bcrypt = require "../core/helper/bcrypt"
 mailer = require "../core/mail/mailer"
-model = require "../core/database"
-user = model "user", require "../core/database/schemas/user"
-contacts = model "contacts", require "../core/database/schemas/contacts"
+
+{model, user, contacts} = require "../core/server/model"
 {isEmail, isValidPassword} = require "../core/helper/validation"
 {t} = require "../core/i18n"
 

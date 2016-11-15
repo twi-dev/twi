@@ -4,13 +4,9 @@ _ = require "lodash"
 moment = require "moment"
 {app: {lang}} = require "../core/helper/configure"
 
-model = require "../core/database"
-story = model "story", require "../core/database/schemas/stories"
-character = model "character", require "../core/database/schemas/character"
-characterLocale = model "characterLocale",
-  require "../core/database/schemas/characterLocale"
-mark = model "mark", require "../core/database/schemas/mark"
-markLocale = model "markLocale", require "../core/database/schemas/markLocale"
+{
+  story, character, characterLocale, mark, markLocale
+} = require "../core/server/model"
 
 character.hasMany characterLocale,
   as: "locale"

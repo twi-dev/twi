@@ -14,7 +14,8 @@ ora = do require "ora"
 {cyan} = require "chalk"
 
 TWI_ROOT = do process.cwd
-schemas = requireHelper "#{TWI_ROOT}/core/database/schemas"
+models = require "#{TWI_ROOT}/core/server/model"
+schemas = requireHelper "#{TWI_ROOT}/core/database/schema"
 data = requireHelper "#{TWI_ROOT}/migrations/data"
 locales = requireHelper "#{TWI_ROOT}/migrations/locales", yes
 
@@ -26,8 +27,8 @@ locales = requireHelper "#{TWI_ROOT}/migrations/locales", yes
 loadSchemas = (notErase = off) ->
   ora.text = "Loading schemas..."
 
-  for own __k, __sch of schemas when isFunction __sch
-    await db(__k, __sch).sync force: not notErase, logging: off
+  for own _, __m of models
+    await __m.sync force: not notErase, logging: off
 
   await return
 
@@ -79,8 +80,7 @@ importData = (notErase = off) ->
 # Create super user account
 ###
 createSu = ->
-  user = db "user", require "../../core/database/schemas/user"
-  contacts = db "contacts", require "../../core/database/schemas/contacts"
+  {user, contacts} = models
 
   {login} = await prompt login: "Type your login for Twi app:"
   {email} = await prompt email: "Type your email:"

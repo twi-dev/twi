@@ -4,11 +4,8 @@
 md = new MD = require "markdown-it"
 moment = require "moment"
 limax = require "limax"
-model = require "../core/database"
-post = model "post", require "../core/database/schemas/post"
-tag = model "tag", require "../core/database/schemas/tag"
-postTags = model "postTags", require "../core/database/schemas/postTags"
-user = model "user", require "../core/database/schemas/user"
+
+{post, tag, postTags, user} = require "../core/server/model"
 
 NotFoundException = require "../core/error/NotFound"
 ForbiddenException = require "../core/error/Forbidden"

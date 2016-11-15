@@ -11,5 +11,5 @@
     "public"
   ],
   "ext": "js json yml yaml key cert",
-  "exec": "./bin/twi run"
+  "exec": "./bin/twi run --stack-trace"
 }
