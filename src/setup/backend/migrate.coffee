@@ -40,13 +40,6 @@ loadSchemas = (notErase = off) ->
 importData = (notErase = off) ->
   ora.text = "Importing data..."
 
-  # Creating models
-  models = {}
-  for own __k, __sch of schemas when isFunction __sch
-    __model = db __k, __sch
-    models[__k] = __model
-    await __model.destroy truncate: on, logging: no unless notErase
-
   # Importing data
   ret = {}
   for own __k, __model of models when not __k.endsWith("Locale") and
