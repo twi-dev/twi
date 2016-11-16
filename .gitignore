@@ -11,8 +11,6 @@ core
 model
 setup
 node_modules
-public/assets
-public/img/**/*.svg
 test
 foo
 bar
@@ -21,12 +19,9 @@ deploy/sandbox
 
 themes/**/public/img/**/*.svg
 themes/**/public/assets
-themes/**/src/vendor
-themes/**/src/gulp-tmp
 
-frontend/gulp-runtime
-frontend/vendor
 npm-debug.log
+yarn-error.log
 .DS_Store
 index.js
 *.rdb
