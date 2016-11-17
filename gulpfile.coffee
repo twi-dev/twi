@@ -27,6 +27,10 @@ envify = require "gulp-envify"
 source = require "vinyl-source-stream" # For rename js bundle
 vinylBuffer = require "vinyl-buffer" # For gulp-uglify
 
+# JS & Webpack
+webpack = require "webpack-stream"
+webpackConfig = require "./setup/frontend/webpack-config"
+
 # YAML transformer
 yaml = require "yamlify"
 
@@ -132,39 +136,44 @@ gulp.task "stylus", ->
 ###
 gulp.task "coffee", ->
   # Set NODE_ENV for react
-  process.env.NODE_ENV = if isDevel then "development" else "production"
+  # process.env.NODE_ENV = if isDevel then "development" else "production"
 
-  bundler = browserify COFFEE_SRC,
-    transform: [
-      [svg, default: "image"]
-      cjsx, yaml, langify, rht
-    ]
-    extensions: [".cjsx", ".coffee"]
-    paths: [
-      "#{THEME_PATH}/src/coffee"
-      "#{THEME_PATH}/public"
-    ]
-    insertGlobals: yes
-    debug: isDevel
-    plugin: if isDevel then [hmr] else []
+  # bundler = browserify COFFEE_SRC,
+  #   transform: [
+  #     [svg, default: "image"]
+  #     cjsx, yaml, langify, rht
+  #   ]
+  #   extensions: [".cjsx", ".coffee"]
+  #   paths: [
+  #     "#{THEME_PATH}/src/coffee"
+  #     "#{THEME_PATH}/public"
+  #   ]
+  #   insertGlobals: yes
+  #   debug: isDevel
+  #   plugin: if isDevel then [hmr] else []
 
-  rebuildBundle = ->
-    gutil.log "Rebuild coffee..."
-    bundler
-      .bundle()
-      .on "error", errorHandler
-      .pipe plumber errorHandler
-      .pipe source "common.js"
-      .pipe do vinylBuffer
-      .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
-      .pipe if isDevel then do gutil.noop else do uglify
-      .pipe gulp.dest COFFEE_DEST
+  # rebuildBundle = ->
+  #   gutil.log "Rebuild coffee..."
+  #   bundler
+  #     .bundle()
+  #     .on "error", errorHandler
+  #     .pipe plumber errorHandler
+  #     .pipe source "common.js"
+  #     .pipe do vinylBuffer
+  #     .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
+  #     .pipe if isDevel then do gutil.noop else do uglify
+  #     .pipe gulp.dest COFFEE_DEST
 
-  do rebuildBundle # Just rebuild bundle before run watcher
-  return watch [
-    "#{COFFEE_SRC_DIR}/**/*.coffee"
-    "#{CJSX_SRC}"
-    ], rebuildBundle if isDevel
+  # do rebuildBundle # Just rebuild bundle before run watcher
+  # return watch [
+  #   "#{COFFEE_SRC_DIR}/**/*.coffee"
+  #   "#{CJSX_SRC}"
+  #   ], rebuildBundle if isDevel
+
+  gulp.src COFFEE_SRC
+    .pipe plumber errorHandler
+    .pipe webpack webpackConfig
+    .pipe gulp.dest COFFEE_DEST
 
 ###
 # Optimizing SVG.
