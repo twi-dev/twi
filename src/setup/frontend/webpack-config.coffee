@@ -1,15 +1,34 @@
+
 webpack = require "webpack"
+{merge} = require "lodash"
+{dirname} = require "path"
+{app: {theme}} = require "../../core/helper/configure"
+
+TWI_ROOT = dirname module.parent.filename
 
 config =
-  output: filename: "common.js"
-  resolve:
-    extensions: ['', '.js', '.cjsx', '.coffee']
-  module:
-    loaders: [
-      test: /\.(coffee|cjsx)$/, loaders: ["coffee", "cjsx"]
-    ]
   plugins: [
     new webpack.HotModuleReplacementPlugin
   ]
+  module:
+    loaders: [
+      {
+        test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
+        loaders: ["coffee", "cjsx"]
+      }
+      {
+        test: /\.svg$/
+        loader: "svg-react"
+      }
+    ]
+  resolve:
+    root: "#{TWI_ROOT}/themes/#{theme}/src/coffee"
+    extensions: [
+      "", ".js", ".cjsx", ".coffee", ".litcoffee", ".coffee.md", ".svg"
+    ]
+  resolveLoader:
+    modulesDirectories: ["node_modules"]
+  output:
+    filename: "common.js"
 
-module.exports = config
+module.exports = (isDevel) -> config

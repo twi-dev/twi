@@ -172,7 +172,7 @@ gulp.task "coffee", ->
 
   gulp.src COFFEE_SRC
     .pipe plumber errorHandler
-    .pipe webpack webpackConfig
+    .pipe webpack webpackConfig isDevel
     .pipe gulp.dest COFFEE_DEST
 
 ###

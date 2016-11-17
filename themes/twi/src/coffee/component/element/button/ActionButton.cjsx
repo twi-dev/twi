@@ -1,7 +1,7 @@
 {Component, PropTypes} = React = require "react"
 ArrowDown = require "img/layout/arrow-down.svg"
 
-t = require "i18n"
+# t = require "i18n"
 
 class ActionButton extends Component
   @defaultProps:
