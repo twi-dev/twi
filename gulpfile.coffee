@@ -28,7 +28,8 @@ source = require "vinyl-source-stream" # For rename js bundle
 vinylBuffer = require "vinyl-buffer" # For gulp-uglify
 
 # JS & Webpack
-webpack = require "webpack-stream"
+webpack = require "webpack"
+webpackStream = require "webpack-stream"
 webpackConfig = require "./setup/frontend/webpack-config"
 
 # YAML transformer
@@ -81,7 +82,7 @@ isDevel = no
 # @param Error err
 ###
 errorHandler = (err) ->
-  gutil.log err.stack
+  gutil.log String err
   unless isDevel
     process.exit 1
 
@@ -136,7 +137,7 @@ gulp.task "stylus", ->
 ###
 gulp.task "coffee", ->
   # Set NODE_ENV for react
-  # process.env.NODE_ENV = if isDevel then "development" else "production"
+  process.env.NODE_ENV = if isDevel then "development" else "production"
 
   # bundler = browserify COFFEE_SRC,
   #   transform: [
@@ -172,7 +173,7 @@ gulp.task "coffee", ->
 
   gulp.src COFFEE_SRC
     .pipe plumber errorHandler
-    .pipe webpack webpackConfig isDevel
+    .pipe webpackStream(webpackConfig), webpack
     .pipe gulp.dest COFFEE_DEST
 
 ###

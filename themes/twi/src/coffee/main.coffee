@@ -2,10 +2,12 @@
 
 require "./nav-menu"
 
-React = require "react"
-{render} = ReactDOM = require "react-dom"
+# React = require "react"
+# {render} = ReactDOM = require "react-dom"
 # StoryEditor = require "./component/editor/StoryEditor"
-BlogAddPost = require "component/editor/blog/AddPost"
+# BlogAddPost = require "component/editor/blog/AddPost"
+
+ArrowDown = require "img/layout/arrow-down.svg"
 
 # Components containers
 # storyEditorRoot = document.querySelector "#story-editor"
