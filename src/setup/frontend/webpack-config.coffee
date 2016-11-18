@@ -15,16 +15,29 @@ config =
   module:
     loaders: [
       {
-        test: /\.svg$/
-        loaders: ["babel", "react-svg"]
+        test: /\.jsx?/
+        loader: "babel"
+        exclude: /node_modules/
+        query:
+          presets: ["react"]
       }
       {
         test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
-        loaders: ["coffee", "cjsx"]
+        loaders: ["coffee","cjsx"]
+      }
+      {
+        test: /\.json$/
+        loader: "json"
+      }
+      {
+        test: /\.svg$/
+        loader: "react-svg?es5=1"
       }
     ]
   resolve:
-    root: ["#{THEME_PATH}/src/coffee", "#{THEME_PATH}/src/svg"]
+    root: [
+      "#{THEME_PATH}/src/coffee", "#{THEME_PATH}/public"
+    ]
     extensions: [
       "", ".js", ".cjsx", ".coffee", ".litcoffee", ".coffee.md", ".svg"
     ]
