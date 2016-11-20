@@ -19,6 +19,8 @@ schemas = requireHelper "#{TWI_ROOT}/core/database/schema"
 data = requireHelper "#{TWI_ROOT}/migrations/data"
 locales = requireHelper "#{TWI_ROOT}/migrations/locales", yes
 
+spawnServer = require "./helper/spawnServer"
+
 ###
 # Load all schemas to database
 #
@@ -78,7 +80,7 @@ importData = (notErase = off) ->
 ###
 createSu = (cmd) ->
   return console.warn "#{yellow warning} Warn: Skip owner registration" if cmd.S
-  return await spawnServer cmd unless cmd.R is on
+  return await spawnServer cmd.T unless cmd.R is on
 
   {user, contacts} = models
 
@@ -109,8 +111,7 @@ createSu = (cmd) ->
   }, logging: no
 
   await contacts.create {userId}, logging: no
-
-  await return
+  return
 
 ###
 # Migrations command implementation
