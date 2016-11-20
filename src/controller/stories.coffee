@@ -116,7 +116,7 @@ actionCharacters = (ctx) ->
     "
 
   ctx.body = if name?
-    await story.getCharactersByName name
+    await story.getMatchedCharactersByName name
   else
     await do story.getCharacters
 

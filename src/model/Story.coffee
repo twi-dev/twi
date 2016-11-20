@@ -16,7 +16,7 @@ mark.hasMany markLocale,
   as: "locale"
   foreignKey: "mark_id"
 
-getCharactersByName = (name) ->
+getMatchedCharactersByName = (name) ->
   await character.findAll
     raw: yes
     limit: 5
@@ -57,6 +57,6 @@ getMarkByName = (name) ->
     ]
 
 module.exports = {
-  getCharactersByName
+  getMatchedCharactersByName
   getMarkByName
 }

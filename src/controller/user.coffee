@@ -1,7 +1,7 @@
 "use strict"
 
 i18n = require "../core/i18n"
-user = new User = require "../model/User"
+user = require "../model/User"
 
 NotFoundException = require "../core/error/NotFound"
 ForbiddenException = require "../core/error/Forbidden"

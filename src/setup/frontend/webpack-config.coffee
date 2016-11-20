@@ -8,7 +8,7 @@ TWI_ROOT = dirname module.parent.filename
 THEME_PATH = "#{TWI_ROOT}/themes/#{theme}"
 
 config =
-  verbose: on
+  devtool: "#inline-source-map"
   plugins: [
     new webpack.HotModuleReplacementPlugin
   ]

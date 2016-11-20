@@ -4,7 +4,7 @@ passport = require "koa-passport"
 {Strategy} = require "passport-local"
 
 {t} = i18n = require "../core/i18n"
-user = new User = require "../model/User"
+user = require "../model/User"
 {app: {enableSignup}} = require "../core/helper/configure"
 
 NotFoundException = require "../core/error/NotFound"

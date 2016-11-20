@@ -11,7 +11,6 @@ BlogAddPost = require "component/editor/blog/AddPost"
 storyEditorRoot = document.querySelector "#story-editor"
 blogEditorRoot = document.querySelector "#blog-editor"
 
-Render components
 render <StoryEditor
   action="/story/new" method="post"
 />, storyEditorRoot if storyEditorRoot?

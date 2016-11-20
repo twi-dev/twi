@@ -22,23 +22,6 @@ redis = do redis.createClient
 user.hasOne contacts, foreignKey: "user_id"
 contacts.belongsTo user, foreignKey: "user_id"
 
-# Authenticate user by login/email and pass
-_authenticate = (sUsername, sPass) ->
-  oOptions =
-    attributes: [
-      "userId"
-      "password"
-    ]
-    where: (if isEmail sUsername then email: sUsername else login: sUsername)
-
-  oUserData = yield user.findOne oOptions
-
-  return null unless oUserData?
-
-  return null unless yield bcrypt.compare sPass, oUserData.password
-
-  return oUserData.userId
-
 ###
 # Expiry period for confirmation link
 #
@@ -47,139 +30,165 @@ _authenticate = (sUsername, sPass) ->
 CONFIRMATION_EXPIRE = 60 * 60 * 24
 
 ###
+# Status:
+#   - Inactive
+#   - Active
+#   - Banned
+#   - Deleted
+###
+STATUS_INACTIVE = 0
+STATUS_ACTIVE = 1
+STATUS_BANNED = 2
+STATUS_DELETED = 3
+
+###
+# Roles:
+#   - User
+#   - Moderator
+#   - Admin
+#   - Root
+###
+roles =
+  USER: 0
+  MODERATOR: 1
+  ADMIN: 2
+  ROOT: 3
+
+GENDER_MALE = 1
+GENDER_FEMALE = 0
+
+###
+# Reserved usernames
+###
+RESERVED = [
+  "admin"
+  "moderator"
+  "root"
+  "support"
+  "dev"
+]
+
+# Authenticate user by login/email and pass
+_authenticate = (username, pass) ->
+  opts =
+    attributes: [
+      "userId"
+      "password"
+    ]
+    where: (if isEmail username then email: username else login: username)
+
+  userData = yield user.findOne opts
+
+  return null unless userData?
+
+  return null unless yield bcrypt.compare pass, userData.password
+
+  return userData.userId
+
+###
 # Sending confirmation message via email
 ###
-confirm = (sEmail, sId) ->
-  sHash = crypto.createHash "sha256"
-    .update "#{+moment()}#{sEmail}"
+confirm = (email, sId) ->
+  hash = crypto.createHash "sha256"
+    .update "#{+moment()}#{email}"
     .digest "hex"
 
-  await redis.set sHash, sId, "EX", CONFIRMATION_EXPIRE
-  await mailer.send sEmail, t("mail.welcome.subject"), "welcome",
-    activationLink: sHash
-  info "Confirmation message has been sent to #{sEmail}"
+  await redis.set hash, sId, "EX", CONFIRMATION_EXPIRE
+  await mailer.send email, t("mail.welcome.subject"), "welcome",
+    activationLink: hash
+  info "Confirmation message has been sent to #{email}"
   return
 
-class User
-  constructor: ->
-    ###
-    # Status:
-    #   - Inactive
-    #   - Active
-    #   - Banned
-    #   - Deleted
-    ###
-    @STATUS_INACTIVE = 0
-    @STATUS_ACTIVE = 1
-    @STATUS_BANNED = 2
-    @STATUS_DELETED = 3
+signup = (login, email, pass, repass) ->
+  userData = await user.create {
+      login, email
+      password: await bcrypt.hash pass, 10
+      registeredAt: do moment().format
+      role: roles.USER
+      status: STATUS_INACTIVE
+    }
 
-    ###
-    # Roles:
-    #   - User
-    #   - Moderator
-    #   - Admin
-    #   - Root
-    ###
-    @ROLE_USER = 0
-    @ROLE_MODERATOR = 1
-    @ROLE_ADMIN = 2
-    @ROLE_ROOT = 3
+  {userId} = userData.get plain: yes
+  await contacts.create userId: userId
+  await confirm sEmail, userId
 
-    @GENDER_MALE = 1
-    @GENDER_FEMALE = 0
+activate = (hash) ->
+  userId = await redis.get hash
+  return no unless userId?
 
-    ###
-    # Reserved.
-    ###
-    @RESERVED = [
-      "admin"
-      "moderator"
-      "root"
+  await user.update {
+    status: @STATUS_ACTIVE
+  }, {
+    where:
+      userId: userId
+  }
+
+  await redis.del hash
+
+  return yes
+
+###
+# Auth user by his username + password pair
+#
+# @param string sUsername
+# @param string sPass
+###
+signin = (sUsername, sPass, cb) ->
+  co _authenticate sUsername, sPass
+    .then (userId) -> if userId? then cb null, userId else cb null, no
+    .catch (err) -> cb err
+###
+# Get authenticated user
+###
+getAuthenticated = (id, cb) ->
+  user.findOne
+    attributes: [
+      "userId"
+      "login"
+      "role"
+      "status"
     ]
+    where:
+      userId: id
+  .then (userData) -> cb null, userData.get plain: yes
+  .catch (err) -> cb err
 
-  _getUser: (oOptions) ->
-    await user.findOne oOptions
-
-  profile: (sUserId) ->
-    oUserData = await @_getUser
-      raw: yes
+###
+# Get user profile
+###
+profile = (userId) ->
+  userData = await user.findOne
+    raw: yes
+    attributes:
+      exclude: [
+        "contactsId"
+        "userId"
+        "email"
+        "password"
+        "role"
+      ]
+    include: [
+      model: contacts
       attributes:
         exclude: [
           "contactsId"
           "userId"
-          "email"
-          "password"
-          "role"
         ]
-      include: [
-        model: contacts
-        attributes:
-          exclude: [
-            "contactsId"
-            "userId"
-          ]
-      ]
-      where:
-        login: sUserId
+    ]
+    where:
+      login: userId
 
 
-    # Throwing error if user is not found
-    unless oUserData?
-      throw new NotFoundException "User \"#{sUserId}\" is not found."
+  # Throwing error if user is not found
+  unless userData?
+    throw new NotFoundException "User \"#{sUserId}\" is not found."
 
-    return oUserData
+  return userData
 
-  signup: (sLogin, sEmail, sPass, sRepass) ->
-    oUserData = await user.create
-      login: sLogin
-      email: sEmail
-      password: (await bcrypt.hash sPass, 10)
-      registeredAt: do moment().format
-      role: @ROLE_USER
-      status: @STATUS_INACTIVE
-
-    {userId} = oUserData.get plain: yes
-    await contacts.create userId: userId
-    await confirm sEmail, userId
-
-  activate: (sHash) ->
-    sId = await redis.get sHash
-    return no unless sId?
-
-    await user.update {
-      status: @STATUS_ACTIVE
-    }, {
-      where:
-        userId: sId
-    }
-
-    await redis.del sHash
-
-    return yes
-
-  getAuthenticated: (id, cb) ->
-    user.findOne
-      attributes: [
-        "userId"
-        "login"
-        "role"
-        "status"
-      ]
-      where:
-        userId: id
-    .then (oUserData) -> cb null, oUserData.get plain: yes
-    .catch (err) -> cb err
-
-  ###
-  # Auth user by his username + password pair
-  #
-  # @param string sUsername
-  # @param string sPass
-  ###
-  signin: (sUsername, sPass, cb) ->
-    co _authenticate sUsername, sPass
-      .then (userId) -> if userId? then cb null, userId else cb null, no
-      .catch (err) -> cb err
-
-module.exports = User
+module.exports = {
+  signup
+  activate
+  signin
+  getAuthenticated
+  profile
+}
