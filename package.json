@@ -148,6 +148,7 @@
     "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",
     "webpack": "1.13.3",
+    "webpack-dev-server": "1.16.2",
     "webpack-stream": "3.2.0",
     "yamlify": "0.1.3"
   },

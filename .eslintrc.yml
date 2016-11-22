@@ -3,7 +3,7 @@ env:
   commonjs: true
   es6: true
   node: true
-extends: 'eslint:recommended'
+extends: eslint:recommended
 installedESLint: true
 parserOptions:
   sourceType: module
@@ -18,7 +18,7 @@ rules:
     - error
     - unix
   quotes:
-    - error
+    - warn
     - double
   semi:
     - warn
@@ -29,3 +29,6 @@ rules:
   no-constant-condition: 0
   no-empty:
     - warn
+  yoda:
+    - warn
+    - always

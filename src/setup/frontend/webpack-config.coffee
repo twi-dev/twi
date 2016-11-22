@@ -1,29 +1,28 @@
-
-webpack = require "webpack"
 {merge} = require "lodash"
 {dirname} = require "path"
 {app: {theme}} = require "../../core/helper/configure"
+{HotModuleReplacementPlugin} = webpack = require "webpack"
+
+server = require "./helper/server"
 
 TWI_ROOT = dirname module.parent.filename
 THEME_PATH = "#{TWI_ROOT}/themes/#{theme}"
 
 config =
+  # watch: on
   devtool: "#inline-source-map"
+  # entry: [
+  #   "webpack-dev-server/client?http://0.0.0.0:8080"
+  #   "webpack/hot/only-dev-server"
+  # ]
   plugins: [
-    new webpack.HotModuleReplacementPlugin
+    # new HotModuleReplacementPlugin
   ]
   module:
     loaders: [
       {
-        test: /\.jsx?/
-        loader: "babel"
-        exclude: /node_modules/
-        query:
-          presets: ["react"]
-      }
-      {
         test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
-        loaders: ["coffee","cjsx"]
+        loaders: ["react-hot-loader/webpack", "coffee", "cjsx"]
       }
       {
         test: /\.json$/
