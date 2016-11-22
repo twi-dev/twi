@@ -32,6 +32,9 @@ webpack = require "webpack"
 webpackStream = require "webpack-stream"
 webpackConfig = require "./setup/frontend/webpack-config"
 
+# Experemental
+webpackWrapper = require "./setup/frontend/helper/webpack"
+
 # YAML transformer
 yaml = require "yamlify"
 
@@ -135,7 +138,7 @@ gulp.task "stylus", ->
 ###
 # Build CoffeeScript with Browserify
 ###
-gulp.task "coffee", ->
+gulp.task "coffee", (cb) ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if isDevel then "development" else "production"
 
@@ -171,10 +174,14 @@ gulp.task "coffee", ->
   #   "#{CJSX_SRC}"
   #   ], rebuildBundle if isDevel
 
-  gulp.src COFFEE_SRC
-    .pipe plumber errorHandler
-    .pipe webpackStream(webpackConfig), webpack
-    .pipe gulp.dest COFFEE_DEST
+  # gulp.src COFFEE_SRC
+  #   .pipe plumber errorHandler
+  #   .pipe webpackStream(webpackConfig), webpack
+  #   .pipe gulp.dest COFFEE_DEST
+
+  return webpackWrapper COFFEE_SRC, COFFEE_DEST, {
+    isDevel
+  }
 
 ###
 # Optimizing SVG.

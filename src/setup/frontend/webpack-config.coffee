@@ -1,9 +1,7 @@
-{merge} = require "lodash"
+{merge, extend} = require "lodash"
 {dirname} = require "path"
 {app: {theme}} = require "../../core/helper/configure"
 {HotModuleReplacementPlugin} = webpack = require "webpack"
-
-server = require "./helper/server"
 
 TWI_ROOT = dirname module.parent.filename
 THEME_PATH = "#{TWI_ROOT}/themes/#{theme}"
@@ -11,10 +9,10 @@ THEME_PATH = "#{TWI_ROOT}/themes/#{theme}"
 config =
   # watch: on
   devtool: "#inline-source-map"
-  # entry: [
-  #   "webpack-dev-server/client?http://0.0.0.0:8080"
-  #   "webpack/hot/only-dev-server"
-  # ]
+  entry: [
+    "webpack-dev-server/client?http://0.0.0.0:8080"
+    "webpack/hot/only-dev-server"
+  ]
   plugins: [
     # new HotModuleReplacementPlugin
   ]
