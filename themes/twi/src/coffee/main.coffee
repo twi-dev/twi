@@ -2,6 +2,8 @@
 
 require "./nav-menu"
 
+console.log "foo"
+
 React = require "react"
 {render} = ReactDOM = require "react-dom"
 StoryEditor = require "./component/editor/StoryEditor"
