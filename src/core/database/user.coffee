@@ -1,50 +1,50 @@
 "use strict"
 
-module.exports = (types) ->
+module.exports = ({UUID, UUIDV1, STRING, TEXT, INTEGER, DATE, NOW}) ->
   userId:
-    type: types.UUID
-    defaultValue: types.UUIDV1
+    type: UUID
+    defaultValue: UUIDV1
     primaryKey: yes
     allowNull: no
     field: "user_id"
   login:
-    type: types.STRING 32
+    type: STRING 32
     unique: yes
     allowNull: no
   password:
-    type: types.STRING
+    type: STRING
     allowNull: no
   email:
-    type: types.STRING
+    type: STRING
     unique: yes
     allowNull: no
   firstname:
-    type: types.STRING 36
+    type: STRING 36
     allowNull: yes
   lastname:
-    type: types.STRING 40
+    type: STRING 40
     allowNull: yes
   gender:
-    type: types.INTEGER 1
+    type: INTEGER 1
     allowNull: yes
     defaultValue: null
   about:
-    type: types.TEXT
+    type: TEXT
     allowNull: yes
   registeredAt:
-    type: types.DATE
+    type: DATE
     allowNull: no
-    defaultValue: types.NOW
+    defaultValue: NOW
     field: "registered_at"
   lastVisit:
-    type: types.DATE
+    type: DATE
     allowNull: yes
     field: "last_visit"
   role:
-    type: types.INTEGER 1
+    type: INTEGER 1
     allowNull: no
     defaultValue: 0 # User by default
   status:
-    type: types.INTEGER 1
+    type: INTEGER 1
     allowNull: no
     defaultValue: 0 # Inactive by default

@@ -1,36 +1,36 @@
 "use strict"
 
-module.exports = (types) ->
+module.exports = ({UUID, UUIDV1, STRING, TEXT, DATE, NOW}) ->
   postId:
-    type: types.UUID
+    type: UUID
     primaryKey: yes
-    defaultValue: types.UUIDV1
+    defaultValue: UUIDV1
     allowNull: no
     field: "post_id"
   userId:
-    type: types.UUID
+    type: UUID
     allowNull: no
     field: "user_id"
   title:
-    type: types.STRING
+    type: STRING
     allowNull: no
   slug:
-    type: types.TEXT
+    type: TEXT
     allowNull: no
   content:
-    type: types.TEXT
+    type: TEXT
     allowNull: no
   renderedContent:
-    type: types.TEXT
+    type: TEXT
     allowNull: no
     field: "rendered_content"
   createdAt:
-    type: types.DATE
+    type: DATE
     allowNull: no
-    defaultValue: types.NOW
+    defaultValue: NOW
     field: "created_at"
   updatedAt:
-    type: types.DATE
+    type: DATE
     allowNull: yes
     defaultValue: null
     field: "updated_at"

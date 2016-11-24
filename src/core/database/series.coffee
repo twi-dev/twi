@@ -1,25 +1,25 @@
-'use strict'
+"use strict"
 
-module.exports = (types) ->
+module.exports = ({UUID, UUIDV1, TEXT, INTEGER}) ->
   serieId:
-    type: types.UUID
-    defaultValue: types.UUIDV1
+    type: UUID
+    defaultValue: UUIDV1
     primaryKey: yes
     notNull: yes
-    field: 'serie_id'
+    field: "serie_id"
   ownerId:
-    type: types.UUID
+    type: UUID
     allowNull: no
-    field: 'owner_id'
+    field: "owner_id"
   title:
-    type: types.TEXT
+    type: TEXT
     allowNull: no
   description:
-    type: types.TEXT
+    type: TEXT
     allowNull: no
   # Based on ratings of all stories in serie
   # Formula: <sum of all stories in serie> / <total stories in serie>
   rating:
-    type: types.INTEGER
+    type: INTEGER
     defaultValue: 0
     allowNull: no

@@ -4,7 +4,7 @@
 
 snakecase = require "snake-case"
 requireHelper = require "../helper/require"
-schemas = requireHelper "../database/schema"
+schemas = requireHelper "../database"
 
 {database, IS_DEVEL} = require "../helper/configure"
 {info, warn} = require "../logger"

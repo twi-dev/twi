@@ -1,33 +1,33 @@
 "use strict"
 
-module.exports = (types) ->
+module.exports = ({UUID, UUIDV1, STRING}) ->
   contactsId:
-    type: types.UUID
+    type: UUID
     primaryKey: yes
-    defaultValue: types.UUIDV1
+    defaultValue: UUIDV1
     allowNull: no
     field: "contacts_id"
   userId:
-    type: types.UUID
+    type: UUID
     unique: yes
     allowNull: no
     field: "user_id"
   email:
-    type: types.STRING
+    type: STRING
     allowNull: yes
     unique: yes
   vk:
-    type: types.STRING
+    type: STRING
     allowNull: yes
   twitter:
-    type: types.STRING
+    type: STRING
     allowNull: yes
   facebook:
-    type: types.STRING
+    type: STRING
     allowNull: yes
   fimfiction:
-    type: types.STRING
+    type: STRING
     allowNull: yes
   ficbook:
-    type: types.STRING
+    type: STRING
     allowNull: yes

@@ -1,4 +1,4 @@
-'use strict'
+"use strict"
 
 module.exports = (types) ->
   storyId:
@@ -6,11 +6,11 @@ module.exports = (types) ->
     defaultValue: types.UUIDV1
     primaryKey: yes
     allowNull: no
-    field: 'story_id'
+    field: "story_id"
   userId:
     type: types.UUID
     allowNull: no
-    field: 'user_id'
+    field: "user_id"
   title:
     type: types.TEXT
     allowNull: no
@@ -21,12 +21,12 @@ module.exports = (types) ->
     type: types.BOOLEAN
     allowNull: no
     defaultValue: no
-    field: 'is_it_translation'
+    field: "is_it_translation"
   wasProofreadByBeta:
     type: types.BOOLEAN # This story was proofread by beta?
     defaultValue: no
     allowNull: no
-    field: 'was_proofread_by_beta'
+    field: "was_proofread_by_beta"
   description:
     type: types.TEXT
     allowNull: no

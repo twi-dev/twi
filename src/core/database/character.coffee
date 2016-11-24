@@ -1,13 +1,13 @@
 'use strict'
 
-module.exports = (types) ->
+module.exports = ({UUID, UUIDV1, STRING}) ->
   characterId:
-    type: types.UUID
+    type: UUID
     primaryKey: yes
-    defaultValue: types.UUIDV1
+    defaultValue: UUIDV1
     allowNull: no
     field: 'character_id'
   pic:
-    type: types.STRING
+    type: STRING
     allowNull: no
     unique: yes
