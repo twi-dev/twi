@@ -1,6 +1,7 @@
 "use strict"
 
 {assign, defineProperty} = Object
+{isPlainObject, isEmpty} = require "lodash"
 
 snakecase = require "snake-case"
 requireHelper = require "../helper/require"
@@ -36,13 +37,25 @@ types = do ->
 # @param string name
 # @param function schema
 #
-# @return object
+# @return Sequlize.Model
 ###
-define = (name, schema, opts = {}) ->
-  opts = assign {}, opts, timestamps: off, underscored: yes
+define = (name, schema, custom = {}) ->
+  custom = assign {}, custom, timestamps: off, underscored: yes
 
-  return sequelize.define snakecase("#{name}"),
-    schema(types), opts
+  unless name or typeof name is "string"
+    throw new TypeError "Schema name should be a string and cannot be empty."
+
+  unless isPlainObject(schema) or isEmpty(schema)
+    throw new TypeError "
+      Schema \"#{name}\" should be a plain object and cannot be empty.
+    "
+
+  name = snakecase "#{name}"
+  schema = schema types
+
+  {schema, options} = schema if "schema" of schema and "options" of schema
+
+  return sequelize.define name, schema, assign {}, options, custom
 
 ###
 # Define and return all models from core/database/schema
@@ -54,7 +67,7 @@ model = ->
 
   for own __name, __sch of schemas
     unless typeof __sch is "function"
-      warn "Schema must return a function in \"#{__name}\""
+      warn "Schema should be a function in \"#{__name}\"."
       continue
 
     res[__name] = define __name, __sch unless __name of res
