@@ -1,7 +1,7 @@
 "use strict"
 
 {assign, defineProperty} = Object
-{isPlainObject, isEmpty} = require "lodash"
+{isEmpty} = require "lodash"
 
 snakecase = require "snake-case"
 requireHelper = require "../helper/require"
@@ -45,9 +45,9 @@ define = (name, schema, custom = {}) ->
   unless name or typeof name is "string"
     throw new TypeError "Schema name should be a string and cannot be empty."
 
-  unless isPlainObject(schema) or isEmpty(schema)
+  unless typeof schema is "function"
     throw new TypeError "
-      Schema \"#{name}\" should be a plain object and cannot be empty.
+      Schema \"#{name}\" should be a function.
     "
 
   name = snakecase "#{name}"

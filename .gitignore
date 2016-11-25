@@ -1,5 +1,4 @@
 api
-build
 controller
 coverage
 configs/user.yaml
@@ -39,11 +38,9 @@ themes/**/views/api
 
 !setup/index.js
 !setup/migrations/index.js
-!src/build
 !src/controller
 !src/core
 !src/model
 !src/setup
-!src/test
-!src/test/core
+!src/test/unit/core
 !src/test/helper
