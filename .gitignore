@@ -42,5 +42,7 @@ themes/**/views/api
 !src/core
 !src/model
 !src/setup
+!src/test
+!src/test/unit
 !src/test/unit/core
 !src/test/helper
