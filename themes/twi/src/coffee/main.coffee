@@ -3,12 +3,13 @@
 require "./nav-menu"
 
 React = require "react"
-{render} = ReactDOM = require "react-dom"
-StoryEditor = require "./component/editor/StoryEditor"
+{render} = require "react-dom"
+
+StoryEditor = require "component/editor/story/AddStory"
 BlogAddPost = require "component/editor/blog/AddPost"
 
 # Components containers
-storyEditorRoot = document.querySelector "#story-editor"
+storyEditorRoot = document.querySelector "#story-editor-add"
 blogEditorRoot = document.querySelector "#blog-editor"
 
 render <StoryEditor
