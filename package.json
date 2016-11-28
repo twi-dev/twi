@@ -139,7 +139,6 @@
     "vinyl-source-stream": "1.1.0",
     "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",
-    "whatwg-fetch": "2.0.1",
     "yamlify": "0.1.3"
   },
   "optionalDependencies": {
