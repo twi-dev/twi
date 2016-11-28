@@ -1,7 +1,7 @@
 {Component, PropTypes} = React = require "react"
 {isEmpty} = require "lodash"
 
-fetch = require "whatwg-fetch"
+fetch = require "helper/wrapper/fetch"
 keys = require "helper/util/keysMap"
 
 class TokenInput extends Component
@@ -19,7 +19,11 @@ class TokenInput extends Component
 
   placeholder: -> "Type your token here..."
 
+  endpoint: -> ""
+
   requestTokens: (current) =>
+    endpoint = do @endpoint
+    return await fetch "#{endpoint}/#{current}?ref=ed" unless isEmpty endpoint
 
   ###
   # Get tokens from remote server by current value
@@ -29,18 +33,12 @@ class TokenInput extends Component
   _getTokens: ({target: {value}}) =>
     return @setState current: "", suggested: [] if isEmpty value
 
-    onFulfilled = (res) => do res.json
-
     onRejected = (err) => console.warn err
 
     updateSuggested = (suggested) => @setState {current: value, suggested}
 
-    console.log value
-
-    # @requestTokens current
-    #   .then onFulfilled
-    #   .then updateSuggested
-    #   .catch onRejected
+    @requestTokens value
+      .then updateSuggested, onRejected
 
   ###
   # Show list of suggested tokens when TokentInput focused

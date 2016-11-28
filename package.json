@@ -93,6 +93,7 @@
   },
   "devDependencies": {
     "ava": "0.17.0",
+    "babelify": "^7.3.0",
     "browserify": "13.1.0",
     "browserify-hmr": "0.3.5",
     "browserify-transform-tools": "1.6.0",

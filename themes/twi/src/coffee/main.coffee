@@ -10,7 +10,7 @@ StoryEditor = require "component/editor/story/AddStory"
 
 # Components containers
 storyEditorRoot = document.querySelector "#story-editor-add"
-blogEditorRoot = document.querySelector "#blog-editor"
+# blogEditorRoot = document.querySelector "#blog-editor"
 
 render <StoryEditor
   action="/story/new" method="post"

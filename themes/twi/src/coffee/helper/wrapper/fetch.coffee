@@ -1,4 +1,3 @@
-fetch = require "whatwg-fetch"
 {merge} = require "lodash"
 
 defs =
@@ -8,31 +7,24 @@ defs =
   headers:
     "X-Requested-With": "Fetch"
 
-wrapFetch = (url, opts) -> new Promise (resolve, reject) ->
+wrapFetch = (url, opts) ->
   opts = merge opts, defs
   {type} = opts
 
-  onFulfilled = (res) -> resolve res
+  res = await fetch url, opts
 
-  onRejected = (err) -> reject err
+  if res.status >= 400
+    throw new Error "Server responsed with status: #{res.status}"
 
-  onResponsed = (res) ->
-    return onFulfilled res if type is "body"
+  unless type of res
+    throw new TypeError "
+      Unknown response body type. Supports only these methods: 
+      text, json, blob, arrayBuffer and formData.
+    "
 
-    unless opts.type of res
-      return onRejected new TypeError "
-        Unknown response body type. Supports only these methods: 
-        text, json, blob, arrayBuffer and formData.
-      "
+  unless type is "body"
+    return await do res[type]
 
-
-    __fulfill = do res[type]
-
-    __fulfill
-      .then  onFulfilled
-      .catch onRejected
-
-  fetch url, opts
-    .then onResponsed, onRejected
+  return res
 
 module.exports = wrapFetch
