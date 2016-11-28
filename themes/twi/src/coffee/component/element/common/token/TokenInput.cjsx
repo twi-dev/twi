@@ -26,8 +26,8 @@ class TokenInput extends Component
   #
   # @param Event
   ###
-  _getTokens: ({value}) =>
-    return @setState current: value, suggested: [] if isEmpty @state.current
+  _getTokens: ({target: {value}}) =>
+    return @setState current: "", suggested: [] if isEmpty value
 
     onFulfilled = (res) => do res.json
 
@@ -35,10 +35,12 @@ class TokenInput extends Component
 
     updateSuggested = (suggested) => @setState {current: value, suggested}
 
-    @requestTokens current
-      .then onFulfilled
-      .then updateSuggested
-      .catch onRejected
+    console.log value
+
+    # @requestTokens current
+    #   .then onFulfilled
+    #   .then updateSuggested
+    #   .catch onRejected
 
   ###
   # Show list of suggested tokens when TokentInput focused
@@ -52,7 +54,10 @@ class TokenInput extends Component
       className="token-input-container"
       tabIndex={-1} onFocus={@_showListOnFocus} onBlur={@_hideListOnBlur}
     >
-      <input type="text" placeholder={do @placeholder} onChange={@_getTokens} />
+      <input
+        type="text" placeholder={do @placeholder}
+        onChange={@_getTokens} value={@state.current}
+      />
     </div>
 
 module.exports = TokenInput

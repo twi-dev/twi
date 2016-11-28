@@ -18,7 +18,7 @@ autoprefixer = require "gulp-autoprefixer"
 # JS plugins
 browserify = require "browserify"
 langify = require "#{__dirname}/setup/frontend/i18n"
-cjsx = require "coffee-reactify"
+cjsx = require "./setup/frontend/cjsx-transform"
 hmr = require "browserify-hmr"
 svg = require "svg-reactify"
 rht = require "react-hot-transform"
@@ -137,7 +137,8 @@ gulp.task "coffee", (cb) ->
   bundler = browserify COFFEE_SRC,
     transform: [
       [svg, default: "image"]
-      cjsx, yaml, langify, rht
+      [cjsx, sourceMap: isDevel]
+      yaml, rht
     ]
     extensions: [".cjsx", ".coffee"]
     paths: [
@@ -157,7 +158,7 @@ gulp.task "coffee", (cb) ->
       .pipe source "common.js"
       .pipe do vinylBuffer
       .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
-      .pipe if isDevel then do gutil.noop else do uglify
+      # .pipe if isDevel then do gutil.noop else do uglify
       .pipe gulp.dest COFFEE_DEST
 
   do rebuildBundle # Just rebuild bundle before run watcher
