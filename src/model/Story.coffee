@@ -17,8 +17,7 @@ mark.hasMany markLocale,
   foreignKey: "mark_id"
 
 getMatchedCharactersByName = (name) ->
-  await character.findAll
-    raw: yes
+  charactersData = await character.findAll
     limit: 5
     subQuery: off
     attributes: [
@@ -36,8 +35,17 @@ getMatchedCharactersByName = (name) ->
           $like: "%#{decodeURI name}%"
     ]
 
+  charactersData = for ch in charactersData
+    ch = ch.get plain: yes
+    [{name}] = ch.locale
+    ch.name = name
+    delete ch.locale
+    ch
+
+  return charactersData
+
 getMarkByName = (name) ->
-  await mark.findAll
+  marksData = await mark.findAll
     raw: yes
     limit: 5
     subQuery: off
@@ -55,6 +63,15 @@ getMarkByName = (name) ->
         name:
           $like: "%#{decodeURI name}%"
     ]
+
+  marksData = for m in marksData
+    m = m.get plain: yes
+    [{name}] = m.locale
+    m.name = name
+    delete m.locale
+    m
+
+  return marksData
 
 module.exports = {
   getMatchedCharactersByName
