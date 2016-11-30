@@ -4,6 +4,7 @@
 axios = require "helper/axios"
 
 CharacterField = require "component/element/field/CharacterField"
+MarkField = require "component/element/field/MarkField"
 
 ###
 # StoryEditor component class
@@ -40,6 +41,8 @@ class StoryEditor extends Component
 
   _updateCharacters: (characters) => @setState {characters}
 
+  _updateMarks: (marks) => @setState {marks}
+
   render: ->
     <div className="story-editor">
       <form onSubmit={@_preventDefaultOnSubmit} autoComplete="off">
@@ -59,6 +62,11 @@ class StoryEditor extends Component
         <div className="story-editor-field">
           <CharacterField
             tokens={@state.characters} onUpdate={@_updateCharacters}
+          />
+        </div>
+        <div className="story-editor-field">
+          <MarkField
+            tokens={@state.marks} onUpdate={@_updateMarks}
           />
         </div>
       </form>

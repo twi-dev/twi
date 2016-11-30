@@ -32,6 +32,10 @@ class TokenInput extends Component
 
   ###
   # Request tokens from remote server by given value
+  #
+  # @param string current
+  #
+  # @return any
   ###
   request: (current) =>
     unless isEmpty endpoint = do @endpoint
@@ -73,7 +77,7 @@ class TokenInput extends Component
       className="token-input-list#{if @state.showList then ' active' else ''}"
     >
       <ul>
-        {@_renderToken t for t in tokens}
+        {@_renderToken t, k for t, k in tokens}
       </ul>
     </div>
 

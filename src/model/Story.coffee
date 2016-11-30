@@ -46,7 +46,6 @@ getMatchedCharactersByName = (name) ->
 
 getMarkByName = (name) ->
   marksData = await mark.findAll
-    raw: yes
     limit: 5
     subQuery: off
     attributes: [

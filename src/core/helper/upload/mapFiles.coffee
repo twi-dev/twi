@@ -1,11 +1,11 @@
 {Readable} = require "stream"
-{isPlainObject, isArray} = require "lodash"
+{isPlainObject, isArray, isFunction} = require "lodash"
 
 mapFiles = (obj, fn, ctx = null) ->
   unless isPlainObject obj
     throw new TypeError "obj argument must be a plain object"
 
-  unless typeof fn is "function"
+  unless isFunction fn
     throw new TypeError "fn argument must be a function."
 
   res = if isArray obj then [] else {}
