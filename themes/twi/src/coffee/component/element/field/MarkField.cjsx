@@ -7,8 +7,12 @@ class MarkField extends TokenInput
 
   endpoint: -> "/story/marks"
 
-  renderListElement: ({name, color}) ->
-    <div className="character-item-container cf">
+  listFilter: ({id}) => id in @props.choosen
+
+  chooseOnClick: ({dataset: {id}}) => id
+
+  renderListElement: ({id, name, color}) ->
+    <div className="character-item-container cf" data-id={id}>
       <div className="fl">{name}</div>
     </div>
 

@@ -1,7 +1,10 @@
 {Component, PropTypes} = React = require "react"
-{assign, isEmpty} = require "lodash"
+{decorateFunc} = require "decorator"
 
-axios = require "helper/axios"
+assign = Object.assign ? require "lodash/assign"
+isEmpty = require "lodash/isEmpty"
+fetch = require "helper/wrapper/fetch"
+
 
 CharacterField = require "component/element/field/CharacterField"
 MarkField = require "component/element/field/MarkField"
@@ -45,6 +48,8 @@ class StoryEditor extends Component
     @_updateCharacters [@state.characters..., id] unless id in @state.characters
 
   _updateMarks: (marks) => @setState {marks}
+
+  _addMark: (id) => @_updateMarks [@state.marks..., id] unless id in @state.marks
 
   render: ->
     <div className="story-editor">

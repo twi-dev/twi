@@ -152,6 +152,7 @@ gulp.task "coffee", (cb) ->
   rebuildBundle = ->
     gutil.log "Rebuild coffee..."
     bundler
+      .require "#{__dirname}/core/helper/util/decorator", expose: "decorator"
       .bundle()
       .on "error", errorHandler
       .pipe plumber errorHandler
