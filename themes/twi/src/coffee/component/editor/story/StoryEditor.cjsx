@@ -1,8 +1,8 @@
 {Component, PropTypes} = React = require "react"
 
+toFormData = require "helper/util/stateToFormData"
 assign = Object.assign ? require "lodash/assign"
 isEmpty = require "lodash/isEmpty"
-fetch = require "helper/wrapper/fetch"
 
 CharacterField = require "component/element/field/CharacterField"
 MarkField = require "component/element/field/MarkField"
@@ -13,6 +13,7 @@ MarkField = require "component/element/field/MarkField"
 #
 # Note: This is just a first draft of StoryEditor.
 #   I'm not a actually a frontend developer, so, this one may looks ugly :)
+#   UPD: Well, this is the second draft of StoryEditor :D
 ###
 class StoryEditor extends Component
   constructor: ->
@@ -36,22 +37,36 @@ class StoryEditor extends Component
   #
   # @param Event event
   ###
-  _preventDefaultOnSubmit: (event) => do event.preventDefault; @submit event
+  _handleOnSubmit: (event) =>
+    onFulFilled = (res) => console.log res
+
+    onRejected = (err) => console.error err
+
+    {dataset: {csrf}} = document.querySelector "#story-editor-add"
+
+    @submit event, toFormData assign {}, @state, _csrf: csrf
+      .then onFulFilled, onRejected
 
   _updateTextFields: ({target: {name, value}}) => @setState "#{name}": value
 
   _updateCharacters: (characters) => @setState {characters}
 
+  ###
+  # Add character to state
+  ###
   _addCharacter: (id) =>
     @_updateCharacters [@state.characters..., id] unless id in @state.characters
 
   _updateMarks: (marks) => @setState {marks}
 
+  ###
+  # Add mark to state
+  ###
   _addMark: (id) => @_updateMarks [@state.marks..., id] unless id in @state.marks
 
   render: ->
     <div className="story-editor">
-      <form onSubmit={@_preventDefaultOnSubmit} autoComplete="off">
+      <form onSubmit={@_handleOnSubmit} autoComplete="off">
         <div className="story-editor-field">
           <input
             type="text" name="title"
@@ -63,6 +78,7 @@ class StoryEditor extends Component
           <textarea
             name="description"
             placeholder="Tell us about your story"
+            value={@state.description} onChange={@_updateTextFields}
           ></textarea>
         </div>
         <div className="story-editor-field">
@@ -75,7 +91,6 @@ class StoryEditor extends Component
             choosen={@state.marks} onChange={@_updateMarks}
           />
         </div>
-
         <button>Submit</button>
       </form>
     </div>

@@ -1,4 +1,5 @@
-{merge} = require "lodash"
+isPlainObject = require "lodash/isPlainObject"
+merge = require "lodash/merge"
 
 defs =
   method: "GET"
@@ -8,7 +9,7 @@ defs =
     "X-Requested-With": "Fetch"
 
 wrapFetch = (url, opts) ->
-  opts = merge opts, defs
+  opts = merge {}, defs, opts
   {type} = opts
 
   res = await fetch url, opts

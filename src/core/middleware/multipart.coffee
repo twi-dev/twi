@@ -8,10 +8,10 @@ ALLOWED_TYPES = [
 ]
 
 multipart = (ctx, next) ->
-  return await do next unless ctx.get "multipart/*"
+  return await do next unless ctx.request.is "multipart/*"
 
   data = await busboy ctx.req
-  ctx.multipart = data
+  ctx.request.body = data
 
   await do next
 

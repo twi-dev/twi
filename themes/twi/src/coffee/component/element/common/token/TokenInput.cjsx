@@ -63,7 +63,7 @@ class TokenInput extends Component
   _getTokens: ({target: {value}}) =>
     return @setState current: "", suggested: [], showList: no if isEmpty value
 
-    onRejected = (err) => console.warn err
+    onRejected = (err) => console.error err
 
     updateSuggested = (suggested) =>
       @setState {current: value, suggested, showList: yes}
@@ -72,7 +72,8 @@ class TokenInput extends Component
       .then updateSuggested, onRejected
 
   _onClick: ({currentTarget}) =>
-    @props.onChange @chooseOnClick currentTarget.firstChild
+    @setState current: "", ->
+      @props.onChange @chooseOnClick currentTarget.firstChild
 
   ###
   # Show list of suggested tokens when TokentInput focused
