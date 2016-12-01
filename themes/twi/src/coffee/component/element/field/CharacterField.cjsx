@@ -7,8 +7,12 @@ class CharacterField extends TokenInput
 
   endpoint: -> "/story/characters"
 
-  renderListElement: ({name, pic}) ->
-    <div className="character-item-container cf">
+  listFilter: ({id}) => id in @props.choosen
+
+  chooseOnClick: ({dataset: {id}}) => id
+
+  renderListElement: ({id, name, pic}) ->
+    <div className="character-item-container cf" data-id={id}>
       <div className="character-item-pic fl">
         <img src="/images/characters/#{pic}" alt={name} />
       </div>

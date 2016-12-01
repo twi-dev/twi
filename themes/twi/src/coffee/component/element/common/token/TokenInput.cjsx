@@ -6,8 +6,8 @@ keys = require "helper/util/keysMap"
 
 class TokenInput extends Component
   @propTypes:
-    tokens: PropTypes.array.isRequired
-    onUpdate: PropTypes.func.isRequired
+    choosen: PropTypes.array.isRequired
+    onChange: PropTypes.func.isRequired
 
   constructor: ->
     @state =
@@ -41,6 +41,16 @@ class TokenInput extends Component
     unless isEmpty endpoint = do @endpoint
       return await fetch "#{endpoint}/#{current}?ref=ed"
 
+  ###
+  # Should return true for choosen items
+  ###
+  listFilter: => # noop
+
+  ###
+  # Choose token on click
+  #
+  # @param Element
+  ###
   chooseOnClick: => # noop
 
   chooseOnKeyDown: => # noop
@@ -61,6 +71,9 @@ class TokenInput extends Component
     @request value
       .then updateSuggested, onRejected
 
+  _onClick: ({currentTarget}) =>
+    @props.onChange @chooseOnClick currentTarget.firstChild
+
   ###
   # Show list of suggested tokens when TokentInput focused
   ###
@@ -68,7 +81,8 @@ class TokenInput extends Component
 
   _hideListOnBlur: => @setState showList: no
 
-  _renderToken: (token, key) -> <li key={key}>{@renderListElement token}</li>
+  _renderToken: (token, key) ->
+    <li key={key} onClick={@_onClick}>{@renderListElement token}</li>
 
   _renderTokensList: ->
     return if isEmpty tokens = @state.suggested
@@ -77,7 +91,7 @@ class TokenInput extends Component
       className="token-input-list#{if @state.showList then ' active' else ''}"
     >
       <ul>
-        {@_renderToken t, k for t, k in tokens}
+        {@_renderToken t, k for t, k in tokens when not @listFilter t}
       </ul>
     </div>
 

@@ -41,6 +41,9 @@ class StoryEditor extends Component
 
   _updateCharacters: (characters) => @setState {characters}
 
+  _addCharacter: (id) =>
+    @_updateCharacters [@state.characters..., id] unless id in @state.characters
+
   _updateMarks: (marks) => @setState {marks}
 
   render: ->
@@ -61,12 +64,12 @@ class StoryEditor extends Component
         </div>
         <div className="story-editor-field">
           <CharacterField
-            tokens={@state.characters} onUpdate={@_updateCharacters}
+            choosen={@state.characters} onChange={@_addCharacter}
           />
         </div>
         <div className="story-editor-field">
           <MarkField
-            tokens={@state.marks} onUpdate={@_updateMarks}
+            choosen={@state.marks} onChange={@_updateMarks}
           />
         </div>
       </form>
