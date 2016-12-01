@@ -1,10 +1,8 @@
 {Component, PropTypes} = React = require "react"
-{decorateFunc} = require "decorator"
 
 assign = Object.assign ? require "lodash/assign"
 isEmpty = require "lodash/isEmpty"
 fetch = require "helper/wrapper/fetch"
-
 
 CharacterField = require "component/element/field/CharacterField"
 MarkField = require "component/element/field/MarkField"
@@ -77,6 +75,8 @@ class StoryEditor extends Component
             choosen={@state.marks} onChange={@_updateMarks}
           />
         </div>
+
+        <button>Submit</button>
       </form>
     </div>
 
