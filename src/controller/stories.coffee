@@ -1,10 +1,12 @@
 {t} = require "../core/i18n"
-
+{decorateFunc} = require "../core/helper/util/decorator"
+checkAuth = require "../core/helper/decorator/user/checkAuth"
 story = require "../model/Story"
 
 ForbiddenException = require "../core/error/Forbidden"
 NowFoundException = require "../core/error/NotFound"
 NotAllowedException = require "../core/error/NotAllowed"
+
 
 ###
 # Response stories
@@ -43,11 +45,6 @@ actionRead = (ctx) ->
 # GET /story/new
 ###
 actionNew = (ctx) ->
-  unless do ctx.req.isAuthenticated
-    throw new ForbiddenException "
-      Unauthorized access to \"Add new story\" page.
-    "
-
   ctx.render "stories/new",
     title: t "stories.title.new"
     _csrf: ctx.csrf
@@ -156,7 +153,7 @@ main =  (r) ->
 
   # Add new story
   r "/story/new"
-    .get actionNew
+    .get decorateFunc checkAuth, actionNew
     .post actionCreateStory
 
   # Edit story

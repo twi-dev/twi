@@ -22,6 +22,11 @@ app:
   # Can be only "true" or "false"
   enableSignup: true
 
+# Static server configs
+static:
+  host: localhost
+  port: 2319
+
 # Database configs
 database:
   driver: mysql
