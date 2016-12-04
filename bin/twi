@@ -140,11 +140,9 @@ function actionSetup(cmd) {
 }
 
 function actionRun(cmd) {
-  try {
-    require(`${TWI_ROOT}/core/server`);
-  } catch (err) {
-    _onError(err, cmd.parent.T);
-  }
+  var app = require(`${TWI_ROOT}/core/server/main`)();
+
+  app.catch(err => _onError(err, cmd.parent.T));
 }
 
 commander
@@ -196,5 +194,8 @@ commander
   .description("run Twi app")
   .action(actionRun);
 
-commander.parse(process.argv);
-process.on("error", _onError);
+commander
+  .parse(process.argv);
+
+process
+  .on("error", _onError);

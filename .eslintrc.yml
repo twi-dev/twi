@@ -30,5 +30,4 @@ rules:
   no-empty:
     - warn
   yoda:
-    - warn
-    - always
+    - error
