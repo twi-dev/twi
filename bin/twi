@@ -140,9 +140,10 @@ function actionSetup(cmd) {
 }
 
 function actionRun(cmd) {
-  var app = require(`${TWI_ROOT}/core/app/main`)();
+  var app = require(`${TWI_ROOT}/core/app/main`);
 
-  app.catch(err => _onError(err, cmd.parent.T));
+  app()
+    .catch(err => _onError(err, cmd.parent.T));
 }
 
 commander
