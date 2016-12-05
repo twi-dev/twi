@@ -6,7 +6,7 @@ moment = require "moment"
 
 {
   story, character, characterLocale, mark, markLocale
-} = require "../core/server/model"
+} = require "../core/app/model"
 
 character.hasMany characterLocale,
   as: "locale"

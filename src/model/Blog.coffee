@@ -5,7 +5,7 @@ md = new MD = require "markdown-it"
 moment = require "moment"
 limax = require "limax"
 
-{post, tag, postTags, user} = require "../core/server/model"
+{post, tag, postTags, user} = require "../core/app/model"
 
 NotFoundException = require "../core/error/NotFound"
 ForbiddenException = require "../core/error/Forbidden"

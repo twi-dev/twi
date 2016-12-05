@@ -8,7 +8,7 @@ crypto = require "crypto"
 bcrypt = require "../core/helper/bcrypt"
 mailer = require "../core/mail/mailer"
 
-{model, user, contacts} = require "../core/server/model"
+{model, user, contacts} = require "../core/app/model"
 {isEmail, isValidPassword} = require "../core/helper/validation"
 {t} = require "../core/i18n"
 
