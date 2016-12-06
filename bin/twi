@@ -140,10 +140,14 @@ function actionSetup(cmd) {
 }
 
 function actionRun(cmd) {
-  var {ok} = require(`${TWI_ROOT}/core/logger`);
-  var app = require(`${TWI_ROOT}/core/app/main`);
+  try {
+    var {ok} = require(`${TWI_ROOT}/core/logger`);
+    var app = require(`${TWI_ROOT}/core/app/main`);
+  } catch (err) {
+    return _onError(err, cmd.parent.T);
+  }
 
-  const onFulfilled = () => ok("App has been sucessfully started.");
+  const onFulfilled = () => ok("Twi has been sucessfully started.");
 
   const onRejected = err => _onError(err, cmd.parent.T);
 

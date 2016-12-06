@@ -78,10 +78,10 @@ app
 view app, debug: off
 
 normal "
-  Run Twi server for #{process.env.NODE_ENV or "development"} environment
+  Run Twi backend server for #{process.env.NODE_ENV or "development"} environment
 "
 
-msg = "Twi started on"
+msg = "Backend started started on"
 
 module.exports = {
   app, host, port, secure, msg

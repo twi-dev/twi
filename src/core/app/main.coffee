@@ -5,9 +5,9 @@ getHostname = require "../helper/util/getHostname"
 
 # Servers
 servers =
+  backend: require "./backend"
   static: require "./static"
   frontend: require "./frontend"
-  backend: require "./backend"
 
 ###
 # Get application server (http or http2)
