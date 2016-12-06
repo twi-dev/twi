@@ -1,6 +1,8 @@
 {realpath, readFile} = require "promise-fs"
 {ok} = require "../logger"
 
+getHostname = require "../helper/util/getHostname"
+
 # Servers
 servers =
   static: require "./static"
@@ -24,9 +26,9 @@ getServer = (app, secure = false) ->
 
   return createServer options, do app.callback
 
-runServer = ({app, port, secure, msg}) -> new Promise (resolve, reject) ->
+runServer = ({app, host, port, secure, msg}) -> new Promise (resolve, reject) ->
   onFulfilled = ->
-    ok "#{msg} http#{if secure then "s" else ""}://localhost:#{port}"; do resolve
+    ok "#{msg} #{getHostname host, port, secure}"; do resolve
 
   onRejected = (err) -> reject err
 
