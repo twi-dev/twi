@@ -29,6 +29,11 @@ static:
   port: 2319
   secure: false
 
+frontend:
+  host: localhost
+  port: 2321
+  secret: false
+
 # Database configs
 database:
   driver: mysql

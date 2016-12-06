@@ -6,6 +6,7 @@ getHostname = require "../helper/util/getHostname"
 # Servers
 servers =
   static: require "./static"
+  frontend: require "./frontend"
   backend: require "./backend"
 
 ###
