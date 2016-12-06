@@ -16,8 +16,8 @@ bar
 
 deploy/sandbox
 
-themes/**/public/img/**/*.svg
-themes/**/public/assets
+theme/**/public/img/**/*.svg
+theme/**/public/assets
 
 npm-debug.log
 yarn-error.log
@@ -34,7 +34,7 @@ langs/**/api.yml
 src/api
 src/core/api
 src/controller/api.coffee
-themes/**/views/api
+theme/**/views/api
 
 !setup/index.js
 !setup/migrations/index.js
