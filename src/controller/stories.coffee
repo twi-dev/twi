@@ -14,7 +14,7 @@ NotAllowedException = require "../core/error/NotAllowed"
 # GET /stories/:page?
 ###
 actionIndex = (ctx) ->
-  ctx.render "stories/index",
+  await ctx.render "stories/index",
     title: t "stories.title.index"
 
   await return
@@ -23,7 +23,7 @@ actionIndex = (ctx) ->
 # GET
 ###
 actionStory = (ctx) ->
-  ctx.render "stories/story",
+  await ctx.render "stories/story",
     title: "Страница рассказа"
 
   await return
@@ -34,7 +34,7 @@ actionStory = (ctx) ->
 # GET /story/read/:slug/:chapter?
 ###
 actionRead = (ctx) ->
-  ctx.render "stories/read",
+  await ctx.render "stories/read",
     title: "Story title"
 
   await return
@@ -45,7 +45,7 @@ actionRead = (ctx) ->
 # GET /story/new
 ###
 actionNew = (ctx) ->
-  ctx.render "stories/new",
+  await ctx.render "stories/new",
     title: t "stories.title.new"
     _csrf: ctx.csrf
 
@@ -85,7 +85,7 @@ actionCreateStory = (ctx) ->
 # GET /story/edit/:slug
 ###
 actionEdit = (ctx) ->
-  ctx.render "stories/edit",
+  await ctx.render "stories/edit",
     title: t "stories.title.edit"
 
   await return

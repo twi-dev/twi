@@ -204,4 +204,5 @@ commander
   .parse(process.argv);
 
 process
-  .on("error", _onError);
+  .on("error", _onError)
+  .on("SIGINT", () => process.exit(0));

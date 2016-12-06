@@ -7,8 +7,8 @@
     ".git",
     "src",
     "node_modules",
-    "frontend",
-    "public"
+    "theme",
+    "localhost"
   ],
   "ext": "js json yml yaml key cert",
   "exec": "./bin/twi run --stack-trace"

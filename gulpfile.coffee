@@ -26,6 +26,7 @@ uglify = require "gulp-uglify"
 envify = require "gulp-envify"
 source = require "vinyl-source-stream" # For rename js bundle
 vinylBuffer = require "vinyl-buffer" # For gulp-uglify
+babel = require "gulp-babel"
 
 # YAML transformer
 yaml = require "yamlify"
@@ -43,7 +44,7 @@ rupture = require "rupture"
 theme or= "twi"
 
 # Theme path
-THEME_PATH = "#{__dirname}/themes/#{theme}"
+THEME_PATH = "#{__dirname}/theme/#{theme}"
 
 # Src dirs
 JADE_SRC = "#{THEME_PATH}/views/**/*.jade"
@@ -159,7 +160,7 @@ gulp.task "coffee", (cb) ->
       .pipe source "common.js"
       .pipe do vinylBuffer
       .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
-      # .pipe if isDevel then do gutil.noop else do uglify
+      .pipe if isDevel then do gutil.noop else babel presets: ["babili"]
       .pipe gulp.dest COFFEE_DEST
 
   do rebuildBundle # Just rebuild bundle before run watcher

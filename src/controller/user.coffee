@@ -12,7 +12,7 @@ ForbiddenException = require "../core/error/Forbidden"
 # GET /users/:page?
 ###
 actionUsers = (ctx) ->
-  ctx.render "user/users",
+  await ctx.render "user/users",
     title: "Users"
 
   await return
@@ -27,7 +27,7 @@ actionProfile = (ctx) ->
 
   oUserData = await user.profile login
 
-  ctx.render "user/profile",
+  await ctx.render "user/profile",
     title: i18n.t "user.title.profile",
       username: oUserData.login
     profile: oUserData
@@ -38,7 +38,7 @@ actionSettings = (ctx) ->
   unless do ctx.req.isAuthenticated
     throw new ForbiddenException "Unauthorized access to user settings."
 
-  ctx.render "user/settings",
+  await ctx.render "user/settings",
     title: i18n.t "user.title.settings"
 
   await return

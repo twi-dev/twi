@@ -10,7 +10,7 @@ and isn't ready for production! Stay in touch.**
 
 Documentation available on these languages:
 
-[Russian](docs/ru/introduction.md)
+[Russian](doc/ru/introduction.md)
 
 ## License
 

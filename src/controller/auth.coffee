@@ -27,7 +27,7 @@ actionLogin = (ctx) ->
   if do ctx.isAuthenticated
     return ctx.redirect "/"
 
-  ctx.render "auth/signin",
+  await ctx.render "auth/signin",
     title: t "auth.title.signin"
     __csrf: ctx.csrf
     __return: ctx.query.return or "/"
@@ -50,13 +50,13 @@ actionSignin = (ctx) ->
 actionRegister = (ctx) ->
   {inviteHash} = ctx.params
   unless enableSignup
-    return ctx.render "auth/signup-disabled",
+    return await ctx.render "auth/signup-disabled",
       title: t "auth.title.inviteOnly"
 
   if do ctx.isAuthenticated
     return ctx.redirect "/"
 
-  ctx.render "auth/signup",
+  await ctx.render "auth/signup",
     title: t "user.title.signup"
     __csrf: ctx.csrf
     __return: ctx.query.return or "/"
@@ -90,11 +90,11 @@ actionConfirm = (ctx) ->
   {confirmationHash} = ctx.params
 
   unless await user.activate confirmationHash
-    ctx.render "auth/confirm-fail",
+    await ctx.render "auth/confirm-fail",
       title: t "auth.title.confirm.fail"
     return
 
-  ctx.render "auth/confirm-success",
+  await ctx.render "auth/confirm-success",
     title: t "auth.title.confirm.success"
 
   await return

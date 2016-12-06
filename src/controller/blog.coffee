@@ -14,12 +14,12 @@ actionTag = (ctx) ->
 
   post = await blog.getByTagName tagName, page
 
-  ctx.render "blog/tag", {title: "Поиск по тегу #{tagName}", post}
+  await ctx.render "blog/tag", {title: "Поиск по тегу #{tagName}", post}
 
   await return
 
 actionIndex = (ctx) ->
-  ctx.render "blog/index",
+  await ctx.render "blog/index",
     title: "Блог"
 
   await return
@@ -30,7 +30,7 @@ actionNew = (ctx) ->
   unless user? or user?.role < 3
     throw new ForbiddenException "Unauthorized access to #{ctx.url}"
 
-  ctx.render "blog/new",
+  await ctx.render "blog/new",
     title: t "blog.title.new"
     _csrf: ctx.csrf
 
@@ -66,7 +66,7 @@ actionDelete = (ctx) -> await return
 actionRead = (ctx) ->
   {title} = post = await blog.getPost ctx.params.slug
 
-  ctx.render 'blog/post', {title, post}
+  await ctx.render 'blog/post', {title, post}
 
   await return
 

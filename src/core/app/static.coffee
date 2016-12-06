@@ -7,10 +7,11 @@ serve = require "koa-static"
 } = require "../helper/configure"
 
 app = new Koa
-STATIC_PATH = "#{do process.cwd}/themes/#{theme}/public"
+STATIC_PATH = "#{do process.cwd}/theme/#{theme}"
 
 app
-  .use serve "#{STATIC_PATH}"
+  .use serve "#{STATIC_PATH}/public"
+  .use serve "#{STATIC_PATH}/uploads"
 
 msg = "Static server started on"
 module.exports = {

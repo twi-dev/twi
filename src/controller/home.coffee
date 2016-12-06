@@ -9,7 +9,7 @@ i18n = require "../core/i18n"
 # GET /
 ###
 actionIndex = (ctx) ->
-  ctx.render "home/home",
+  await ctx.render "home/home",
     title: i18n.t "home.title.index",
       name: name
 
@@ -21,7 +21,7 @@ actionIndex = (ctx) ->
 # GET /help
 ###
 actionHelp = (ctx) ->
-  ctx.render "home/help",
+  await ctx.render "home/help",
     title: i18n.t "home.title.help"
 
   await return
@@ -32,7 +32,7 @@ actionHelp = (ctx) ->
 # GET /feedback
 ###
 actionFeedback = (ctx) ->
-  ctx.render "home/feedback",
+  await ctx.render "home/feedback",
     title: i18n.t "home.title.feedback"
 
   await return
@@ -50,13 +50,13 @@ actionSend = (ctx) -> await return
 # GET /rules
 ###
 actionRules = (ctx) ->
-  ctx.render "home/rules",
+  await ctx.render "home/rules",
     title: i18n.t "home.title.rules"
 
   await return
 
 actionOutdated = ->
-  ctx.render "errors/outdated",
+  await ctx.render "errors/outdated",
     title: "You are using an outdated browser"
 
   await return
