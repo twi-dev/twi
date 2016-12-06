@@ -2,7 +2,7 @@ test = require "ava"
 
 {readdir} = require "promise-fs"
 {isPlainObject} = require "lodash"
-{define} = models = require "../../../../core/server/model"
+{define} = models = require "../../../../core/app/model"
 
 test "Module should return a plain object", (t) ->
   t.plan 1

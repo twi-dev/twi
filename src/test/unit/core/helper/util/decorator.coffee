@@ -12,11 +12,14 @@ test.beforeEach (t) ->
   t.context.decorateGreetMethod = decorateGreetMethod
 
 test "Should have all the following methods", (t) ->
-  t.plan 3
+  t.plan 6
 
   t.is typeof decorator.decorateMethods, "function"
   t.is typeof decorator.decorateMethod, "function"
   t.is typeof decorator.decorateFunc, "function"
+  t.is typeof decorator.dms, "function"
+  t.is typeof decorator.dm, "function"
+  t.is typeof decorator.df, "function"
 
   await return
 
