@@ -4,9 +4,23 @@ isFunction = require "lodash/isFunction"
 isString = require "lodash/isString"
 isArray = require "lodash/isArray"
 
+###
+# Decorate given function using given decorator
+#
+# @alias df
+#
+# @param function decorator
+# @param function func
+#
+# @return function - decorated function
+###
 decorateFunc = (decorator, func) -> decorator func
 
 ###
+# Decorate  given methods of given class
+#
+# @alias dms
+#
 # @param Function ctor
 # @param array methods - array of methods to decorate.
 #   Should be wrapped into decorateMethod helper.
@@ -26,6 +40,8 @@ decorateMethods = (ctor, methods) ->
 
 ###
 # Decorate method by his name
+#
+# @alias dm
 #
 # @param function decorator
 # @param string name
@@ -47,4 +63,9 @@ module.exports = {
   decorateMethods
   decorateMethod
   decorateFunc
+
+  # Aliases
+  dms: decorateMethods
+  dm: decorateMethod
+  df: decorateFunc
 }
