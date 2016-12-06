@@ -2,11 +2,17 @@
 
 {compile} = require "jade"
 {assign, merge} = require "lodash"
-
 {realpathSync, readFileSync} = require "fs"
-{app: {name, credits, theme}, IS_DEVEL} = require "../helper/configure"
 {version, codename} = require "../../package.json"
 {t} = require "../i18n"
+
+{
+  app: {name, credits, theme}
+  static: {host, port, secure}
+  IS_DEVEL
+} = require "../helper/configure"
+
+getHostname = require "../helper/util/getHostname"
 
 theme or= "twi"
 VIEWS = realpathSync "#{__dirname}/../../themes/#{theme}/views"
@@ -14,7 +20,7 @@ VIEWS = realpathSync "#{__dirname}/../../themes/#{theme}/views"
 
 oConfig = null
 
-# Tiny-tiny cache for templates :D
+# Tiny cache for templates :D
 oCache = {}
 
 oDefaults =
@@ -45,6 +51,7 @@ renderer = (sFilename, oOptions) ->
 
   @body = fn assign merge({
     user: @req.user
+    static: getHostname host, port, secure
     __return: @url
   }, oOptions), oLocals
 

@@ -1,5 +1,4 @@
 "use strict"
-
 Koa = require "koa"
 convert = require "koa-convert"
 serve = require "koa-static"
