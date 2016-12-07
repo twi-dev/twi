@@ -167,7 +167,12 @@ gulp.task "coffee", (cb) ->
       .pipe source "common.js"
       .pipe do vinylBuffer
       .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
-      .pipe if isDevel then do gutil.noop else babel presets: ["babili"]
+      .pipe (
+        if isDevel
+          do gutil.noop
+        else
+          babel presets: ["babili"], comments: no
+      )
       .pipe gulp.dest COFFEE_DEST
 
   do rebuildBundle # Just rebuild bundle before run watcher
