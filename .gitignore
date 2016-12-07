@@ -18,6 +18,7 @@ deploy/sandbox
 
 theme/**/public/img/**/*.svg
 theme/**/public/assets
+theme/**/src/coffee-old
 
 npm-debug.log
 yarn-error.log

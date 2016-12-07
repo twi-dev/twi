@@ -17,6 +17,7 @@ autoprefixer = require "gulp-autoprefixer"
 
 # JS plugins
 browserify = require "browserify"
+aliasify = require "aliasify"
 langify = require "#{__dirname}/setup/frontend/i18n"
 cjsx = require "./setup/frontend/cjsx-transform"
 hmr = require "browserify-hmr"
@@ -139,6 +140,13 @@ gulp.task "coffee", (cb) ->
     transform: [
       [svg, default: "image"]
       [cjsx, sourceMap: isDevel]
+      [
+        aliasify
+        aliases:
+          "react": "preact-compat"
+          "react-dom": "preact-compat"
+          "decorator": "#{__dirname}/core/helper/util/decorator"
+      ]
       yaml, rht
     ]
     extensions: [".cjsx", ".coffee"]
@@ -153,7 +161,6 @@ gulp.task "coffee", (cb) ->
   rebuildBundle = ->
     gutil.log "Rebuild coffee..."
     bundler
-      .require "#{__dirname}/core/helper/util/decorator", expose: "decorator"
       .bundle()
       .on "error", errorHandler
       .pipe plumber errorHandler

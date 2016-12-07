@@ -4,7 +4,7 @@ view = require "./view"
 {frontend: {host, port, secure}} = require "../helper/configure"
 
 app = new Koa
-view app
+view app, debug: off
 
 app.use (ctx, next) -> await ctx.render "layout/root"; await do next
 
