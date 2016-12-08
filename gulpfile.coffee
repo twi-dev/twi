@@ -143,8 +143,6 @@ gulp.task "coffee", (cb) ->
       [
         aliasify
         aliases:
-          "react": "preact-compat"
-          "react-dom": "preact-compat"
           "decorator": "#{__dirname}/core/helper/util/decorator"
       ]
       yaml, rht
