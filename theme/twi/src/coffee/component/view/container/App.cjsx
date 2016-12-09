@@ -1,8 +1,6 @@
 {Component} = React = require "react"
 
 class App extends Component
-  render: ->
-    console.log @props.children
-    <span>Foo</span>
+  render: -> <div className="page-main-container">{@props.children}</div>
 
 module.exports = App

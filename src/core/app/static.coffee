@@ -1,5 +1,6 @@
 Koa = require "koa"
 serve = require "koa-static"
+compress = require "koa-compress"
 
 {
   app: {theme}
@@ -10,6 +11,7 @@ app = new Koa
 STATIC_PATH = "#{do process.cwd}/theme/#{theme}"
 
 app
+  .use do compress
   .use serve "#{STATIC_PATH}/public"
   .use serve "#{STATIC_PATH}/uploads"
 
