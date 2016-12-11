@@ -1,7 +1,9 @@
 TWI_ROOT = do process.cwd
 WebpackDevServer = require "webpack-dev-server"
 
-{DefinePlugin, HotModuleReplacementPlugin} = webpack = require "webpack"
+{
+  DefinePlugin, HotModuleReplacementPlugin, LoaderOptionsPlugin
+} = webpack = require "webpack"
 
 {
   app: {theme}
@@ -27,30 +29,27 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     "#{TWI_ROOT}/theme/#{theme}/src/coffee/main.coffee"
   ]
 
-  coffeeLoaders = [
-    {
-      loader: "coffee"
-    }
-    {
-      loader: "cjsx"
-    }
-  ]
+  coffee =
+    test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
+    use: [
+      {
+        loader: "coffee"
+      }
+      {
+        loader: "cjsx"
+      }
+    ]
+
+  # poststylus
 
   # Add development plugins
   if isDevel is on
     plugins.push new HotModuleReplacementPlugin
 
     entry = [
-      "webpack-dev-server/client?http://0.0.0.0:#{port}"
+      "webpack-dev-server/client?http://localhost:#{port}"
       "webpack/hot/only-dev-server"
       entry...
-    ]
-
-    coffeeLoaders = [
-      {
-        loader: "react-hot-loader"
-      }
-      coffeeLoaders...
     ]
 
   config = {
@@ -74,8 +73,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
-        test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
-        use: coffeeLoaders
+        coffee
       ]
     output:
       path: "#{TWI_ROOT}/theme/#{theme}/public/assets/js"
@@ -92,6 +90,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   if isDevel is on
     server = new WebpackDevServer compiler,
+      contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
       publicPath: "/assets/js/"
       hot: on, inline: on, historyApiFallback: on
 
