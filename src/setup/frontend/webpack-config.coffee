@@ -1,5 +1,6 @@
 TWI_ROOT = do process.cwd
-WebpackDevServer = require "webpack-dev-server"
+# WebpackDevServer = require "webpack-dev-server"
+devServer = require "./helper/devServer"
 
 {
   DefinePlugin, HotModuleReplacementPlugin, LoaderOptionsPlugin
@@ -73,26 +74,44 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
+        {
+          test: /\.jsx?$/
+          exclude: /node_modules/
+          use: [
+            "react-hot-loader"
+          ]
+        }
         coffee
       ]
     output:
       path: "#{TWI_ROOT}/theme/#{theme}/public/assets/js"
+      publicPath: "/assets/js/"
       filename: "common.js"
   }
 
-  if isDevel is on
-    config.devServer =
-      contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
-      hot: on
-      inline: on
+  # if isDevel is on
+  #   config.devServer =
+  #     contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
+  #     hot: on
+  #     inline: on
 
   compiler = webpack config
 
-  if isDevel is on
-    server = new WebpackDevServer compiler,
-      contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
-      publicPath: "/assets/js/"
-      hot: on, inline: on, historyApiFallback: on
+  # if isDevel is on
+  #   server = new WebpackDevServer compiler,
+  #     hot: on, inline: on
+  #     contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
+  #     publicPath: "http://localhost:#{port}/assets/js/"
+  #     headers: "Access-Control-Allow-Origin": "*"
+
+  #   return server.listen port, "localhost"
+
+
+  if isDevel
+    server = devServer compiler, {
+      devMiddleware: {}
+      hotMiddleware: {}
+    }
 
     return server.listen port
 
