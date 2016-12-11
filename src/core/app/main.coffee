@@ -27,6 +27,13 @@ getServer = (app, secure = false) ->
 
   return createServer options, do app.callback
 
+###
+# Run given server
+#
+# @param object
+#
+# @return Promise
+###
 runServer = ({app, host, port, secure, msg}) -> new Promise (resolve, reject) ->
   onFulfilled = ->
     ok "#{msg} #{getHostname host, port, secure}"; do resolve
@@ -42,6 +49,19 @@ runServer = ({app, host, port, secure, msg}) -> new Promise (resolve, reject) ->
     .on "error", onRejected
     .listen port, onFulfilled
 
-runApp = -> await runServer obj for name, obj of servers; return
+###
+# Run all Twi servers :D
+#
+# @param boolean forceDevelopment - if set as true,
+#   run Twi app without static server
+###
+runApp = (forceDevelopment = no) ->
+  for name, obj of servers
+    # skip static server when flag --force-development passed
+    continue if forceDevelopment and name is "static"
+
+    await runServer obj
+
+  return
 
 module.exports = runApp

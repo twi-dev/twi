@@ -29,6 +29,8 @@ source = require "vinyl-source-stream" # For rename js bundle
 vinylBuffer = require "vinyl-buffer" # For gulp-uglify
 babel = require "gulp-babel"
 
+webpack = require "./setup/frontend/webpack-config"
+
 # YAML transformer
 yaml = require "yamlify"
 
@@ -136,48 +138,50 @@ gulp.task "coffee", (cb) ->
   # Set NODE_ENV for react
   process.env.NODE_ENV = if isDevel then "development" else "production"
 
-  bundler = browserify COFFEE_SRC,
-    transform: [
-      [svg, default: "image"]
-      [cjsx, sourceMap: isDevel]
-      [
-        aliasify
-        aliases:
-          "decorator": "#{__dirname}/core/helper/util/decorator"
-      ]
-      yaml, rht
-    ]
-    extensions: [".cjsx", ".coffee"]
-    paths: [
-      "#{THEME_PATH}/src/coffee"
-      "#{THEME_PATH}/public"
-    ]
-    insertGlobals: yes
-    debug: isDevel
-    plugin: if isDevel then [hmr] else []
+  # bundler = browserify COFFEE_SRC,
+  #   transform: [
+  #     [svg, default: "image"]
+  #     [cjsx, sourceMap: isDevel]
+  #     [
+  #       aliasify
+  #       aliases:
+  #         "decorator": "#{__dirname}/core/helper/util/decorator"
+  #     ]
+  #     yaml, rht
+  #   ]
+  #   extensions: [".cjsx", ".coffee"]
+  #   paths: [
+  #     "#{THEME_PATH}/src/coffee"
+  #     "#{THEME_PATH}/public"
+  #   ]
+  #   insertGlobals: yes
+  #   debug: isDevel
+  #   plugin: if isDevel then [hmr] else []
 
-  rebuildBundle = ->
-    gutil.log "Rebuild coffee..."
-    bundler
-      .bundle()
-      .on "error", errorHandler
-      .pipe plumber errorHandler
-      .pipe source "common.js"
-      .pipe do vinylBuffer
-      .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
-      .pipe (
-        if isDevel
-          do gutil.noop
-        else
-          babel presets: ["babili"], comments: no
-      )
-      .pipe gulp.dest COFFEE_DEST
+  # rebuildBundle = ->
+  #   gutil.log "Rebuild coffee..."
+  #   bundler
+  #     .bundle()
+  #     .on "error", errorHandler
+  #     .pipe plumber errorHandler
+  #     .pipe source "common.js"
+  #     .pipe do vinylBuffer
+  #     .pipe if isDevel then do gutil.noop else envify NODE_ENV: "production"
+  #     .pipe (
+  #       if isDevel
+  #         do gutil.noop
+  #       else
+  #         babel presets: ["babili"], comments: no
+  #     )
+  #     .pipe gulp.dest COFFEE_DEST
 
-  do rebuildBundle # Just rebuild bundle before run watcher
-  return watch [
-    "#{COFFEE_SRC_DIR}/**/*.coffee"
-    "#{CJSX_SRC}"
-    ], rebuildBundle if isDevel
+  # do rebuildBundle # Just rebuild bundle before run watcher
+  # return watch [
+  #   "#{COFFEE_SRC_DIR}/**/*.coffee"
+  #   "#{CJSX_SRC}"
+  #   ], rebuildBundle if isDevel
+
+  return webpack no # always should be "no"
 
 ###
 # Optimizing SVG.
@@ -211,7 +215,7 @@ gulp.task "refresh", ->
 # 
 # Run: gulp devel
 ###
-gulp.task "watch", ["env:devel", "svg", "stylus", "coffee"]
+gulp.task "watch", ["env:devel", "svg", "stylus"]
 
 ###
 # Build frontend app for probuction

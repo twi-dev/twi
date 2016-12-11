@@ -7,6 +7,4 @@
 routes = require "./routes"
 root = document.querySelector "#twi-root-container"
 
-render (
-  <Router history={browserHistory} routes={do routes}></Router>
-), root
+render <Router history={browserHistory} routes={do routes} />, root

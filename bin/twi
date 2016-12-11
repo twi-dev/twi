@@ -113,8 +113,20 @@ function _make(component = "") {
   }
 }
 
+function _watch() {
+  const webpack = require(`${TWI_ROOT}/setup/frontend/webpack-config`);
+
+  return webpack(true);
+}
+
 function actionMake(component, cmd) {
   _make(component).then(_onFulfilled, err => _onError(err, cmd.T));
+}
+
+function actionWatch(cmd) {
+  const onFulfilled = stats => console.log(String(stats));
+
+  _watch().then(onFulfilled, _onError);
 }
 
 function actionMigrate(cmd) {
@@ -151,7 +163,7 @@ function actionRun(cmd) {
 
   const onRejected = err => _onError(err, cmd.parent.T);
 
-  app()
+  app(cmd.parent.forceDevelopment)
     .then(onFulfilled, onRejected);
 }
 
@@ -160,7 +172,8 @@ commander
   .usage("<command> [options]");
 
 commander
-  .option("--stack-trace, -t", "show stack trace on errors");
+  .option("--stack-trace, -t", "show stack trace on errors")
+  .option("--force-development", "run app in development env");
 
 commander
   .command("setup")
@@ -197,6 +210,12 @@ commander
   .alias("m")
   .description("Build Twi components")
   .action(actionMake);
+
+commander
+  .command("watch")
+  .alias("w")
+  .description("Run Twi with dev static server")
+  .action(actionWatch);
 
 commander
   .command("run")
