@@ -41,6 +41,13 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
     ]
 
+  hmr =
+    test: /\.jsx?$/
+    exclude: /node_modules/
+    use: [
+      "react-hot-loader"
+    ]
+
   # poststylus
 
   # Add development plugins
@@ -48,8 +55,11 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     plugins.push new HotModuleReplacementPlugin
 
     entry = [
-      "webpack-dev-server/client?http://localhost:#{port}"
-      "webpack/hot/only-dev-server"
+      "
+        webpack-hot-middleware/client?path=http://localhost:#{
+          port
+        }/__webpack_hmr&timeout=20000
+      "
       entry...
     ]
 
@@ -74,13 +84,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
-        {
-          test: /\.jsx?$/
-          exclude: /node_modules/
-          use: [
-            "react-hot-loader"
-          ]
-        }
+        hmr
         coffee
       ]
     output:
@@ -108,10 +112,20 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
 
   if isDevel
-    server = devServer compiler, {
-      devMiddleware: {}
-      hotMiddleware: {}
-    }
+    server = devServer compiler,
+      contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
+      devMiddleware:
+        hot: on
+        lazy: no
+        publicPath: config.output.publicPath
+        stats:
+          colors: on
+        # headers:
+        #   "X-Custom-Header": "yes"
+      hotMiddleware:
+        path: "/__webpack_hmr"
+        heartbeat: 10 * 1000
+        log: console.log
 
     return server.listen port
 
