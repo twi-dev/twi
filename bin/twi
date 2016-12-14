@@ -94,7 +94,7 @@ function _makeFrontend() {
   ora.text = "Making frontend app...";
   ora.start();
 
-  return exec(`${TWI_ROOT}/node_modules/.bin/gulp`);
+  return require(`${TWI_ROOT}/setup/frontend/webpack-config`)(false);
 }
 
 /**
@@ -120,13 +120,13 @@ function _watch() {
 }
 
 function actionMake(component, cmd) {
-  _make(component).then(_onFulfilled, err => _onError(err, cmd.T));
+  _make(component).then(_onFulfilled, err => _onError(err, cmd.parent.T));
 }
 
 function actionWatch(cmd) {
   const onFulfilled = stats => console.log(String(stats));
 
-  _watch().then(onFulfilled, _onError);
+  _watch().then(onFulfilled, err => _onError(err, cmd.parent.T));
 }
 
 function actionMigrate(cmd) {

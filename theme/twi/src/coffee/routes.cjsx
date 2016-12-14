@@ -3,7 +3,7 @@ React = require "react"
 
 NotFound = require "component/view/error/http/NotFound"
 
-App = require "component/view/container/App"
+App = require "component/view/layout/App"
 
 # Home
 Home = require "component/view/home/Home/Home"

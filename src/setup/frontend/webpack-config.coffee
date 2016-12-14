@@ -1,4 +1,8 @@
 TWI_ROOT = do process.cwd
+
+jeet = require "jeet"
+rupture = require "rupture"
+poststylus = require "poststylus"
 devServer = require "./helper/devServer"
 
 {
@@ -22,7 +26,21 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   process.env.NODE_ENV or= if isDevel then "development" else "production"
 
   plugins = [
-    new DefinePlugin "process.env": NODE_ENV: JSON.stringify process.env.NODE_ENV
+    new DefinePlugin
+      "process.env":
+        NODE_ENV:
+          JSON.stringify process.env.NODE_ENV
+
+    new LoaderOptionsPlugin
+      options:
+        stylus:
+          use: [
+            do jeet
+            do rupture
+            poststylus [
+              "autoprefixer"
+            ]
+          ]
   ]
 
   entry = [
@@ -34,9 +52,6 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     exclude: /node_modules/
     use: [
       {
-        loader: "react-hot-loader"
-      }
-      {
         loader: "coffee"
       }
       {
@@ -44,11 +59,34 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
     ]
 
-  # poststylus
+  stylus =
+    test: /\.styl/
+    exclude: /node_modules/
+    use: [
+      {
+        loader: "style-loader"
+      }
+      {
+        loader: "css-loader"
+      }
+      {
+        loader: "stylus-loader"
+      }
+    ]
 
   # Add development plugins
   if isDevel is on
-    plugins.push new HotModuleReplacementPlugin
+    plugins = [
+      plugins...
+      new HotModuleReplacementPlugin
+    ]
+
+    coffee.use = [
+      {
+        loader: "react-hot-loader"
+      }
+      coffee.use...
+    ]
 
     entry = [
       "
@@ -80,6 +118,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
+        stylus
         coffee
       ]
     output:

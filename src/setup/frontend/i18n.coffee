@@ -1,3 +1,4 @@
+# DEPRECATED!
 co = require "co"
 glob = require "glob"
 {isEmpty} = require "lodash"
