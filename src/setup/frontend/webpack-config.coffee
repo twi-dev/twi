@@ -68,6 +68,10 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
       {
         loader: "css-loader"
+        query:
+          modules: yes
+          camelCase: yes
+          localIdentName: "[path][name]--[local]-[hash:base64:10]"
       }
       {
         loader: "stylus-loader"
