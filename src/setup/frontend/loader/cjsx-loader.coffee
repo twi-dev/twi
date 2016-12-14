@@ -4,16 +4,16 @@
 cjsx = (contents) ->
   {options} = this
 
+  cb = do @async
+
   config = {
     bare: on
     header: off
   }
 
   try
-    contents = transform contents, config
+    return cb null, transform contents, config
   catch err
     return cb err
-
-  return contents
 
 module.exports = cjsx

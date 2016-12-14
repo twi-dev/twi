@@ -1,5 +1,4 @@
 TWI_ROOT = do process.cwd
-# WebpackDevServer = require "webpack-dev-server"
 devServer = require "./helper/devServer"
 
 {
@@ -32,20 +31,17 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   coffee =
     test: /\.(cjsx|coffee|litcoffee|coffee\.md)$/
+    exclude: /node_modules/
     use: [
+      {
+        loader: "react-hot-loader"
+      }
       {
         loader: "coffee"
       }
       {
         loader: "cjsx"
       }
-    ]
-
-  hmr =
-    test: /\.jsx?$/
-    exclude: /node_modules/
-    use: [
-      "react-hot-loader"
     ]
 
   # poststylus
@@ -84,32 +80,15 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
-        hmr
         coffee
       ]
     output:
       path: "#{TWI_ROOT}/theme/#{theme}/public/assets/js"
-      publicPath: "/assets/js/"
+      publicPath: "http://localhost:#{port}/assets/js/"
       filename: "common.js"
   }
 
-  # if isDevel is on
-  #   config.devServer =
-  #     contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
-  #     hot: on
-  #     inline: on
-
   compiler = webpack config
-
-  # if isDevel is on
-  #   server = new WebpackDevServer compiler,
-  #     hot: on, inline: on
-  #     contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
-  #     publicPath: "http://localhost:#{port}/assets/js/"
-  #     headers: "Access-Control-Allow-Origin": "*"
-
-  #   return server.listen port, "localhost"
-
 
   if isDevel
     server = devServer compiler,
@@ -120,8 +99,6 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         publicPath: config.output.publicPath
         stats:
           colors: on
-        # headers:
-        #   "X-Custom-Header": "yes"
       hotMiddleware:
         path: "/__webpack_hmr"
         heartbeat: 10 * 1000

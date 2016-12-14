@@ -31,7 +31,7 @@ devMiddleware = (compiler, config) ->
   act = webpackDevMiddleware compiler, config
   return (ctx, next) ->
     middleware = await wrapMiddleware act, ctx.req,
-      end: (content) -> ctx.body = content
+      end: (content) -> content; ctx.body = content
       setHeader: -> ctx.set.apply ctx, arguments
 
     await do next if middleware and next
