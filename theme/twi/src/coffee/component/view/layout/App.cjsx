@@ -1,11 +1,16 @@
 {Component} = React = require "react"
 
-common = require "./common.styl"
+{pageMainContainer} = require "./common.styl"
+
+Header = require "./Header"
 
 class App extends Component
   render: ->
-    <div className="page-main-container">
-      {@props.children}
+    <div className="#{pageMainContainer}">
+      <Header />
+      <div className="page-content">
+        {@props.children}
+      </div>
     </div>
 
 module.exports = App

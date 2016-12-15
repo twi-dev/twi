@@ -1,0 +1,36 @@
+@import "jeet"
+@import "rupture"
+
+.main-container
+  align(center)
+  max-width 512px
+
+.image
+  position relative
+
+  img
+    width auto
+    max-width 100%
+
+.message
+  text-align center
+  font-size 120%
+
+.code
+  &-not-found
+    position absolute
+    top 0
+    font-size 100% * 5
+    font-weight bold
+
+.link
+  margin 10px 0
+  text-align center
+  font-size 120%
+
+  a
+    color #343434 // tmp
+    text-decoration none
+
+    &:hover
+      text-decoration underline

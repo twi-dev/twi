@@ -34,6 +34,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     new LoaderOptionsPlugin
       options:
         stylus:
+          "include css": on
           use: [
             do jeet
             do rupture
@@ -78,6 +79,23 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
     ]
 
+  svg =
+    test: /\.svg/
+    exclude: /node_modules/
+    use: [
+      {
+        loader: "babel-loader"
+        query:
+          presets: [
+            "es2015"
+            "react"
+          ]
+      }
+      {
+        loader: "react-svg-loader"
+      }
+    ]
+
   # Add development plugins
   if isDevel is on
     plugins = [
@@ -110,6 +128,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       modules: [
         "node_modules"
         "#{TWI_ROOT}/theme/#{theme}/src/coffee"
+        "#{TWI_ROOT}/theme/#{theme}/src/svg"
       ]
       extensions: [
         ".coffee", ".cjsx", ".litcoffee", ".coffee.md"
@@ -122,6 +141,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     entry
     module:
       rules: [
+        svg
         stylus
         coffee
       ]

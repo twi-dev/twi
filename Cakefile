@@ -15,7 +15,10 @@ coffee = require "coffee-script"
 {dirname, extname} = require "path"
 sourcemaps = require "gulp-sourcemaps"
 {red, yellow, green, cyan} = require "chalk"
+
+# replace that thing with convert-source-map
 applySourceMap = require "vinyl-sourcemaps-apply"
+
 {cross, tick, pointer, warning, info} = require "figures"
 {realpathSync, statSync, mkdirSync, watch} = require "fs"
 
