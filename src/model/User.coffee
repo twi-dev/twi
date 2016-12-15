@@ -158,11 +158,11 @@ getAuthenticated = (id, cb) ->
 ###
 profile = (userId) ->
   userData = await user.findOne
-    raw: yes
     attributes:
       exclude: [
         "contactsId"
         "userId"
+        "user_id" # Why?! o_O
         "email"
         "password"
         "role"
@@ -172,18 +172,19 @@ profile = (userId) ->
       attributes:
         exclude: [
           "contactsId"
+          "contacts_id"
+          "user_id"
           "userId"
         ]
     ]
     where:
       login: userId
 
-
   # Throwing error if user is not found
   unless userData?
     throw new NotFoundException "User \"#{sUserId}\" is not found."
 
-  return userData
+  return userData.get plain: on
 
 module.exports = {
   signup

@@ -1,5 +1,4 @@
 {t} = require "../core/i18n"
-{decorateFunc} = require "../core/helper/util/decorator"
 checkAuth = require "../core/helper/decorator/user/checkAuth"
 story = require "../model/Story"
 
@@ -136,37 +135,36 @@ actionMarks = (ctx) ->
 
 main =  (r) ->
   # Get characters
-  r "/story/characters/:name?"
+  r "/characters/:name?"
     .get actionCharacters
 
   # Get marks
-  r "/story/marks/:name?"
+  r "/marks/:name?"
     .get actionMarks
 
   # List of all stories
-  r "/stories/:page?"
-    .get actionIndex
+  # r "/stories/:page?"
+  #   .get actionIndex
 
   # Read story with given id
-  r "/story/read/:slug/:chapter"
+  r "/read/:slug/:chapter"
     .get actionRead
 
   # Add new story
-  r "/story/new"
-    .get decorateFunc checkAuth, actionNew
+  r "/new"
     .post actionCreateStory
 
   # Edit story
-  r "/story/edit/:slug/:chapter?"
-    .get actionEdit
+  r "/edit/:slug/:chapter?"
+    # .get actionEdit
     .put actionSave
 
   # Story details/delete story
   # TODO: Node said something about EventEmitter memory leak on this.
   # I need some research.
-  r "/story/:slug"
-    .get actionStory
-    .delete actionDelete
+  # r "/:slug"
+  #   .get actionStory
+  #   .delete actionDelete
 
 
 module.exports = main

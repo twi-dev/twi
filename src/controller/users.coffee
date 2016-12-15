@@ -11,46 +11,39 @@ ForbiddenException = require "../core/error/Forbidden"
 # 
 # GET /users/:page?
 ###
-actionUsers = (ctx) ->
-  await ctx.render "user/users",
-    title: "Users"
-
-  await return
+actionUsers = (ctx) -> await return
 
 ###
 # Response user profile
 # 
-# GET /user/:login?
+# GET /users/profile/:login?
 ###
 actionProfile = (ctx) ->
-  {login} = ctx.params
-
-  oUserData = await user.profile login
-
-  await ctx.render "user/profile",
-    title: i18n.t "user.title.profile",
-      username: oUserData.login
-    profile: oUserData
-
+  ctx.body = await user.profile ctx?.params?.login
   await return
 
+###
+# Settings
+#
+# GET /users/settings
+###
 actionSettings = (ctx) ->
   unless do ctx.req.isAuthenticated
     throw new ForbiddenException "Unauthorized access to user settings."
 
-  await ctx.render "user/settings",
-    title: i18n.t "user.title.settings"
+  # await ctx.render "user/settings",
+  #   title: i18n.t "user.title.settings"
 
   await return
 
 module.exports = (r) ->
-  r "/users/:page?"
-    .get actionUsers
-
-  r "/user/:login?"
+  r "/profile/:login?"
     .get actionProfile
 
   r "/settings"
     .get actionSettings
+
+  r "/:page?"
+    .get actionUsers
 
   return

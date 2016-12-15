@@ -12,15 +12,12 @@ actionTag = (ctx) ->
 
   return ctx.body = await blog.getTagsByName tagName if ref is "ed"
 
-  post = await blog.getByTagName tagName, page
-
-  await ctx.render "blog/tag", {title: "Поиск по тегу #{tagName}", post}
+  ctx.body = await blog.getByTagName tagName, page
 
   await return
 
 actionIndex = (ctx) ->
-  await ctx.render "blog/index",
-    title: "Блог"
+  ctx.body = message: "Blog will be here (or not :D)"
 
   await return
 
@@ -64,31 +61,29 @@ actionSave = (ctx) -> await return
 actionDelete = (ctx) -> await return
 
 actionRead = (ctx) ->
-  {title} = post = await blog.getPost ctx.params.slug
-
-  await ctx.render 'blog/post', {title, post}
+  ctx.body = await blog.getPost ctx.params.slug
 
   await return
 
 module.exports = (r) ->
-  r "/blog/tag/:tagName/:page?"
+  r "/tag/:tagName/:page?"
     .get actionTag
 
-  r "/blog/post/:slug"
+  r "/post/:slug"
     .get actionRead
 
-  r "/blog/new"
-    .get actionNew
+  r "/new"
+    # .get actionNew
     .post actionCreate
 
-  r "/blog/edit/:slug"
-    .get actionEdit
+  r "/edit/:slug"
+    # .get actionEdit
     .put actionSave
 
-  r "/blog/delete/:slug"
+  r "/delete/:slug"
     .delete actionDelete
 
-  r "/blog/:page?"
+  r "/:page?"
     .get actionIndex
 
   return

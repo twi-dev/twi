@@ -111,19 +111,19 @@ actionLogout = (ctx) ->
   await return
 
 module.exports = (r) ->
-  foo = r "/auth/signin"
-    .get actionLogin
+  r "/signin"
+    # .get actionLogin
     .post passport.authenticate("local"), actionSignin
 
-  r "/auth/signup/:inviteHash?"
-    .get actionRegister
+  r "/signup/:inviteHash?"
+    # .get actionRegister
     .post actionSignup
 
   # Confirmation link
-  r "/auth/confirm/:confirmationHash"
-    .get actionConfirm
+  # r "/confirm/:confirmationHash"
+  #   .get actionConfirm
 
-  r "/auth/logout"
-    .get actionLogout
+  # r "/logout"
+  #   .get actionLogout
 
   return

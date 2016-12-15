@@ -4,17 +4,11 @@ errorHandler = (ctx, next) ->
   try
     await do next
   catch error
-    {stack, status, properties} = error
+    {stack, status, props} = error
 
     err stack
 
-    status ?= 500
-    ctx.status = status
-
-    unless ctx.isXhr
-      ctx.render "errors/http/#{status}",
-        code: status, props: properties or null
-    else
-      ctx.body = properties or {message: "Something\"s broke"}
+    ctx.status = status ? 500
+    ctx.body = props
 
 module.exports = errorHandler
