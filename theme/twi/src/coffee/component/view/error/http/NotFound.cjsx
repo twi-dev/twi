@@ -13,7 +13,7 @@ class NotFound extends Component
   render: ->
     <div className="#{mainContainer}">
       <div className="#{image}">
-        <img src="//localhost:2319/assets/img/errors/404.svg" alt="404" />
+        <img src="/assets/img/errors/404.svg" alt="404" />
       </div>
       <div className="#{codeNotFound}">404</div>
       <div className="#{message}">

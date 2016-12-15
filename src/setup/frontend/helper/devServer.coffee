@@ -5,10 +5,13 @@
 Koa = require "koa"
 serve = require "koa-static"
 cors = require "kcors"
-koa = new Koa
 
 webpackDevMiddleware = require "webpack-dev-middleware"
 webpackHotMiddleware = require "webpack-hot-middleware"
+
+views = require "../../../core/app/view"
+
+koa = new Koa
 
 ###
 # Wrap given middleware
@@ -42,14 +45,26 @@ hotMiddleware = (compiler, config) ->
     middleware = await wrapMiddleware act, ctx.req, ctx.res
     await do next if middleware and next
 
+# Serve index page
+actionIndex = (ctx, next) ->
+  await do next unless ctx.method is "GET" or ctx.url is "/"
+  await ctx.render "layout/root"
+
+actionOutdated = (ctx, next) ->
+  await do next unless ctx.method is "GET" or ctx.url is "/outdated"
+  ctx.body = "You are using an outdated browser"
+
 # Note: DO NOT USE THIS SERVER IN PRODUCTION! THIS ONE ONLY FOR DEVELOPMENT!
 devServer = (compiler, config = {}) ->
+  views koa, debug: off # add view renderer to koa
+
   koa
     .use do cors
     .use devMiddleware compiler,
       assign {}, config.devMiddleware, config.contentBase
     .use hotMiddleware compiler, config.hotMiddleware
     .use serve config.contentBase
+    .use actionIndex
 
   return koa
 

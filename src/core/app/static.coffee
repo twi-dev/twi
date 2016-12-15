@@ -7,6 +7,8 @@ compress = require "koa-compress"
   static: {host, port, secure}
 } = require "../helper/configure"
 
+views = require "./view"
+
 app = new Koa
 STATIC_PATH = "#{do process.cwd}/theme/#{theme}"
 

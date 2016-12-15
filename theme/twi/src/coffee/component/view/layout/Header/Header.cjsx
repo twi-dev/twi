@@ -7,7 +7,7 @@
 class Header extends Component
   render: ->
     <div className="#{container}">
-      Header...
+      Golden Oak
     </div>
 
 module.exports = Header
