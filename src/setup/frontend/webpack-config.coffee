@@ -24,7 +24,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   fulfill = (err, stats) -> if err then onRejected err else onFulfilled stats
 
-  process.env.NODE_ENV or= if isDevel then "development" else "production"
+  process.env.NODE_ENV = if isDevel then "development" else "production"
 
   plugins = [
     new DefinePlugin
@@ -98,17 +98,6 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         loader: "react-svg-loader"
       }
     ]
-
-  # babel =
-  #   test: /\.(cjsx|coffee|litcoffee|coffee\.md|svg|styl)$/
-  #   exclude: /node_modules/
-  #   use: [
-  #     loader: "babel-loader"
-  #     query:
-  #       presets: [
-  #         "babili"
-  #       ]
-  #   ]
 
   # Add development plugins
   if isDevel
