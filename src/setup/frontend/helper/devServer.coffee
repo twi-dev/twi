@@ -11,6 +11,11 @@ webpackHotMiddleware = require "webpack-hot-middleware"
 
 views = require "../../../core/app/view"
 
+{
+  actionIndex
+  actionOutdated
+} = require "../../../core/app/frontend"
+
 koa = new Koa
 
 ###
@@ -44,15 +49,6 @@ hotMiddleware = (compiler, config) ->
   return (ctx, next) ->
     middleware = await wrapMiddleware act, ctx.req, ctx.res
     await do next if middleware and next
-
-# Serve index page
-actionIndex = (ctx, next) ->
-  await do next unless ctx.method is "GET" or ctx.url is "/"
-  await ctx.render "layout/root"
-
-actionOutdated = (ctx, next) ->
-  await do next unless ctx.method is "GET" or ctx.url is "/outdated"
-  ctx.body = "You are using an outdated browser"
 
 # Note: DO NOT USE THIS SERVER IN PRODUCTION! THIS ONE ONLY FOR DEVELOPMENT!
 devServer = (compiler, config = {}) ->

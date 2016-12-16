@@ -24,8 +24,8 @@ logger = require "../middleware/logger"
 {ok, info, normal}  = require "../logger"
 {readFileSync, realpathSync} = require "fs"
 {readFile, realpath} = require "promise-fs"
-PUBLIC_DIR = realpathSync "#{__dirname}/../../theme/#{theme}/public"
-UPLOADS_DIR = realpathSync "#{__dirname}/../../uploads"
+
+PUBLIC_DIR = realpathSync "#{__dirname}/../../public"
 app = new Koa
 app.keys = [session.secret]
 
@@ -39,11 +39,7 @@ app
   .use errorHandler
 
   # Serve favicon and static files
-  .use favicon "#{PUBLIC_DIR}/img/icns/favicons/ponyfiction-js.ico"
-  # .use serve PUBLIC_DIR
-
-  # Serve uploads
-  # .use serve UPLOADS_DIR
+  .use favicon "#{PUBLIC_DIR}/assets/img/icns/favicons/twi.ico"
 
   # Logger middleware for any requests
   .use logger
