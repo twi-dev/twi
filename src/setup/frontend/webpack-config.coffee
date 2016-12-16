@@ -4,6 +4,7 @@ jeet = require "jeet"
 rupture = require "rupture"
 poststylus = require "poststylus"
 devServer = require "./helper/devServer"
+WebpackPluginBabili = require "babili-webpack-plugin"
 
 {
   DefinePlugin, HotModuleReplacementPlugin, LoaderOptionsPlugin
@@ -42,6 +43,8 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
               "autoprefixer"
             ]
           ]
+        babel:
+          comments: not isDevel
   ]
 
   entry = [
@@ -61,7 +64,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     ]
 
   stylus =
-    test: /\.styl/
+    test: /\.styl$/
     exclude: /node_modules/
     use: [
       {
@@ -80,7 +83,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     ]
 
   svg =
-    test: /\.svg/
+    test: /\.svg$/
     exclude: /node_modules/
     use: [
       {
@@ -96,8 +99,19 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
     ]
 
+  # babel =
+  #   test: /\.(cjsx|coffee|litcoffee|coffee\.md|svg|styl)$/
+  #   exclude: /node_modules/
+  #   use: [
+  #     loader: "babel-loader"
+  #     query:
+  #       presets: [
+  #         "babili"
+  #       ]
+  #   ]
+
   # Add development plugins
-  if isDevel is on
+  if isDevel
     plugins = [
       plugins...
       new HotModuleReplacementPlugin
@@ -117,6 +131,12 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         }/__webpack_hmr&timeout=20000
       "
       entry...
+    ]
+
+  unless isDevel
+    plugins = [
+      plugins...
+      new WebpackPluginBabili comments: off
     ]
 
   config = {

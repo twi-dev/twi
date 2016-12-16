@@ -20,8 +20,8 @@ deploy/sandbox
 theme/**/src/coffee-old
 
 public/assets/img/**/*.svg
-public/assets/js/*.js
-public/assets/css/*.css
+public/assets/js
+public/assets/css
 
 npm-debug.log
 yarn-error.log

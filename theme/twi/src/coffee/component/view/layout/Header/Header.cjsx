@@ -1,4 +1,5 @@
 {Component} = React = require "react"
+{Link} = require "react-router"
 
 {
   container
@@ -7,7 +8,7 @@
 class Header extends Component
   render: ->
     <div className="#{container}">
-      Golden Oak
+      <Link to="/">Golden Oak</Link>
     </div>
 
 module.exports = Header
