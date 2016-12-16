@@ -17,11 +17,11 @@ bar
 deploy/sandbox
 
 # Deprecated
-theme/**/public/img/**/*.svg
-theme/**/public/assets
 theme/**/src/coffee-old
 
-public/img/**/*.svg
+public/assets/img/**/*.svg
+public/assets/js/*.js
+public/assets/css/*.css
 
 npm-debug.log
 yarn-error.log
@@ -32,13 +32,6 @@ index.js
 *.docx
 *.odt
 *.old
-
-# Temporarily ignore API things
-langs/**/api.yml
-src/api
-src/core/api
-src/controller/api.coffee
-theme/**/views/api
 
 !setup/index.js
 !setup/migrations/index.js
