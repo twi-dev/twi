@@ -146,7 +146,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         coffee
       ]
     output:
-      path: "#{TWI_ROOT}/theme/#{theme}/public/assets/js"
+      path: "#{TWI_ROOT}/public/assets/js"
       publicPath: "http://localhost:#{port}/assets/js/"
       filename: "common.js"
   }
@@ -155,7 +155,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   if isDevel
     server = devServer compiler,
-      contentBase: "#{TWI_ROOT}/theme/#{theme}/public"
+      contentBase: "#{TWI_ROOT}/public"
       devMiddleware:
         hot: on
         lazy: no

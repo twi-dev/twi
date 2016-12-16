@@ -16,9 +16,12 @@ bar
 
 deploy/sandbox
 
+# Deprecated
 theme/**/public/img/**/*.svg
 theme/**/public/assets
 theme/**/src/coffee-old
+
+public/img/**/*.svg
 
 npm-debug.log
 yarn-error.log

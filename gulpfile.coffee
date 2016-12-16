@@ -23,7 +23,7 @@ SVG_SRC = "#{THEME_PATH}/src/svg/**/*.svg"
 ###
 # Destination dirs
 ###
-SVG_DEST = "#{THEME_PATH}/public/assets/img"
+SVG_DEST = "#{__dirname}/public/assets/img"
 
 # Is devel task running?
 isDevel = no

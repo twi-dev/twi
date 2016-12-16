@@ -10,12 +10,12 @@ compress = require "koa-compress"
 views = require "./view"
 
 app = new Koa
-STATIC_PATH = "#{do process.cwd}/theme/#{theme}"
+STATIC_PATH = "#{do process.cwd}/public"
 
 app
   .use do compress
-  .use serve "#{STATIC_PATH}/public"
-  .use serve "#{STATIC_PATH}/uploads"
+  .use serve "#{STATIC_PATH}/assets"
+  .use serve "#{STATIC_PATH}/files"
 
 msg = "Static server started on"
 module.exports = {
