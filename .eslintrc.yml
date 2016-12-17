@@ -1,3 +1,4 @@
+parser: babel-eslint
 env:
   browser: true
   commonjs: true
@@ -7,6 +8,7 @@ extends: eslint:recommended
 installedESLint: true
 parserOptions:
   sourceType: module
+  allowImportExportEverywhere: false
   ecmaFeatures:
     experimentalObjectRestSpread: true
     jsx: true

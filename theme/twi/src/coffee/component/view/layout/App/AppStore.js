@@ -1,4 +1,4 @@
-import {observable, computed} from "mobx"
+import {observable} from "mobx"
 
 export class AppStore {
   @observable width = 0
