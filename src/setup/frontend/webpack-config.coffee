@@ -48,7 +48,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   ]
 
   entry = [
-    "#{TWI_ROOT}/theme/#{theme}/src/coffee/main.cjsx"
+    "#{TWI_ROOT}/theme/#{theme}/src/frontend/main.cjsx"
   ]
 
   coffee =
@@ -154,7 +154,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         decorator: "#{TWI_ROOT}/core/helper/util/decorator"
       modules: [
         "node_modules"
-        "#{TWI_ROOT}/theme/#{theme}/src/coffee"
+        "#{TWI_ROOT}/theme/#{theme}/src/frontend"
         "#{TWI_ROOT}/theme/#{theme}/src/svg"
       ]
       extensions: [
