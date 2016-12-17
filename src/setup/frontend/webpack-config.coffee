@@ -48,7 +48,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   ]
 
   entry = [
-    "#{TWI_ROOT}/theme/#{theme}/src/coffee/main.coffee"
+    "#{TWI_ROOT}/theme/#{theme}/src/coffee/main.cjsx"
   ]
 
   coffee =
@@ -60,6 +60,24 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
       {
         loader: "cjsx"
+      }
+    ]
+
+  babel =
+    test: /\.jsx?$/
+    exclude: /node_modules/
+    use: [
+      {
+        loader: "babel-loader"
+        query:
+          presets: [
+            "es2015"
+            "react"
+          ]
+          plugins: [
+            "transform-class-properties"
+            "transform-decorators-legacy"
+          ]
       }
     ]
 
@@ -153,6 +171,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         svg
         stylus
         coffee
+        babel
       ]
     output:
       path: "#{TWI_ROOT}/public/assets/js"

@@ -22,7 +22,7 @@ rules:
     - double
   semi:
     - warn
-    - always
+    - never
   no-unused-vars:
     - warn
   no-console: 0

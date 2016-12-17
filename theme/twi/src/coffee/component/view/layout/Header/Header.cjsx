@@ -1,15 +1,18 @@
 {Component} = React = require "react"
 {Link} = require "react-router"
+{observer} = require "mobx-react"
 
 {
   container
+  navContainer
 } = require "./header.styl"
 
 class Header extends Component
   render: ->
-    <div className="#{container}">
-      <Link to="/">Golden Oak</Link>
-    </div>
+    <header className="#{container}">
+      <div className="#{navContainer}">
+        <Link to="/">Golden Oak</Link>
+      </div>
+    </header>
 
-module.exports = Header
-
+module.exports = observer Header
