@@ -390,12 +390,6 @@ aws4@^1.2.1:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.5.0.tgz#0a29ffb79c31c9e712eeb087e8e7a64b4a56d755"
 
-axios@0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.14.0.tgz#40f24f2f4e913b9faa43d3a7b2e40ab8729afa90"
-  dependencies:
-    follow-redirects "0.0.7"
-
 babel-code-frame@^6.11.0, babel-code-frame@^6.20.0, babel-code-frame@^6.8.0:
   version "6.20.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.20.0.tgz#b968f839090f9a8bc6d41938fb96cb84f7387b26"
@@ -804,7 +798,7 @@ babel-plugin-transform-async-to-generator@^6.16.0:
     babel-plugin-syntax-async-functions "^6.8.0"
     babel-runtime "^6.0.0"
 
-babel-plugin-transform-class-properties@^6.18.0, babel-plugin-transform-class-properties@^6.19.0:
+babel-plugin-transform-class-properties@6.19.0, babel-plugin-transform-class-properties@^6.18.0:
   version "6.19.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-class-properties/-/babel-plugin-transform-class-properties-6.19.0.tgz#1274b349abaadc835164e2004f4a2444a2788d5f"
   dependencies:
@@ -813,7 +807,7 @@ babel-plugin-transform-class-properties@^6.18.0, babel-plugin-transform-class-pr
     babel-runtime "^6.9.1"
     babel-template "^6.15.0"
 
-babel-plugin-transform-decorators-legacy@^1.3.4:
+babel-plugin-transform-decorators-legacy@1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-decorators-legacy/-/babel-plugin-transform-decorators-legacy-1.3.4.tgz#741b58f6c5bce9e6027e0882d9c994f04f366925"
   dependencies:
@@ -2948,7 +2942,7 @@ fastparse@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.1.tgz#d1e2643b38a94d7583b479060e6c4affc94071f8"
 
-fbjs@^0.8.4:
+fbjs@^0.8.1, fbjs@^0.8.4:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.5.tgz#f69ba8a876096cb1b9bffe4d7c1e71c19d39d008"
   dependencies:
@@ -3062,13 +3056,6 @@ flatten@^1.0.2:
 fn-name@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fn-name/-/fn-name-2.0.1.tgz#5214d7537a4d06a4a301c0cc262feb84188002e7"
-
-follow-redirects@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-0.0.7.tgz#34b90bab2a911aa347571da90f22bd36ecd8a919"
-  dependencies:
-    debug "^2.2.0"
-    stream-consume "^0.1.0"
 
 for-in@^0.1.5:
   version "0.1.6"
@@ -6198,9 +6185,13 @@ react-codemirror@0.2.6:
     codemirror "^5.13.4"
     lodash.debounce "^4.0.4"
 
-react-dom@15.3.2:
-  version "15.3.2"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.3.2.tgz#c46b0aa5380d7b838e7a59c4a7beff2ed315531f"
+react-dom@15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.4.1.tgz#d54c913261aaedb17adc20410d029dcc18a1344a"
+  dependencies:
+    fbjs "^0.8.1"
+    loose-envify "^1.1.0"
+    object-assign "^4.1.0"
 
 react-hot-api@^0.4.5:
   version "0.4.7"
@@ -6238,9 +6229,9 @@ react-svg-loader@1.1.1:
     svgo "~0.6.3"
     yargs "~4.8.0"
 
-react@15.3.2:
-  version "15.3.2"
-  resolved "https://registry.yarnpkg.com/react/-/react-15.3.2.tgz#a7bccd2fee8af126b0317e222c28d1d54528d09e"
+react@15.4.1:
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/react/-/react-15.4.1.tgz#498e918602677a3983cd0fd206dfe700389a0dd6"
   dependencies:
     fbjs "^0.8.4"
     loose-envify "^1.1.0"
@@ -6916,7 +6907,7 @@ stream-browserify@^2.0.1:
     inherits "~2.0.1"
     readable-stream "^2.0.2"
 
-stream-consume@^0.1.0, stream-consume@~0.1.0:
+stream-consume@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/stream-consume/-/stream-consume-0.1.0.tgz#a41ead1a6d6081ceb79f65b061901b6d8f3d1d0f"
 

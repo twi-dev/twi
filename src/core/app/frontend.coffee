@@ -1,10 +1,10 @@
 # Serve index page
 actionIndex = (ctx, next) ->
-  await do next unless ctx.method is "GET" or ctx.url is "/"
+  return await do next if ctx.method isnt "GET" or ctx.url isnt "/"
   await ctx.render "layout/root"
 
 actionOutdated = (ctx, next) ->
-  await do next unless ctx.method is "GET" or ctx.url is "/outdated"
+  return await do next if ctx.method isnt "GET" or ctx.url isnt "/outdated"
   ctx.body = "You are using an outdated browser"
 
 module.exports = {

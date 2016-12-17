@@ -1,8 +1,10 @@
 Koa = require "koa"
 serve = require "koa-static"
 compress = require "koa-compress"
+favicon = require "koa-favicon"
 
 view = require "./view"
+logger = require "../middleware/logger"
 
 {
   actionIndex
@@ -17,13 +19,15 @@ view = require "./view"
 views = require "./view"
 
 app = new Koa
-STATIC_PATH = "#{do process.cwd}/public"
+PUBLIC_PATH = "#{do process.cwd}/public"
 
 view app, debug: off
 
 app
   .use do compress
-  .use serve "#{STATIC_PATH}"
+  .use favicon "#{PUBLIC_PATH}/assets/img/icns/favicons/twi.ico"
+  .use serve "#{PUBLIC_PATH}"
+  .use logger
   .use actionIndex
   .use actionOutdated
 

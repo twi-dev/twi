@@ -10,6 +10,7 @@ webpackDevMiddleware = require "webpack-dev-middleware"
 webpackHotMiddleware = require "webpack-hot-middleware"
 
 views = require "../../../core/app/view"
+logger = require "../../../core/middleware/logger"
 
 {
   actionIndex
@@ -59,6 +60,7 @@ devServer = (compiler, config = {}) ->
     .use devMiddleware compiler,
       assign {}, config.devMiddleware, config.contentBase
     .use hotMiddleware compiler, config.hotMiddleware
+    .use logger
     .use serve config.contentBase
     .use actionIndex
 
