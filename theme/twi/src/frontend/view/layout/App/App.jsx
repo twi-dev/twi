@@ -1,6 +1,4 @@
-import React, {Component, PropTypes} from "react"
-import {observer} from "mobx-react"
-import windowSize from "helper/dom/windowSize"
+import React, {PropTypes} from "react"
 
 import {
   pageMainContainer,
@@ -9,52 +7,29 @@ import {
 
 import Header from "../Header/Header"
 
-@observer
-class App extends Component {
-  static propTypes = {
-    children: PropTypes.element
-  }
+function App(props) {
+  const {width, height} = props
 
-  constructor() {
-    super()
-
-    const {width, height} = windowSize()
-
-    this.state = {
-      width,
-      height
-    }
-  }
-
-  componentWillMount = () => (
-    window.addEventListener("resize", this._onWindowResize, false)
-  )
-
-  _onWindowResize = () => {
-    const {width, height} = windowSize()
-
-    this.setState({width, height})
-  }
-
-  render() {
-    return (
+  return (
+    <div
+      className={pageMainContainer}
+      style={{width, height}}
+    >
+      <Header />
       <div
-        className={`${pageMainContainer}`}
-        style={{
-          width: this.state.width , height: this.state.height
-        }}
+        className={pageContent}
+        style={{height: height - 46}}
       >
-        <Header />
-        <div
-          className={`${pageContent}`}
-          style={{height: this.state.height - 46}}
-        >
-          {this.props.children}
-        </div>
+        {props.children}
       </div>
-    )
+    </div>
+  )
+}
 
-  }
+App.propTypes = {
+  children: PropTypes.element.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired
 }
 
 export default App

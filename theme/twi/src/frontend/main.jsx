@@ -1,7 +1,6 @@
 "use strict"
 
 import React from "react"
-import {Provider} from "mobx-react"
 import {Router, browserHistory} from "react-router"
 import {render} from "react-dom"
 
@@ -14,6 +13,4 @@ const routerParams = {
   routes: routes()
 }
 
-const stores = {}
-
-render(<Provider {...stores}><Router {...routerParams} /></Provider>, root)
+render(<Router {...routerParams} />, root)

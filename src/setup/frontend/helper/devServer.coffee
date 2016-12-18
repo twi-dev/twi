@@ -12,10 +12,7 @@ webpackHotMiddleware = require "webpack-hot-middleware"
 views = require "../../../core/app/view"
 logger = require "../../../core/middleware/logger"
 
-{
-  actionIndex
-  actionOutdated
-} = require "../../../core/app/frontend"
+actionIndex = require "../../../core/app/frontend"
 
 koa = new Koa
 

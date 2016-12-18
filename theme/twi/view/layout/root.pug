@@ -82,8 +82,13 @@ html
       href="/humans.txt"
     )
 
+    //- If JS disabled
     noscript
-        meta(http-equiv="refresh", content="0; URL=/outdated")
+      //- meta(http-equiv="refresh", content="0; URL=/outdated")
+      link(rel="stylesheet", href="/assets/css/outdated.css")
+      div.
+        You are using an outdated browser
+
     title= title || name
 
   body

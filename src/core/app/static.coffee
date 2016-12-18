@@ -6,10 +6,7 @@ favicon = require "koa-favicon"
 view = require "./view"
 logger = require "../middleware/logger"
 
-{
-  actionIndex
-  actionOutdated
-} = require "./frontend"
+actionIndex = require "./frontend"
 
 {
   app: {theme}
@@ -29,7 +26,6 @@ app
   .use serve "#{PUBLIC_PATH}"
   .use logger
   .use actionIndex
-  .use actionOutdated
 
 msg = "Static server started on"
 module.exports = {
