@@ -4,7 +4,8 @@
 preventBeforeSubmit = (target, key, descriptor) ->
   submit = descriptor.value
 
-  descriptor.value = _submit = (event, state) ->
-    do event.preventDefault; submit state
+  descriptor.value = _submit = (event) -> do event.preventDefault; submit event
 
-module.exports = preventBeforeSubmit
+  return
+
+module.exports = module.exports.default = preventBeforeSubmit

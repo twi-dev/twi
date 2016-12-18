@@ -1,6 +1,27 @@
-@import "../layout/App/variables"
+@import "jeet"
+@import "rupture"
+@import "reset"
+@import "variables"
 
 .container
-  width 100%
-  height 100%
+  align(center)
+  width 300px
   background bg
+
+.title, .fields
+  padding 10px 16px
+
+.title
+  background maneFillViolet
+  color white
+  font-weight bold
+
+.field-container
+  padding 6px 0
+
+  &, input
+    box-sizing border-box
+
+  input
+    width 100%
+    padding 6px 8px

@@ -15,8 +15,6 @@ WebpackPluginBabili = require "babili-webpack-plugin"
   static: {port}
 } = require "#{TWI_ROOT}/core/helper/util/configure"
 
-theme or= "twi"
-
 webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   onFulfilled = (stats) -> resolve stats
 
@@ -72,11 +70,11 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         query:
           presets: [
             "es2015"
-            "stage-2"
             "react"
           ]
           plugins: [
             "transform-decorators-legacy"
+            "transform-class-properties"
           ]
       }
     ]
@@ -97,6 +95,10 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       }
       {
         loader: "stylus-loader"
+        query:
+          paths: [
+            "#{TWI_ROOT}/theme/#{theme}/src/stylus/common"
+          ]
       }
     ]
 
