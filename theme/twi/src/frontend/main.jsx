@@ -6,7 +6,6 @@ import {Router, browserHistory} from "react-router"
 import {render} from "react-dom"
 
 import routes from "./routes"
-import AppStore from "view/layout/App/AppStore"
 
 const root = document.querySelector("#twi-root-container")
 
@@ -15,8 +14,6 @@ const routerParams = {
   routes: routes()
 }
 
-const stores = {
-  appStore: new AppStore
-}
+const stores = {}
 
 render(<Provider {...stores}><Router {...routerParams} /></Provider>, root)

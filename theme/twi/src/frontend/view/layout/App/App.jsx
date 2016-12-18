@@ -1,37 +1,54 @@
 import React, {Component, PropTypes} from "react"
-import {observer, inject} from "mobx-react"
+import {observer} from "mobx-react"
+import windowSize from "helper/dom/windowSize"
 
 import {
   pageMainContainer,
   pageContent
 } from "./common.styl"
 
-import AppStore from "./AppStore"
 import Header from "../Header/Header"
 
 @observer
 class App extends Component {
   static propTypes = {
-    appStore: PropTypes.instanceOf(AppStore),
     children: PropTypes.element
+  }
+
+  constructor() {
+    super()
+
+    const {width, height} = windowSize()
+
+    this.state = {
+      width,
+      height
+    }
   }
 
   componentWillMount = () => (
     window.addEventListener("resize", this._onWindowResize, false)
   )
 
-  _onWindowResize = () => this.props.appStore.res
+  _onWindowResize = () => {
+    const {width, height} = windowSize()
+
+    this.setState({width, height})
+  }
 
   render() {
-    const {width, height} = this.props.appStore
-
     return (
       <div
         className={`${pageMainContainer}`}
-        style={{width, height}}
+        style={{
+          width: this.state.width , height: this.state.height
+        }}
       >
         <Header />
-        <div className={`${pageContent}`} style={{height: height - 46}}>
+        <div
+          className={`${pageContent}`}
+          style={{height: this.state.height - 46}}
+        >
           {this.props.children}
         </div>
       </div>
@@ -40,4 +57,4 @@ class App extends Component {
   }
 }
 
-export default inject("appStore")(App)
+export default App
