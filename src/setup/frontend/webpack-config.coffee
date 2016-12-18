@@ -48,7 +48,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   ]
 
   entry = [
-    "#{TWI_ROOT}/theme/#{theme}/src/frontend/main.cjsx"
+    "#{TWI_ROOT}/theme/#{theme}/src/frontend/main.jsx"
   ]
 
   coffee =
@@ -131,6 +131,13 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       coffee.use...
     ]
 
+    babel.use = [
+      {
+        loader: "react-hot-loader"
+      }
+      babel.use...
+    ]
+
     entry = [
       "
         webpack-hot-middleware/client?path=http://localhost:#{
@@ -158,8 +165,9 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         "#{TWI_ROOT}/theme/#{theme}/src/svg"
       ]
       extensions: [
+        ".js", ".jsx", ".json"
         ".coffee", ".cjsx", ".litcoffee", ".coffee.md"
-        ".svg", ".styl", ".js", ".jsx", ".json"
+        ".svg", ".styl"
       ]
     resolveLoader:
       alias:

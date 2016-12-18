@@ -1,10 +1,14 @@
 parser: babel-eslint
+plugins:
+  - eslint-plugin-react
 env:
   browser: true
   commonjs: true
   es6: true
   node: true
-extends: eslint:recommended
+extends:
+  - eslint:recommended
+  - standard-react
 installedESLint: true
 parserOptions:
   sourceType: module
@@ -16,7 +20,15 @@ rules:
   indent:
     - warn
     - 2
+  no-tabs:
+    - error
+  max-len:
+    - error
+    - code: 80
   linebreak-style:
+    - error
+    - unix
+  eol-last:
     - error
     - unix
   quotes:
@@ -25,11 +37,43 @@ rules:
   semi:
     - warn
     - never
+  no-trailing-spaces:
+    - error
   no-unused-vars:
     - warn
   no-console: 0
   no-constant-condition: 0
+  no-eval:
+    - error
   no-empty:
+    - warn
+  no-throw-literal:
+    - error
+  no-with:
+    - error
+  no-multi-spaces:
+    - error
+  no-new-require:
+    - error
+  no-global-assign:
+    - error
+  guard-for-in:
     - warn
   yoda:
     - error
+  require-yield: 0
+  yield-star-spacing:
+    - error
+    - after
+  object-curly-spacing:
+    - warn
+    - never
+  array-bracket-spacing:
+    - warn
+    - never
+  arrow-parens:
+    - warn
+    - as-needed
+  jsx-quotes:
+    - error
+    - prefer-double
