@@ -1289,7 +1289,7 @@ babel-preset-react@~6.11.0:
     babel-plugin-transform-react-jsx-self "^6.11.0"
     babel-plugin-transform-react-jsx-source "^6.3.13"
 
-babel-preset-stage-2@^6.17.0:
+babel-preset-stage-2@^6.17.0, babel-preset-stage-2@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-preset-stage-2/-/babel-preset-stage-2-6.18.0.tgz#9eb7bf9a8e91c68260d5ba7500493caaada4b5b5"
   dependencies:

@@ -72,10 +72,10 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         query:
           presets: [
             "es2015"
+            "stage-2"
             "react"
           ]
           plugins: [
-            "transform-class-properties"
             "transform-decorators-legacy"
           ]
       }

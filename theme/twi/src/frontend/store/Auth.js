@@ -1,18 +1,8 @@
-import {observable} from "mobx"
+import {observable, extendObservable} from "mobx"
 
 class Auth {
-  @observable authentificationData = {
-    username: "",
-    password: ""
-  }
-
-  setUsername(username) {
-    this.username = username
-  }
-
-  setPassword(password) {
-    this.password = password
-  }
+  @observable username = ""
+  @observable password = ""
 }
 
 export default new Auth
