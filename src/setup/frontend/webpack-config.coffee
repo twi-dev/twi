@@ -164,6 +164,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       modules: [
         "node_modules"
         "#{TWI_ROOT}/theme/#{theme}/src/frontend"
+        "#{TWI_ROOT}/theme/#{theme}/src/stylus/common"
         "#{TWI_ROOT}/theme/#{theme}/src/svg"
       ]
       extensions: [

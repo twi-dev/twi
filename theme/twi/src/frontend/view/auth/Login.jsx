@@ -3,6 +3,7 @@ import {Link} from "react-router"
 import {observer, inject} from "mobx-react"
 
 import preventBeforeSubmit from "helper/decorator/preventBeforeSubmit"
+import {raised, violet} from "button.styl"
 
 import {
   container,
@@ -52,12 +53,12 @@ export class Login extends Component {
                 onChange={this._updateField}
               />
             </div>
-          </div>
-          <div className={fieldContainer}>
-            <button>Sign in</button>
-          </div>
-          <div className={fieldContainer}>
-            <Link to="/restore">Forgot your password?</Link>
+            <div className={fieldContainer}>
+              <button className={`${raised} ${violet}`}>Sign in</button>
+            </div>
+            <div className={fieldContainer}>
+              <Link to="/auth/restore">Forgot your password?</Link>
+            </div>
           </div>
         </form>
       </div>
