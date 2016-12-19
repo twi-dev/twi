@@ -27,8 +27,6 @@ actionLogin = (ctx) ->
   # ctx.redirect ctx.query.return or "/"
   {username, password} = ctx.request.body
 
-  console.log ctx.request.body
-
   ctx.body = {username, password}
 
   await return

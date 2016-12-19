@@ -2,6 +2,7 @@ require "whatwg-fetch"
 
 isPlainObject = require "lodash/isPlainObject"
 merge = require "lodash/merge"
+toFormData = require "helper/util/stateToFormData"
 
 defs =
   method: "GET"
@@ -13,6 +14,8 @@ defs =
 wrapFetch = (url, opts) ->
   opts = merge {}, defs, opts
   {type} = opts
+
+  opts.body = toFormData opts.body
 
   res = await fetch url, opts
 

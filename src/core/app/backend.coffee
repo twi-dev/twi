@@ -2,9 +2,8 @@
 Koa = require "koa"
 cors = require "kcors"
 convert = require "koa-convert"
-serve = require "koa-static"
 favicon = require "koa-favicon"
-bodyparser = require "koa-bodyparser"
+# bodyparser = require "koa-bodyparser"
 sess = require "koa-generic-session"
 redisStore = require "koa-redis"
 passport = require "koa-passport"
@@ -20,7 +19,7 @@ logger = require "../middleware/logger"
   session, IS_DEVEL
 } = require "../helper/configure"
 
-{default: CSRF} = require "koa-csrf"
+# {default: CSRF} = require "koa-csrf"
 {ok, info, normal}  = require "../logger"
 {readFileSync, realpathSync} = require "fs"
 {readFile, realpath} = require "promise-fs"
@@ -46,7 +45,6 @@ app
   .use logger
 
   # Bodyparser
-  .use do bodyparser
   .use multipart
 
   # Session

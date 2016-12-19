@@ -26,7 +26,7 @@ class Auth {
 
     const fulfill = fetch("http://localhost:1337/auth/login", {
       method: "POST",
-      body: JSON.stringify({username, password})
+      body: {username, password}
     })
 
     console.log(fulfill)
