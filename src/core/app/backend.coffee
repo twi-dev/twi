@@ -33,6 +33,7 @@ normal "Init Twi middlewares"
 
 # Check xhr request
 app
+  .use do cors
   .use isXhr
 
   # Set error handler
@@ -57,7 +58,7 @@ app
       maxAge: 1000 * 60 * 60 * 24 * 360 # One year in ms
 
   # Csrf tokens
-  .use new CSRF
+  # .use new CSRF
 
   # Passport
   .use do passport.initialize

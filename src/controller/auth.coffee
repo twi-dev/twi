@@ -21,45 +21,15 @@ passport.use new Strategy
 ###
 # Response signin page
 # 
-# GET /auth/signin
+# POST /auth/login
 ###
 actionLogin = (ctx) ->
-  if do ctx.isAuthenticated
-    return ctx.redirect "/"
+  # ctx.redirect ctx.query.return or "/"
+  {username, password} = ctx.request.body
 
-  await ctx.render "auth/signin",
-    title: t "auth.title.signin"
-    __csrf: ctx.csrf
-    __return: ctx.query.return or "/"
+  console.log ctx.request.body
 
-  await return
-
-###
-# POST /auth/signin
-###
-actionSignin = (ctx) ->
-  ctx.redirect ctx.query.return or "/"
-
-  await return
-
-###
-# Response signup page for GET method
-# 
-# GET /auth/signup
-###
-actionRegister = (ctx) ->
-  {inviteHash} = ctx.params
-  unless enableSignup
-    return await ctx.render "auth/signup-disabled",
-      title: t "auth.title.inviteOnly"
-
-  if do ctx.isAuthenticated
-    return ctx.redirect "/"
-
-  await ctx.render "auth/signup",
-    title: t "user.title.signup"
-    __csrf: ctx.csrf
-    __return: ctx.query.return or "/"
+  ctx.body = {username, password}
 
   await return
 
@@ -111,9 +81,10 @@ actionLogout = (ctx) ->
   await return
 
 module.exports = (r) ->
-  r "/signin"
+  r "/login"
     # .get actionLogin
-    .post passport.authenticate("local"), actionSignin
+    # .post passport.authenticate("local"), actionLogin
+    .post actionLogin
 
   r "/signup/:inviteHash?"
     # .get actionRegister

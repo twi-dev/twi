@@ -18,13 +18,21 @@ export class Login extends Component {
     auth: PropTypes.object.isRequired,
   }
 
+  constructor() {
+    super()
+
+    this._onSubmit = this._onSubmit.bind(this)
+  }
+
   _updateField = ({target: {name, value}}) => (
     this.props.auth.updateField(name, value)
   )
 
+  submit = () => {}
+
   @preventBeforeSubmit
-  _submit() {
-    console.log("Submitting...")
+  _onSubmit() {
+    this.props.auth.login()
   }
 
   render() {
@@ -32,7 +40,7 @@ export class Login extends Component {
 
     return (
       <div className={container}>
-        <form onSubmit={this._submit}>
+        <form onSubmit={this._onSubmit}>
           <div className={title}>Login</div>
           <div className={fields}>
             <div className={fieldContainer}>
