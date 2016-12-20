@@ -1,11 +1,11 @@
 import React, {PropTypes} from "react"
 import {Provider} from "mobx-react"
-import auth from "store/Auth"
+import login from "store/Login"
 
 import Root from "./Root"
 
 const stores = {
-  auth
+  login
 }
 
 class Auth extends Root {

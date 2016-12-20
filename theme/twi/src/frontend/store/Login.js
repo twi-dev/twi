@@ -1,7 +1,7 @@
 import {observable, computed} from "mobx"
 import fetch from "helper/wrapper/fetch"
 
-class Auth {
+class Login {
   @observable _authentificationData = {
     username: "",
     password: ""
@@ -33,4 +33,4 @@ class Auth {
   }
 }
 
-export default new Auth
+export default new Login

@@ -51,13 +51,13 @@ runServer = ({app, host, port, secure, msg}) -> new Promise (resolve, reject) ->
 ###
 # Run all Twi servers :D
 #
-# @param boolean forceDevelopment - if set as true,
+# @param boolean isDevel - if set as true,
 #   run Twi app without static server
 ###
-runApp = (forceDevelopment = no) ->
+runApp = (isDevel = no) ->
   for name, obj of servers
-    # skip static server when flag --force-development passed
-    continue if forceDevelopment and name is "static"
+    # skip static server when Twi running in development mode
+    continue if isDevel and name is "static"
 
     await runServer obj
 

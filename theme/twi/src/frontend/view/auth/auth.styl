@@ -7,6 +7,7 @@
   align(center)
   width 300px
   background bg
+  box-sizing border-box
 
 .title
   background maneFillViolet
@@ -16,7 +17,8 @@
   padding 0 16px
 
 .fields
-  padding 10px 16px
+  &-container
+    padding 10px 16px
 
 .field-container
   padding 6px 0
@@ -26,4 +28,45 @@
 
   input
     width 100%
-    padding 6px 8px
+    padding 8px 10px
+
+  button
+    width 100%
+
+
++above(900px)
+  .container
+    width 900px
+
+  .title
+    display none
+
+  .fields
+    cf()
+
+  .field-container
+    float left
+    padding 0px 6px
+
+    input
+      width 300px
+
+    button
+      width auto
+
+  .links
+    cf()
+    width 312px * 2
+    padding 0
+
+    .field-container
+      padding 0 6px
+      width 300px
+
+      a
+        color #777
+        font-size 85%
+
+      // Hotfix ._.
+      &:last-child
+        padding-left 18px

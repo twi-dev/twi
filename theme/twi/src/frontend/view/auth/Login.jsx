@@ -9,13 +9,16 @@ import {
   container,
   title,
   fieldContainer,
-  fields
+  fieldsContainer,
+  fields,
+  links,
+  linksRestore
 } from "./auth.styl"
 
-@inject("auth") @observer
+@inject("login") @observer
 export class Login extends Component {
   static propTypes = {
-    auth: PropTypes.object.isRequired,
+    login: PropTypes.object.isRequired,
   }
 
   constructor() {
@@ -25,47 +28,54 @@ export class Login extends Component {
   }
 
   _updateField = ({target: {name, value}}) => (
-    this.props.auth.updateField(name, value)
+    this.props.login.updateField(name, value)
   )
 
   submit = () => {}
 
   @preventBeforeSubmit
   _onSubmit() {
-    this.props.auth.login()
+    this.props.login.login()
   }
 
   render() {
-    const {username, password} = this.props.auth
+    const {username, password} = this.props.login
 
     return (
       <div className={container}>
         <form onSubmit={this._onSubmit}>
           <div className={title}>Login</div>
-          <div className={fields}>
-            <div className={fieldContainer}>
-              <input
-                type="text"
-                name="username"
-                placeholder="Your email or login"
-                value={username}
-                onChange={this._updateField}
-              />
+          <div className={fieldsContainer}>
+            <div className={fields}>
+              <div className={fieldContainer}>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Your email or login"
+                  value={username}
+                  onChange={this._updateField}
+                />
+              </div>
+              <div className={fieldContainer}>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Your password"
+                  value={password}
+                  onChange={this._updateField}
+                />
+              </div>
+              <div className={fieldContainer}>
+                <button className={`${raised} ${violet}`}>Log in</button>
+              </div>
             </div>
-            <div className={fieldContainer}>
-              <input
-                type="password"
-                name="password"
-                placeholder="Your password"
-                value={password}
-                onChange={this._updateField}
-              />
-            </div>
-            <div className={fieldContainer}>
-              <button className={`${raised} ${violet}`}>Sign in</button>
-            </div>
-            <div className={fieldContainer}>
-              <Link to="/auth/restore">Forgot your password?</Link>
+            <div className={links}>
+              <div className={fieldContainer}>
+                <Link to="/auth/signup">Don't have an account?</Link>
+              </div>
+              <div className={fieldContainer}>
+                <Link to="/auth/restore">Forgot your password?</Link>
+              </div>
             </div>
           </div>
         </form>

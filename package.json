@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/octet-stream/twi-js.git"
+    "url": "git://github.com/octet-stream/twi.git"
   },
   "bugs": {
-    "url": "https://github.com/octet-stream/twi-js/issues"
+    "url": "https://github.com/octet-stream/twi/issues"
   },
   "main": "./bin/twi",
   "bin": {
@@ -23,7 +23,7 @@
     "cm": "npm run cake:make",
     "cake:watch": "./node_modules/coffee-script/bin/cake watch",
     "cw": "npm run cake:watch",
-    "gulp": "./node_modules/gulp/bin/gulp.js",
+    "gulp": "./node_modules/.bin/gulp",
     "gulp:make": "npm run gulp",
     "gm": "npm run gulp",
     "gulp:watch": "./node_modules/gulp/bin/gulp.js watch",
