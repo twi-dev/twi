@@ -24,14 +24,10 @@ class Auth {
 
     console.log(username, password)
 
-    const fulfill = fetch("http://localhost:1337/auth/login", {
+    fetch("http://localhost:1337/auth/login", {
       method: "POST",
       body: {username, password}
     })
-
-    console.log(fulfill)
-
-    fulfill
       .then(res => console.log(res))
       .catch(err => console.error(err))
   }

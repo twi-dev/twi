@@ -32,7 +32,7 @@
     "m": "npm run make",
     "watch": "twi watch --stack-trace",
     "w": "npm run watch",
-    "dev": "nodemon --force-development",
+    "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
     "test": "./node_modules/ava/cli.js",
     "test:watch": "./node_modules/ava/cli.js --watch",
