@@ -1,5 +1,6 @@
-import React, {PropTypes} from "react"
+import React from "react"
 import {Provider} from "mobx-react"
+import DocumentTitle from "react-document-title"
 
 import Root from "./Root"
 import App from "../view/layout/App/App"
@@ -7,17 +8,15 @@ import App from "../view/layout/App/App"
 const stores = {}
 
 class MainContainer extends Root {
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  }
-
   render() {
     const {width, height} = this.state
 
     return (
-      <Provider {...stores}>
-        <App {...this.props} width={width} height={height} />
-      </Provider>
+      <DocumentTitle title={this.state.title}>
+        <Provider {...stores}>
+          <App {...this.props} width={width} height={height} />
+        </Provider>
+      </DocumentTitle>
     )
   }
 }

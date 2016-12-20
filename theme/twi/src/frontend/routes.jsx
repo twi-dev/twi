@@ -24,7 +24,7 @@ function routes() {
       </Route>
 
       <Route path="auth" component={Auth}>
-        <Route path="signup/:hash?" component={Signup} />
+        <Route path="signup" component={Signup} />
         <Route path="login" component={Login} />
       </Route>
 

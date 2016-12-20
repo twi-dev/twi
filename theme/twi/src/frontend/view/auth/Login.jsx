@@ -11,8 +11,7 @@ import {
   fieldContainer,
   fieldsContainer,
   fields,
-  links,
-  linksRestore
+  links
 } from "./auth.styl"
 
 @inject("login") @observer
@@ -20,6 +19,8 @@ export class Login extends Component {
   static propTypes = {
     login: PropTypes.object.isRequired,
   }
+
+  static title = "Login"
 
   constructor() {
     super()

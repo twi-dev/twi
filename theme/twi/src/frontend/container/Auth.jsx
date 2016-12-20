@@ -1,5 +1,6 @@
-import React, {PropTypes} from "react"
+import React from "react"
 import {Provider} from "mobx-react"
+import DocumentTitle from "react-document-title"
 import login from "store/Login"
 
 import Root from "./Root"
@@ -9,19 +10,17 @@ const stores = {
 }
 
 class Auth extends Root {
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  }
-
   render() {
     const {width, height} = this.state
 
     return (
-      <Provider {...stores}>
-        <div style={{width, height}}>
-          {this.props.children}
-        </div>
-      </Provider>
+      <DocumentTitle title={this.state.title}>
+        <Provider {...stores}>
+          <div style={{width, height}}>
+            {this.props.children}
+          </div>
+        </Provider>
+      </DocumentTitle>
     )
   }
 }
