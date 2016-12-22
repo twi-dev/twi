@@ -58,7 +58,7 @@ export class Signup extends Component {
               <div className={fieldContainer}>
                 <button
                   className={`${raised} ${violet}`}
-                >Register</button>
+                >Sign up</button>
               </div>
             </div>
           </div>

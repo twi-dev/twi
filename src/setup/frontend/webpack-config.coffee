@@ -161,6 +161,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     resolve:
       alias:
         decorator: "#{TWI_ROOT}/core/helper/util/decorator"
+        requireDefault: "#{TWI_ROOT}/core/helper/util/requireDefault"
       modules: [
         "node_modules"
         "#{TWI_ROOT}/theme/#{theme}/src/frontend"
