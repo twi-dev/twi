@@ -32,8 +32,6 @@ export class Login extends Component {
     this.props.login.updateField(name, value)
   )
 
-  submit = () => {}
-
   @preventBeforeSubmit
   _onSubmit() {
     this.props.login.login()
@@ -72,7 +70,7 @@ export class Login extends Component {
             </div>
             <div className={links}>
               <div className={fieldContainer}>
-                <Link to="/auth/signup">Don't have an account?</Link>
+                <Link to="/auth/signup">Don't have an account yet?</Link>
               </div>
               <div className={fieldContainer}>
                 <Link to="/auth/restore">Forgot your password?</Link>
