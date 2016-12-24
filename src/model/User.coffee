@@ -12,6 +12,8 @@ mailer = require "../core/mail/mailer"
 {isEmail, isValidPassword} = require "../core/helper/validation"
 {t} = require "../core/i18n"
 
+{isEmpty} = require "lodash"
+
 ForbiddenException = require "../core/error/Forbidden"
 NotFoundException = require "../core/error/NotFound"
 
@@ -186,10 +188,18 @@ profile = (userId) ->
 
   return userData.get plain: on
 
+getMatchedNames = (login) ->
+  namesData = await user.findAll
+    attributes: ["login"], where: login: $like: "%#{decodeURI login}%"
+
+  return [] if isEmpty namesData
+  return ((n.get plain: on).login for n in namesData)
+
 module.exports = {
   signup
   activate
   signin
   getAuthenticated
   profile
+  getMatchedNames
 }

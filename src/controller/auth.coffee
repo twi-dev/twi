@@ -37,15 +37,19 @@ actionLogin = (ctx) ->
 # POST /auth/signup
 ###
 actionSignup = (ctx) ->
-  {inviteHash} = ctx.params
-  unless enableSignup
-    throw new ForbiddenException "Unauthorized access to registration form."
+  # {inviteHash} = ctx.params
+  # unless enableSignup
+  #   throw new ForbiddenException "Unauthorized access to registration form."
 
-  {login, email, pass, repass} = ctx.request.body
+  # {login, email, pass, repass} = ctx.request.body
 
-  await user.signup login, email, pass, repass
+  # await user.signup login, email, pass, repass
 
-  ctx.redirect ctx.query.return or "/"
+  # ctx.redirect ctx.query.return or "/"
+
+  console.log ctx.request.body
+
+  ctx.body = ctx.request.body
 
   await return
 

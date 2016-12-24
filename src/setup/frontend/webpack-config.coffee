@@ -169,8 +169,8 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         "#{TWI_ROOT}/theme/#{theme}/src/svg"
       ]
       extensions: [
-        ".js", ".jsx", ".json"
         ".coffee", ".cjsx", ".litcoffee", ".coffee.md"
+        ".js", ".jsx", ".json"
         ".svg", ".styl"
       ]
     resolveLoader:

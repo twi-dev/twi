@@ -97,7 +97,7 @@ onProcessExitOrError = (err) ->
 # @return string
 ###
 replaceExtname = (filename) ->
-  filename.replace /\.(coffee|litcoffee|coffee\.md)$/, ".js"
+  return filename.replace /\.(coffee|litcoffee|coffee\.md)$/, ".js"
 
 ###
 # Get destination path
@@ -205,6 +205,9 @@ task "watch", "Run Cakefile with watcher", ->
   isDevel = yes
   log "Starting watcher..."
   log "Press Control+C to exit.", LOG_INFO
+
+  # Important note:
+  #   parameter "recursive" of fs.watch works only on macOS and Windows.
   watch SRC_DIR, recursive: yes, watcher
 
 process.on "error", onProcessExitOrError

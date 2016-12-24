@@ -13,6 +13,8 @@ ForbiddenException = require "../core/error/Forbidden"
 ###
 actionUsers = (ctx) -> await return
 
+actionNames = (ctx) -> ctx.body = await user.getMatchedNames ctx.params.login
+
 ###
 # Response user profile
 # 
@@ -39,6 +41,9 @@ actionSettings = (ctx) ->
 module.exports = (r) ->
   r "/profile/:login?"
     .get actionProfile
+
+  r "/names/:login"
+    .get actionNames
 
   r "/settings"
     .get actionSettings
