@@ -2,14 +2,14 @@ import React from "react"
 import {Provider} from "mobx-react"
 import DocumentTitle from "react-document-title"
 
-import login from "store/Login"
-import signup from "store/auth/Signup"
+import Login from "store/auth/Login"
+import Signup from "store/auth/Signup"
 
 import Root from "./Root"
 
 const stores = {
-  login,
-  signup
+  login: new Login(),
+  signup: new Signup()
 }
 
 class Auth extends Root {

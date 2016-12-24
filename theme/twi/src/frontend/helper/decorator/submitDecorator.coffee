@@ -4,11 +4,9 @@ submitDecorator = (target, key, descriptor) ->
   descriptor.value = _submit = (event) ->
     do event.preventDefault
 
-    onFulfilled = (res) -> console.log res
-
     onRejected = (err) -> console.error err
 
     submit.call this, event
-      .then onFulfilled, onRejected
+      .catch onRejected
 
 module.exports = submitDecorator

@@ -43,4 +43,4 @@ class Signup {
   }
 }
 
-export default new Signup
+export default Signup

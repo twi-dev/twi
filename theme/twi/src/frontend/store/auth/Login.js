@@ -33,4 +33,4 @@ class Login {
   }
 }
 
-export default new Login
+export default Login

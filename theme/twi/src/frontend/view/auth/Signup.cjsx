@@ -1,11 +1,13 @@
-{Component} = React = require "react"
+{Component, PropTypes} = React = require "react"
 {inject, observer} = require "mobx-react"
 {dms, dm} = require "decorator"
-
+requireDefault = require "requireDefault"
 submitDecorator = require "helper/decorator/submitDecorator"
+SignupStore = requireDefault require "store/auth/Signup"
 
-{raised, violet} = require "button.styl"
-
+{
+  raised, violet
+} = require "button.styl"
 {
   container
   title
@@ -16,10 +18,13 @@ submitDecorator = require "helper/decorator/submitDecorator"
 } = require "./auth.styl"
 
 class Signup extends Component
-  _onSubmit: => do @props.signup.submit
+  @propTypes:
+    auth: PropTypes.instanceOf SignupStore
+
+  _onSubmit: => await do @props.signup.submit
 
   _updateField: ({target: {name, value}}) =>
-    @props.signup[name] = value if name?
+    @props.signup[name] = do value.trim if name?
 
   render: ->
     <div className="#{container}">
