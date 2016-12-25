@@ -21,6 +21,8 @@ class Signup extends Component
   @propTypes:
     auth: PropTypes.instanceOf SignupStore
 
+  @title: "Signup"
+
   _onSubmit: => await do @props.signup.submit
 
   _updateField: ({target: {name, value}}) =>
