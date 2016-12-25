@@ -3,8 +3,9 @@
 {inject, observer} = require "mobx-react"
 {dms, dm} = require "decorator"
 
+requireDefault = require "requireDefault"
 submitDecorator = require "helper/decorator/submitDecorator"
-LoginStore = require "store/auth/Login"
+LoginStore = requireDefault require "store/auth/Login"
 
 {
   raised
@@ -20,11 +21,12 @@ LoginStore = require "store/auth/Login"
 } = require "./auth.styl"
 
 class Login extends Component
+  @propTypes:
+    login: PropTypes.instanceOf LoginStore
+
   @title: "Login"
 
-  _onSubmit: =>
-    console.log "foo"
-    await do @props.login.submit
+  _onSubmit: => await do @props.login.submit
 
   _updateField: ({target: {name, value}}) =>
     @props.login[name] = do value.trim if name?
