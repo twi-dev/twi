@@ -6,28 +6,28 @@ class Signup {
   @observable _email = ""
   @observable _pass = ""
 
-  set login(value) {
-    this._login = value
-  }
-
   get login() {
     return this._login
   }
 
-  set email(value) {
-    this._email = value
+  set login(value) {
+    this._login = value
   }
 
   get email() {
     return this._email
   }
 
-  set password(value) {
-    this._pass = value
+  set email(value) {
+    this._email = value
   }
 
   get password() {
     return this._pass
+
+  }
+  set password(value) {
+    this._pass = value
   }
 
   async submit() {

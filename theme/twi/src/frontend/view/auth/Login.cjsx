@@ -22,12 +22,17 @@ LoginStore = require "store/auth/Login"
 class Login extends Component
   @title: "Login"
 
-  render: ->
-    {username, password} = @props.login
+  _onSubmit: =>
+    console.log "foo"
+    await do @props.login.submit
 
+  _updateField: ({target: {name, value}}) =>
+    @props.login[name] = do value.trim if name?
+
+  render: ->
     <div className="#{container}">
-      <form onSubmit={this._onSubmit}>
-        <div className="#{title}">Login</div>
+      <form onSubmit={@_onSubmit}>
+        <div className="#{title}"><Link to="/">Login</Link></div>
         <div className="#{fieldsContainer}">
           <div className="#{fields}">
             <div className="#{fieldContainer}">
@@ -35,8 +40,8 @@ class Login extends Component
                 type="text"
                 name="username"
                 placeholder="Your email or login"
-                value={username}
-                onChange={this._updateField}
+                value={@props.login.username}
+                onChange={@_updateField}
               />
             </div>
             <div className="#{fieldContainer}">
@@ -44,8 +49,8 @@ class Login extends Component
                 type="password"
                 name="password"
                 placeholder="Your password"
-                value={password}
-                onChange={this._updateField}
+                value={@props.login.password}
+                onChange={@_updateField}
               />
             </div>
             <div className="#{fieldContainer}">
@@ -65,5 +70,9 @@ class Login extends Component
         </div>
       </form>
     </div>
+
+Login = dms Login, [
+  dm submitDecorator, "_onSubmit"
+]
 
 module.exports = inject("login")(observer Login)

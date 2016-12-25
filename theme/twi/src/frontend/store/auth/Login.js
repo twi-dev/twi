@@ -1,35 +1,35 @@
-import {observable, computed} from "mobx"
+import {observable} from "mobx"
 import fetch from "helper/wrapper/fetch"
 
 class Login {
-  @observable _authentificationData = {
-    username: "",
-    password: ""
+  @observable _username = ""
+  @observable _password = ""
+
+  get username() {
+    return this._username
   }
 
-  @computed get username() {
-    return this._authentificationData.username
+  set username(value) {
+    this._username = value
   }
 
-  @computed get password() {
-    return this._authentificationData.password
+  get password() {
+    return this._password
   }
 
-  updateField(name, value) {
-    this._authentificationData[name] = value
+  set password(value) {
+    this._password = value
   }
 
-  login() {
-    const {username, password} = this
+  async submit() {
+    const body = {
+      username: this.username,
+      password: this.password
+    }
 
-    console.log(username, password)
-
-    fetch("http://localhost:1337/auth/login", {
-      method: "POST",
-      body: {username, password}
+    return await fetch("http://localhost:1337/auth/login", {
+      method: "POST", body
     })
-      .then(res => console.log(res))
-      .catch(err => console.error(err))
   }
 }
 
