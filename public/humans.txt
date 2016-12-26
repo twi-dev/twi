@@ -3,13 +3,14 @@
 
 # TEAM
   <name> -- <role> -- <twitter>
-  Nick K. -- Core developer -- @octet_stream
+  Nick K. -- Core -- @octet_stream
 
 # THANKS
   <name>
 
 # TECHNOLOGY COLOPHON
-  Node.js, Koa.js, CoffeeScript,
-  i18next, YAML, Jade, Stylus, CSS3,
-  HTML5, SVG, Normalize.css, Jeet.gs,
-  Vue.js, Browserify, Gulp, Lodash, Codemirror
+  Node.js, Koa.js, CoffeeScript, Babel,
+  i18next, YAML, Jade, Stylus, PostCSS,
+  HTML5, SVG, Normalize.css, Jeet.gs, Rupture,
+  React, MobX, Webpack,
+  Gulp, Lodash, Codemirror

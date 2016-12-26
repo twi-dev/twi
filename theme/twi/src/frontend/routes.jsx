@@ -1,5 +1,3 @@
-import "mobx-react-devtools"
-
 import React from "react"
 import {Route, IndexRoute} from "react-router"
 
@@ -24,7 +22,7 @@ function routes() {
       </Route>
 
       <Route path="auth" component={Auth}>
-        <Route path="signup" component={Signup} />
+        <Route path="signup(/:hash)" component={Signup} />
         <Route path="login" component={Login} />
       </Route>
 
