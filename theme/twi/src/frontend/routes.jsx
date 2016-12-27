@@ -1,15 +1,21 @@
 import React from "react"
 import {Route, IndexRoute} from "react-router"
 
+// Home
 import Main from "container/Main"
 import Home from "view/home/Home/Home"
 import About from "view/home/About/About"
 import Feedback from "view/home/Feedback/Feedback"
 
+// Auth
 import Auth from "container/Auth"
 import Signup from "view/auth/Signup"
 import Login from "view/auth/Login"
 
+// Story
+import StoryNew from "view/story/New/StoryNew"
+
+// Others
 import NotFound from "view/error/http/NotFound"
 
 function routes() {
@@ -19,6 +25,10 @@ function routes() {
         <IndexRoute component={Home} />
         <Route path="about" component={About} />
         <Route path="feedback" component={Feedback} />
+
+        <Route path="story">
+          <Route path="new" component={StoryNew} />
+        </Route>
       </Route>
 
       <Route path="auth" component={Auth}>
