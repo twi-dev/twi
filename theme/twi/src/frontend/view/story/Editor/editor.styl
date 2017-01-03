@@ -2,6 +2,7 @@
 @import "rupture"
 @import "variables"
 @import "reset"
+@import "func"
 
 .container
   height 100%
@@ -13,20 +14,23 @@
   box-sizing border-box
 
 .cover
+  cardBase()
   cursor pointer
   position relative
   max-width 412px
   height 614px
   text-align center
+  border none
+  background white
 
   // Set horisontal position to center when viewport width
   //   between the following values
-  +between(412px, 412px * 2)
+  +between(413px, 412px * 2)
     margin 0 auto
 
-  +above(412px)
+  +above(413px)
     width 412px
-    border #777 dashed 1px
+    // border #777 dashed 1px
 
   &-label
     align(center)
@@ -35,10 +39,24 @@
     text-transform uppercase
 
 .details
-  +above(412px)
-    padding-left 16px
+  cardBase()
+  width 100%
+  box-sizing border-box
+
+  +above(413px)
+    margin-left 16px
+
+  .field
+    cf()
     box-sizing border-box
 
-+above(412px * 2)
+  input, textarea
+    width 100%
+    box-sizing border-box
+    padding 8px 10px
+    border none
+
++above(413px * 2)
   .cover, .details
+    width 412px
     float left
