@@ -14,7 +14,6 @@
   box-sizing border-box
 
 .cover
-  cardBase()
   cursor pointer
   position relative
   max-width 412px
@@ -29,6 +28,7 @@
     margin 0 auto
 
   +above(413px)
+    cardBase()
     width 412px
     // border #777 dashed 1px
 
@@ -39,11 +39,11 @@
     text-transform uppercase
 
 .details
-  cardBase()
   width 100%
   box-sizing border-box
 
   +above(413px)
+    cardBase()
     margin-left 16px
 
   .field

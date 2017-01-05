@@ -2,10 +2,15 @@ import React from "react"
 import {Provider} from "mobx-react"
 import DocumentTitle from "react-document-title"
 
+import TokenStore from "store/component/token/Token"
+
 import Root from "./Root"
 import App from "../view/layout/App/App"
 
-const stores = {}
+
+const stores = {
+  tokenStore: new TokenStore()
+}
 
 class MainContainer extends Root {
   render() {
