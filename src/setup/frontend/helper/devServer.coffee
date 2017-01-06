@@ -19,34 +19,39 @@ koa = new Koa
 ###
 # Wrap given middleware
 #
-# @param function act - an express webpack middleware
+# @param function target - an express webpack middleware
 # @param http.IncomingMessage req
 # @param http.Response res
 #
 # @return Promise
 ###
-wrapMiddleware = (act, req, res) ->
+wrapMiddleware = (target, req, res) ->
   {end} = res
 
-  return new Promise (resolve) ->
+  return new Promise (resolve, reject) ->
+    next = (err) -> if err? then reject err else resolve yes
+
     res.end = -> end.apply this, arguments; resolve no
 
-    act req, res, -> resolve yes
+    target req, res, next
 
 devMiddleware = (compiler, config) ->
-  act = webpackDevMiddleware compiler, config
+  middleware = webpackDevMiddleware compiler, config
+
   return (ctx, next) ->
-    middleware = await wrapMiddleware act, ctx.req,
+    hasNext = await wrapMiddleware middleware, ctx.req,
       end: (content) -> ctx.body = content
       setHeader: -> ctx.set.apply ctx, arguments
 
-    await do next if middleware and next
+    await do next if hasNext and next
 
 hotMiddleware = (compiler, config) ->
-  act = webpackHotMiddleware compiler, config
+  middleware = webpackHotMiddleware compiler, config
+
   return (ctx, next) ->
-    middleware = await wrapMiddleware act, ctx.req, ctx.res
-    await do next if middleware and next
+    hasNext = await wrapMiddleware middleware, ctx.req, ctx.res
+
+    await do next if hasNext and next
 
 # Note: DO NOT USE THIS SERVER IN PRODUCTION! THIS ONE ONLY FOR DEVELOPMENT!
 devServer = (compiler, config = {}) ->
