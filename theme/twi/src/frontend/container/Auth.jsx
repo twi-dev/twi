@@ -5,14 +5,14 @@ import DocumentTitle from "react-document-title"
 import Login from "store/auth/Login"
 import Signup from "store/auth/Signup"
 
-import Root from "./Root"
+import App from "./App"
 
 const stores = {
   login: new Login(),
   signup: new Signup()
 }
 
-class Auth extends Root {
+class Auth extends App {
   render() {
     const {width, height} = this.state
 

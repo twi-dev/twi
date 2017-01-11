@@ -1,40 +1,29 @@
-import {Component, PropTypes} from "react"
-import windowSize from "helper/dom/windowSize"
+import React, {PropTypes} from "react"
+import {Router, browserHistory} from "react-router"
+// import {AppContainer} from "react-hot-loader"
 
-class Root extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  }
+import routes from "routes"
 
-  constructor(props): void {
-    super()
+// const routerParams = {
+//   history: browserHistory,
+//   routes: routes()
+// }
 
-    const {width, height} = windowSize()
-
-    this.state = {
-      width,
-      height,
-      title: props.children.type.title || "Библиотека Твайлайт"
-    }
-  }
-
-  componentWillMount() {
-    window.addEventListener("resize", this._onWindowResize, false)
-  }
-
-  componentWillReceiveProps({children: {type: {title}}}) {
-    title || (title = "Библиотека Твайлайт")
-
-    this.setState({title})
-  }
-
-  _onWindowResize = () => {
-    const {width, height} = windowSize()
-
-    this.setState({width, height})
-  }
-
-  render() {}
+// FIXME: `key` prop is a temporarily hack, I have to find another solution.
+// https://github.com/reactjs/react-router-redux/issues/179
+// https://github.com/ReactTraining/react-router/issues/2704
+function Root() {
+  return (
+    <Router
+      key={module.hot ? Math.random() : undefined}
+      history={browserHistory}
+    >{routes}</Router>
+  )
 }
+
+// Root.propTypes = {
+//   history: PropTypes.object.isRequired,
+//   routes: PropTypes.object.isRequired
+// }
 
 export default Root

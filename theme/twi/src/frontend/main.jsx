@@ -4,39 +4,32 @@ import React from "react"
 import {Router, browserHistory} from "react-router"
 import {render} from "react-dom"
 import {AppContainer} from "react-hot-loader"
+import Root from "container/Root"
 
 import routes from "./routes"
 
 const root = document.querySelector("#twi-root-container")
 
-const routerParams = {
-  history: browserHistory,
-  routes: routes()
-}
-
 render(
   <AppContainer>
-    <Router {...routerParams} />
+    <Root />
   </AppContainer>,
   root
 )
 
 function acceptApp() {
-  const nextRoutes = require("./routes").default
+  const NextRoot = require("container/Root").default
 
-  const routerParams = {
-    history: browserHistory,
-    routes: routes()
-  }
+  // console.log("msg")
 
   render(
     <AppContainer>
-      <Router {...routerParams} />
+      <NextRoot />
     </AppContainer>,
     root
   )
 }
 
 if (module.hot) {
-  module.hot.accept("./routes", acceptApp)
+  module.hot.accept(["container/Root", "./routes"], acceptApp)
 }

@@ -7,7 +7,7 @@ import {
 
 import Header from "../Header/Header"
 
-function App(props) {
+function Layout(props) {
   const {width, height} = props
 
   return (
@@ -26,10 +26,10 @@ function App(props) {
   )
 }
 
-App.propTypes = {
+Layout.propTypes = {
   children: PropTypes.element.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired
 }
 
-export default App
+export default Layout

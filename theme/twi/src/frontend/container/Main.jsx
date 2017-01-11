@@ -4,22 +4,22 @@ import DocumentTitle from "react-document-title"
 
 import TokenStore from "store/component/token/Token"
 
-import Root from "./Root"
-import App from "../view/layout/App/App"
+import App from "./App"
+import Layout from "../view/layout/App/Layout"
 
 
 const stores = {
   tokenStore: new TokenStore()
 }
 
-class MainContainer extends Root {
+class MainContainer extends App {
   render() {
     const {width, height} = this.state
 
     return (
       <DocumentTitle title={this.state.title}>
         <Provider {...stores}>
-          <App {...this.props} width={width} height={height} />
+          <Layout {...this.props} width={width} height={height} />
         </Provider>
       </DocumentTitle>
     )

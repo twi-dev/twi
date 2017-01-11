@@ -158,7 +158,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   config = {
     plugins
-    devtool: if isDevel is on then "inline-source-map" else "source-map"
+    devtool: if isDevel is on then "eval" else "source-map"
     resolve:
       alias:
         decorator: "#{TWI_ROOT}/core/helper/util/decorator"
