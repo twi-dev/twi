@@ -28,7 +28,7 @@ class StoryEditor extends Component
       <form>
         <div className="#{main}">
           <Dropzone className="#{cover}" onDrop={@_updateCover}>
-            <div className="#{coverLabel}">Story cover</div>
+            <div className="#{coverLabel}">Story cover sdf</div>
           </Dropzone>
           <div className="#{details}">
             <div className="#{field}">

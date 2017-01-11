@@ -1,6 +1,7 @@
 # Based on:
 #   https://github.com/dayAlone/koa-webpack-hot-middleware/blob/master/index.js
 {assign} = Object
+{createServer} = require "http"
 
 Koa = require "koa"
 serve = require "koa-static"
@@ -54,7 +55,7 @@ hotMiddleware = (compiler, config) ->
     await do next if hasNext and next
 
 # Note: DO NOT USE THIS SERVER IN PRODUCTION! THIS ONE ONLY FOR DEVELOPMENT!
-devServer = (compiler, config = {}) ->
+createDevServer = (compiler, config = {}) ->
   views koa, debug: off # add view renderer to koa
 
   koa
@@ -66,6 +67,6 @@ devServer = (compiler, config = {}) ->
     .use serve config.contentBase
     .use actionIndex
 
-  return koa
+  return createServer do koa.callback
 
-module.exports = devServer
+module.exports = createDevServer

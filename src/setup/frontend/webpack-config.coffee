@@ -27,8 +27,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
   plugins = [
     new DefinePlugin
       "process.env":
-        NODE_ENV:
-          JSON.stringify process.env.NODE_ENV
+        NODE_ENV: JSON.stringify process.env.NODE_ENV
 
     new LoaderOptionsPlugin
       options:
@@ -75,6 +74,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
           plugins: [
             "transform-decorators-legacy"
             "transform-class-properties"
+            "transform-flow-strip-types"
           ]
       }
     ]
@@ -128,19 +128,20 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
     coffee.use = [
       {
-        loader: "react-hot-loader"
+        loader: "react-hot-loader/webpack"
       }
       coffee.use...
     ]
 
     babel.use = [
       {
-        loader: "react-hot-loader"
+        loader: "react-hot-loader/webpack"
       }
       babel.use...
     ]
 
     entry = [
+      "react-hot-loader/patch"
       "
         webpack-hot-middleware/client?path=http://localhost:#{
           port

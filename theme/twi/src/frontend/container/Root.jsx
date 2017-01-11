@@ -6,7 +6,7 @@ class Root extends Component {
     children: PropTypes.element.isRequired
   }
 
-  constructor(props) {
+  constructor(props): void {
     super()
 
     const {width, height} = windowSize()
