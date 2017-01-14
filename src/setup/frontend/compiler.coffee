@@ -91,7 +91,7 @@ webpackConfig = (isDev = no) -> new Promise (resolve, reject) ->
         query:
           modules: yes
           camelCase: yes
-          localIdentName: "[path][name]--[local]-[hash:base64:10]"
+          localIdentName: "[name]__[local]___[hash:base64:10]"
       }
       {
         loader: "stylus-loader"

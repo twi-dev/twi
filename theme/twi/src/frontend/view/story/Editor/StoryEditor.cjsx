@@ -3,8 +3,8 @@
 {dms, dm} = require "decorator"
 
 Dropzone = require "react-dropzone"
+TokenEditor = require "component/common/token/TokenEditor"
 
-CharacterEditor = require "./CharacterEditor"
 ChapterEditor = require "./ChapterEditor"
 
 {
@@ -19,7 +19,7 @@ ChapterEditor = require "./ChapterEditor"
 } = require "./editor.styl"
 
 StoryEditor = ->
-  _updateCover: (files) =>
+  _updateCover: (files) => [cov] = files
 
   <div className="#{container}">
     <form>
@@ -35,7 +35,10 @@ StoryEditor = ->
             />
           </div>
           <div className="#{field}">
-            <CharacterEditor />
+            <TokenEditor
+              placeholder="Type a character name..."
+              selected=[]
+            />
           </div>
           <div className="#{field}">
             <input
