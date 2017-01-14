@@ -94,7 +94,7 @@ function _makeFrontend() {
   ora.text = "Making frontend app..."
   ora.start()
 
-  return require(`${TWI_ROOT}/setup/frontend/webpack-config`)(false)
+  return require(`${TWI_ROOT}/setup/frontend/compiler`)(false)
 }
 
 /**
@@ -114,7 +114,7 @@ function _make(component = "") {
 }
 
 function _watch() {
-  const webpack = require(`${TWI_ROOT}/setup/frontend/webpack-config`)
+  const webpack = require(`${TWI_ROOT}/setup/frontend/compiler`)
 
   return webpack(true)
 }

@@ -1,35 +1,25 @@
 "use strict"
 
 import React from "react"
-import {Router, browserHistory} from "react-router"
 import {render} from "react-dom"
 import {AppContainer} from "react-hot-loader"
+import routes from "routes"
 import Root from "container/Root"
-
-import routes from "./routes"
 
 const root = document.querySelector("#twi-root-container")
 
-render(
-  <AppContainer>
-    <Root />
-  </AppContainer>,
-  root
+const renderApp = App => render(
+  <AppContainer><App routes={routes} /></AppContainer>, root
 )
 
-function acceptApp() {
-  const NextRoot = require("container/Root").default
+const acceptApp = () => {
+  require("routes").default
 
-  // console.log("msg")
-
-  render(
-    <AppContainer>
-      <NextRoot />
-    </AppContainer>,
-    root
-  )
+  renderApp(require("container/Root").default)
 }
 
+renderApp(Root)
+
 if (module.hot) {
-  module.hot.accept(["container/Root", "./routes"], acceptApp)
+  module.hot.accept(["container/Root", "routes"], acceptApp)
 }

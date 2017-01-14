@@ -6,7 +6,7 @@ class App extends Component {
     children: PropTypes.element.isRequired
   }
 
-  constructor(props): void {
+  constructor(props) {
     super()
 
     const {width, height} = windowSize()

@@ -3,7 +3,7 @@ TWI_ROOT = do process.cwd
 jeet = require "jeet"
 rupture = require "rupture"
 poststylus = require "poststylus"
-devServer = require "./helper/devServer"
+createDevServer = require "./helper/devServer"
 WebpackPluginBabili = require "babili-webpack-plugin"
 
 {
@@ -15,14 +15,14 @@ WebpackPluginBabili = require "babili-webpack-plugin"
   static: {port}
 } = require "#{TWI_ROOT}/core/helper/util/configure"
 
-webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
+webpackConfig = (isDev = no) -> new Promise (resolve, reject) ->
   onFulfilled = (stats) -> resolve stats
 
   onRejected = (err) -> reject err
 
   fulfill = (err, stats) -> if err then onRejected err else onFulfilled stats
 
-  process.env.NODE_ENV = if isDevel then "development" else "production"
+  process.env.NODE_ENV = if isDev then "development" else "production"
 
   plugins = [
     new DefinePlugin
@@ -41,7 +41,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
             ]
           ]
         babel:
-          comments: not isDevel
+          comments: not isDev
   ]
 
   entry = [
@@ -120,7 +120,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
     ]
 
   # Add development plugins
-  if isDevel
+  if isDev
     plugins = [
       plugins...
       new HotModuleReplacementPlugin
@@ -150,7 +150,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       entry...
     ]
 
-  unless isDevel
+  unless isDev
     plugins = [
       plugins...
       new WebpackPluginBabili comments: off
@@ -158,7 +158,9 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   config = {
     plugins
-    devtool: if isDevel is on then "eval" else "source-map"
+    devtool: if isDev is on then "eval" else "source-map"
+    performance:
+      hints: not isDev
     resolve:
       alias:
         decorator: "#{TWI_ROOT}/core/helper/util/decorator"
@@ -178,7 +180,6 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
       alias:
         cjsx: "#{TWI_ROOT}/setup/frontend/loader/cjsx-loader"
         coffee: "#{TWI_ROOT}/setup/frontend/loader/coffee-loader"
-    entry
     module:
       rules: [
         svg
@@ -186,6 +187,7 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
         coffee
         babel
       ]
+    entry
     output:
       path: "#{TWI_ROOT}/public/assets/js"
       publicPath: "http://localhost:#{port}/assets/js/"
@@ -194,8 +196,8 @@ webpackConfig = (isDevel = no) -> new Promise (resolve, reject) ->
 
   compiler = webpack config
 
-  if isDevel
-    server = devServer compiler,
+  if isDev
+    server = createDevServer compiler,
       contentBase: "#{TWI_ROOT}/public"
       devMiddleware:
         hot: on
