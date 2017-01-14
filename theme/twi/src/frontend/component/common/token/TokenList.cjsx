@@ -14,17 +14,15 @@ TokenListItem = require "./TokenListItem"
 #   * boolean creatable – Enable adding custom tokens?
 #   * function onChoosen – Callback for choosen token
 ###
-TokenList = ({tokens, isActive, creatable, template, onChoosen}) ->
+TokenList = ({tokens, isActive, creatable, children, onChoosen}) ->
   listElements = for token, idx in tokens
     <TokenListItem key={idx} token={token} onChoosen={onChoosen}>
-      {template}
+      {children}
     </TokenListItem>
 
   <ul className={cm list, "#{active}": isActive}>
     {listElements}
   </ul>
-
-# {li for li in listElements}
 
 TokenList.defaultProps =
   isActive: no
@@ -35,5 +33,6 @@ TokenList.propTypes =
   # onChoosen: PropTypes.func.isRequired
   isActive: PropTypes.bool
   creatable: PropTypes.bool
+  children: PropTypes.element
 
 module.exports = TokenList
