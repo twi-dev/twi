@@ -1,8 +1,10 @@
+React = require "react"
 {inject, observer} = require "mobx-react"
 
-StoryEditor = require "../Editor/StoryEditor"
+StoryEditor = require "component/editor/story/StoryEditor"
 
-class StoryNew extends StoryEditor
-  @title: "Add a new story"
+StoryNew = ({app}) -> <StoryEditor />
 
-module.exports = inject("character")(observer StoryNew)
+StoryNew.title = "Add a new story"
+
+module.exports = inject("character", "app")(observer StoryNew)

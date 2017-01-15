@@ -5,12 +5,12 @@
 
 TokenList = require "./TokenList"
 
-TokenEditor = ({placeholder, selected, children, onChoosen, character}) ->
-  _onFocus = => character.isActive = yes
+TokenEditor = ({placeholder, selected, children, onChoosen, token}) ->
+  _onFocus = => token.isActive = yes
 
-  _onBlur = => character.isActive = no
+  _onBlur = => token.isActive = no
 
-  _onChange = ({target: {value}}) => character.current = value
+  _onChange = ({target: {value}}) => token.current = value
 
   <div
     className="#{container}" tabIndex={-1}
@@ -20,15 +20,13 @@ TokenEditor = ({placeholder, selected, children, onChoosen, character}) ->
       type="text"
       placeholder="#{placeholder}"
       onChange={_onChange}
-      value={character.current}
+      value={token.current}
     />
     <TokenList
       tokens={selected}
-      isActive={character.isActive}
+      isActive={token.isActive}
       onChoosen={onChoosen}
-    >
-      {children}
-    </TokenList>
+    >{children}</TokenList>
   </div>
 
 TokenEditor.defaultProps =
@@ -40,4 +38,4 @@ TokenEditor.propTypes =
   selected: PropTypes.array
   children: PropTypes.element
 
-module.exports = inject("character")(observer TokenEditor)
+module.exports = observer TokenEditor

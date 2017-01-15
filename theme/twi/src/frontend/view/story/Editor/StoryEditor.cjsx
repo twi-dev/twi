@@ -38,7 +38,7 @@ class StoryEditor extends Component
             <div className="#{field}">
               <TokenEditor
                 placeholder="Type a character name..."
-                selected=[]
+                selected={[]}
               />
             </div>
             <div className="#{field}">
