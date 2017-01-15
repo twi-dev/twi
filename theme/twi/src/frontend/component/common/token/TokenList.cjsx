@@ -1,6 +1,8 @@
 {PropTypes} = React = require "react"
 cm = require "classnames"
 
+{PropTypes: {observableArray}} = require "mobx-react"
+
 {list, active} = require "./token.styl"
 
 TokenListItem = require "./TokenListItem"
@@ -29,7 +31,7 @@ TokenList.defaultProps =
   creatable: no
 
 TokenList.propTypes =
-  tokens: PropTypes.array.isRequired
+  tokens: observableArray.isRequired
   # onChoosen: PropTypes.func.isRequired
   isActive: PropTypes.bool
   creatable: PropTypes.bool

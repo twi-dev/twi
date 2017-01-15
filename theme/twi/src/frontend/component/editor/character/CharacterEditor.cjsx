@@ -3,7 +3,7 @@
 
 TokenEditor = require "component/common/token/TokenEditor"
 
-CharacterEditor = ({character, children, selected, placeholder}) ->
+CharacterEditor = ({character, children, selected, placeholder, onChoosen}) ->
   <TokenEditor
     token={character}, selected={selected} placeholder={placeholder}
   >

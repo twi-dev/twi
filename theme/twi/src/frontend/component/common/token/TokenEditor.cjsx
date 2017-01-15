@@ -23,7 +23,7 @@ TokenEditor = ({placeholder, selected, children, onChoosen, token}) ->
       value={token.current}
     />
     <TokenList
-      tokens={selected}
+      tokens={token.suggestions}
       isActive={token.isActive}
       onChoosen={onChoosen}
     >{children}</TokenList>
