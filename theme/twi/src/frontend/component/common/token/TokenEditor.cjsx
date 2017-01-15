@@ -1,15 +1,16 @@
 {PropTypes} = React = require "react"
+{observer, inject} = require "mobx-react"
 
 {container} = require "./token.styl"
 
 TokenList = require "./TokenList"
 
-TokenEditor = ({placeholder, selected, children, onChoosen}) ->
-  _onFocus = => console.log "Focused"
+TokenEditor = ({placeholder, selected, children, onChoosen, character}) ->
+  _onFocus = => character.isActive = yes
 
-  _onBlur = => console.log "Blur"
+  _onBlur = => character.isActive = no
 
-  _onChange = ({target: {value}}) => console.log value if value
+  _onChange = ({target: {value}}) => character.current = value
 
   <div
     className="#{container}" tabIndex={-1}
@@ -19,8 +20,13 @@ TokenEditor = ({placeholder, selected, children, onChoosen}) ->
       type="text"
       placeholder="#{placeholder}"
       onChange={_onChange}
+      value={character.current}
     />
-    <TokenList tokens={[name: "Pinkie Pie"]} onChoosen={onChoosen}>
+    <TokenList
+      tokens={selected}
+      isActive={character.isActive}
+      onChoosen={onChoosen}
+    >
       {children}
     </TokenList>
   </div>
@@ -34,4 +40,4 @@ TokenEditor.propTypes =
   selected: PropTypes.array
   children: PropTypes.element
 
-module.exports = TokenEditor
+module.exports = inject("character")(observer TokenEditor)

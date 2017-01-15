@@ -2,7 +2,7 @@
 
 {element} = require "./token.styl"
 
-defaultTemplate = ({name}) -> name or "foo"
+defaultTemplate = ({name}) -> name
 
 TokenListItem = ({token, children}) ->
   render = children or defaultTemplate

@@ -59,4 +59,4 @@ class StoryEditor extends Component
       </form>
     </div>
 
-module.exports = StoryEditor
+module.exports = observer StoryEditor
