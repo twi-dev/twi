@@ -1,6 +1,7 @@
 require "whatwg-fetch"
 
 isPlainObject = require "lodash/isPlainObject"
+isEmpty = require "lodash/isEmpty"
 merge = require "lodash/merge"
 toFormData = require "helper/util/stateToFormData"
 
@@ -15,7 +16,10 @@ wrapFetch = (url, opts) ->
   opts = merge {}, defs, opts
   {type} = opts
 
-  opts.body = toFormData opts.body if opts.body
+  if isEmpty url
+    throw new Error "Url cannot be empty"
+
+  opts.body = toFormData opts.body unless isEmpty opts.body
 
   res = await fetch url, opts
 

@@ -4,7 +4,9 @@ import fetch from "helper/wrapper/fetch"
 import isEmpty from "lodash/isEmpty"
 
 class Character extends Token {
-  endpoint = "http://localhost:1337/stories/characters"
+  get endpoint() {
+    return "http://localhost:1337/stories/characters"
+  }
 
   @action request(token) {
     if (isEmpty(token)) {
