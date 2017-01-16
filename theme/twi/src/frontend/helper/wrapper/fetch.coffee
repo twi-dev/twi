@@ -15,7 +15,7 @@ wrapFetch = (url, opts) ->
   opts = merge {}, defs, opts
   {type} = opts
 
-  opts.body = toFormData opts.body
+  opts.body = toFormData opts.body if opts.body
 
   res = await fetch url, opts
 

@@ -32,7 +32,7 @@ TokenList.defaultProps =
 
 TokenList.propTypes =
   tokens: observableArray.isRequired
-  # onChoosen: PropTypes.func.isRequired
+  onChoosen: PropTypes.func.isRequired
   isActive: PropTypes.bool
   creatable: PropTypes.bool
   children: PropTypes.element

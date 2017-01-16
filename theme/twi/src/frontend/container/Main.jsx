@@ -6,7 +6,7 @@ import DocumentTitle from "react-document-title"
 import AppStore from "store/container/App"
 
 import TokenStore from "store/component/common/token/Token"
-import CharacterStore from "store/view/story/editor/Character"
+import CharacterStore from "store/component/editor/character/Character"
 
 import App from "./App"
 import Layout from "../view/layout/App/Layout"

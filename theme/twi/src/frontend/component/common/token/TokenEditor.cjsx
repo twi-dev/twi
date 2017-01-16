@@ -1,16 +1,42 @@
 {PropTypes} = React = require "react"
-{observer, inject} = require "mobx-react"
+{observer, inject, PropTypes: {observableArray}} = require "mobx-react"
 
 {container} = require "./token.styl"
 
 TokenList = require "./TokenList"
 
-TokenEditor = ({placeholder, selected, children, onChoosen, token}) ->
+###
+# Token editor component
+#
+# Note: Do not use this component directly, decorate this one instead :)
+#
+# @param object props:
+#   * Token token – TokenEditor store
+#   * React.Element children – Custom template for TokenList
+#   * string placeholder
+#   * mobx.ObservableArray selected – List of selected tokens
+#   * function onChoosen
+#   * function onRemoved
+###
+TokenEditor = (props) ->
+  {
+    token, children, placeholder, creatable, selected, onChoosen, onRemoved
+  } = props
+
+  ###
+  # Show TokenList on focus
+  ###
   _onFocus = => token.isActive = yes
 
+  ###
+  # Hide TokenList on focus out
+  ###
   _onBlur = => token.isActive = no
 
-  _onChange = ({target: {value}}) => token.current = value
+  ###
+  # Request suggestions by current token name
+  ###
+  _onChange = ({target: {value}}) => token.request value
 
   <div
     className="#{container}" tabIndex={-1}
@@ -31,11 +57,10 @@ TokenEditor = ({placeholder, selected, children, onChoosen, token}) ->
 
 TokenEditor.defaultProps =
   placeholder: "Type a token..."
-  selected: []
 
 TokenEditor.propTypes =
-  placeholder: PropTypes.string
-  selected: PropTypes.array
   children: PropTypes.element
+  placeholder: PropTypes.string
+  selected: observableArray.isRequired
 
 module.exports = observer TokenEditor

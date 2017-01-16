@@ -2,7 +2,6 @@
 {inject, observer} = require "mobx-react"
 
 Dropzone = require "react-dropzone"
-TokenEditor = require "component/common/token/TokenEditor"
 CharacterEditor = require "component/editor/character/CharacterEditor"
 
 # ChapterEditor = require "./ChapterEditor"
@@ -22,6 +21,8 @@ StoryEditor = ({story}) ->
   _updateCover = (files) =>
     [cov] = files
 
+  _onChoosen = (token) =>
+
   <div className="#{container}">
     <form>
       <div className="#{main}">
@@ -39,6 +40,7 @@ StoryEditor = ({story}) ->
             <CharacterEditor
               placeholder="Type a character name..."
               selected={[]}
+              onChoosen={_onChoosen}
             />
           </div>
           <div className="#{field}">
