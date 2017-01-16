@@ -1,12 +1,13 @@
 import {action} from "mobx"
 import Token from "store/component/common/token/Token"
 import fetch from "helper/wrapper/fetch"
+import isEmpty from "lodash/isEmpty"
 
 class Character extends Token {
   endpoint = "http://localhost:1337/stories/characters"
 
   @action request(token) {
-    if (!token) {
+    if (isEmpty(token)) {
       this.current = ""
       this.suggestions = []
       return
