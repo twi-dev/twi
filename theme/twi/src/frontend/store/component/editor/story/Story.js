@@ -21,6 +21,10 @@ class Story extends Store {
     return "/stories/new"
   }
 
+  @action addCharacter(character) {
+    this.characters.push(character)
+  }
+
   @action async request(method = "POST") {
     const {title, description, characters, marks, chapters, isDraft} = this
 

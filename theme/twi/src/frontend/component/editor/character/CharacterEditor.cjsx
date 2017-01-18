@@ -3,6 +3,8 @@
 
 TokenEditor = require "component/common/token/TokenEditor"
 
+mapStoresToProps = ({character}) -> {character}
+
 ###
 # Note: This component extends TokenEditor
 ###
@@ -22,4 +24,4 @@ CharacterEditor = (props) ->
     {children}
   </TokenEditor>
 
-module.exports = inject("character")(observer CharacterEditor)
+module.exports = inject(mapStoresToProps)(observer CharacterEditor)

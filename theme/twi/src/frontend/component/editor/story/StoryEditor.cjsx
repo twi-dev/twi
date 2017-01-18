@@ -1,6 +1,8 @@
 {PropTypes} = React = require "react"
 {inject, observer} = require "mobx-react"
 
+isEmpty = require "lodash/isEmpty"
+
 Dropzone = require "react-dropzone"
 CharacterEditor = require "component/editor/character/CharacterEditor"
 CoverEditor = require "component/editor/cover/CoverEditor"
@@ -17,7 +19,8 @@ CoverEditor = require "component/editor/cover/CoverEditor"
 StoryEditor = ({story}) ->
   _updateCover = (files) => [story.cover] = files
 
-  _onChoosen = (token) =>
+  _addCharacter = (character) =>
+    story.addCharacter character unless isEmpty character
 
   _updateTextField = ({target: {name, value}}) =>
     story[name] = value if name and name of story
@@ -34,7 +37,8 @@ StoryEditor = ({story}) ->
             <input
               type="text"
               name="title"
-              onChange={_updateTextField}
+              value={story.title}
+              onChange={story.updateTextField}
               placeholder="Story title"
             />
           </div>
@@ -42,7 +46,7 @@ StoryEditor = ({story}) ->
             <CharacterEditor
               placeholder="Type a character name..."
               selected={story.characters}
-              onChoosen={_onChoosen}
+              onChoosen={_addCharacter}
             />
           </div>
           <div className="#{field}">
@@ -55,7 +59,7 @@ StoryEditor = ({story}) ->
             <textarea
               type="text"
               name="description"
-              onChange={_updateTextField}
+              onChange={story.updateTextField}
               placeholder="Story description..."
             />
           </div>
