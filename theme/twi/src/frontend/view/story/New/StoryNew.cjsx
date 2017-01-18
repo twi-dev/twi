@@ -3,8 +3,10 @@ React = require "react"
 
 StoryEditor = require "component/editor/story/StoryEditor"
 
-StoryNew = ({app}) -> <StoryEditor />
+mapStoresToProps = ({app, newStory}) -> {app, newStory}
+
+StoryNew = ({app, newStory}) -> <StoryEditor story={newStory} />
 
 StoryNew.title = "Add a new story"
 
-module.exports = inject("character", "app")(observer StoryNew)
+module.exports = inject(mapStoresToProps)(observer StoryNew)

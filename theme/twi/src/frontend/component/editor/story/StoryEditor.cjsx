@@ -3,43 +3,45 @@
 
 Dropzone = require "react-dropzone"
 CharacterEditor = require "component/editor/character/CharacterEditor"
-
-# ChapterEditor = require "./ChapterEditor"
+CoverEditor = require "component/editor/cover/CoverEditor"
 
 {
   container
 } = require "common.styl"
 {
   main
-  cover
-  coverLabel
   details
   field
 } = require "./story.styl"
 
 StoryEditor = ({story}) ->
-  _updateCover = (files) =>
-    [cov] = files
+  _updateCover = (files) => [story.cover] = files
 
   _onChoosen = (token) =>
+
+  _updateTextField = ({target: {name, value}}) =>
+    story[name] = value if name and name of story
 
   <div className="#{container}">
     <form>
       <div className="#{main}">
-        <Dropzone className="#{cover}" onDrop={@_updateCover}>
-          <div className="#{coverLabel}">Story cover</div>
-        </Dropzone>
+        <CoverEditor
+          onDrop={_updateCover}
+          cover={story.cover}
+        />
         <div className="#{details}">
           <div className="#{field}">
             <input
               type="text"
+              name="title"
+              onChange={_updateTextField}
               placeholder="Story title"
             />
           </div>
           <div className="#{field}">
             <CharacterEditor
               placeholder="Type a character name..."
-              selected={[]}
+              selected={story.characters}
               onChoosen={_onChoosen}
             />
           </div>
@@ -52,6 +54,8 @@ StoryEditor = ({story}) ->
           <div className="#{field}">
             <textarea
               type="text"
+              name="description"
+              onChange={_updateTextField}
               placeholder="Story description..."
             />
           </div>
@@ -60,4 +64,4 @@ StoryEditor = ({story}) ->
     </form>
   </div>
 
-module.exports = StoryEditor
+module.exports = observer StoryEditor

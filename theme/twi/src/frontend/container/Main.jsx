@@ -7,6 +7,7 @@ import AppStore from "store/container/App"
 
 import TokenStore from "store/component/common/token/Token"
 import CharacterStore from "store/component/editor/character/Character"
+import NewStoryStore from "store/view/story/NewStory"
 
 import App from "./App"
 import Layout from "../view/layout/App/Layout"
@@ -14,7 +15,8 @@ import Layout from "../view/layout/App/Layout"
 const stores = {
   app: new AppStore(),
   tokenStore: new TokenStore(),
-  character: new CharacterStore()
+  character: new CharacterStore(),
+  newStory: new NewStoryStore()
 }
 
 @observer

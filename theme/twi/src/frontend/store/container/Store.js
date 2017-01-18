@@ -1,11 +1,14 @@
 import {action} from "mobx"
 import fetch from "helper/wrapper/fetch"
+import isPlainObject from "lodash/isPlainObject"
 
 class Store {
-  get endpoint() {}
+  @action async send(endpoint, method, body) {
+    if (isPlainObject(method)) {
+      [body, method] = [method, body]
+    }
 
-  @action async send(method = "GET", body = null) {
-    return await fetch(`${this.endpoint}`, {method, body})
+    return await fetch(`${endpoint}`, {method, body})
   }
 }
 

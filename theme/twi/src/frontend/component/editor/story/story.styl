@@ -13,31 +13,6 @@
   height 100%
   box-sizing border-box
 
-.cover
-  cursor pointer
-  position relative
-  max-width 412px
-  height 614px
-  text-align center
-  border none
-  background white
-
-  // Set horisontal position to center when viewport width
-  //   between the following values
-  +between(413px, 412px * 2)
-    margin 0 auto
-
-  +above(413px)
-    cardBase()
-    width 412px
-    // border #777 dashed 1px
-
-  &-label
-    align(center)
-    text-align center
-    color #777
-    text-transform uppercase
-
 .details
   width 100%
   box-sizing border-box
@@ -49,6 +24,10 @@
 
   +above(412px * 2)
     margin 0 0 0 16px
+  
+  +above(413px * 2)
+    width 412px
+    float left
 
   .field
     cf()
@@ -59,8 +38,3 @@
     box-sizing border-box
     padding 8px 10px
     border none
-
-+above(413px * 2)
-  .cover, .details
-    width 412px
-    float left

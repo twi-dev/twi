@@ -15,6 +15,8 @@ class Story extends Store {
 
   @observable isDraft = false
 
+  @observable cover = null
+
   get endpoint() {
     return "/stories/new"
   }
