@@ -22,14 +22,11 @@ StoryEditor = ({story}) ->
   _addCharacter = (character) =>
     story.addCharacter character unless isEmpty character
 
-  _updateTextField = ({target: {name, value}}) =>
-    story[name] = value if name and name of story
-
   <div className="#{container}">
     <form>
       <div className="#{main}">
         <CoverEditor
-          onDrop={_updateCover}
+          onDrop={story.updateCover}
           cover={story.cover}
         />
         <div className="#{details}">

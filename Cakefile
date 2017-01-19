@@ -195,7 +195,7 @@ watcher = (e, filename) ->
     return rimraf getDestFilename filename
       .then onFulfilled, onProcessExitOrError
 
-task "make", "Build app from the source", ->
+task "make", "Build app from the source", (options) ->
   do ora.start
 
   glob "#{SRC_DIR}/**"

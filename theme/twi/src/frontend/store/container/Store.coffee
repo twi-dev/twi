@@ -5,7 +5,7 @@ isFunction = require "lodash/isFunction"
 isPlainObject = require "lodash/isPlainObject"
 
 ###
-# Note: This class is extendable. So, you should it *only* with your stores
+# Note: This class is extendable. So, you should use it *only* with your stores
 #
 # class MyAwesomeStore extends Store
 ###

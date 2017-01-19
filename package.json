@@ -150,6 +150,7 @@
     "style-loader": "0.13.1",
     "stylus": "0.54.5",
     "stylus-loader": "2.4.0",
+    "through2": "^2.0.3",
     "vinyl-fs": "2.4.4",
     "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",

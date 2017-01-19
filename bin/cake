@@ -1,0 +1,103 @@
+#!/usr/bin/env node
+
+const {dirname, extname} = require("path")
+const {watch} = require ("fs")
+
+const {ROOT, tryDeps} = require("./helper")
+
+tryDeps() // Check deps before including external packages
+
+const commander = require("commander")
+const {cross} = require("figures")
+const vfs = require("vinyl-fs")
+const ora = require("ora")()
+const pify = require("pify")
+const glob = require("glob")
+const junk = require("junk")
+const rimraf = require("rimraf")
+const through = require("through2")
+const {red, yellow, green, cyan} = require("chalk")
+const {
+  compile, FILE_EXTENSIONS
+} = require(`${ROOT}/node_modules/coffee-script`)
+
+const DEFAULT_SRC = `${ROOT}/src`
+
+// Madskillz returns :D
+const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
+  [...FILE_EXTENSIONS, ".cjsx"]
+    .map(e => e.replace(/^\./, ""))
+    .join("|")
+  })$`
+)
+
+function onEnd() {}
+
+function onError(err) {
+  console.log(err)
+  process.exit(1)
+}
+
+function compileFile(file, enc, cb) {
+  if (!COFFEE_EXTNAMES_PATTERN.test(extname(file.path))) {
+    return cb(null, file)
+  }
+
+  try {
+    const contents = compile(`${file.contents}`, {
+      bare: true,
+      header: false,
+      // sourceMap: isDevel,
+      sourceRoot: false,
+      filename: file.path,
+      sourceFiles: [file.relative],
+      generatedFile: file.relative.replace(COFFEE_EXTNAMES_PATTERN, ".js")
+    })
+
+    file.contents = new Buffer(contents)
+    file.path = file.path.replace(COFFEE_EXTNAMES_PATTERN, ".js")
+  } catch (err) {
+    return cb(err)
+  }
+
+  return cb(null, file)
+}
+
+function processFiles(files, src, dest) {
+  files = files.filter(file => junk.not(file))
+
+  vfs.src(files)
+    .on("error", onError)
+    .pipe(through.obj(compileFile))
+    .on("error", onError)
+    .pipe(vfs.dest(filename => dirname(filename.path.replace(src, dest))))
+    .on("error", onError)
+}
+
+function make(src = DEFAULT_SRC, dest = ROOT) {
+  const fulfill = (err, files) => (
+    err == null ? processFiles(files, src, dest) : onError(err)
+  )
+
+  glob(`${src}/**`, fulfill)
+}
+
+const actionMake = ({parent: {S, D}}) => make(S, D)
+
+commander
+  .command("make")
+  .alias("m")
+  .description("Make project")
+  .action(actionMake)
+
+commander
+  .command("watch")
+  .alias("w")
+  .description("Run watcher for development")
+
+commander
+  .option("--src, -s <glob>", "Set custom source directory")
+  .option("--dest, -d <directory>", "Set custom destination directory")
+  .parse(process.argv)
+
+process.on("error", onError)
