@@ -81,7 +81,7 @@ function _makeBackend() {
   ora.text = "Making backend app..."
   ora.start()
 
-  return exec(`${TWI_ROOT}/node_modules/.bin/cake make`)
+  return exec(`${TWI_ROOT}/bin/cake make`)
 }
 
 /**
