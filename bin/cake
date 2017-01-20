@@ -8,17 +8,20 @@ const {ROOT, tryDeps} = require("./helper")
 tryDeps() // Check deps before including external packages
 
 const commander = require("commander")
-// const {cross} = require("figures")
+const {cross, tick, pointer} = require("figures")
 const vfs = require("vinyl-fs")
-// const ora = require("ora")()
+const ora = require("ora")()
 const glob = require("glob")
 const junk = require("junk")
 const rimraf = require("rimraf")
 const through = require("through2")
-// const {red, yellow, green, cyan} = require("chalk")
+const {red, green, cyan} = require("chalk")
+
 const {
   compile, FILE_EXTENSIONS
 } = require(`${ROOT}/node_modules/coffee-script`)
+
+const {transform} = require(`${ROOT}/node_modules/coffee-react`)
 
 const DEFAULT_SRC = `${ROOT}/src`
 
@@ -38,15 +41,27 @@ const getDestFilename = (filename, src, dest) => (
 
 const isCoffee = filename => COFFEE_EXTNAMES_PATTERN.test(extname(filename))
 
-const onContinueWatching = () => console.log("Watching for changes...")
+const onContinueWatching = () => (
+  console.log(cyan(pointer), "Watching for changes...")
+)
 
 function onEnd() {
-  console.log("Done.")
+  if (isDev) {
+    console.log(`\n${green(tick)}`, "Done.")
+  } else {
+    ora.text = "Done."
+    ora.succeed()
+  }
+
   process.exit(0)
 }
 
 function onError(err) {
-  console.log(err)
+  if (isDev) {
+    return console.log(red(cross), "Watching for changes...")
+  }
+
+  console.log(red(cross), err)
   process.exit(1)
 }
 
@@ -55,10 +70,15 @@ function compileFile(file, enc, cb) {
     return cb(null, file)
   }
 
-  console.log(`Compile ${file.path}`)
+  if (isDev) {
+    console.log(cyan(pointer), `Compile ${file.path}`)
+  } else {
+    ora.color = "cyan"
+    ora.text = `Compile ${file.path}`
+  }
 
   try {
-    const contents = compile(`${file.contents}`, {
+    const contents = compile(transform(`${file.contents}`), {
       bare: true,
       header: false,
       // sourceMap: isDev,
@@ -90,6 +110,8 @@ function processFiles(files, src = DEFAULT_SRC, dest = ROOT) {
 }
 
 function make(src = DEFAULT_SRC, dest = ROOT) {
+  ora.start()
+
   const fulfill = (err, files) => (
     err == null ? processFiles(files, src, dest) : onError(err)
   )
@@ -100,8 +122,8 @@ function make(src = DEFAULT_SRC, dest = ROOT) {
 function watch(src = DEFAULT_SRC, dest = ROOT) {
   isDev = true // Turning on development mode
 
-  console.log("Starting watcher...")
-  console.log("You can press Control+C to exit.")
+  console.log(cyan(pointer), "Starting watcher...")
+  console.log(cyan(pointer), "You can press Control+C to exit.")
 
   function watcher(ev, filename) {
     filename = `${src}/${filename}`
