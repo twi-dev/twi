@@ -1,27 +1,28 @@
 #!/usr/bin/env node
 
 const {dirname, extname} = require("path")
-const {watch} = require ("fs")
+const fs = require ("fs")
 
 const {ROOT, tryDeps} = require("./helper")
 
 tryDeps() // Check deps before including external packages
 
 const commander = require("commander")
-const {cross} = require("figures")
+// const {cross} = require("figures")
 const vfs = require("vinyl-fs")
-const ora = require("ora")()
-const pify = require("pify")
+// const ora = require("ora")()
 const glob = require("glob")
 const junk = require("junk")
 const rimraf = require("rimraf")
 const through = require("through2")
-const {red, yellow, green, cyan} = require("chalk")
+// const {red, yellow, green, cyan} = require("chalk")
 const {
   compile, FILE_EXTENSIONS
 } = require(`${ROOT}/node_modules/coffee-script`)
 
 const DEFAULT_SRC = `${ROOT}/src`
+
+var isDev = false
 
 // Madskillz returns :D
 const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
@@ -31,7 +32,18 @@ const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
   })$`
 )
 
-function onEnd() {}
+const getDestFilename = (filename, src, dest) => (
+  filename.replace(src, dest)
+)
+
+const isCoffee = filename => COFFEE_EXTNAMES_PATTERN.test(extname(filename))
+
+const onContinueWatching = () => console.log("Watching for changes...")
+
+function onEnd() {
+  console.log("Done.")
+  process.exit(0)
+}
 
 function onError(err) {
   console.log(err)
@@ -39,15 +51,17 @@ function onError(err) {
 }
 
 function compileFile(file, enc, cb) {
-  if (!COFFEE_EXTNAMES_PATTERN.test(extname(file.path))) {
+  if (!isCoffee(file.path)) {
     return cb(null, file)
   }
+
+  console.log(`Compile ${file.path}`)
 
   try {
     const contents = compile(`${file.contents}`, {
       bare: true,
       header: false,
-      // sourceMap: isDevel,
+      // sourceMap: isDev,
       sourceRoot: false,
       filename: file.path,
       sourceFiles: [file.relative],
@@ -63,15 +77,16 @@ function compileFile(file, enc, cb) {
   return cb(null, file)
 }
 
-function processFiles(files, src, dest) {
-  files = files.filter(file => junk.not(file))
+function processFiles(files, src = DEFAULT_SRC, dest = ROOT) {
+  files = files.filter(file => junk.not(file) && file !== DEFAULT_SRC)
 
   vfs.src(files)
     .on("error", onError)
     .pipe(through.obj(compileFile))
     .on("error", onError)
-    .pipe(vfs.dest(filename => dirname(filename.path.replace(src, dest))))
+    .pipe(vfs.dest(({path}) => dirname(getDestFilename(path, src, dest))))
     .on("error", onError)
+    .on("end", isDev ? onContinueWatching : onEnd)
 }
 
 function make(src = DEFAULT_SRC, dest = ROOT) {
@@ -82,7 +97,60 @@ function make(src = DEFAULT_SRC, dest = ROOT) {
   glob(`${src}/**`, fulfill)
 }
 
+function watch(src = DEFAULT_SRC, dest = ROOT) {
+  isDev = true // Turning on development mode
+
+  console.log("Starting watcher...")
+  console.log("You can press Control+C to exit.")
+
+  function watcher(ev, filename) {
+    filename = `${src}/${filename}`
+
+    const destFilename = getDestFilename(filename, src, dest)
+
+    try {
+      const stat = fs.statSync(filename)
+
+      // TODO: Add recompile files in created directory (if they exists)
+      if (stat.isDirectory()) {
+        console.log(`Creating a directory ${filename}`)
+
+        // Rebuild files in directory if they exists
+        const fulfill = (err, files) => (
+          err == null ? processFiles(files, src, dest) : onError(err)
+        )
+
+        // Find files in created directory
+        const created = err => (
+          err == null ? glob(`${filename}/**`, fulfill) : onError(err)
+        )
+
+        return fs.mkdir(destFilename, created)
+      }
+
+      if (isCoffee(filename)) {
+        return processFiles([filename], src, dest)
+      }
+    } catch (err) {
+      if (err.code !== "ENOENT") {
+        return process.emit("error", err)
+      }
+
+      const fulfill = err => (
+        err == null ? console.log(`Remove ${destFilename}`) : onError(err)
+      )
+
+      rimraf(destFilename, fulfill)
+    }
+  }
+
+  // Run watcher
+  fs.watch(src, {recursive: true}, watcher)
+}
+
 const actionMake = ({parent: {S, D}}) => make(S, D)
+
+const actionWatch = ({parent: {S, D}}) => watch(S, D)
 
 commander
   .command("make")
@@ -94,10 +162,13 @@ commander
   .command("watch")
   .alias("w")
   .description("Run watcher for development")
+  .action(actionWatch)
 
 commander
   .option("--src, -s <glob>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
   .parse(process.argv)
 
-process.on("error", onError)
+process
+  .on("SIGINT", onEnd)
+  .on("error", onError)

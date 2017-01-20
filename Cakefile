@@ -1,3 +1,7 @@
+#
+# DEPRECATED AND SHOULD BE REMOVED IN NEXT CONTRIBUTIONS!
+#
+
 ###
 # Cakefile template
 #
