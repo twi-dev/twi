@@ -57,7 +57,7 @@ configure = (isDev) ->
 
   entry =
     main: [
-      "#{TWI_ROOT}/theme/#{theme}/src/frontend/main.jsx"
+      "#{TWI_ROOT}/theme/#{theme}/src/frontend/app/main.coffee"
     ]
 
   if isDev
