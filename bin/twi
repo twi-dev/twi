@@ -50,8 +50,11 @@ const exec = pify(childProcess.exec)
  * @access private
  */
 function _onError(err, stackTrace = false) {
+  ora.stop()
+
   if (stackTrace) {
-    console.log(red(cross), err.stack)
+    console.log(red(cross), err)
+    // console.log(red(cross), err.stack)
   } else {
     ora.text = String(err)
     ora.fail()

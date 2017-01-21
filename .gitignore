@@ -1,11 +1,13 @@
-api
-controller
-coverage
 configs/user.yaml
 configs/user.yml
 configs/test.yaml
 configs/test.yml
 configs/cert
+configs/assets.json
+
+api
+controller
+coverage
 core
 model
 setup

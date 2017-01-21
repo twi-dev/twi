@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/octet-stream/twi/issues"
   },
-  "main": "./bin/twi",
+  "main": "bin/twi",
   "bin": {
     "twi": "bin/twi"
   },
@@ -19,29 +19,29 @@
     "setup": "bin/twi setup",
     "twi": "bin/twi run",
     "start": "npm run setup && npm run run",
-    "cake:make": "./node_modules/coffee-script/bin/cake make",
+    "cake:make": "bin/cake make",
     "cm": "npm run cake:make",
-    "cake:watch": "./node_modules/coffee-script/bin/cake watch",
+    "cake:watch": "node_modules/coffee-script/bin/cake watch",
     "cw": "npm run cake:watch",
-    "gulp": "./node_modules/.bin/gulp",
+    "gulp": "node_modules/.bin/gulp",
     "gulp:make": "npm run gulp",
-    "gm": "npm run gulp",
-    "gulp:watch": "./node_modules/gulp/bin/gulp.js watch",
-    "gw": "npm run gulp:watch",
-    "make": "npm run cake:make && npm run gulp:make",
+    "g:m": "npm run gulp",
+    "gulp:watch": "node_modules/gulp/bin/gulp.js watch",
+    "g:w": "npm run gulp:watch",
+    "make": "bin/twi make && npm run gulp:make",
     "m": "npm run make",
     "watch": "twi watch --stack-trace",
     "w": "npm run watch",
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
-    "test": "./node_modules/ava/cli.js",
-    "test:watch": "./node_modules/ava/cli.js --watch",
-    "tw": "npm run test:watch"
+    "test": "node_modules/ava/cli.js",
+    "test:watch": "node_modules/ava/cli.js --watch",
+    "t:w": "npm run test:watch"
   },
   "ava": {
-    "require": "./test/helper/browser",
+    "require": "test/helper/browser",
     "files": [
-      "./test/unit/**/*.js",
+      "test/unit/**/*.js",
       "!./test/helper/**/*.js"
     ]
   },
@@ -95,7 +95,8 @@
     "xml2js": "0.4.17"
   },
   "devDependencies": {
-    "autoprefixer": "^6.6.1",
+    "assets-webpack-plugin": "3.5.1",
+    "autoprefixer": "6.6.1",
     "ava": "0.17.0",
     "babel-core": "6.20.0",
     "babel-eslint": "7.1.1",
@@ -117,6 +118,7 @@
     "eslint-config-standard-react": "4.2.0",
     "eslint-plugin-babel": "4.0.0",
     "eslint-plugin-react": "6.8.0",
+    "extract-text-webpack-plugin": "2.0.0-beta.5",
     "glob": "7.0.6",
     "globby": "6.1.0",
     "gulp": "3.9.1",
@@ -150,11 +152,11 @@
     "style-loader": "0.13.1",
     "stylus": "0.54.5",
     "stylus-loader": "2.4.0",
-    "through2": "^2.0.3",
+    "through2": "2.0.3",
     "vinyl-fs": "2.4.4",
     "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",
-    "webpack": "2.2.0-rc.3",
+    "webpack": "2.2.0",
     "webpack-dev-middleware": "1.8.4",
     "webpack-hot-middleware": "2.13.2",
     "whatwg-fetch": "2.0.1"

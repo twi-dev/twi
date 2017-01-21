@@ -42,7 +42,7 @@
 # export default Story
 
 {observable, action} = require "mobx"
-{dms, dm} = request "decorator"
+{dms, dm} = require "decorator"
 
 Store = require "store/container/Store"
 

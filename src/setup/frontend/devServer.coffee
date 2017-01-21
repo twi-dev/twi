@@ -1,3 +1,5 @@
+TWI_ROOT = do process.cwd
+
 # Based on:
 #   https://github.com/dayAlone/koa-webpack-hot-middleware/blob/master/index.js
 {assign} = Object
@@ -10,10 +12,10 @@ cors = require "kcors"
 webpackDevMiddleware = require "webpack-dev-middleware"
 webpackHotMiddleware = require "webpack-hot-middleware"
 
-views = require "../../../core/app/view"
-logger = require "../../../core/middleware/logger"
+views = require "#{TWI_ROOT}/core/app/view"
+logger = require "#{TWI_ROOT}/core/middleware/logger"
 
-actionIndex = require "../../../core/app/frontend"
+actionIndex = require "#{TWI_ROOT}/core/app/frontend"
 
 koa = new Koa
 
@@ -42,6 +44,7 @@ devMiddleware = (compiler, config) ->
   return (ctx, next) ->
     hasNext = await wrapMiddleware middleware, ctx.req,
       end: (content) -> ctx.body = content
+
       setHeader: -> ctx.set.apply ctx, arguments
 
     await do next if hasNext and next

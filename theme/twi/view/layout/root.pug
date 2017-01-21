@@ -82,6 +82,9 @@ html
       href="/humans.txt"
     )
 
+    //- Include all *CSS* assets dynamically is they exists
+    each asset in getAssets("css")
+      link(rel="stylesheet", href="" + asset)
 
     title= twi.name
 
@@ -90,7 +93,6 @@ html
 
     //- If JS disabled
     noscript
-      //- meta(http-equiv="refresh", content="0; URL=/outdated")
       link(rel="stylesheet", href="/assets/css/outdated.css")
       div.
         You are using an outdated browser
@@ -100,4 +102,6 @@ html
       href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic"
     )
 
-    script(src="/assets/js/common.js")
+    //- Include all *JS* assets dynamically
+    each asset in getAssets("js")
+      script(src="" + asset)

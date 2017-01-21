@@ -1,4 +1,4 @@
-React = {PropTypes: {instanceOf, func, string}} = require "react"
+React = {PropTypes} = require "react"
 Dropzone = require "react-dropzone"
 {observer} = require "mobx-react"
 
@@ -17,8 +17,8 @@ CoverEditor = ({cover, onDrop}) ->
   </Dropzone>
 
 CoverEditor.propTypes =
-  cover: instanceOf File
-  onDrop: func
-  children: string
+  cover: PropTypes.instanceOf File
+  onDrop: PropTypes.func
+  children: PropTypes.string
 
 module.exports = observer CoverEditor
