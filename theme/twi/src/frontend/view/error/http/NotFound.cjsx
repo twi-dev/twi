@@ -15,7 +15,6 @@ pure = require "helper/decorator/pure"
 
 mapStoresToProps = ({app}) -> ({app})
 
-
 # It's maaaaaaaagic, Alex :D (actually no)
 componentWillMount = -> @props.app.setTitle "Page not found"
 

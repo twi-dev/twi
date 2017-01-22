@@ -32,7 +32,7 @@ pure = (Target, methods) ->
     constructor: (props, context, updater) ->
       super props, context, updater
 
-      @displayName = "#{@constructor.name}(#{Target.name})"
+      # @displayName = "#{@constructor.name}(#{Target.name})"
 
       # for m in methods
       #   unless m.name in allowed
@@ -44,11 +44,13 @@ pure = (Target, methods) ->
 
     render: -> createElement Target, @props, @props.children
 
-    for m in methods
-      unless m.name in allowed
-        throw new Error "Allowed only React lifecycle methods."
+  for m in methods
+    unless m.name in allowed
+      throw new Error "Allowed only React lifecycle methods."
 
-      Pure::[m.name] = m
+    Pure::[m.name] = m
+
+  Pure.displayName = "#{Pure.name}(#{Target.name})"
 
   return Pure
 
