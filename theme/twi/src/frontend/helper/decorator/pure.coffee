@@ -34,7 +34,15 @@ pure = (Target, methods) ->
 
       @displayName = "#{@constructor.name}(#{Target.name})"
 
-    render: -> createElement Target, @props
+      # for m in methods
+      #   unless m.name in allowed
+      #     throw new Error "Allowed only React lifecycle methods."
+
+      #   this[m.name] = m.bind this
+
+      return
+
+    render: -> createElement Target, @props, @props.children
 
     for m in methods
       unless m.name in allowed

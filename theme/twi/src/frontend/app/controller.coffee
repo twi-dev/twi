@@ -19,8 +19,13 @@ makeRoutes = ->
   return routes
 
 module.exports = do ->
-  path: "/"
-  component: require "container/Main.cjsx"
-  indexRoute:
-    getComponent: getModule("home/home")("Home")
-  childRoutes: do makeRoutes
+  childRoutes: [{
+    path: "/"
+    component: require "container/Main.cjsx"
+    indexRoute:
+      getComponent: getModule("home/home")("Home")
+    childRoutes: do makeRoutes
+  }, {
+    path: "*"
+    component: require "view/error/http/NotFound"
+  }]
