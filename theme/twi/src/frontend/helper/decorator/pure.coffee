@@ -1,6 +1,7 @@
 {Component, createElement} = require "react"
 isFunction = require "lodash/isFunction"
 isEmpty = require "lodash/isEmpty"
+isArray = require "lodash/isArray"
 
 ###
 # List of allowed React lifecycle methods
@@ -17,41 +18,46 @@ allowed = [
 ]
 
 ###
+# Wrap your functional components as stateful component
+#   to use React lifecycle methods
 #
+# @param function|array methods – list of React lifecycle methods that you need
+#
+# @return Pure <: React.Component
+#
+# @throw TypeError
+# @throw Error
 ###
-pure = (Target, methods) ->
-  if isEmpty Target.name
-    throw new Error "Anonymous components are not allowed."
-
-  unless isFunction
-    throw new TypeError "Target component should be a function."
-
+pure = (methods) ->
   methods = [methods] if isFunction methods
 
-  class Pure extends Component
-    constructor: (props, context, updater) ->
-      super props, context, updater
+  if isEmpty methods
+    throw new TypeError "Methods cannot be empty."
 
-      # @displayName = "#{@constructor.name}(#{Target.name})"
+  unless isArray methods
+    throw new TypeError "
+      Methods should be passed as array of functions or as single function.
+    "
 
-      # for m in methods
-      #   unless m.name in allowed
-      #     throw new Error "Allowed only React lifecycle methods."
+  return wrapFunctionalComponent = (Target) ->
+    if isEmpty Target.name
+      throw new Error "Anonymous components are not allowed."
 
-      #   this[m.name] = m.bind this
+    unless isFunction Target
+      throw new TypeError "Target component should be a function."
 
-      return
+    # Component wrapper
+    class Pure extends Component
+      render: -> createElement Target, @props, @props.children
 
-    render: -> createElement Target, @props, @props.children
+    for m in methods
+      unless m.name in allowed
+        throw new Error "Allowed only React lifecycle methods."
 
-  for m in methods
-    unless m.name in allowed
-      throw new Error "Allowed only React lifecycle methods."
+      Pure::[m.name] = m
 
-    Pure::[m.name] = m
+    Pure.displayName = "#{Pure.name}(#{Target.name})"
 
-  Pure.displayName = "#{Pure.name}(#{Target.name})"
-
-  return Pure
+    return Pure
 
 module.exports = pure

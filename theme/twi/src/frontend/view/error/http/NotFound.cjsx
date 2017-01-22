@@ -3,6 +3,7 @@ React = require "react"
 {inject, observer} = require "mobx-react"
 
 DocumentTitle = require "react-document-title"
+compose = require "lodash/fp/compose"
 pure = require "helper/decorator/pure"
 
 {
@@ -34,6 +35,8 @@ NotFound = ({app}) ->
     </div>
   </DocumentTitle>
 
-module.exports = inject(
-  mapStoresToProps
-)(observer pure NotFound, componentWillMount)
+module.exports = compose([
+  inject mapStoresToProps
+  observer
+  pure componentWillMount
+])(NotFound)
