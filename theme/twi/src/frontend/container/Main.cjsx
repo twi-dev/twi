@@ -1,5 +1,8 @@
-React = require "react"
+{PropTypes} = React = require "react"
 {inject, observer} = require "mobx-react"
+
+AppStore = require "store/container/App"
+DocumentTitle = require "react-document-title"
 
 compose = require "lodash/fp/compose"
 pure = require "helper/decorator/pure"
@@ -14,16 +17,23 @@ resizeAppViewport = ->
   {width, height} = do windowSize
   @props.app.setViewportDimension {width, height}
 
+componentWillReact = -> console.log "sdf"
+
 componentWillMount = ->
   {width, height} = do windowSize
   @props.app.setViewportDimension {width, height}
 
   window.addEventListener "resize", resizeAppViewport.bind(this), no
 
-Main = ({children}) -> <div>{children}</div>
+Main = ({app: {width, height, title}, children}) ->
+  <DocumentTitle title={title}>
+    <div style={{width, height}}>{children}</div>
+  </DocumentTitle>
+
+Main.propTypes = app: PropTypes.instanceOf AppStore
 
 module.exports = compose([
-  inject(mapStoresToProps)
+  inject mapStoresToProps
   observer
-  pure componentWillMount
+  pure [componentWillMount, componentWillReact]
 ])(Main)

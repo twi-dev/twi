@@ -15,6 +15,8 @@ allowed = [
   "componentWillUpdate"
   "componentDidUpdate"
   "componentWillUnmount"
+
+  "componentWillReact"
 ]
 
 ###
