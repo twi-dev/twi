@@ -1,5 +1,17 @@
 React = require "react"
+{inject, observer} = require "mobx-react"
 
-Home = -> <div>foo</div>
+compose = require "lodash/fp/compose"
+pure = require "helper/decorator/pure"
 
-module.exports = Home
+mapStoresToProps = ({app}) -> ({app})
+
+componentWillMount = -> @props.app.setTitle "Library feed"
+
+Home = ({app}) -> <div>foo</div>
+
+module.exports = compose([
+  inject mapStoresToProps
+  observer
+  pure componentWillMount
+])(Home)

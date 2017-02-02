@@ -1,10 +1,16 @@
 {dirname} = require "path"
 
-fulfill = (cb) -> (component) -> cb null, component
+onFulfilled = (cb) -> (component) -> cb null, component
+
+onRejected = (err) -> console.error err
+
+getComponent = (path) -> (state, cb) ->
+  System.import "#{path}"
+    .then(onFulfilled, onRejected)
 
 getModule = (prefix) -> (name) -> (state, cb) ->
   System.import "module/#{prefix}/#{name}"
-    .then fulfill cb
+    .then onFulfilled cb
     .catch (err) -> console.error err
 
 getPrefix = (path) -> dirname path.replace /^\.\//, ""
@@ -24,7 +30,7 @@ module.exports = do ->
     component: require "container/Main.cjsx"
     indexRoute:
       getComponent: getModule("home/home")("Home")
-    childRoutes: do makeRoutes
+      childRoutes: do makeRoutes
   }, {
     path: "*"
     component: require "view/error/http/NotFound"

@@ -1,4 +1,6 @@
 {Component, createElement} = require "react"
+{observer} = require "mobx-react"
+
 isFunction = require "lodash/isFunction"
 isEmpty = require "lodash/isEmpty"
 isArray = require "lodash/isArray"
@@ -50,7 +52,8 @@ pure = (methods) ->
 
     # Component wrapper
     class Pure extends Component
-      render: -> createElement Target, @props, @props.children
+      render: ->
+        createElement Target, @props, @props.children
 
     for m in methods
       unless m.name in allowed

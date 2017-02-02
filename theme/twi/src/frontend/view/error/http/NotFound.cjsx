@@ -5,12 +5,13 @@ React = require "react"
 DocumentTitle = require "react-document-title"
 compose = require "lodash/fp/compose"
 pure = require "helper/decorator/pure"
+{isObservable} = require "mobx"
 
 {
-  mainContainer,
-  link,
-  image,
-  message,
+  mainContainer
+  link
+  image
+  message
   codeNotFound
 } = require "./http.styl"
 
