@@ -10,7 +10,7 @@ tryDeps() // Check deps before including external packages
 const commander = require("commander")
 const {cross, tick, pointer} = require("figures")
 const vfs = require("vinyl-fs")
-const ora = require("ora")()
+const ora = require("ora")({stream: process.stdout})
 const glob = require("glob")
 const junk = require("junk")
 const rimraf = require("rimraf")
@@ -69,6 +69,7 @@ function onError(err) {
     return console.log(red(cross), "Watching for changes...")
   }
 
+  ora.stop()
   console.log(red(cross), err)
   process.exit(1)
 }
@@ -105,7 +106,9 @@ function compileFile(file, enc, cb) {
   return cb(null, file)
 }
 
-function processFiles(files, src = DEFAULT_SRC, dest = ROOT) {
+function processFiles(files, src, dest) {
+  ora.start()
+
   files = files.filter(file => junk.not(file) && file !== DEFAULT_SRC)
 
   vfs.src(files)
@@ -127,7 +130,7 @@ function make(src, dest) {
   glob(`${src}/**`, fulfill)
 }
 
-function watch(src = DEFAULT_SRC, dest = ROOT) {
+function watch(src, dest) {
   isDev = true // Turning on development mode
 
   console.log(cyan(pointer), "Starting watcher...")
