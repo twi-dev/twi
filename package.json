@@ -34,8 +34,8 @@
     "w": "npm run watch",
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
-    "test": "node_modules/ava/cli.js",
-    "test:watch": "node_modules/ava/cli.js --watch",
+    "test": "bin/cake make -s theme/twi/src/frontend -d test/runtime/twi/frontend && ./node_modules/ava/cli.js",
+    "test:watch": "bin/cake make -s theme/twi/src/frontend -d test/runtime/twi/frontend && bin/cake watch -s theme/twi/src/frontend -d test/runtime/twi/frontend & node_modules/ava/cli.js --watch",
     "t:w": "npm run test:watch"
   },
   "ava": {

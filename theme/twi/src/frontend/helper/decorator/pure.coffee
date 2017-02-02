@@ -9,6 +9,7 @@ isArray = require "lodash/isArray"
 # List of allowed React lifecycle methods
 ###
 allowed = [
+  # React
   "componentWillMount"
   "componentDidMount"
   "componentWillReceiveProps"
@@ -18,6 +19,7 @@ allowed = [
   "componentDidUpdate"
   "componentWillUnmount"
 
+  # MobX-React
   "componentWillReact"
 ]
 
