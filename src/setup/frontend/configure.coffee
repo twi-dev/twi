@@ -83,7 +83,7 @@ configure = (isDev) ->
 
   config = {
     plugins
-    devtool: if isDev then "eval" else "source-map"
+    devtool: if isDev then "eval-source-map" else "source-map"
     performance:
       hints: if isDev then no else "warning"
     resolve:

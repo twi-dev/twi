@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {dirname, extname} = require("path")
+const {dirname, extname, resolve, isAbsolute} = require("path")
 const fs = require ("fs")
 
 const {ROOT, tryDeps} = require("./helper")
@@ -33,6 +33,10 @@ const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
     .map(e => e.replace(/^\./, ""))
     .join("|")
   })$`
+)
+
+const getFullSrcPath = (path = DEFAULT_SRC) => (
+  isAbsolute(path) ? path : resolve(ROOT, path)
 )
 
 const getDestFilename = (filename, src, dest) => (
@@ -187,7 +191,7 @@ commander
   .action(actionWatch)
 
 commander
-  .option("--src, -s <glob>", "Set custom source directory")
+  .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
   .parse(process.argv)
 

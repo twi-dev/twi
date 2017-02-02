@@ -39,7 +39,9 @@
     "t:w": "npm run test:watch"
   },
   "ava": {
-    "require": "test/helper/browser",
+    "require": [
+      "./test/helper/browser"
+    ],
     "files": [
       "test/unit/**/*.js",
       "!./test/helper/**/*.js"
@@ -129,6 +131,7 @@
     "gulp-util": "3.0.7",
     "gulp-watch": "4.3.8",
     "highlight.js": "9.7.0",
+    "ignore-styles": "^5.0.1",
     "inquirer": "1.2.3",
     "jeet": "6.1.5",
     "jsdom": "9.5.0",
