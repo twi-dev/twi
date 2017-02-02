@@ -35,7 +35,11 @@ const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
   })$`
 )
 
-const getFullSrcPath = (path = DEFAULT_SRC) => (
+const resolveFullSrcPath = (path = DEFAULT_SRC) => (
+  isAbsolute(path) ? path : resolve(ROOT, path)
+)
+
+const resolveFullDestPath = (path = ROOT) => (
   isAbsolute(path) ? path : resolve(ROOT, path)
 )
 
@@ -113,7 +117,7 @@ function processFiles(files, src = DEFAULT_SRC, dest = ROOT) {
     .on("end", isDev ? onContinueWatching : onEnd)
 }
 
-function make(src = DEFAULT_SRC, dest = ROOT) {
+function make(src, dest) {
   ora.start()
 
   const fulfill = (err, files) => (
@@ -174,9 +178,15 @@ function watch(src = DEFAULT_SRC, dest = ROOT) {
   fs.watch(src, {recursive: true}, watcher)
 }
 
-const actionMake = ({parent: {S, D}}) => make(S, D)
+const actionMake = ({parent: {S, D}}) => make(
+  resolveFullSrcPath(S),
+  resolveFullDestPath(D)
+)
 
-const actionWatch = ({parent: {S, D}}) => watch(S, D)
+const actionWatch = ({parent: {S, D}}) => watch(
+  resolveFullSrcPath(S),
+  resolveFullDestPath(D)
+)
 
 commander
   .command("make")
