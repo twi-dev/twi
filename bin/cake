@@ -107,8 +107,6 @@ function compileFile(file, enc, cb) {
 }
 
 function processFiles(files, src, dest) {
-  ora.start()
-
   files = files.filter(file => junk.not(file) && file !== DEFAULT_SRC)
 
   vfs.src(files)

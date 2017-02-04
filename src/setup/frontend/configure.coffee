@@ -75,11 +75,11 @@ configure = (isDev) ->
       new HotModuleReplacementPlugin
       plugins...
     ]
-  else
-    plugins = [
-      new PluginBabili comments: off
-      plugins...
-    ]
+  # else
+  #   plugins = [
+  #     new PluginBabili comments: off
+  #     plugins...
+  #   ]
 
   config = {
     plugins

@@ -33,7 +33,9 @@ index.js
 *.doc
 *.docx
 *.odt
+
 *.old
+*-old
 
 !setup/index.js
 !setup/migrations/index.js
