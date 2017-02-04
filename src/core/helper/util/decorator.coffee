@@ -34,29 +34,31 @@ decorateMethods = (ctor, methods) ->
   unless isArray methods
     throw new TypeError "Methods should be an array."
 
-  m ctor for m in methods
+  for m in methods
+    m ctor
 
   return ctor
 
 ###
-# Decorate method by his name
+# Decorate method by his key
 #
 # @alias dm
 #
 # @param function decorator
-# @param string name
+# @param string key
 ###
-decorateMethod = (decotator, name) -> (ctor) ->
+decorateMethod = (decotator, key) -> (ctor) ->
   unless isFunction decotator
     throw new TypeError "Decorator should be a function."
 
-  unless name or isString name
-    throw new TypeError "Name should be a string and cannot be empty."
+  unless key or isString key
+    throw new TypeError "Key should be a string and cannot be empty."
 
-  descriptor = getOwnPropertyDescriptor ctor.prototype, name
-  decotator ctor.prototype, name, descriptor
+  descriptor = getOwnPropertyDescriptor ctor.prototype, key
 
-  defineProperty ctor.prototype, name, descriptor
+  decotator ctor.prototype, key, descriptor
+
+  defineProperty ctor.prototype, key, descriptor
   return
 
 module.exports = {
