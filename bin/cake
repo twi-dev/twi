@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const {dirname, extname, resolve, isAbsolute} = require("path")
+const {dirname, resolve, isAbsolute} = require("path")
 const fs = require ("fs")
 
 const {ROOT, tryDeps} = require("./helper")
@@ -17,23 +17,15 @@ const rimraf = require("rimraf")
 const through = require("through2")
 const {red, green, cyan} = require("chalk")
 
-const {
-  compile, FILE_EXTENSIONS
-} = require(`${ROOT}/node_modules/coffee-script`)
+const {transform} = require("babel-core")
 
-const {transform} = require(`${ROOT}/node_modules/coffee-react`)
+const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
 const DEFAULT_SRC = `${ROOT}/src`
 
-var isDev = false
+const assign = Object.assign
 
-// Madskillz returns :D
-const COFFEE_EXTNAMES_PATTERN = new RegExp(`\\.(${
-  [...FILE_EXTENSIONS, ".cjsx"]
-    .map(e => e.replace(/^\./, ""))
-    .join("|")
-  })$`
-)
+var isDev = false
 
 const resolveFullSrcPath = (path = DEFAULT_SRC) => (
   isAbsolute(path) ? path : resolve(ROOT, path)
@@ -47,7 +39,7 @@ const getDestFilename = (filename, src, dest) => (
   filename.replace(src, dest)
 )
 
-const isCoffee = filename => COFFEE_EXTNAMES_PATTERN.test(extname(filename))
+const isJS = filename => /.jsx?$/.test(filename)
 
 const onContinueWatching = () => (
   console.log(cyan(pointer), "Watching for changes...")
@@ -75,7 +67,7 @@ function onError(err) {
 }
 
 function compileFile(file, enc, cb) {
-  if (!isCoffee(file.path)) {
+  if (!isJS(file.path)) {
     return cb(null, file)
   }
 
@@ -87,18 +79,18 @@ function compileFile(file, enc, cb) {
   }
 
   try {
-    const contents = compile(transform(`${file.contents}`), {
-      bare: true,
-      header: false,
-      // sourceMap: isDev,
-      sourceRoot: false,
-      filename: file.path,
-      sourceFiles: [file.relative],
-      generatedFile: file.relative.replace(COFFEE_EXTNAMES_PATTERN, ".js")
-    })
+    const contents = transform(String(file.contents),
+      assign({}, BABERC, {
+        filename: file.path,
+        filenameRelative: file.relative,
+        sourceMap: isDev ? "inline" : false,
+        sourceFileName: file.path,
+        sourceMapTarget: file.path
+      })
+    )
 
-    file.contents = new Buffer(contents)
-    file.path = file.path.replace(COFFEE_EXTNAMES_PATTERN, ".js")
+    file.contents = new Buffer(contents.code)
+    file.babel = contents.metadata
   } catch (err) {
     return cb(err)
   }
@@ -159,7 +151,7 @@ function watch(src, dest) {
         return fs.mkdir(destFilename, created)
       }
 
-      if (isCoffee(filename)) {
+      if (isJS(filename)) {
         return processFiles([filename], src, dest)
       }
     } catch (err) {
