@@ -1,0 +1,18 @@
+app:
+  host: stories.octetstream.ru
+  # port: 3012
+  # env: production
+  # secure: true
+  enableSignup: false
+# database:
+#   name: twi
+#   user: dark_an
+#   pass: j3yHuwibkAKH9bKpBwZlS
+session:
+  secret: JLhBIVv9PdTpH81XaWSdIxpITcaTZ4IjdmINwhHBo
+smtp:
+  port: 465
+  secure: true
+  host: smtp.yandex.ru
+  user: noreply@octetstream.ru
+  pass: kUj3yHuwibkAKH9bKpBwZlSkTaJLxpITcaT

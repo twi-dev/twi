@@ -34,14 +34,16 @@
     "w": "npm run watch",
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
-    "test": "bin/cake make -s theme/twi/src/frontend -d test/runtime/twi/frontend && ./node_modules/ava/cli.js",
+    "test": "bin/cake make && ./node_modules/ava/cli.js",
     "test:watch": "bin/cake make -s theme/twi/src/frontend -d test/runtime/twi/frontend && bin/cake watch -s theme/twi/src/frontend -d test/runtime/twi/frontend & node_modules/ava/cli.js --watch",
     "t:w": "npm run test:watch"
   },
   "ava": {
     "require": [
+      "babel-register",
       "./test/helper/browser"
     ],
+    "babel": "inherit",
     "files": [
       "test/unit/**/*.js",
       "!./test/helper/**/*.js"
@@ -101,10 +103,11 @@
   "devDependencies": {
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "6.6.1",
-    "ava": "0.18.0",
+    "ava": "0.18.1",
     "babel-core": "^6.22.1",
     "babel-eslint": "7.1.1",
     "babel-loader": "6.2.9",
+    "babel-plugin-module-resolver": "^2.4.0",
     "babel-plugin-transform-async-generator-functions": "^6.22.0",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
     "babel-plugin-transform-class-properties": "^6.22.0",
@@ -150,6 +153,7 @@
     "normalize.css": "5.0.0",
     "normalize.styl": "3.0.3",
     "poststylus": "0.2.3",
+    "proxyquire": "^1.7.11",
     "react": "15.4.1",
     "react-codemirror": "0.2.6",
     "react-document-title": "2.0.2",
@@ -160,7 +164,7 @@
     "react-svg-loader": "1.1.1",
     "rimraf": "2.5.2",
     "rupture": "0.6.2",
-    "sinon": "1.17.6",
+    "sinon": "^1.17.7",
     "style-loader": "0.13.1",
     "stylus": "0.54.5",
     "stylus-loader": "2.4.0",

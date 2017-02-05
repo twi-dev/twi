@@ -1,5 +1,8 @@
-import {readFile} from "promise-fs"
+import assets from "../helper/util/assets"
 
-async function actionIndex(ctx, next) {
-  ctx.body = "foo"
-}
+// Just serve app comtainer
+const actionIndex = async ctx => await ctx.render("layout/root", {
+  getAssets: await assets()
+})
+
+export default actionIndex

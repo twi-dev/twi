@@ -9,6 +9,16 @@
     "transform-class-properties",
     "transform-async-generator-functions",
     "transform-exponentiation-operator",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    ["module-resolver", {
+      "cwd": "./src",
+      "alias": {
+        "test": "test",
+        "core": "./core",
+        "model": "./model",
+        "frontend": "./test/runtime/frontend",
+        "ignore-require": "./test/helper/ignore-require"
+      }
+    }]
   ]
 }
