@@ -6,7 +6,7 @@ config/cert
 config/assets.json
 
 coverage
-backend
+server
 setup
 
 node_modules
@@ -37,7 +37,7 @@ index.js
 
 !setup/index.js
 !setup/migrations/index.js
-!src/backend
+!src/server
 
-!test/unit/backend
+!test/unit/server
 !test/unit/frontend
