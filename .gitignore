@@ -1,28 +1,29 @@
-config/user.yaml
-config/user.yml
-config/test.yaml
-config/test.yml
+config/app/user.yaml
+config/app/user.yml
+config/app/test.yaml
+config/app/test.yml
 config/cert
-config/assets.json
+config/runtime/assets.json
 
+# Tests runtime files and code coverage
 coverage
+test/runtime
+
 server
 setup
 
 node_modules
-test/runtime
 foo
 bar
 
 deploy/sandbox
 
-# Deprecated
-theme/**/src/coffee-old
-
+# Static content (styles, images, script etc)
 static/assets/img/**/*.svg
 static/assets/js
 static/assets/css
 
+# Junks
 npm-debug.log
 yarn-error.log
 .DS_Store
@@ -32,12 +33,19 @@ index.js
 *.docx
 *.odt
 
-*.old
-*-old
-
 !setup/index.js
 !setup/migrations/index.js
 !src/server
 
 !test/unit/server
 !test/unit/frontend
+
+# An old codebase
+*.old
+*-old
+
+# Deprecated (TODO: remove these rules)
+theme/**/src/coffee-old
+config/assets.json
+config/test.yaml
+config/test.yml

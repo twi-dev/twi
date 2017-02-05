@@ -21,6 +21,7 @@
         "model": "./model",
         "config": "./config",
         "frontend": "./test/runtime/frontend",
+        "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }
     }]

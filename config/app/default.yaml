@@ -7,32 +7,24 @@
 app:
   # Name of your app.
   name: Библиотека Твайлайт
-  host: localhost
-  port: 1337
-  secure: false
 
   # Set default app lang
   lang: ru-RU
-  theme: twi
-
-  # Node.js env for app
-  # Can be "devel" or "pro"
-  env: devel
 
   # Is sign up ebable on your site?
   # Can be only "true" or "false"
   enableSignup: true
+
+backend:
+  host: localhost
+  port: 1337
+  secure: false
 
 # Static server configs
 static:
   host: localhost
   port: 2319
   secure: false
-
-frontend:
-  host: localhost
-  port: 2321
-  secret: false
 
 # Database configs
 database:
