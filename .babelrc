@@ -12,6 +12,9 @@
     "transform-object-rest-spread",
     ["module-resolver", {
       "cwd": "./src",
+      "root": [
+        "./server"
+      ],
       "alias": {
         "test": "test",
         "core": "./core",

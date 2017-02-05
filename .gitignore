@@ -19,9 +19,9 @@ deploy/sandbox
 # Deprecated
 theme/**/src/coffee-old
 
-public/assets/img/**/*.svg
-public/assets/js
-public/assets/css
+static/assets/img/**/*.svg
+static/assets/js
+static/assets/css
 
 npm-debug.log
 yarn-error.log

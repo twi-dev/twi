@@ -10,7 +10,7 @@ const mockAssets = {
   }
 }
 
-const assets = pq(`${ROOT}/core/helper/util/assets`, {
+const assets = pq(`${ROOT}/server/core/helper/util/assets`, {
   ["promise-fs"]: {
     readFile: () => JSON.stringify(mockAssets)
   }
