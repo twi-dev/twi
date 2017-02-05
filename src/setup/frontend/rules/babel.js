@@ -7,12 +7,16 @@ function babel(isDev) {
         loader: "babel-loader",
         query: {
           presets: [
-            "es2015",
             "react"
           ],
           plugins: [
+            "transform-es2015-modules-commonjs",
+            "transform-async-to-generator",
             "transform-decorators-legacy",
             "transform-class-properties",
+            "transform-async-generator-functions",
+            "transform-exponentiation-operator",
+            "transform-object-rest-spread",
             "transform-flow-strip-types"
           ]
         }
