@@ -16,6 +16,7 @@
         "test": "test",
         "core": "./core",
         "model": "./model",
+        "config": "./config",
         "frontend": "./test/runtime/frontend",
         "ignore-require": "./test/helper/ignore-require"
       }
