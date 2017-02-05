@@ -12,7 +12,7 @@ core
 model
 setup
 node_modules
-test
+test/runtime
 foo
 bar
 
@@ -43,7 +43,3 @@ index.js
 !src/core
 !src/model
 !src/setup
-!src/test
-!src/test/unit
-!src/test/unit/core
-!src/test/helper
