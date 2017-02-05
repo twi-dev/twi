@@ -1,49 +1,45 @@
-configs/user.yaml
-configs/user.yml
-configs/test.yaml
-configs/test.yml
-configs/cert
-configs/assets.json
-
-api
-controller
-coverage
-core
-model
+# Main
+config/app/user.yaml
+config/app/user.yml
+config/app/test.yaml
+config/app/test.yml
+config/cert
+config/runtime/assets.json
+server
 setup
 node_modules
-test
 foo
 bar
-
 deploy/sandbox
+!src/server
+!src/setup
 
-# Deprecated
-theme/**/src/coffee-old
+# Static content (styles, images, script etc)
+static/assets/img/**/*.svg
+static/assets/js
+static/assets/css
 
-public/assets/img/**/*.svg
-public/assets/js
-public/assets/css
+# Tests runtime stuff and code coverage
+coverage
+test/runtime
+!test/unit/server
+!test/unit/frontend
 
+# Junks
 npm-debug.log
 yarn-error.log
 .DS_Store
-index.js
 *.rdb
 *.doc
 *.docx
 *.odt
 
+# An old codebase
 *.old
 *-old
 
-!setup/index.js
-!setup/migrations/index.js
-!src/controller
-!src/core
-!src/model
-!src/setup
-!src/test
-!src/test/unit
-!src/test/unit/core
-!src/test/helper
+# Deprecated (TODO: remove these rules)
+theme/**/src/coffee-old
+config/assets.json
+config/test.yaml
+config/test.yml

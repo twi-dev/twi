@@ -2,59 +2,35 @@
 
 "use strict"
 
-const {realpathSync, statSync} = require("fs")
-const childProcess = require("child_process")
-
-const TWI_ROOT = realpathSync(`${__dirname}/../`)
-const execSync = childProcess.execSync
-
-const IS_YARN_EXISTS = (function() {
-  try {
-    execSync("which yarn")
-    return true
-  } catch (err) {
-    return false
-  }
-})()
+// const {statSync} = require("fs")
+const {ROOT, tryDeps} = require("./helper")
+const {exec} = require("child_process")
 
 process.title = "twi"
-process.chdir(TWI_ROOT) // Change process.cwd() to Twi root directory
+process.chdir(ROOT) // Change process.cwd() to Twi root directory
 
 // Install deps (if not exists) before continue
-try {
-  statSync(`${TWI_ROOT}/node_modules`)
-} catch (err) {
-  if (err.code !== "ENOENT") {
-    throw err
-  }
-
-  console.log("Install dependencies before you begin.")
-  console.log("Please, be patient.")
-  execSync(IS_YARN_EXISTS === true ? "yarn" : "npm i", {
-    stdio: "inherit"
-  })
-}
+tryDeps()
 
 // And then we can use deps from NPM
 const commander = require("commander")
 const ora = require("ora")()
-const pify = require("pify")
 const {cross} = require("figures")
 const {red} = require("chalk")
 
-const exec = pify(childProcess.exec)
+const setEnv = isDev => isDev ? "development" : "production"
 
 /**
  * Process error handler
  *
  * @access private
  */
-function _onError(err, stackTrace = false) {
+function onError(err, stackTrace = false) {
   ora.stop()
 
   if (stackTrace) {
     console.log(red(cross), err)
-    // console.log(red(cross), err.stack)
+    console.log(red(cross), err.stack)
   } else {
     ora.text = String(err)
     ora.fail()
@@ -68,23 +44,33 @@ function _onError(err, stackTrace = false) {
  *
  * @access private
  */
-function _onFulfilled() {
+function onEnd() {
   ora.text = "Done without errors."
   ora.succeed()
   process.exit(0)
 }
+
+const runCompiler = isDev => new Promise(function(resolve, reject) {
+  try {
+    var compiler = require(`${ROOT}/setup/frontend/compiler/main`).default
+  } catch (err) {
+    return reject(err)
+  }
+
+  compiler(isDev).then(resolve, reject)
+})
 
 /**
  * Make backend app
  *
  * @return Promise
  */
-function _makeBackend() {
+function makeBackend(cb) {
   ora.color = "cyan"
   ora.text = "Making backend app..."
   ora.start()
 
-  return exec(`${TWI_ROOT}/bin/cake make`)
+  exec(`${ROOT}/bin/cake make`, cb)
 }
 
 /**
@@ -92,103 +78,133 @@ function _makeBackend() {
  *
  * @return Promise
  */
-function _makeFrontend() {
+function makeFrontend() {
   ora.color = "yellow"
   ora.text = "Making frontend app..."
   ora.start()
 
-  return require(`${TWI_ROOT}/setup/frontend/compiler`)(false)
+  return runCompiler(false)
 }
 
 /**
  * Make app components
  *
- * @return Promise
+ * @param component
  */
-function _make(component = "") {
+function make(component, cmd) {
+  setEnv(false) // set NODE_ENV to production
+
+  const onRejected = err => onError(err, cmd.parent.T)
+
+  const fulfill = (onlyServer = true) => function(err) {
+    if (err) {
+      return onRejected(err)
+    }
+
+    onlyServer ? onEnd() : makeFrontend().then(onEnd, onRejected)
+  }
+
   switch (component) {
-  case "backend":
-    return _makeBackend()
-  case "frontend":
-    return _makeFrontend()
-  default:
-    return _makeBackend().then(() => _makeFrontend())
+    case "backend":
+      return makeBackend(fulfill())
+    case "frontend":
+      return makeFrontend().then(onEnd)
+    default:
+      return makeBackend(fulfill(false))
   }
 }
 
-function _watch() {
-  const webpack = require(`${TWI_ROOT}/setup/frontend/compiler`)
+function watch(stackTrace) {
+  setEnv(true) // set NODE_ENV to deveopment
 
-  return webpack(true)
+  const onFulfilled = stats => stats && console.log(String(stats))
+
+  const onRejected = err => onError(err, stackTrace)
+
+  runCompiler(true).then(onFulfilled, onRejected)
 }
 
-function actionMake(component, cmd) {
-  _make(component).then(_onFulfilled, err => _onError(err, cmd.parent.T))
-}
+function dev(stackTrace) {
+  setEnv(true)
 
-// Actions
-function actionWatch(cmd) {
-  const onFulfilled = stats => console.log(String(stats))
-
-  _watch().then(onFulfilled, err => _onError(err, cmd.parent.T))
-}
-
-function actionDev(cmd) {
   try {
-    var {ok} = require(`${TWI_ROOT}/core/logger`)
-    var app = require(`${TWI_ROOT}/core/app/main`)
+    var {ok} = require(`${ROOT}/core/logger`).default
+    var app = require(`${ROOT}/core/base/main`).default
   } catch (err) {
-    return _onError(err, cmd.parent.T)
+    return onError(err, stackTrace)
   }
 
   const onFulfilled = () => ok("Twi has been sucessfully started.")
 
-  const onRejected = err => _onError(err, cmd.parent.T)
+  const onRejected = err => onError(err, stackTrace)
 
-  app(true)
-    .then(onFulfilled, onRejected)
+  app(true).then(onFulfilled, onRejected)
 }
 
-function actionMigrate(cmd) {
-  const migrate = require(`${TWI_ROOT}/setup/backend/migrate`)
-  var __fulfill
+function migrate(cmd) {
+  setEnv(false)
 
-  if (cmd.D === true) {
-    __fulfill = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R))
+  const migrate = require(`${ROOT}/setup/backend/migrate`).default
+
+  var promise
+  if (cmd.D) {
+    promise = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R))
   } else {
-    __fulfill = migrate(cmd)
+    promise = migrate(cmd)
   }
 
-  __fulfill.then(_onFulfilled, _onError)
+  promise.then(onEnd, onError)
 }
 
-function actionSetup(cmd) {
-  _make()
+function setup(cmd) {
+  setEnv(false)
+
+  make()
     .then(() => {
       ora.stop()
-      return require(`${TWI_ROOT}/setup/backend/setup`)(cmd)
+      return require(`${ROOT}/setup/backend/setup`).default(cmd)
     })
-    .then(_onFulfilled, _onError)
+    .then(onEnd, onError)
 }
 
-function actionRun(cmd) {
+function run(stackTrace) {
+  setEnv(false)
+
   try {
-    var {ok} = require(`${TWI_ROOT}/core/logger`)
-    var app = require(`${TWI_ROOT}/core/app/main`)
+    var {ok} = require(`${ROOT}/server/core/logger`).default
+    var app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
-    return _onError(err, cmd.parent.T)
+    return onError(err, stackTrace)
   }
 
   const onFulfilled = () => ok("Twi has been sucessfully started.")
 
-  const onRejected = err => _onError(err, cmd.parent.T)
+  const onRejected = err => onError(err, stackTrace)
 
-  app(false)
-    .then(onFulfilled, onRejected)
+  app(false).then(onFulfilled, onRejected)
 }
 
+// Build Twi fron the source
+const actionMake = (component, cmd) => make(component, cmd)
+
+// Run Webpack compiler for development (with devServer)
+// Important note: do not use this command with `twi run`
+const actionWatch = cmd => watch(cmd.parent.T)
+
+// Run only Twi miration (without full setup)
+const actionMigrate = cmd => migrate(cmd)
+
+// Run Twi setup scripts
+const actionSetup = cmd => setup(cmd)
+
+// Run Twi without static server (only for development)
+const actionDev = cmd => dev(cmd.parent.T)
+
+// Run Twi app for production
+const actionRun = cmd => run(cmd.parent.T)
+
 commander
-  .version(require(`${TWI_ROOT}/package.json`).version)
+  .version(require(`${ROOT}/package.json`).version)
   .usage("<command> [options]")
 
 commander
@@ -252,5 +268,5 @@ commander
   .parse(process.argv)
 
 process
-  .on("error", _onError)
+  .on("error", onError)
   .on("SIGINT", () => process.exit(0))
