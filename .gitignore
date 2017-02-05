@@ -1,9 +1,9 @@
-configs/user.yaml
-configs/user.yml
-configs/test.yaml
-configs/test.yml
-configs/cert
-configs/assets.json
+config/user.yaml
+config/user.yml
+config/test.yaml
+config/test.yml
+config/cert
+config/assets.json
 
 api
 controller
