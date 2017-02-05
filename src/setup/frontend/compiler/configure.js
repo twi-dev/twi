@@ -123,7 +123,7 @@ function configure(isDev, port) {
   }
 
   const output = {
-    path: `${ROOT}/public/assets`,
+    path: `${ROOT}/static/assets`,
     publicPath: `http://localhost:${port}/assets/`,
     filename: "js/[name]-[hash].js"
   }
