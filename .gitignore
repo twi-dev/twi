@@ -43,3 +43,8 @@ index.js
 !src/core
 !src/model
 !src/setup
+
+!test/unit/backend/controller
+!test/unit/backend/core
+!test/unit/backend/model
+!test/unit/backend/setup
