@@ -30,7 +30,7 @@ function mockReadYamlSync(path) {
   }
 }
 
-test.beforeEach(t =>{
+test.beforeEach(t => {
   const configure = () => pq(
     `${SERVER_ROOT}/core/helper/util/configure`,
     {
@@ -54,8 +54,6 @@ test("Should return a plain object", t => {
 test("Should have valid env values on production", t => {
   t.plan(2)
 
-  const originalEnv = process.env.NODE_ENV || "development"
-
   process.env.NODE_ENV = "production"
 
   const config = t.context.configure()
@@ -63,7 +61,7 @@ test("Should have valid env values on production", t => {
   t.false(config.isDev)
   t.is(config.env, "production")
 
-  process.env.NODE_ENV = originalEnv
+  delete process.env.NODE_ENV
 })
 
 test("Should be equal with expected config", t => {

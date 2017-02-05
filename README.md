@@ -1,6 +1,6 @@
 # Twi
 
-Open source fanfiction library engine for Node.js
+Fanfiction library engine
 
 [![dependencies Status](https://david-dm.org/octet-stream/twi/status.svg?style=flat-square)](https://david-dm.org/octet-stream/twi)
 [![devDependencies Status](https://david-dm.org/octet-stream/twi/dev-status.svg?style=flat-square)](https://david-dm.org/octet-stream/twi?type=dev)
