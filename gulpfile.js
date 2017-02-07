@@ -3,7 +3,6 @@ const gulp = require("gulp")
 const gutil = require("gulp-util")
 const watch = require("gulp-watch")
 const plumber = require("gulp-plumber")
-const rimraf = require("rimraf")
 
 // Css
 const stylus = require("gulp-stylus")
