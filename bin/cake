@@ -16,12 +16,15 @@ tryDeps() // Check deps before including external packages
 const commander = require("commander")
 const {cross, tick, pointer} = require("figures")
 const vfs = require("vinyl-fs")
-const ora = require("ora")({stream: process.stdout})
 const glob = require("glob")
 const junk = require("junk")
 const rimraf = require("rimraf")
 const through = require("through2")
+const ora = require("ora")({stream: process.stdout})
+const applySourceMap = require("vinyl-sourcemaps-apply")
+const sourcemaps = require("gulp-sourcemaps")
 const {red, green, cyan} = require("chalk")
+const {noop} = require("gulp-util")
 
 const {transform} = require("babel-core")
 
@@ -89,11 +92,15 @@ function compileFile(file, enc, cb) {
       assign({}, BABERC, {
         filename: file.path,
         filenameRelative: file.relative,
-        sourceMap: isDev ? "inline" : false,
-        sourceFileName: file.path,
-        sourceMapTarget: file.path
+        sourceMap: isDev ? "inline" : true,
+        sourceFileName: file.relative,
+        sourceMapTarget: file.relative
       })
     )
+
+    if (file.sourceMap && contents.map && !isDev) {
+      applySourceMap(file, contents.map)
+    }
 
     file.contents = new Buffer(contents.code)
     file.babel = contents.metadata
@@ -109,7 +116,11 @@ function processFiles(files, src, dest) {
 
   vfs.src(files)
     .on("error", onError)
+    .pipe(isDev ? noop() : sourcemaps.init())
+    .on("error", onError)
     .pipe(through.obj(compileFile))
+    .on("error", onError)
+    .pipe(isDev ? noop() : sourcemaps.write("."))
     .on("error", onError)
     .pipe(vfs.dest(({path}) => dirname(getDestFilename(path, src, dest))))
     .on("error", onError)

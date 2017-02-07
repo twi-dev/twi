@@ -1,4 +1,5 @@
 # Main
+.nyc_output
 config/app/user.yaml
 config/app/user.yml
 config/app/test.yaml
