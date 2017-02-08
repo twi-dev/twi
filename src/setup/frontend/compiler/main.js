@@ -5,7 +5,7 @@ import {static as _static} from "core/helper/util/configure"
 import createDevServer from "./devServer"
 import configure from "./configure"
 
-const ROOT = process.cwd()
+const STATIC_ROOT = `${process.cwd()}/static`
 
 const runCompiler = (isDev = false) => new Promise(function(resolve, reject) {
   const fulfill = (err, stats) => err == null ? resolve(stats) : reject(err)
@@ -18,8 +18,8 @@ const runCompiler = (isDev = false) => new Promise(function(resolve, reject) {
   }
 
   const devServerConfig = {
-    contentBase: `${ROOT}/static`,
     devMiddleware: {
+      contentBase: STATIC_ROOT,
       hot: true,
       lazy: false,
       publicPath: config.output.publicPath,

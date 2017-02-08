@@ -10,7 +10,7 @@ import {
   app, static as staticServer, isDev
 } from "core/helper/util/configure"
 
-const VIEWS = `${process.env()}/views`
+const VIEWS = `${process.cwd()}/view`
 
 const staticHostname = getHostname(
   staticServer.host,
@@ -72,7 +72,7 @@ async function compileTemplate(filename, options) {
  */
 const getViewRenderer = options => async function render(filename, locals) {
   const fn = await compileTemplate(
-    `${options.views}/${filename}`, options
+    `${options.views}/${filename}.pug`, options
   )
 
   locals = merge({}, locals, {

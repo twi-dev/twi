@@ -7,9 +7,9 @@ import serve from "koa-static"
 import webpackHotMiddleware from "webpack-hot-middleware"
 import webpackDevMiddleware from "webpack-dev-middleware"
 
+import view from "core/base/view"
 import actionIndex from "core/base/frontend"
 
-const STATIC_ROOT = `${process.cwd()}/static`
 const koa = new Koa()
 
 /**
@@ -85,6 +85,13 @@ function hotMiddleware(compiler, config = {}) {
   }
 }
 
+// tmp
+async function logger({url, method, status, request: {ip}}, next) {
+  console.log("%s -> %s %s", ip, method, url)
+  await next()
+  console.log("%s <- %s %s", ip, status, method, url)
+}
+
 /**
  * Make and return dev static server with webpack compiler
  *
@@ -94,11 +101,15 @@ function hotMiddleware(compiler, config = {}) {
  * @return http.Server
  */
 function createDevServer(compiler, config = {}) {
+  // Apply view renderer
+  view(koa, {debug: false})
+
   koa
     .use(cors())
-    .use(serve(STATIC_ROOT))
-    .use(devMiddleware(compiler, {...config.devMiddleware}))
-    .use(hotMiddleware(compiler, {...config.hotMiddleware}))
+    .use(logger)
+    .use(devMiddleware(compiler, config.devMiddleware))
+    .use(hotMiddleware(compiler, config.hotMiddleware))
+    .use(serve(config.devMiddleware.contentBase))
     .use(actionIndex)
 
   return createServer(koa.callback())

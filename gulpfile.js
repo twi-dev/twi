@@ -56,9 +56,9 @@ gulp.task("svg", () => {
   const rebuildSvg = () => (
     gutil.log("Rebuild svg..."),
     gulp.src(SVG_SRC)
-      .pipe (plumber(onError))
-      .pipe (svgmin())
-      .pipe (gulp.dest(SVG_DEST))
+      .pipe(plumber(onError))
+      .pipe(svgmin())
+      .pipe(gulp.dest(SVG_DEST))
   )
 
   rebuildSvg()

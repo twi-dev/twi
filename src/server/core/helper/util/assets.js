@@ -29,7 +29,7 @@ function mapAssets(assets, type) {
 
 async function getAssets() {
   const assets = JSON.parse(
-    String(await readFile(`${TWI_ROOT}/config/assets.json`))
+    String(await readFile(`${TWI_ROOT}/config/runtime/assets.json`))
   )
 
   return type => mapAssets(assets, type)
