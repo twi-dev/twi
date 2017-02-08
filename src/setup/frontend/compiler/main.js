@@ -1,6 +1,6 @@
 import webpack from "webpack"
 
-import {static as _static} from "core/helper/util/configure"
+import {static as _static} from "server/core/helper/util/configure"
 
 import createDevServer from "./devServer"
 import configure from "./configure"

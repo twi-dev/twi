@@ -1,5 +1,5 @@
 import {realpath, readFile} from "promise-fs"
-import objectIterator from "core/helper/util/objectIterator"
+import objectIterator from "server/core/helper/util/objectIterator"
 
 const servers = {}
 

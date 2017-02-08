@@ -15,7 +15,7 @@ import requireHelper from "require-dir"
 
 import dedent from "dedent"
 import isFunction from "lodash/isFunction"
-import objectIterator from "core/helper/util/objectIterator"
+import objectIterator from "server/core/helper/util/objectIterator"
 
 const ROOT = process.cwd()
 
@@ -29,6 +29,8 @@ function mapRules(rules, ...args) {
 
     res.push(rule.default(...args))
   }
+
+  return res
 }
 
 function getPlugins(isDev) {
@@ -111,7 +113,6 @@ function configure(isDev, port) {
   const entry = getEntry(isDev, port)
 
   const resolve = {
-    alias: {},
     modules: [
       "node_modules",
       `${ROOT}/frontend`,

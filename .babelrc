@@ -3,6 +3,7 @@
     "react"
   ],
   "plugins": [
+    "transform-flow-strip-types",
     "transform-es2015-modules-commonjs",
     "transform-async-to-generator",
     "transform-decorators-legacy",
@@ -12,15 +13,12 @@
     "transform-object-rest-spread",
     ["module-resolver", {
       "cwd": "./src",
-      "root": [
-        "./server"
-      ],
       "alias": {
         "test": "test",
-        "core": "./core",
+        "server": "./server",
         "model": "./model",
         "config": "./config",
-        "frontend": "./test/runtime/frontend",
+        "runtime": "./test/runtime",
         "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }

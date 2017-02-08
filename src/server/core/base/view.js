@@ -4,26 +4,28 @@ import {version} from "package.json"
 
 import merge from "lodash/merge"
 import isEmpty from "lodash/isEmpty"
-import getHostname from "core/helper/util/getHostname"
+import getHostname from "server/core/helper/util/getHostname"
 
 import {
-  app, static as staticServer, isDev
+  app, static as _static, isDev
 } from "core/helper/util/configure"
 
 const VIEWS = `${process.cwd()}/view`
 
 const staticHostname = getHostname(
-  staticServer.host,
-  staticServer.port,
-  staticServer.secure
+  _static.host,
+  _static.port,
+  _static.secure
 )
 
+// Default settions of view renderer
 const defaults = {
   views: VIEWS,
   debug: isDev,
   cache: !isDev
 }
 
+// Twi summary
 const twi = {
   name: app.name,
   lang: app.lang,
@@ -38,6 +40,8 @@ const cache = {}
  *
  * @param string filename
  * @param object options
+ *
+ * @return function
  */
 const compileFile = async (filename, options) => compile(
   await readFile(filename), {
@@ -104,6 +108,6 @@ function setRenderer(koa, options) {
  * @param Koa koa
  * @param options object
  */
-const view = (koa, options = {debug: false}) => setRenderer(koa, options)
+const view = (koa, options = {}) => setRenderer(koa, options)
 
 export default view

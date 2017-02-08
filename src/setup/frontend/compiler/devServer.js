@@ -7,8 +7,8 @@ import serve from "koa-static"
 import webpackHotMiddleware from "webpack-hot-middleware"
 import webpackDevMiddleware from "webpack-dev-middleware"
 
-import view from "core/base/view"
-import actionIndex from "core/base/frontend"
+import view from "server/core/base/view"
+import actionIndex from "server/core/base/frontend"
 
 const koa = new Koa()
 
