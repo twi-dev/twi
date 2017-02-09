@@ -65,7 +65,7 @@
     "elasticsearch": "12.1.0",
     "figures": "2.0.0",
     "googleapis": "14.2.0",
-    "graphql": "0.9.1",
+    "graphql": "^0.9.1",
     "graphql-server-koa": "0.6.0",
     "http2": "3.3.6",
     "i18next": "4.1.0",
@@ -108,6 +108,7 @@
     "xml2js": "0.4.17"
   },
   "devDependencies": {
+    "apollo-client": "^0.8.3",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "6.7.2",
     "ava": "0.18.1",
@@ -141,6 +142,7 @@
     "extract-text-webpack-plugin": "2.0.0-beta.5",
     "glob": "7.0.6",
     "globby": "6.1.0",
+    "graphql-tag": "^1.2.4",
     "gulp": "3.9.1",
     "gulp-csso": "2.0.0",
     "gulp-plumber": "1.1.0",

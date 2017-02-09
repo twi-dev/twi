@@ -2,10 +2,7 @@ import {createElement} from "react"
 import {render} from "react-dom"
 import {AppContainer} from "react-hot-loader"
 
-import App from "./App"
-
-// tmp
-import "core/helper/util/resolver"
+import App from "frontend/core/container/App"
 
 const root = document.querySelector("#twi-root-container")
 
@@ -13,10 +10,11 @@ const app = App => render(
   createElement(AppContainer, null, createElement(App)), root
 )
 
-const fulfill = () => app(require("./App").default)
 
 if (module.hot) {
-  module.hot.accept(["./App"], fulfill)
+  const fulfill = () => app(require("frontend/core/container/App").default)
+
+  module.hot.accept(["frontend/core/container/App"], fulfill)
 }
 
 app(App)

@@ -113,6 +113,10 @@ function configure(isDev, port) {
   const entry = getEntry(isDev, port)
 
   const resolve = {
+    alias: {
+      frontend: `${ROOT}/frontend`,
+      mapObject: `${ROOT}/server/core/helper/util/mapObject`
+    },
     modules: [
       "node_modules",
       `${ROOT}/frontend`,

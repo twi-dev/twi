@@ -33,6 +33,10 @@
   dependencies:
     ansi-styles "^2.2.1"
 
+"@types/async@^2.0.31":
+  version "2.0.38"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.38.tgz#5c369dcb14788da0621daafa8594a053b0edcb21"
+
 "@types/cookies@*":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@types/cookies/-/cookies-0.6.0.tgz#f5e8df2357502a895d5627e2fb8b174b3b269461"
@@ -40,9 +44,13 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
-"@types/graphql@^0.8.5", "@types/graphql@^0.8.6":
+"@types/graphql@^0.8.0", "@types/graphql@^0.8.5", "@types/graphql@^0.8.6":
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
+
+"@types/isomorphic-fetch@0.0.30":
+  version "0.0.30"
+  resolved "https://registry.yarnpkg.com/@types/isomorphic-fetch/-/isomorphic-fetch-0.0.30.tgz#a21717624cde9a48c2db53a4e500fc5c32a99bbc"
 
 "@types/keygrip@*":
   version "1.0.0"
@@ -200,6 +208,20 @@ anymatch@^1.3.0:
 ap@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ap/-/ap-0.2.0.tgz#ae0942600b29912f0d2b14ec60c45e8f330b6110"
+
+apollo-client@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-0.8.3.tgz#28c4c08c05e1bf697e16cb55a35ce6352d42e405"
+  dependencies:
+    graphql-anywhere "^2.1.0"
+    graphql-tag "^1.1.1"
+    redux "^3.4.0"
+    symbol-observable "^1.0.2"
+    whatwg-fetch "^2.0.0"
+  optionalDependencies:
+    "@types/async" "^2.0.31"
+    "@types/graphql" "^0.8.0"
+    "@types/isomorphic-fetch" "0.0.30"
 
 append-transform@^0.4.0:
   version "0.4.0"
@@ -3521,6 +3543,10 @@ graceful-fs@~1, graceful-fs@~1.2.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
+graphql-anywhere@^2.1.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-2.2.0.tgz#652c3fa23a4a6cfeb98817512fb48100b97f3d5c"
+
 graphql-server-core@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.6.0.tgz#468625cba4a00f80275c065432faa481985f5a65"
@@ -3541,7 +3567,11 @@ graphql-server-module-graphiql@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.6.0.tgz#e37634b05f000731981e8ed13103f9a5861e5da0"
 
-graphql@0.9.1:
+graphql-tag@^1.1.1, graphql-tag@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-1.2.4.tgz#90c59bea41378513fd7213dc92537fcd20e4570f"
+
+graphql@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.1.tgz#f4d154cbec054d4a5d3b1be95f23435c09aa86c8"
   dependencies:
@@ -4813,6 +4843,10 @@ locate-path@^2.0.0:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
 
+lodash-es@^4.2.1:
+  version "4.17.4"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
+
 lodash._arraycopy@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._arraycopy/-/lodash._arraycopy-3.0.0.tgz#76e7b7c1f1fb92547374878a562ed06a3e50f6e1"
@@ -5105,7 +5139,7 @@ lodash@4.12.0:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.12.0.tgz#2bd6dc46a040f59e686c972ed21d93dc59053258"
 
-lodash@4.17.2, lodash@^4.0.0, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
+lodash@4.17.2, lodash@^4.0.0, lodash@^4.12.0, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.2.tgz#34a3055babe04ce42467b607d700072c7ff6bf42"
 
@@ -6955,6 +6989,15 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
+redux@^3.4.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-3.6.0.tgz#887c2b3d0b9bd86eca2be70571c27654c19e188d"
+  dependencies:
+    lodash "^4.2.1"
+    lodash-es "^4.2.1"
+    loose-envify "^1.1.0"
+    symbol-observable "^1.0.2"
+
 regenerate@^1.2.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.3.2.tgz#d1941c67bad437e1be76433add5b385f95b19260"
@@ -7784,6 +7827,10 @@ symbol-observable@^0.2.2:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
 
+symbol-observable@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.4.tgz#29bf615d4aa7121bdd898b22d4b3f9bc4e2aa03d"
+
 "symbol-tree@>= 3.1.0 < 4.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.1.tgz#8549dd1d01fa9f893c18cc9ab0b106b4d9b168cb"
@@ -8371,7 +8418,7 @@ webpack@2.2.1:
     webpack-sources "^0.1.4"
     yargs "^6.0.0"
 
-whatwg-fetch@2.0.2, whatwg-fetch@>=0.10.0:
+whatwg-fetch@2.0.2, whatwg-fetch@>=0.10.0, whatwg-fetch@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.2.tgz#fe294d1d89e36c5be8b3195057f2e4bc74fc980e"
 

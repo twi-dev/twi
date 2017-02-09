@@ -8,7 +8,7 @@ import getHostname from "server/core/helper/util/getHostname"
 
 import {
   app, static as _static, isDev
-} from "core/helper/util/configure"
+} from "server/core/helper/util/configure"
 
 const VIEWS = `${process.cwd()}/view`
 

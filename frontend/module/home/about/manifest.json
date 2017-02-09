@@ -1,0 +1,8 @@
+{
+  "path": "/about",
+  "container": null,
+  "component": {
+    "view": "About",
+    "stores": null
+  }
+}
