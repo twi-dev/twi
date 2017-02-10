@@ -115,7 +115,8 @@ function configure(isDev, port) {
   const resolve = {
     alias: {
       frontend: `${ROOT}/frontend`,
-      mapObject: `${ROOT}/server/core/helper/util/mapObject`
+      mapObject: `${ROOT}/server/core/helper/util/mapObject`,
+      objectIterator: `${ROOT}/server/core/helper/util/objectIterator`
     },
     modules: [
       "node_modules",

@@ -1,22 +1,25 @@
 import {createElement} from "react"
-import {dirname} from "path"
 
-import Module from "frontend/core/container/Module"
+import ModuleContainer from "frontend/core/container/ModuleContainer"
 
 const resolve = async path => (
   await import(`frontend/module/${path}`)
-)
+).default
 
-const wrapModule = (component, stores = {}, container = null) => createElement(
-  Module, {stores}, container
-    ? createElement(container, null, component)
-    : component
-)
+function wrapModule(component, stores, container) {
+  const WrapModule = props => createElement(
+    ModuleContainer, {...props, stores}, createElement(component)
+  )
 
-async function buildModule(component) {
+  WrapModule.displayName = `WrapModule(${component.name})`
+
+  return WrapModule
+}
+
+async function buildModule({view, stores, container}, path) {
   // function getComponent(state, cb) {
   //   const onFulfilled = component => cb(
-  //     wrapModule(component, stores, container)
+  //     wrapModule(component, stores || {}, container)
   //   )
 
   //   const onRejected = err => console.error(err)
@@ -25,6 +28,13 @@ async function buildModule(component) {
   // }
 
   // return getComponent
+
+  // console.log(await resolve(component))
+
+  const component = await resolve(`${path}/${view}`)
+
+  return wrapModule(component, stores, container)
 }
 
+export {wrapModule}
 export default buildModule

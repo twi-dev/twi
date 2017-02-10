@@ -1,6 +1,9 @@
 import React, {createElement} from "react"
-import controller from "frontend/core/base/controller"
+import {Router, browserHistory as history} from "react-router"
+import routes from "frontend/core/base/controller"
 
-const App = () => <div>App</div>
+const props = {history, routes}
+
+const App = () => <Router {...props} />
 
 export default App
