@@ -1,9 +1,9 @@
 // tmp
-import React, {createElement} from "react"
+import {createElement} from "react"
 
 import {dirname} from "path"
 
-import buildModule, {wrapModule} from "./module"
+import buildModule from "./module"
 import objectIterator from "objectIterator"
 
 const MANIFEST_PATTERN = /\/manifest.json$/
@@ -65,7 +65,7 @@ const routes = {
     component: require("frontend/core/container/Main").default,
     indexRoute: {
       getComponent: getIndexRoute,
-      // childRoutes: makeRoutes(manifests)
+      childRoutes: makeRoutes(manifests)
     }
   }, {
     path: "*",

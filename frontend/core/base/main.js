@@ -10,7 +10,6 @@ const app = App => render(
   createElement(AppContainer, null, createElement(App)), root
 )
 
-
 if (module.hot) {
   const fulfill = () => app(require("frontend/core/container/App").default)
 
