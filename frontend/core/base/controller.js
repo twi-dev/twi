@@ -6,6 +6,8 @@ import {dirname} from "path"
 import buildModule from "./module"
 import objectIterator from "objectIterator"
 
+import UIStore from "frontend/core/store/UIStore"
+
 const MANIFEST_PATTERN = /\/manifest.json$/
 
 function mapManifets(manifests) {
@@ -56,7 +58,12 @@ function getIndexRoute(state, cb) {
 
   const onRejected = err => console.error(err)
 
-  buildModule({view: "Home"}, "home/home").then(onFulfilled, onRejected)
+  buildModule({
+    view: "Home",
+    stores: {
+      ui: new UIStore
+    }
+  }, "home/home").then(onFulfilled, onRejected)
 }
 
 const routes = {
