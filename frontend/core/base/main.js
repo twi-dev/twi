@@ -1,3 +1,5 @@
+import "frontend/stylus/common/reset"
+
 import {createElement} from "react"
 import {render} from "react-dom"
 import {AppContainer} from "react-hot-loader"
@@ -6,7 +8,7 @@ import App from "frontend/core/container/App"
 
 const root = document.querySelector("#twi-root-container")
 
-const app = App => render(
+const app = () => render(
   createElement(AppContainer, null, createElement(App)), root
 )
 

@@ -3,7 +3,7 @@ import {createElement} from "react"
 
 import {dirname} from "path"
 
-import buildModule from "./module"
+import buildModule, {wrapModule} from "./module"
 import objectIterator from "objectIterator"
 
 import UIStore from "frontend/core/store/UIStore"
@@ -33,7 +33,13 @@ const buildComponent = (component, path) => function getComponent(state, cb) {
 
   const onRejected = err => console.error(err)
 
-  buildModule(component, path).then(onFulfilled, onRejected)
+  buildModule({
+    ...component,
+    stores: {
+      ...component.stores,
+      ui: new UIStore()
+    }
+  }, path).then(onFulfilled, onRejected)
 }
 
 const makeRoute = ({path, component}, name) => ({
@@ -53,6 +59,7 @@ function mapRoutes(manifests, cb) {
 
 const makeRoutes = manifests => mapRoutes(manifests, makeRoute)
 
+// Tmp
 function getIndexRoute(state, cb) {
   const onFulfilled = view => cb(null, view)
 
@@ -61,9 +68,21 @@ function getIndexRoute(state, cb) {
   buildModule({
     view: "Home",
     stores: {
-      ui: new UIStore
+      ui: new UIStore()
     }
   }, "home/home").then(onFulfilled, onRejected)
+}
+
+// Tmp
+function getNotFoundView(state, cb) {
+  const onFulfilled = view => cb(
+    null, wrapModule(view.default, {ui: new UIStore()})
+  )
+
+  const onRejected = err => console.error(err)
+
+  import("frontend/core/error/view/NotFound/NotFound")
+    .then(onFulfilled, onRejected)
 }
 
 const routes = {
@@ -72,11 +91,11 @@ const routes = {
     component: require("frontend/core/container/Main").default,
     indexRoute: {
       getComponent: getIndexRoute,
-      childRoutes: makeRoutes(manifests)
-    }
+    },
+    childRoutes: makeRoutes(manifests)
   }, {
     path: "*",
-    component: () => createElement("div", null, "404")
+    getComponent: getNotFoundView
   }]
 }
 

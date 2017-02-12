@@ -1,6 +1,7 @@
 import {createElement} from "react"
 
 import ModuleContainer from "frontend/core/container/ModuleContainer"
+import Page from "frontend/core/container/Page"
 
 const resolve = async path => (
   await import(`frontend/${path}`)
@@ -10,10 +11,12 @@ function wrapModule(component, stores, container) {
   const WrapModule = props => createElement(
     ModuleContainer, {
       ...props, stores
-    }, createElement(component)
+    }, createElement(Page, null, createElement(component))
   )
 
-  WrapModule.displayName = `WrapModule(${component.name})`
+  WrapModule.displayName = `WrapModule(${
+    component.displayName || component.name || "Unknown"
+  })`
 
   return WrapModule
 }

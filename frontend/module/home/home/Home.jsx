@@ -1,15 +1,20 @@
-import React from "react"
+import React, {PropTypes} from "react"
 import {inject, observer} from "mobx-react"
 
 import compose from "lodash/fp/compose"
 import pure from "frontend/core/helper/decorator/pure"
 
+import UIStore from "frontend/core/store/UIStore"
+
 const mapStoresToProps = ({ui}) => ({ui})
 
-const Home = ({ui: {title}}) => <div>Home {title || "foo"}</div>
+const Home = () => <div>Home</div>
+
+Home.propTypes = {
+  ui: PropTypes.instanceOf(UIStore).isRequired
+}
 
 function componentWillMount() {
-  console.log(this.props.ui.title)
   this.props.ui.setTitle("Библиотека Твайлайт")
 }
 
