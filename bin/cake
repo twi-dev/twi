@@ -48,12 +48,20 @@ const getDestFilename = (filename, src, dest) => (
   filename.replace(src, dest)
 )
 
+/**
+ * Check if given file is JS
+ *
+ * @param string filename – a path to file
+ */
 const isJS = filename => /.jsx?$/.test(filename)
 
 const onContinueWatching = () => (
   console.log(cyan(pointer), "Watching for changes...")
 )
 
+/**
+ * Just a callback to end the cake process
+ */
 function onEnd() {
   if (isDev) {
     console.log(`\n${green(tick)}`, "Done.")
@@ -65,6 +73,11 @@ function onEnd() {
   process.exit(0)
 }
 
+/**
+ * Error hanlder for all in-process errors
+ *
+ * @param Error err
+ */
 function onError(err) {
   if (isDev) {
     return console.log(red(cross), "Watching for changes...")
@@ -75,6 +88,13 @@ function onError(err) {
   process.exit(1)
 }
 
+/**
+ * Compile given file via Babel
+ *
+ * @param File file – a file in Vinyl virtual file format
+ * @param env – file encoding
+ * @param function cb
+ */
 function compileFile(file, enc, cb) {
   if (!isJS(file.path)) {
     return cb(null, file)
@@ -111,8 +131,18 @@ function compileFile(file, enc, cb) {
   return cb(null, file)
 }
 
+/**
+ * Process given files via vinyl-fs, through2 and babel
+ *
+ * @param array files
+ * @param string src
+ * @param string dest
+ */
 function processFiles(files, src, dest) {
   files = files.filter(file => junk.not(file) && file !== DEFAULT_SRC)
+
+  // Get destination path for each given file
+  const fulfill = ({path}) => dirname(getDestFilename(path, src, dest))
 
   vfs.src(files)
     .on("error", onError)
@@ -122,7 +152,7 @@ function processFiles(files, src, dest) {
     .on("error", onError)
     .pipe(isDev ? noop() : sourcemaps.write("."))
     .on("error", onError)
-    .pipe(vfs.dest(({path}) => dirname(getDestFilename(path, src, dest))))
+    .pipe(vfs.dest(fulfill))
     .on("error", onError)
     .on("end", isDev ? onContinueWatching : onEnd)
 }
@@ -137,13 +167,26 @@ function make(src, dest) {
   glob(`${src}/**`, fulfill)
 }
 
+/**
+ * Run cake in "watch" mode for development
+ *
+ * @param string src
+ * @param string dest
+ */
 function watch(src, dest) {
   isDev = true // Turning on development mode
 
   console.log(cyan(pointer), "Starting watcher...")
   console.log(cyan(pointer), "You can press Control+C to exit.")
 
-  function watcher(ev, filename) {
+  /**
+   * Event handler for fs.watch method
+   * Rebuild changed/deleted and added files/directories.
+   *
+   * @param Event e
+   * @param string filename
+   */
+  function watcher(e, filename) {
     filename = `${src}/${filename}`
 
     const destFilename = getDestFilename(filename, src, dest)
@@ -188,11 +231,13 @@ function watch(src, dest) {
   fs.watch(src, {recursive: true}, watcher)
 }
 
+// Run "make" command
 const actionMake = ({parent: {S, D}}) => make(
   resolveFullSrcPath(S),
   resolveFullDestPath(D)
 )
 
+// Run "watch" command
 const actionWatch = ({parent: {S, D}}) => watch(
   resolveFullSrcPath(S),
   resolveFullDestPath(D)
@@ -213,7 +258,7 @@ commander
 commander
   .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
-  .version("The cake is a lie!\nCurrent cake version is 2.0.0")
+  .version("The cake is a lie!\nCurrent cake version is 2.0.1")
   .parse(process.argv)
 
 process

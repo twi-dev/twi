@@ -128,8 +128,8 @@ function dev(stackTrace) {
   setEnv(true)
 
   try {
-    var {ok} = require(`${ROOT}/core/logger`).default
-    var app = require(`${ROOT}/core/base/main`).default
+    var {ok} = require(`${ROOT}/server/core/logger`)
+    var app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
     return onError(err, stackTrace)
   }

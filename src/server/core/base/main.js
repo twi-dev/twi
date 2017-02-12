@@ -1,11 +1,16 @@
 import {realpath, readFile} from "promise-fs"
 import objectIterator from "server/core/helper/util/objectIterator"
+import getHostname from "server/core/helper/util/getHostname"
+import {info} from "server/core/logger"
 
-const servers = {}
+const servers = {
+  backend: require("./backend"),
+  static: require("./static")
+}
 
 async function getServer(koa, secure) {
   if (!secure) {
-    const {createServer} = require("createServer")
+    const {createServer} = require("http")
 
     return createServer(koa.callback())
   }
@@ -20,14 +25,17 @@ async function getServer(koa, secure) {
   return createServer(koa.callback(), {key, cert})
 }
 
-const runServer = config => new Promise(function(resolve, reject) {
-  const {app, host, port, secure, msg} = config
+const runServer = (name, config) => new Promise(function(resolve, reject) {
+  const {app, host, port, secure} = config
 
   const onServer = server => (
     server
       .on("error", reject)
-      .listen("port", () => resolve(
-        console.log(msg)
+      .listen(port, () => resolve(
+        info(
+          `Twi "${name}" service successfully started on`,
+          getHostname(host, port, secure)
+        )
       ))
   )
 
@@ -35,12 +43,12 @@ const runServer = config => new Promise(function(resolve, reject) {
 })
 
 async function runApp(isDev) {
-  for (const [name, server] of objectIterator.entries(servers)) {
+  for (const [name, config] of objectIterator.entries(servers)) {
     if (isDev && name === "static") {
       continue
     }
 
-    await runServer(server)
+    await runServer(name, config)
   }
 }
 

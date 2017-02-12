@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 module.exports = [
   {
@@ -202,4 +202,4 @@ module.exports = [
   {
     name: "Fleur Dis Lee"
   }
-];
+]
