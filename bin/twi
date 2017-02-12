@@ -134,7 +134,7 @@ function dev(stackTrace) {
   setEnv(true)
 
   try {
-    var {ok} = require(`${ROOT}/server/core/logger`)
+    var {ok} = require(`${ROOT}/server/core/log`)
     var app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
     return onError(err, stackTrace)
@@ -179,7 +179,7 @@ function run(stackTrace) {
   setEnv(false)
 
   try {
-    var {ok} = require(`${ROOT}/server/core/logger`).default
+    var {ok} = require(`${ROOT}/server/core/logg`).default
     var app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
     return onError(err, stackTrace)

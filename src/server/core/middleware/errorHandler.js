@@ -1,4 +1,4 @@
-import log from "server/core/logger"
+import log from "server/core/log"
 
 const errorHandler = () => async function _errorHandler(ctx, next) {
   try {

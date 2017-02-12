@@ -14,6 +14,8 @@ bar
 deploy/sandbox
 !src/server
 !src/setup
+!src/setup/server
+!src/setup/frontend
 
 # Static content (styles, images, script etc)
 static/assets/img/**/*.svg
