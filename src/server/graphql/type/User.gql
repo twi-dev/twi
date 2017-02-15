@@ -1,0 +1,14 @@
+# Typical structure of Twi user
+type User {
+  # User unique ID
+  id: Int!
+
+  # Username at the system
+  login: String!
+
+  # Main email address of the user
+  email: String
+
+  # User role at the system
+  role: String!
+}

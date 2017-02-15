@@ -7,7 +7,7 @@
  * @author Nick K. <https://github.com/octet-stream>
  */
 const {dirname, resolve, isAbsolute} = require("path")
-const fs = require ("fs")
+const fs = require("fs")
 
 const {ROOT, tryDeps} = require("./helper")
 

@@ -6,12 +6,14 @@ config/app/test.yaml
 config/app/test.yml
 config/cert
 config/runtime/assets.json
+server/graphql
 server
 setup
 node_modules
 foo
 bar
 deploy/sandbox
+!src/server/graphql
 !src/server
 !src/setup
 !src/setup/server
