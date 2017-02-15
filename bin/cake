@@ -127,7 +127,13 @@ function mapHandlers(watcher, handlers) {
  */
 function compileFile(file, enc, cb) {
   if (!isJS(file.path)) {
-    console.log(cyan(pointer), `Copy ${file.path}`)
+    if (isDev) {
+      console.log(cyan(pointer), `Copy ${file.path}`)
+    } else {
+      ora.color = "cyan"
+      ora.text = `Copy ${file.path}`
+    }
+
     return cb(null, file)
   }
 
@@ -188,6 +194,12 @@ function processFiles(files, src, dest) {
     .on("end", isDev ? onContinueWatching : onEnd)
 }
 
+/**
+ * Build all files from "src" dir
+ *
+ * @param string src
+ * @param string dest
+ */
 function make(src, dest) {
   ora.start()
 
@@ -209,58 +221,6 @@ function watch(src, dest) {
 
   console.log(cyan(pointer), "Starting watcher...")
   console.log(cyan(pointer), "You can press Control+C to exit.")
-
-  /**
-   * Event handler for fs.watch method
-   * Rebuild changed/deleted and added files/directories.
-   *
-   * @param Event e
-   * @param string filename
-   */
-  // function watcher(e, filename) {
-  //   filename = `${src}/${filename}`
-
-  //   const destFilename = getDestFilename(filename, src, dest)
-
-  //   try {
-  //     const stat = fs.statSync(filename)
-
-  //     // TODO: Add recompile files in created directory (if they exists)
-  //     if (stat.isDirectory()) {
-  //       console.log(`Creating a directory ${filename}`)
-
-  //       // Rebuild files in directory if they exists
-  //       const fulfill = (err, files) => (
-  //         err == null ? processFiles(files, src, dest) : onError(err)
-  //       )
-
-  //       // Find files in created directory
-  //       const created = err => (
-  //         err == null ? glob(`${filename}/**`, fulfill) : onError(err)
-  //       )
-
-  //       return fs.mkdir(destFilename, created)
-  //     }
-
-  //     return processFiles([filename], src, dest)
-  //   } catch (err) {
-  //     if (err.code !== "ENOENT") {
-  //       return process.emit("error", err)
-  //     }
-
-  //     const fulfill = err => (
-  //       err == null ? console.log(`Remove ${destFilename}`) : onError(err)
-  //     )
-
-  //     rimraf(destFilename, fulfill)
-  //   }
-  // }
-
-  // // Run watcher
-  // fs.watch(src, {recursive: true}, watcher)
-
-  // Get full path to given file
-  // const getFilename = filename => resolve(`${src}/${filename}`)
 
   /**
    * Create a directory on "addDir" event and compile included files (if exists)
@@ -286,14 +246,30 @@ function watch(src, dest) {
    */
   const onAdd = filename => processFiles([filename], src, dest)
 
-  const onUnlink = filename => fs.unlink(
+  /**
+   * Remore given file on "unlink" event
+   *
+   * @param string filename
+   */
+  const onUnlink = filename => rimraf(
     getDestFilename(filename, src, dest), err => err && onError(err)
   )
 
+  /**
+   * Remore given directory on "unlinkDir" event
+   *
+   * @param string filename
+   */
   const onUnlinkDir = filename => rimraf(
     getDestFilename(filename, src, dest), err => err && onError(err)
   )
 
+  /**
+   * Rebuild file/directory on change event
+   *
+   * @param string filename
+   * @param fs.Stat stat
+   */
   function onChange(filename, stat) {
     const fulfill = stat => (
       stat.isDirectory() ? onAddDir(filename) : onAdd(filename)
@@ -301,6 +277,8 @@ function watch(src, dest) {
 
     const onStat = (err, stat) => err ? onError(err) : fulfill(stat)
 
+    // TODO: I think it's actually triggering only for files events.
+    //   I need a tiny research of chokidar docs and maybe fix that thing.
     stat && typeof stat.isDirectory === "function"
       ? fulfill(stat)
       : fs.stat(filename, onStat)
@@ -349,7 +327,7 @@ commander
 commander
   .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
-  .version("The cake is a lie!\nCurrent cake version is 2.0.1")
+  .version("The cake is a lie!\nCurrent cake version is 2.1.0")
   .parse(process.argv)
 
 process
