@@ -37,10 +37,10 @@ async function tryPrompt(question) {
   }
 }
 
-async function processQuestions(q) {
+async function processQuestions(questions) {
   const res = {}
 
-  for (const [key, question] of objectIterator.entries(q)) {
+  for (const [key, question] of objectIterator.entries(questions)) {
     if (isPlainObject()) {
       res[key] = await processQuestions(question)
       continue

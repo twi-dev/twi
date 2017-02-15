@@ -25,6 +25,7 @@ const applySourceMap = require("vinyl-sourcemaps-apply")
 const sourcemaps = require("gulp-sourcemaps")
 const {red, green, cyan} = require("chalk")
 const {noop} = require("gulp-util")
+const chokidar = require("chokidar")
 
 const {transform} = require("babel-core")
 
@@ -80,12 +81,41 @@ function onEnd() {
  */
 function onError(err) {
   if (isDev) {
+    console.log(err)
     return console.log(red(cross), "Watching for changes...")
   }
 
   ora.stop()
   console.log(red(cross), err)
   process.exit(1)
+}
+
+/**
+ * Add event handlers to Chocidar watcher
+ *
+ * @param chokidar.FSWatcher watcher
+ * @param object handlers
+ */
+function mapHandlers(watcher, handlers) {
+  const hasOwn = prop => handlers.hasOwnProperty(prop)
+
+  for (let name in handlers) {
+    if (!hasOwn(name)) {
+      continue
+    }
+
+    const handler = handlers[name]
+
+    // Cut and decapitalize handler name
+    if (name.startsWith("on")) {
+      name = name.slice(2)
+      name = name.charAt(0).toLowerCase() + name.slice(1)
+    }
+
+    watcher.on(name, handler)
+  }
+
+  return watcher
 }
 
 /**
@@ -97,6 +127,7 @@ function onError(err) {
  */
 function compileFile(file, enc, cb) {
   if (!isJS(file.path)) {
+    console.log(cyan(pointer), `Copy ${file.path}`)
     return cb(null, file)
   }
 
@@ -186,49 +217,109 @@ function watch(src, dest) {
    * @param Event e
    * @param string filename
    */
-  function watcher(e, filename) {
-    filename = `${src}/${filename}`
+  // function watcher(e, filename) {
+  //   filename = `${src}/${filename}`
+
+  //   const destFilename = getDestFilename(filename, src, dest)
+
+  //   try {
+  //     const stat = fs.statSync(filename)
+
+  //     // TODO: Add recompile files in created directory (if they exists)
+  //     if (stat.isDirectory()) {
+  //       console.log(`Creating a directory ${filename}`)
+
+  //       // Rebuild files in directory if they exists
+  //       const fulfill = (err, files) => (
+  //         err == null ? processFiles(files, src, dest) : onError(err)
+  //       )
+
+  //       // Find files in created directory
+  //       const created = err => (
+  //         err == null ? glob(`${filename}/**`, fulfill) : onError(err)
+  //       )
+
+  //       return fs.mkdir(destFilename, created)
+  //     }
+
+  //     return processFiles([filename], src, dest)
+  //   } catch (err) {
+  //     if (err.code !== "ENOENT") {
+  //       return process.emit("error", err)
+  //     }
+
+  //     const fulfill = err => (
+  //       err == null ? console.log(`Remove ${destFilename}`) : onError(err)
+  //     )
+
+  //     rimraf(destFilename, fulfill)
+  //   }
+  // }
+
+  // // Run watcher
+  // fs.watch(src, {recursive: true}, watcher)
+
+  // Get full path to given file
+  // const getFilename = filename => resolve(`${src}/${filename}`)
+
+  /**
+   * Create a directory on "addDir" event and compile included files (if exists)
+   *
+   * @param string filename
+   */
+  function onAddDir(filename) {
+    const fulfill = (err, files) => (
+      err ? onError(err) : processFiles(files)
+    )
+
+    const created = err => err ? onError(err) : glob(`${filename}/**`, fulfill)
 
     const destFilename = getDestFilename(filename, src, dest)
 
-    try {
-      const stat = fs.statSync(filename)
-
-      // TODO: Add recompile files in created directory (if they exists)
-      if (stat.isDirectory()) {
-        console.log(`Creating a directory ${filename}`)
-
-        // Rebuild files in directory if they exists
-        const fulfill = (err, files) => (
-          err == null ? processFiles(files, src, dest) : onError(err)
-        )
-
-        // Find files in created directory
-        const created = err => (
-          err == null ? glob(`${filename}/**`, fulfill) : onError(err)
-        )
-
-        return fs.mkdir(destFilename, created)
-      }
-
-      if (isJS(filename)) {
-        return processFiles([filename], src, dest)
-      }
-    } catch (err) {
-      if (err.code !== "ENOENT") {
-        return process.emit("error", err)
-      }
-
-      const fulfill = err => (
-        err == null ? console.log(`Remove ${destFilename}`) : onError(err)
-      )
-
-      rimraf(destFilename, fulfill)
-    }
+    fs.mkdir(destFilename, created)
   }
 
-  // Run watcher
-  fs.watch(src, {recursive: true}, watcher)
+  /**
+   * Rebuild given file on "add" event
+   *
+   * @param string filename
+   */
+  const onAdd = filename => processFiles([filename], src, dest)
+
+  const onUnlink = filename => fs.unlink(
+    getDestFilename(filename, src, dest), err => err && onError(err)
+  )
+
+  const onUnlinkDir = filename => rimraf(
+    getDestFilename(filename, src, dest), err => err && onError(err)
+  )
+
+  function onChange(filename, stat) {
+    const fulfill = stat => (
+      stat.isDirectory() ? onAddDir(filename) : onAdd(filename)
+    )
+
+    const onStat = (err, stat) => err ? onError(err) : fulfill(stat)
+
+    stat && typeof stat.isDirectory === "function"
+      ? fulfill(stat)
+      : fs.stat(filename, onStat)
+  }
+
+  // Create chokidar.FSWatcher instance that watches for "src" path
+  const watcher = chokidar.watch(src, {
+    ignoreInitial: true
+  })
+
+  // Add handlers to watcher
+  mapHandlers(watcher, {
+    onError,
+    onAdd,
+    onAddDir,
+    onChange,
+    onUnlink,
+    onUnlinkDir
+  })
 }
 
 // Run "make" command

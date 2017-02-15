@@ -15,13 +15,13 @@ const koa = new Koa()
 /**
  * Improve webpack middlewares compatibility with Koa v2
  *
- * @param function target
+ * @param function callee
  * @param http.IncomingMessage
  * @param http.ServerResponse
  *
  * @return Promise
  */
-function wrapExpressMiddleware(target, req, res) {
+function wrapExpressMiddleware(callee, req, res) {
   const {end} = res
 
   return new Promise(function(resolve, reject) {
@@ -33,7 +33,7 @@ function wrapExpressMiddleware(target, req, res) {
       resolve(false) // Resolve `false` after `res.end` call
     }
 
-    target(req, res, next)
+    callee(req, res, next)
   })
 }
 
