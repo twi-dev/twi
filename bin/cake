@@ -22,12 +22,12 @@ const rimraf = require("rimraf")
 const through = require("through2")
 const ora = require("ora")({stream: process.stdout})
 const applySourceMap = require("vinyl-sourcemaps-apply")
+const isFunction = require("lodash/isFunction")
 const sourcemaps = require("gulp-sourcemaps")
 const {red, green, cyan} = require("chalk")
+const {transform} = require("babel-core")
 const {noop} = require("gulp-util")
 const chokidar = require("chokidar")
-
-const {transform} = require("babel-core")
 
 const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
@@ -279,7 +279,7 @@ function watch(src, dest) {
 
     // TODO: I think it's actually triggering only for files events.
     //   I need a tiny research of chokidar docs and maybe fix that thing.
-    stat && typeof stat.isDirectory === "function"
+    stat && isFunction(stat.isDirectory)
       ? fulfill(stat)
       : fs.stat(filename, onStat)
   }
