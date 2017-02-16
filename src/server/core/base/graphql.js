@@ -2,6 +2,7 @@ import {readdirSync, readFileSync} from "fs"
 import {basename, extname, join} from "path"
 
 import {makeExecutableSchema} from "graphql-tools"
+import junk from "junk"
 
 import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
@@ -29,7 +30,7 @@ function readToObj(path, ignore, reader) {
     const ext = extname(filename)
     const key = basename(filename, ext)
 
-    if (!isEmpty(ignore) && ignore.includes(extname(filename))) {
+    if (!isEmpty(ignore) && ignore.includes(ext) || junk.is(filename)) {
       continue
     }
 
