@@ -1,5 +1,7 @@
 # Main
 .nyc_output
+.dockerignore
+.npmignore
 config/app/user.yaml
 config/app/user.yml
 config/app/test.yaml
