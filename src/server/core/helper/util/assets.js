@@ -1,7 +1,7 @@
 import {readFile} from "promise-fs"
 import isEmpty from "lodash/isEmpty"
 import isString from "lodash/isString"
-import objectIterator from "./objectIterator"
+import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const TWI_ROOT = process.cwd()
 

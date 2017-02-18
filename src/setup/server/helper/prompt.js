@@ -3,8 +3,8 @@ import log from "server/core/log"
 
 import isString from "lodash/isString"
 import isPlainObject from "lodash/isPlainObject"
-import mapObject from "server/core/helper/util/mapObject"
-import objectIterator from "server/core/helper/util/objectIterator"
+import mapObject from "server/core/helper/iterator/mapObject"
+import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const isArray = Array.isArray
 

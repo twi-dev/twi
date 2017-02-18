@@ -1,5 +1,5 @@
 import {realpath, readFile} from "promise-fs"
-import objectIterator from "server/core/helper/util/objectIterator"
+import objectIterator from "server/core/helper/iterator/objectIterator"
 import getHostname from "server/core/helper/util/getHostname"
 import {info} from "server/core/log"
 

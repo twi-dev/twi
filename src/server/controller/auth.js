@@ -1,7 +1,8 @@
-import route, {methods} from "server/core/helper/decorator/route"
+import {router, route, methods} from "server/core/helper/decorator/controller"
 
 const {post} = methods
 
+// @router
 class AuthController {
   @route("/login", post)
   async actionLogin(ctx) {

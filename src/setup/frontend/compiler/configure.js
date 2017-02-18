@@ -15,7 +15,7 @@ import requireHelper from "require-dir"
 
 import dedent from "dedent"
 import isFunction from "lodash/isFunction"
-import objectIterator from "server/core/helper/util/objectIterator"
+import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const ROOT = process.cwd()
 

@@ -1,10 +1,6 @@
-// Based on:
-//   https://github.com/xmlking/koa-router-decorators/blob/master/src/index.ts
-
 import Router from "koa-router"
 
 import isString from "lodash/isString"
-import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
@@ -17,7 +13,24 @@ const methods = {
   delete: "DELETE",
   patch: "PATCH",
   options: "OPTIONS",
-  head: "HEAD"
+  head: "HEAD",
+
+  // For all methods
+  all: "ALL"
+}
+
+const router = Ctor => prefix => {
+  if (isEmpty(prefix)) {
+    throw new Error("Prefix cannot be empty.")
+  }
+
+  if (!isString(prefix)) {
+    throw new Error("Prefix should be a string.")
+  }
+
+  Ctor.prototype.router.prefix(prefix)
+
+  return Ctor
 }
 
 /**
@@ -35,14 +48,6 @@ const route = (path, method, ...middleware) => function(target, k, descriptor) {
 
   if (!target.router) {
     target.router = new Router()
-  }
-
-  // Decorate given constructor if route called on it instead of class method
-  if (isFunction(target) && isEmpty(descriptor)) {
-    target.router.prefix(path)
-
-    isEmpty(middleware) === false && target.router.use(...middleware)
-    return target
   }
 
   if (isEmpty(method)) {
@@ -64,6 +69,4 @@ const route = (path, method, ...middleware) => function(target, k, descriptor) {
   target.router[method](path, ...middleware, descriptor.value)
 }
 
-route.methods = methods
-export {methods}
-export default route
+export {methods, router, route}
