@@ -1,3 +1,5 @@
+// Based on:
+//   https://github.com/xmlking/koa-router-decorators/blob/master/src/index.ts
 import Router from "koa-router"
 
 import isString from "lodash/isString"
