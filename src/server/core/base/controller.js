@@ -6,15 +6,22 @@ import objectIterator from "server/core/helper/iterator/objectIterator"
 import {router} from "server/core/helper/decorator/controller"
 import {warn} from "server/core/log"
 
+import NotFoundException from "server/core/error/http/NotFound"
+import NotAllowedException from "server/core/error/http/NotAllowed"
+
 const CONTROLLERS_ROOT = `${process.cwd()}/server/controller`
 
 const r = new Router()
 
-const actionNotFound = ctx => ctx.body = "Page Not found"
+function actionNotFound({url}) {
+  throw new NotFoundException(`Page not found on route ${url}`)
+}
 
-const actionNotAllowed = ctx => ctx.body = "Method Not Allowed"
+function actionNotAllowed({method, url}) {
+  throw new NotAllowedException(`Method ${method} not allowed on route ${url}`)
+}
 
-function controller() {
+function makeRoutes() {
   const controllers = rd(CONTROLLERS_ROOT)
 
   for (const [name, controller] of objectIterator.entries(controllers)) {
@@ -34,4 +41,4 @@ function controller() {
   return r
 }
 
-export default controller()
+export default makeRoutes()

@@ -3,8 +3,9 @@ class Exception extends Error {
     super(message)
 
     this.code = code || "E_EXCEPTION"
+    this.name = "Exception"
 
-    Error.captureStackTrace(this, Error)
+    Error.captureStackTrace(this, Exception)
   }
 }
 

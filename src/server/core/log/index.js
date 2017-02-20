@@ -36,11 +36,11 @@ const warn = (...messages) => log(...messages, 3)
 
 const error = (...messages) => log(...messages, 4)
 
-log.normal
-log.ok
-log.info
-log.warn
-log.error
+log.normal = normal
+log.ok = ok
+log.info = info
+log.warn = warn
+log.error = error
 
 export {log, normal, ok, info, warn, error}
 export default log

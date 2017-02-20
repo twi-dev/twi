@@ -1,12 +1,12 @@
 import Exception from "../common/Exception"
 
 class HttpException extends Exception {
-  constructor(message, name, status) {
+  constructor(message) {
     super(message, "E_HTTP")
 
+    this.name = "HttpException"
+    this.status = 500
     this.message = message
-    this.name = name || "HttpException"
-    this.status = status || 500
   }
 }
 
