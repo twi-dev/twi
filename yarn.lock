@@ -1287,6 +1287,12 @@ babel-register@^6.22.0, babel-register@^6.9.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.2"
 
+babel-runtime@5.8.3:
+  version "5.8.3"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-5.8.3.tgz#180afdd925f896f807e0019929a88917c317db34"
+  dependencies:
+    core-js "^0.9.0"
+
 babel-runtime@^6.0.0, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.9.1:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.22.0.tgz#1cf8b4ac67c77a4ddb0db2ae1f74de52ac4ca611"
@@ -2066,6 +2072,10 @@ core-assert@^0.2.0:
   dependencies:
     buf-compare "^1.0.0"
     is-error "^2.2.0"
+
+core-js@^0.9.0:
+  version "0.9.18"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-0.9.18.tgz#13f458e430232b0f4ec1f480da7c2f5288e9d095"
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -3560,6 +3570,13 @@ graphql-anywhere@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-2.2.0.tgz#652c3fa23a4a6cfeb98817512fb48100b97f3d5c"
 
+graphql-schema@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/graphql-schema/-/graphql-schema-0.5.1.tgz#a730a37f4a82c6a871585d254becdff29a195331"
+  dependencies:
+    graphql "^0.1.3"
+    invariant "^2.1.0"
+
 graphql-server-core@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.6.0.tgz#468625cba4a00f80275c065432faa481985f5a65"
@@ -3599,6 +3616,12 @@ graphql@0.9.1:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.1.tgz#f4d154cbec054d4a5d3b1be95f23435c09aa86c8"
   dependencies:
     iterall "1.0.3"
+
+graphql@^0.1.3:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.1.12.tgz#6b3a40c76962d03370855486a8ddf94ba8b8fa79"
+  dependencies:
+    babel-runtime "5.8.3"
 
 gtoken@^1.1.0:
   version "1.2.1"
@@ -4054,7 +4077,7 @@ interpret@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.1.tgz#d579fb7f693b858004947af39fa0db49f795602c"
 
-invariant@^2.2.0, invariant@^2.2.1:
+invariant@^2.1.0, invariant@^2.2.0, invariant@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:

@@ -66,6 +66,7 @@
     "figures": "2.0.0",
     "googleapis": "14.2.0",
     "graphql": "0.9.1",
+    "graphql-schema": "^0.5.1",
     "graphql-server-koa": "0.6.0",
     "graphql-tools": "0.10.0",
     "http2": "3.3.6",

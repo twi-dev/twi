@@ -1,14 +1,19 @@
+import Router from "koa-router"
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
-import {route, methods} from "server/core/helper/decorator/controller"
+const actionGraphiQL = () => graphiqlKoa({endpointURL: "/graphql"})
 
-const {get, all} = methods
+const actionGraphQL = () => graphqlKoa()
 
-class GraphQLController {
-  @route("/", all)
-  async actionGraphQL(ctx) {
-    ctx.body = "GraphQL endpoint. Not implemented"
-  }
-}
+const r = new Router()
+
+r.get("/", actionGraphiQL())
+
+r.all("/", actionGraphQL())
+
+// Ctor for GraphQL routes
+function GraphQLController() {}
+
+GraphQLController.prototype.router = r
 
 export default GraphQLController
