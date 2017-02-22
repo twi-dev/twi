@@ -7,7 +7,29 @@ import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
 
+import Schema from "server/core/graphql/schema"
+
+// import {
+//   GraphQLSchema as Schema,
+//   GraphQLObjectType as TObject,
+//   GraphQLString as TString
+// } from "graphql"
+
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
+
+// console.log(new Schema({
+//   query: new TObject({
+//     name: "Query",
+//     fields: {
+//       hello: {
+//         type: TString,
+//         resolve() {
+//           return "Hello, world!"
+//         }
+//       }
+//     }
+//   })
+// }))
 
 // tmp schema
 const schema = makeExecutableSchema({

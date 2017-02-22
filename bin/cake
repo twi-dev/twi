@@ -27,6 +27,7 @@ const sourcemaps = require("gulp-sourcemaps")
 const {red, green, cyan} = require("chalk")
 const {transform} = require("babel-core")
 const {noop} = require("gulp-util")
+const {satisfies} = require("semver")
 const chokidar = require("chokidar")
 
 // const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
@@ -35,7 +36,7 @@ const chokidar = require("chokidar")
 const BABERC = (function() {
   const res = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
-  if (!process.versions.node.startsWith("7.6")) {
+  if (satisfies(process.versions.node, "< 7.6")) {
     return res
   }
 

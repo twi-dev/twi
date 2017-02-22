@@ -102,7 +102,7 @@ function make(component, cmd) {
 
   const onRejected = err => onError(err, cmd.parent.T)
 
-  const fulfill = (onlyServer = true) => function(err) {
+  const fulfill = onlyServer => function(err) {
     if (err) {
       return onRejected(err)
     }
@@ -112,9 +112,9 @@ function make(component, cmd) {
 
   switch (component) {
     case "backend":
-      return makeBackend(fulfill())
+      return makeBackend(fulfill(true))
     case "frontend":
-      return makeFrontend().then(onEnd)
+      return makeFrontend().then(onEnd, onError)
     default:
       return makeBackend(fulfill(false))
   }

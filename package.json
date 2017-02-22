@@ -179,6 +179,7 @@
     "react-svg-loader": "1.1.1",
     "rimraf": "2.5.2",
     "rupture": "0.6.2",
+    "semver": "^5.3.0",
     "sinon": "1.17.7",
     "style-loader": "0.13.1",
     "stylus": "0.54.5",

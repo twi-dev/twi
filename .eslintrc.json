@@ -50,6 +50,7 @@
     "no-tabs": ["error"],
     "no-trailing-spaces": ["error"],
     "no-inner-declarations": 0,
+    "no-class-assign": 0,
     "yield-star-spacing": ["error", "after"],
     "object-curly-spacing": ["warn", "never"],
     "array-bracket-spacing": ["warn", "never"],

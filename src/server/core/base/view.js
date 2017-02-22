@@ -100,6 +100,8 @@ function setRenderer(koa, options) {
       pretty: false
     })
   )
+
+  return koa
 }
 
 /**
