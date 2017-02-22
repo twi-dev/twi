@@ -29,7 +29,22 @@ const {transform} = require("babel-core")
 const {noop} = require("gulp-util")
 const chokidar = require("chokidar")
 
-const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
+// const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
+
+// FIXME: Temporarily solution, while babel-preset-env unsupport node v7.6
+const BABERC = (function() {
+  const res = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
+
+  if (!process.versions.node.startsWith("7.6")) {
+    return res
+  }
+
+  res.plugins = res.plugins.filter(
+    name => name !== "transform-async-to-generator"
+  )
+
+  return res
+})()
 
 const DEFAULT_SRC = `${ROOT}/src`
 
@@ -147,6 +162,7 @@ function compileFile(file, enc, cb) {
   try {
     const contents = transform(String(file.contents),
       assign({}, BABERC, {
+        babelrc: false,
         filename: file.path,
         filenameRelative: file.relative,
         sourceMap: isDev ? "inline" : true,

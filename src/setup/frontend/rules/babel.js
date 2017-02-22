@@ -6,6 +6,7 @@ function babel(isDev) {
       {
         loader: "babel-loader",
         query: {
+          babelrc: false, // Turn off babelrc
           presets: [
             "react",
           ],
