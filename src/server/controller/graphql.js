@@ -15,6 +15,8 @@ import Schema from "server/core/graphql/schema"
 //   GraphQLString as TString
 // } from "graphql"
 
+console.log(Schema().query("Foo").end())
+
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
 // console.log(new Schema({

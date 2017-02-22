@@ -7,6 +7,6 @@
  *
  * @return Function
  */
-const selfInvokingClass = (Target, ctx, args) => new Target(...args)
+const selfInvokingClass = (Target, ctx, args) => new Target(args)
 
 export default selfInvokingClass
