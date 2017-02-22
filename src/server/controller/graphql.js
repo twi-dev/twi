@@ -30,7 +30,7 @@ const schema = makeExecutableSchema({
 
 const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
 
-const actionGraphQL = graphqlKoa(context => ({schema, context}))
+const actionGraphQL = graphqlKoa(async context => ({schema, context}))
 
 const r = new Router()
 
@@ -38,7 +38,7 @@ r.get("/", actionGraphiQL)
 
 r.all("/", actionGraphQL)
 
-// Ctor for GraphQL routes
+// Noop Ctor for GraphQL routes
 function GraphQLController() {}
 
 GraphQLController.prototype.router = r

@@ -3,7 +3,7 @@ import {readFile} from "promise-fs"
 import {version} from "package.json"
 
 import merge from "lodash/merge"
-import isEmpty from "lodash/isEmpty"
+import isFunction from "lodash/isFunction"
 import getHostname from "server/core/helper/util/getHostname"
 
 import {
@@ -58,7 +58,7 @@ const compileFile = async (filename, options) => compile(
  * @return function
  */
 async function compileTemplate(filename, options) {
-  if (filename in cache && !isEmpty(cache[filename])) {
+  if (options.cache && isFunction(cache[filename])) {
     return cache[filename]
   }
 
