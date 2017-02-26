@@ -246,10 +246,12 @@ function watch(src, dest) {
    */
   function onAddDir(filename) {
     const fulfill = (err, files) => (
-      err ? onError(err) : processFiles(files)
+      err ? onError(err) : processFiles(files, src, dest)
     )
 
-    const created = err => err ? onError(err) : glob(`${filename}/**`, fulfill)
+    const created = err => (
+      err ? onError(err) : glob(`${filename}/**`, fulfill)
+    )
 
     const destFilename = getDestFilename(filename, src, dest)
 
@@ -344,7 +346,7 @@ commander
 commander
   .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
-  .version("The cake is a lie!\nCurrent cake version is 2.1.0")
+  .version("The cake is a lie!\nCurrent cake version is 2.1.1")
   .parse(process.argv)
 
 process

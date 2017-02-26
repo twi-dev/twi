@@ -9,6 +9,10 @@ import toFormData from "frontend/helper/util/toFormData"
 
 class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
   fetchFromRemoteEndpoint = ({request, options}) => {
+    if (options.headers["Content-Type"] === "multipart/from-data") {
+      return super.fetchFromRemoteEndpoint(...arguments)
+    }
+
     // Transform variables obj to FormData
     const fd = toFormData(request.variables, "variables")
 

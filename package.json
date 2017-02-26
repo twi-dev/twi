@@ -35,8 +35,6 @@
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
     "test": "bin/cake make && ./node_modules/ava/cli.js",
-    "test:watch": "bin/cake make -s theme/twi/src/frontend -d test/runtime/twi/frontend && bin/cake watch -s theme/twi/src/frontend -d test/runtime/twi/frontend & node_modules/ava/cli.js --watch",
-    "t:w": "npm run test:watch",
     "coverage": "./node_modules/.bin/nyc npm run test",
     "report": "npm run coverage && ./node_modules/.bin/nyc report --reporter=html npm run test",
     "report:codecov": "./node_modules/.bin/nyc report --reporter=lcov npm run test",
