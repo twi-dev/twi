@@ -9,7 +9,8 @@
     "node_modules",
     "theme",
     "localhost",
-    "test"
+    "test",
+    "frontend"
   ],
   "ext": "js json yml yaml key cert",
   "exec": "./bin/twi dev --stack-trace"

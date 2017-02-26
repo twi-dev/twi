@@ -9,29 +9,29 @@ import noop from "server/core/middleware/noop"
 
 import Schema from "server/core/graphql/schema"
 
-// import {
-//   GraphQLSchema as Schema,
-//   GraphQLObjectType as TObject,
-//   GraphQLString as TString
-// } from "graphql"
+import {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList
+} from "graphql"
 
-console.log(Schema().query("Foo").end())
+const _schema = Schema()
+  .query("Foo", "Some random schema")
+    .field("hello", GraphQLString)
+      .resolve(async function(_, {name}) {
+        return `Hello, ${name}!`
+      }, {
+        name: {
+          type: GraphQLString
+        }
+      })
+    .end()
+  .end()
+
+// console.log(_schema)
 
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
-
-// console.log(new Schema({
-//   query: new TObject({
-//     name: "Query",
-//     fields: {
-//       hello: {
-//         type: TString,
-//         resolve() {
-//           return "Hello, world!"
-//         }
-//       }
-//     }
-//   })
-// }))
 
 // tmp schema
 const schema = makeExecutableSchema({
@@ -54,7 +54,9 @@ const schema = makeExecutableSchema({
 
 const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
 
-const actionGraphQL = graphqlKoa(async context => ({schema, context}))
+const actionGraphQL = graphqlKoa(async context => ({
+  schema: _schema, context
+}))
 
 const r = new Router()
 
