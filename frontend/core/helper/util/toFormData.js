@@ -24,12 +24,12 @@ function toFormData(obj, rootKey) {
    */
   function append(key, value) {
     for (const [k, v] of objectIterator.entries(value)) {
-      key = key ? `${key}[${k}]` : key
+      const name = key ? `${key}[${k}]` : key
 
-      if (isArray(v) || isPlainObject(v)) {
-        isEmpty(v) ? append(key, v) : fd.append(key, v)
+      if ((isArray(v) || isPlainObject(v)) && !isEmpty(v)) {
+        append(name, v)
       } else {
-        fd.append(key, v)
+        fd.append(name, v)
       }
     }
   }

@@ -18,11 +18,12 @@ koa
   .use(errorHandler())
   .use(cors())
   .use(body())
-  .use(multipart())
+  .use(multipart({ignorePaths: ["/graphql"]}))
   .use(logger())
   .use(favicon(FAVICON_PATH))
   .use(controller.allowedMethods())
   .use(controller.routes())
+
 
 const {host, port, secure} = backend
 

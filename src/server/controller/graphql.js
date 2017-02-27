@@ -6,6 +6,7 @@ import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
 import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
+import multipart from "server/core/middleware/multipart"
 
 import Schema from "server/core/graphql/schema"
 
@@ -18,7 +19,7 @@ import {
 
 const _schema = Schema()
   .query("Foo", "Some random schema")
-    .field("hello", GraphQLString)
+    .field("greet", GraphQLString)
       .resolve(async function(_, {name}) {
         return `Hello, ${name}!`
       }, {
@@ -62,7 +63,7 @@ const r = new Router()
 
 r.get("/", actionGraphiQL)
 
-r.all("/", actionGraphQL)
+r.all("/", multipart(), actionGraphQL)
 
 // Noop Ctor for GraphQL routes
 function GraphQLController() {}

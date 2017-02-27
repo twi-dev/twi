@@ -7,6 +7,8 @@ import objectIterator from "./objectIterator"
  * @param function predicate – the function invoked per iteration.
  *   Should return boolean value.
  * @param any ctx
+ *
+ * @return object – filtered object
  */
 function filterObject(obj, predicate, ctx) {
   const res = {}

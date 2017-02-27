@@ -18,7 +18,7 @@ test.beforeEach(async t => {
     return cb(null, val)
   }
 
-  const getLastElement = arr => arr.slice().pop()
+  const getLastElement = arr => [...arr].pop()
 
   t.context = {
     getLastElement,

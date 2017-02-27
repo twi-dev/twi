@@ -8,8 +8,12 @@ import {
 import toFormData from "frontend/helper/util/toFormData"
 
 class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
-  fetchFromRemoteEndpoint = ({request, options}) => {
-    if (options.headers["Content-Type"] === "multipart/from-data") {
+  fetchFromRemoteEndpoint({request, options}) {
+    if (
+      options.headers &&
+      // FIXME: Remoe this code or find more universal way
+      options.headers["Content-Type"] !== "multipart/from-data"
+    ) {
       return super.fetchFromRemoteEndpoint(...arguments)
     }
 
