@@ -8,7 +8,7 @@ import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const isArray = Array.isArray
 
-const normalizeQuestions = obj => mapObject(obj, function(question) {
+const normalizeQuestions = obj => mapObject(obj, question => {
   if (isPlainObject(question)) {
     return normalizeQuestions(question)
   }

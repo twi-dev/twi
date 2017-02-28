@@ -8,13 +8,15 @@ import {
 import toFormData from "frontend/helper/util/toFormData"
 
 class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
-  fetchFromRemoteEndpoint({request, options}) {
+  fetchFromRemoteEndpoint(...args) {
+    const [{request, options}] = args
+
     if (
       options.headers &&
       // FIXME: Remoe this code or find more universal way
       options.headers["Content-Type"] !== "multipart/from-data"
     ) {
-      return super.fetchFromRemoteEndpoint(...arguments)
+      return super.fetchFromRemoteEndpoint(...args)
     }
 
     // Transform variables obj to FormData

@@ -2,11 +2,12 @@
 import {createElement} from "react"
 
 import {dirname} from "path"
-
-import buildModule, {wrapModule} from "./module"
 import objectIterator from "objectIterator"
 
 import UIStore from "frontend/core/store/UIStore"
+
+import buildModule, {wrapModule} from "./module"
+
 
 const MANIFEST_PATTERN = /\/manifest.json$/
 

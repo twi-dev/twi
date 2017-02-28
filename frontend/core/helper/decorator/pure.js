@@ -48,6 +48,10 @@ function pure(methods) {
         children: PropTypes.any
       }
 
+      static defaultProps = {
+        children: null
+      }
+
       render() {
         return createElement(observer(Target), this.props, this.props.children)
       }
