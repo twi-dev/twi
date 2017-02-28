@@ -1,7 +1,7 @@
 import {basename, extname} from "path"
 
 import Router from "koa-router"
-import {makeExecutableSchema} from "graphql-tools"
+// import {makeExecutableSchema} from "graphql-tools"
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
 import {isDev} from "server/core/helper/util/configure"
@@ -11,13 +11,13 @@ import multipart from "server/core/middleware/multipart"
 import Schema from "server/core/graphql/schema"
 
 import {
-  GraphQLSchema,
-  GraphQLObjectType,
+  // GraphQLSchema,
+  // GraphQLObjectType,
   GraphQLString,
-  GraphQLList
+  // GraphQLList
 } from "graphql"
 
-const _schema = Schema()
+const schema = Schema()
   .query("Foo", "Some random schema")
     .field("greet", GraphQLString)
       .resolve(async function(_, {name}) {
@@ -35,28 +35,28 @@ const _schema = Schema()
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
 // tmp schema
-const schema = makeExecutableSchema({
-  typeDefs: `
-    type Query {
-      greet(name: String): String!
-    }
+// const schema = makeExecutableSchema({
+//   typeDefs: `
+//     type Query {
+//       greet(name: String): String!
+//     }
 
-    schema {
-      query: Query
-    }
-`,
-  resolvers: {
-    Query: {
-      greet: async (_, {name}) => `Hello, ${name || "World"}!`
-    }
-  }
-})
+//     schema {
+//       query: Query
+//     }
+// `,
+//   resolvers: {
+//     Query: {
+//       greet: async (_, {name}) => `Hello, ${name || "World"}!`
+//     }
+//   }
+// })
 // end
 
 const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
 
 const actionGraphQL = graphqlKoa(async context => ({
-  schema: _schema, context
+  schema, context
 }))
 
 const r = new Router()

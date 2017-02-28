@@ -80,7 +80,8 @@ const getViewRenderer = options => async function render(filename, locals) {
   )
 
   locals = merge({}, locals, {
-    twi, sys: {
+    twi,
+    sys: {
       static: staticHostname
     }
   })

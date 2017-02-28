@@ -11,7 +11,7 @@ const defaults = {
 /**
  * Parse multipart/form-data body using then-busboy under the hood
  */
-const multipart = options => async function multipart(ctx, next) {
+const multipart = options => async function _multipart(ctx, next) {
   if (ctx.method.toLowerCase() !== "post") {
     return await next()
   }
@@ -28,7 +28,7 @@ const multipart = options => async function multipart(ctx, next) {
     return await next()
   }
 
-  var data = await busboy(ctx.req)
+  let data = await busboy(ctx.req)
 
   if (isFunction(processFiles)) {
     data = await processFiles(data)

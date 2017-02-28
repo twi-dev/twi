@@ -26,10 +26,11 @@ function wrapExpressMiddleware(callee, req, res) {
 
   return new Promise(function(resolve, reject) {
     // Mock an Express `next` callback
-    const next = err => err == null ? resolve(true) : reject(err)
+    const next = err => (err == null ? resolve(true) : reject(err))
 
-    res.end = function() {
-      end.apply(this, arguments)
+    res.end = function(...args) {
+      end.apply(this, ...args)
+
       resolve(false) // Resolve `false` after `res.end` call
     }
 

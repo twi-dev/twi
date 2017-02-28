@@ -9,7 +9,7 @@ const promisify = callee => function(...args) {
   const ctx = this
 
   return new Promise(function(resolve, reject) {
-    const fulfill = (err, res) => err ? reject(err) : resolve(res)
+    const fulfill = (err, res) => (err ? reject(err) : resolve(res))
 
     callee.apply(ctx, [...args, fulfill])
   })

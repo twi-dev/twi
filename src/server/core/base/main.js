@@ -43,13 +43,17 @@ const runServer = (name, config) => new Promise(function(resolve, reject) {
 })
 
 async function runApp(isDev) {
+  const services = []
+
   for (const [name, config] of objectIterator.entries(servers)) {
     if (isDev && name === "static") {
       continue
     }
 
-    await runServer(name, config)
+    services.push(runServer(name, config))
   }
+
+  await Promise.all(services)
 }
 
 export default runApp

@@ -1,6 +1,6 @@
 import log from "server/core/log"
 
-const errorHandler = () => async function errorHandler(ctx, next) {
+const errorHandler = () => async function _errorHandler(ctx, next) {
   try {
     await next()
   } catch (err) {

@@ -55,7 +55,7 @@ function getPlugins(isDev) {
     new LoaderOptionsPlugin({
       options: {
         stylus: {
-          ["include css"]: true,
+          "include css": true,
           use: [
             jeet(),
             rupture(),

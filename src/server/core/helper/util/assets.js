@@ -16,7 +16,7 @@ function mapAssets(assets, type) {
 
   const res = []
 
-  for(const bundle of objectIterator(assets)) {
+  for (const bundle of objectIterator(assets)) {
     const asset = bundle[type]
 
     if (!isEmpty(asset)) {

@@ -14,9 +14,13 @@ function configure() {
     userConfig = {}
   }
 
+  const env = process.env.NODE_ENV || "development"
+  const debug = env === "debug"
+  const test = env === "test"
+  const isDev = env !== "production"
+
   const config = merge({}, defaultConfig, userConfig, {
-    isDev: process.env.NODE_ENV !== "production" ? true : false,
-    env: process.env.NODE_ENV || "development"
+    env, isDev, debug, test
   })
 
   return deepFreeze(config)
