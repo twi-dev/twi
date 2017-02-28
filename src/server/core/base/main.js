@@ -25,7 +25,7 @@ async function getServer(koa, secure) {
   return createServer(koa.callback(), {key, cert})
 }
 
-const runServer = (name, config) => new Promise(function(resolve, reject) {
+const runServer = (name, config) => new Promise((resolve, reject) => {
   const {app, host, port, secure} = config
 
   const onServer = server => (

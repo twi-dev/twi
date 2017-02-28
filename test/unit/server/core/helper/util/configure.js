@@ -17,7 +17,9 @@ const userConfig = {}
 
 const expectedConfig = merge({}, defaultConfig, userConfig, {
   isDev: true,
-  env: "development"
+  env: "development",
+  debug: false,
+  test: false
 })
 
 function mockReadYamlSync(path) {
@@ -34,7 +36,7 @@ test.beforeEach(t => {
   const configure = () => pq(
     `${SERVER_ROOT}/core/helper/util/configure`,
     {
-      ["node-yaml"]: {
+      "node-yaml": {
         readSync: mockReadYamlSync
       }
     }

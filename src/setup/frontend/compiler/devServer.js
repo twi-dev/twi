@@ -24,9 +24,9 @@ const koa = new Koa()
 function wrapExpressMiddleware(callee, req, res) {
   const {end} = res
 
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     // Mock an Express `next` callback
-    const next = err => (err == null ? resolve(true) : reject(err))
+    const next = err => err == null ? resolve(true) : reject(err)
 
     res.end = function(...args) {
       end.apply(this, ...args)
@@ -51,12 +51,12 @@ function devMiddleware(compiler, config = {}) {
 
   return async function(ctx, next) {
     const hasNext = await wrapExpressMiddleware(middleware, ctx.req, {
-      end: function(content) {
+      end(content) {
         ctx.body = content
       },
 
-      setHeader: function() {
-        ctx.set.apply(ctx, arguments)
+      setHeader(...args) {
+        ctx.set.apply(ctx, ...args)
       }
     })
 

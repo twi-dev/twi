@@ -32,7 +32,7 @@ function makeRoutes() {
 
     const Ctor = router(controller.default)(`/${name}`)
 
-    r.use(new Ctor)
+    r.use(new Ctor())
   }
 
   r.get("*", actionNotFound)

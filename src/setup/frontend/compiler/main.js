@@ -7,8 +7,8 @@ import configure from "./configure"
 
 const STATIC_ROOT = `${process.cwd()}/static`
 
-const runCompiler = (isDev = false) => new Promise(function(resolve, reject) {
-  const fulfill = (err, stats) => (err == null ? resolve(stats) : reject(err))
+const runCompiler = (isDev = false) => new Promise((resolve, reject) => {
+  const fulfill = (err, stats) => err == null ? resolve(stats) : reject(err)
 
   const config = configure(isDev, _static.port)
   const compiler = webpack(config)

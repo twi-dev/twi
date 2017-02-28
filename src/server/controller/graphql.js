@@ -20,9 +20,9 @@ import {
 const schema = Schema()
   .query("Foo", "Some random schema")
     .field("greet", GraphQLString)
-      .resolve(async function(_, {name}) {
-        return `Hello, ${name}!`
-      }, {
+      .resolve(async (_, {name}) => (
+        `Hello, ${name}!`
+      ), {
         name: {
           type: GraphQLString
         }
@@ -30,7 +30,7 @@ const schema = Schema()
     .end()
   .end()
 
-// console.log(_schema)
+// console.log(schema)
 
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
@@ -52,6 +52,8 @@ const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 //   }
 // })
 // end
+
+const processFiles = file => {}
 
 const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
 
