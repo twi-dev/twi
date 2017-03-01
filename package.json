@@ -16,39 +16,40 @@
     "twi": "bin/twi"
   },
   "scripts": {
-    "setup": "./bin/twi setup",
-    "twi": "./bin/twi run",
+    "setup": "bin/twi setup",
+    "twi": "bin/twi run",
     "start": "npm run setup && npm run run",
     "cake:make": "bin/cake make",
     "c:m": "npm run cake:make",
     "cake:watch": "bin/cake watch",
     "c:w": "npm run cake:watch",
-    "gulp": "./node_modules/.bin/gulp",
+    "gulp": "node_modules/.bin/gulp",
     "gulp:make": "npm run gulp",
     "g:m": "npm run gulp",
-    "gulp:watch": "./node_modules/.bin/gulp watch",
+    "gulp:watch": "node_modules/.bin/gulp watch",
     "g:w": "npm run gulp:watch",
-    "make": "./bin/twi make && npm run gulp:make",
+    "make": "bin/twi make && npm run gulp:make",
     "m": "npm run make",
     "watch": "twi watch --stack-trace",
     "w": "npm run watch",
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
-    "test": "bin/cake make && ./node_modules/ava/cli.js",
-    "coverage": "./node_modules/.bin/nyc npm run test",
-    "report": "npm run coverage && ./node_modules/.bin/nyc report --reporter=html npm run test",
-    "report:codecov": "./node_modules/.bin/nyc report --reporter=lcov npm run test",
-    "codecov": "./node_modules/.bin/codecov",
+    "lint": "node_modules/.bin/eslint",
+    "test": "bin/cake make && node_modules/ava/cli.js",
+    "coverage": "node_modules/.bin/nyc npm run test",
+    "report": "npm run coverage && node_modules/.bin/nyc report --reporter=html npm run test",
+    "report:codecov": "node_modules/.bin/nyc report --reporter=lcov npm run test",
+    "codecov": "node_modules/.bin/codecov",
     "ci": "npm run coverage && npm run report:codecov && npm run codecov"
   },
   "ava": {
     "require": [
       "babel-register",
-      "./test/helper/browser"
+      "./test/helper/env/browser"
     ],
     "babel": "inherit",
     "files": [
-      "test/unit/**/*.js",
+      "./test/unit/**/*.js",
       "!./test/helper/**/*.js"
     ]
   },

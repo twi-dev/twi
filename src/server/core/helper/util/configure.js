@@ -7,7 +7,7 @@ function configure() {
 
   const defaultConfig = readSync(`${CONFIGS_ROOT}/default`)
 
-  var userConfig
+  let userConfig
   try {
     userConfig = readSync(`${CONFIGS_ROOT}/user`)
   } catch (err) {

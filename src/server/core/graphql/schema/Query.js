@@ -7,15 +7,19 @@ import {
 import proxy from "server/core/helper/decorator/proxy"
 import apply from "server/core/helper/proxy/selfInvokingClass"
 
+import Base from "./Base"
+import Resolver from "./Resolver"
+
 const isArray = Array.isArray
 
 @proxy({apply})
-class Query {
-  constructor(name, description, parent = null) {
+class Query extends Base {
+  constructor(name, description, cb = null) {
+    super(cb)
+
     this.__name = name || "Query"
     this.__description = description
     this.__fields = {}
-    this.__parent = parent
   }
 
   /**
@@ -23,44 +27,36 @@ class Query {
    * @param function resolve – field resolver
    * @param Function type – resolver returning type
    */
-  field = (name, type, notNull = false) => {
+  field = (name, type, required = false) => {
     if (isArray(type)) {
       type = new GraphQLList(type[0])
     }
 
-    if (notNull) {
+    if (required) {
       type = new GraphQLNonNull(type)
     }
 
-    const resolve = (fn, args) => {
+    const setResolver = resolver => {
       this.__fields[name] = {
         type,
-        args,
-        resolve: fn
+        ...resolver
       }
 
       return this
     }
 
-    const end = () => {
-      this.__fields[name] = {type}
+    const resolver = new Resolver(setResolver)
 
-      return this
-    }
-
-    return {
-      resolve,
-      end
-    }
+    return resolver
   }
 
-  end = () => {
+  end() {
     const query = new GraphQLObjectType({
       name: this.__name,
       fields: this.__fields
     })
 
-    return this.__parent ? this.__parent.setQuery(query) : this
+    return super.end(query)
   }
 }
 

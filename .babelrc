@@ -10,6 +10,7 @@
     "transform-class-properties",
     "transform-async-generator-functions",
     "transform-exponentiation-operator",
+    "babel-plugin-transform-export-extensions",
     "transform-object-rest-spread",
     ["module-resolver", {
       "cwd": "./src",

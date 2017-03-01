@@ -11,7 +11,7 @@ const IS_YARN_EXISTS = (function() {
   } catch (err) {
     return false
   }
-})()
+}())
 
 function tryDeps() {
   try {

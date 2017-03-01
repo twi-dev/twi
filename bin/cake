@@ -342,7 +342,7 @@ commander
 commander
   .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
-  .version("The cake is a lie!\nCurrent cake version is 2.1.1")
+  .version("The cake is a lie!\nCurrent cake version is 2.1.2")
   .parse(process.argv)
 
 process
