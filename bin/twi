@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-"use strict"
-
 const {ROOT, tryDeps} = require("./helper")
 const {exec} = require("child_process")
 
@@ -54,9 +52,11 @@ function onEnd() {
  *
  * @param boolean isDev
  */
-const runCompiler = isDev => new Promise(function(resolve, reject) {
+const runCompiler = isDev => new Promise((resolve, reject) => {
+  let compiler
+
   try {
-    var compiler = require(`${ROOT}/setup/frontend/compiler/main`).default
+    compiler = require(`${ROOT}/setup/frontend/compiler/main`).default
   } catch (err) {
     return reject(err)
   }
@@ -133,9 +133,12 @@ function watch(stackTrace) {
 function dev(stackTrace) {
   setEnv(true)
 
+  let ok
+  let app
+
   try {
-    var {ok} = require(`${ROOT}/server/core/log`)
-    var app = require(`${ROOT}/server/core/base/main`).default
+    ok = require(`${ROOT}/server/core/log`).ok
+    app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
     return onError(err, stackTrace)
   }
@@ -152,7 +155,7 @@ function migrate(cmd) {
 
   const migrate = require(`${ROOT}/setup/backend/migrate`).default
 
-  var promise
+  let promise
   if (cmd.D) {
     promise = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R))
   } else {
@@ -178,9 +181,12 @@ function setup(cmd) {
 function run(stackTrace) {
   setEnv(false)
 
+  let ok
+  let app
+
   try {
-    var {ok} = require(`${ROOT}/server/core/log`).default
-    var app = require(`${ROOT}/server/core/base/main`).default
+    ok = require(`${ROOT}/server/core/log`).ok
+    app = require(`${ROOT}/server/core/base/main`).default
   } catch (err) {
     return onError(err, stackTrace)
   }

@@ -45,13 +45,13 @@ const BABERC = (function() {
   )
 
   return res
-})()
+}())
 
 const DEFAULT_SRC = `${ROOT}/src`
 
 const assign = Object.assign
 
-var isDev = false
+let isDev = false
 
 const resolveFullSrcPath = (path = DEFAULT_SRC) => (
   isAbsolute(path) ? path : resolve(ROOT, path)
@@ -113,13 +113,9 @@ function onError(err) {
  * @param object handlers
  */
 function mapHandlers(watcher, handlers) {
-  const hasOwn = prop => handlers.hasOwnProperty(prop)
+  const keys = Object.keys(handlers)
 
-  for (let name in handlers) {
-    if (!hasOwn(name)) {
-      continue
-    }
-
+  for (let name of keys) {
     const handler = handlers[name]
 
     // Cut and decapitalize handler name
