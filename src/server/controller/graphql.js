@@ -7,25 +7,18 @@ import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
 import multipart from "server/core/middleware/multipart"
 
-import Schema from "server/core/graphql"
+import Schema from "parasprite"
 
-import {
-  // GraphQLSchema,
-  // GraphQLObjectType as TObject,
-  GraphQLString as TString,
-  // GraphQLList
-} from "graphql"
+import {GraphQLString as TString} from "graphql"
 
-// Experimental chainable interface for GraphQL schema definitions.
-//   Still in development. Shoul be moved as external package.
+// Tmp schema
 const schema = Schema()
-  .query("SomeSchema", "Some random schema")
-    .field("greet", TString)
-      .resolve((_, {name}) => `Hello, ${name}!`)
-        .arg("name", TString)
-      .end()
+  .query("Query", "Some random schema")
+    .resolve("greet", TString, (_, {name}) => `Hello, ${name}!`)
+      .arg("name", TString)
     .end()
   .end()
+.end()
 
 // console.log(schema)
 
