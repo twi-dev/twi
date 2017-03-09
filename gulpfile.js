@@ -23,7 +23,7 @@ const STYLUS_DEST = `${__dirname}/static/assets/css`
 const SVG_SRC = `${__dirname}/frontend/svg/**/*.svg`
 const SVG_DEST = `${__dirname}/static/assets/img`
 
-var isDev = false
+let isDev = false
 
 function onError(err) {
   gutil.log(String(err))
@@ -53,13 +53,14 @@ gulp.task("stylus", () => {
 })
 
 gulp.task("svg", () => {
-  const rebuildSvg = () => (
-    gutil.log("Rebuild svg..."),
-    gulp.src(SVG_SRC)
+  const rebuildSvg = () => {
+    gutil.log("Rebuild svg...")
+
+    return gulp.src(SVG_SRC)
       .pipe(plumber(onError))
       .pipe(svgmin())
       .pipe(gulp.dest(SVG_DEST))
-  )
+  }
 
   rebuildSvg()
 

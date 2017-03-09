@@ -49,6 +49,7 @@
     "no-trailing-spaces": ["error"],
     "no-inner-declarations": 0,
     "no-class-assign": 0,
+    "no-unsafe-finally": ["error"],
     "yield-star-spacing": ["error", "after"],
     "object-curly-spacing": ["error", "never"],
     "array-bracket-spacing": ["error", "never"],

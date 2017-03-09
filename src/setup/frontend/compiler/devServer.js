@@ -22,14 +22,14 @@ const koa = new Koa()
  * @return Promise
  */
 function wrapExpressMiddleware(callee, req, res) {
-  const {end} = res
+  const end = res.end
 
   return new Promise((resolve, reject) => {
     // Mock an Express `next` callback
     const next = err => err == null ? resolve(true) : reject(err)
 
     res.end = function(...args) {
-      end.apply(this, ...args)
+      end.apply(this, args)
 
       resolve(false) // Resolve `false` after `res.end` call
     }
@@ -56,7 +56,7 @@ function devMiddleware(compiler, config = {}) {
       },
 
       setHeader(...args) {
-        ctx.set.apply(ctx, ...args)
+        ctx.set(...args)
       }
     })
 
