@@ -11,10 +11,18 @@ const normalizeRequire = val => (
   "__esModule" in val && val.default ? val.default : val
 )
 
-const setResolvers = type => function mapResolvers(obj) {
+/**
+ * Add resolvers to given type of app schema
+ *
+ * @param parasprite.Type type – one of schema root type or GraphQLObjectType
+ *
+ * @return function
+ */
+function setResolvers(type, obj) {
   let res = null
 
   const makeResolverFromFn = name => (...args) => {
+    // Reserved for the future parasprite releases. Do not use it now.
     if (isPlainObject(args[0])) {
       return type.resolve({
         ...args[0], name
@@ -24,8 +32,8 @@ const setResolvers = type => function mapResolvers(obj) {
     return type.resolve(name, ...args)
   }
 
-  for (const [name, config] of objectIterator.entries(obj)) {
-    const fn = normalizeRequire(config)
+  for (const [name, resolver] of objectIterator.entries(obj)) {
+    const fn = normalizeRequire(resolver)
 
     res = fn(makeResolverFromFn(name)).end()
 
@@ -48,12 +56,12 @@ function makeSchema() {
 
   // Add query resolvers if their exists
   if (resolvers.query) {
-    schema = setResolvers(schema.query("Query"))(resolvers.query)
+    schema = setResolvers(schema.query("Query"), resolvers.query)
   }
 
   // Add mutation resolvers if their exists
   if (resolvers.mutation) {
-    schema = setResolvers(schema.mutation("Mutation"))(resolvers.query)
+    schema = setResolvers(schema.mutation("Mutation"), resolvers.query)
   }
 
   return schema.end()
