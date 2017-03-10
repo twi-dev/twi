@@ -1,42 +1,62 @@
-import Schema from "parasprite"
+import Schema, {Type} from "parasprite"
+
 import requireHelper from "require-dir"
+import isPlainObject from "lodash/isPlainObject"
+
 import objectIterator from "server/core/helper/iterator/objectIterator"
 
-const GRAPHQL_ROOT = `${process.cwd()}/server/graphql/resolve`
+const SCHEMA_ROOT = `${process.cwd()}/server/graphql/schema`
 
 const normalizeRequire = val => (
   "__esModule" in val && val.default ? val.default : val
 )
 
-const mapQueries = Type => (config, name) => {
-  console.log(name)
+const setResolvers = type => function mapResolvers(obj) {
+  let res = null
 
-  return config
-}
+  const makeResolverFromFn = name => (...args) => {
+    if (isPlainObject(args[0])) {
+      return type.resolve({
+        ...args[0], name
+      })
+    }
 
-const setResolvers = Type => function mapResolvers(obj, cb, ctx = null) {
-  for (const [name, config] of objectIterator.entries(obj)) {
-    console.log(normalizeRequire(config).toString())
-    // cb(null, name, obj)
+    return type.resolve(name, ...args)
   }
 
-  return Type.end()
+  for (const [name, config] of objectIterator.entries(obj)) {
+    const fn = normalizeRequire(config)
+
+    res = fn(makeResolverFromFn(name)).end()
+
+    if (!(res instanceof Type)) {
+      throw new ReferenceError(
+        `Inllegal .end() invocation in ${name} resolver module.`
+      )
+    }
+  }
+
+  return res.end()
 }
 
 function makeSchema() {
-  const resolvers = requireHelper(GRAPHQL_ROOT, {
+  const resolvers = requireHelper(SCHEMA_ROOT, {
     recurse: true
   })
 
-  console.log(resolvers)
-
   let schema = Schema()
 
-  schema = setResolvers(schema.query("Query"))(resolvers.query)
+  // Add query resolvers if their exists
+  if (resolvers.query) {
+    schema = setResolvers(schema.query("Query"))(resolvers.query)
+  }
 
-  console.log(schema)
+  // Add mutation resolvers if their exists
+  if (resolvers.mutation) {
+    schema = setResolvers(schema.mutation("Mutation"))(resolvers.query)
+  }
 
-  return schema
+  return schema.end()
 }
 
 export default makeSchema()

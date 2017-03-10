@@ -7,21 +7,7 @@ import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
 import multipart from "server/core/middleware/multipart"
 
-import "server/core/base/graphql"
-
-// tmp code start
-import Schema from "parasprite"
-
-import {GraphQLString as TString} from "graphql"
-
-const schema = Schema()
-  .query("Query", "Some random schema")
-    .resolve("greet", TString, (_, {name}) => `Hello, ${name}!`)
-      .arg("name", TString)
-    .end()
-  .end()
-.end()
-// tmp code end
+import schema from "server/core/base/graphql"
 
 const processFiles = file => file
 
