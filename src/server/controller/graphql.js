@@ -7,11 +7,13 @@ import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
 import multipart from "server/core/middleware/multipart"
 
+import "server/core/base/graphql"
+
+// tmp code start
 import Schema from "parasprite"
 
 import {GraphQLString as TString} from "graphql"
 
-// Tmp schema
 const schema = Schema()
   .query("Query", "Some random schema")
     .resolve("greet", TString, (_, {name}) => `Hello, ${name}!`)
@@ -19,8 +21,7 @@ const schema = Schema()
     .end()
   .end()
 .end()
-
-// console.log(schema)
+// tmp code end
 
 const processFiles = file => file
 
@@ -42,7 +43,14 @@ r.get("/", actionGraphiQL)
 r.all("/", multipart({processFiles}), actionGraphQL)
 
 // Noop Ctor for GraphQL routes
-function GraphQLController() {}
+function GraphQLController() {
+  // Emulate an error on illegal constructor invocation.
+  if (!(this instanceof GraphQLController)) {
+    throw new ReferenceError(
+      "Class constructors cannot be invoked without 'new'"
+    )
+  }
+}
 
 GraphQLController.prototype.router = r
 
