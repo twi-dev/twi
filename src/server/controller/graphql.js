@@ -12,9 +12,9 @@ import schema from "server/core/base/graphql"
 
 /**
  * A function that transforms a file ReadableStream object
- *   to the File input type compatibility format
+ *   to the TFile input type compatibility format
  *
- * @see: server/graphql/input/File
+ * @see: server/graphql/input/file/TInFile
  *
  * @param stream.ReadableStream file
  *
