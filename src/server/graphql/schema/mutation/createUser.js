@@ -13,9 +13,11 @@ async function createUser(_, {login, email, password}) {
   }
 }
 
-export default resolve => (
+const setResover = resolve => (
   resolve(TUser, createUser, "Create a new user")
     .arg("login", TString, true)
     .arg("email", TString, true)
     .arg("password", TString, true)
 )
+
+export default setResover
