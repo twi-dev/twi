@@ -1,7 +1,8 @@
 import {
   DefinePlugin,
   HotModuleReplacementPlugin,
-  LoaderOptionsPlugin
+  LoaderOptionsPlugin,
+  CommonChunksPlugin
 } from "webpack"
 
 import AssetsPlugin from "assets-webpack-plugin"
@@ -81,6 +82,14 @@ function getEntry(isDev, port) {
   const entry = {
     main: [
       `${ROOT}/frontend/core/base/main.js`
+    ],
+    mobx: [
+      "mobx",
+      "mobx-react"
+    ],
+    react: [
+      "react",
+      "react-router"
     ]
   }
 

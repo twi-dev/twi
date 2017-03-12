@@ -1,4 +1,4 @@
-import {prompt as _prompt} from "inquirer"
+import inquirer from "inquirer"
 import log from "server/core/log"
 
 import isString from "lodash/isString"
@@ -26,7 +26,7 @@ const normalizeQuestions = obj => mapObject(obj, question => {
 async function tryPrompt(question) {
   while (true) {
     try {
-      return await _prompt(isArray(question) ? question : [question])
+      return await inquirer.prompt(isArray(question) ? question : [question])
     } catch (err) {
       if (!isString(err)) {
         throw err

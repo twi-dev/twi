@@ -2,7 +2,7 @@ import {spawn} from "child_process"
 
 const ora = require("ora")()
 
-const spawnServer = (stackTrace = false) => new Promise((resolve, reject) => {
+const spawnServer = stackTrace => new Promise((resolve, reject) => {
   function onStdout(message) {
     ora.stop()
     console.log(message)
@@ -11,7 +11,7 @@ const spawnServer = (stackTrace = false) => new Promise((resolve, reject) => {
   }
 
   function onStderr(message) {
-    ora.text(String(message))
+    ora.text = String(message)
     ora.fail()
   }
 

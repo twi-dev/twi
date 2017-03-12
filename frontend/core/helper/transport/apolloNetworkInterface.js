@@ -5,26 +5,16 @@ import {
   HTTPFetchNetworkInterface
 } from "apollo-client/transport/networkInterface"
 
-import toFormData from "frontend/helper/util/toFormData"
+import toFormData from "frontend/core/helper/util/toFormData"
 
 class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
-  fetchFromRemoteEndpoint(...args) {
-    const [{request, options}] = args
-
-    if (
-      options.headers &&
-      // FIXME: Remoe this code or find more universal way
-      options.headers["Content-Type"] !== "multipart/from-data"
-    ) {
-      return super.fetchFromRemoteEndpoint(...args)
-    }
-
+  fetchFromRemoteEndpoint({request, options}) {
     // Transform variables obj to FormData
-    const fd = toFormData(request.variables, "variables")
+    const body = toFormData(request.variables, "variables")
 
     // Add specific GraphQL fields
-    fd.append("operationName", request.operationName)
-    fd.append("query", printAST(request.query))
+    body.append("operationName", request.operationName)
+    body.append("query", printAST(request.query))
 
     return fetch(this._uri, {
       ...this._opts,
@@ -34,7 +24,7 @@ class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
         Accept: "*/*",
         ...options.headers,
       },
-      body: fd
+      body
     })
   }
 }
