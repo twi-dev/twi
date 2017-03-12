@@ -10,7 +10,7 @@ test("Should be a function", t => {
   t.true(isFunction(checkCtorCall))
 })
 
-test("Should throw a TypeError on illegal ctor invokation", t => {
+test("Should throw a TypeError on illegal ctor invoсation", t => {
   t.plan(1)
 
   function NoopCtor() {
