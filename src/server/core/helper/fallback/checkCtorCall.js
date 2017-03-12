@@ -5,7 +5,7 @@
  * @param Function Ctor – class to check
  */
 function checkCtorCall(Ctor, ctx) {
-  const name = Ctor.constructor.name || Ctor.name
+  const name = Ctor.name
 
   if (!(ctx instanceof Ctor)) {
     throw new TypeError(

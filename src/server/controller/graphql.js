@@ -24,16 +24,14 @@ const processFiles = ({originalName, path, mime, enc}) => ({
   originalName, path, mime, enc
 })
 
-// Graphql endpoint name for GraphiQL
+// GraphQL endpoint name for GraphiQL (based on current module name)
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
-// Graphiql handler. Will rendered only in "development" env
+// GraphiQL IDE handler. Will rendered only in "development" env
 const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
 
 // GraphQL queries/mutations/subscriptions handler
-const actionGraphQL = graphqlKoa(async context => ({
-  schema, context
-}))
+const actionGraphQL = graphqlKoa(async context => ({schema, context}))
 
 const r = new Router()
 
@@ -46,6 +44,7 @@ function GraphQLController() {
   checkCtorCall(GraphQLController, this)
 }
 
+// Add GraphQL endpoints to GraphQLController
 GraphQLController.prototype.router = r
 
 export default GraphQLController
