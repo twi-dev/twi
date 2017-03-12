@@ -6,8 +6,8 @@ const stylus = isDev => ({
   test: /\.styl$/,
   exclude: /node_modules/,
   loader: extract({
-    fallbackLoader: "style-loader",
-    loader: [
+    fallback: "style-loader",
+    use: [
       {
         loader: "css-loader",
         query: {
