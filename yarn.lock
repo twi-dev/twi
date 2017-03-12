@@ -6174,7 +6174,7 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parasprite@^0.1.2:
+parasprite@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.1.2.tgz#8c741173d9871101c430aeec82c0eec8110d71eb"
   dependencies:
@@ -7859,7 +7859,7 @@ sshpk@^1.7.0:
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
 
-stack-utils@^1.0.0:
+stack-utils@1.0.0, stack-utils@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.0.tgz#2392cd8ddbd222492ed6c047960f7414b46c0f83"
 

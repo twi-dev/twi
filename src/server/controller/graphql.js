@@ -7,9 +7,22 @@ import {isDev} from "server/core/helper/util/configure"
 import noop from "server/core/middleware/noop"
 import multipart from "server/core/middleware/multipart"
 
+import checkCtorCall from "server/core/helper/fallback/checkCtorCall"
 import schema from "server/core/base/graphql"
 
-const processFiles = file => file
+/**
+ * A function that transforms a file ReadableStream object
+ *   to the File input type compatibility format
+ *
+ * @see: server/graphql/input/File
+ *
+ * @param stream.ReadableStream file
+ *
+ * @param Object
+ */
+const processFiles = ({originalName, path, mime, enc}) => ({
+  originalName, path, mime, enc
+})
 
 // Graphql endpoint name for GraphiQL
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
@@ -30,12 +43,7 @@ r.all("/", multipart({processFiles}), actionGraphQL)
 
 // Noop Ctor for GraphQL routes
 function GraphQLController() {
-  // Emulate an error on illegal constructor invocation.
-  if (!(this instanceof GraphQLController)) {
-    throw new ReferenceError(
-      "Class constructors cannot be invoked without 'new'"
-    )
-  }
+  checkCtorCall(GraphQLController, this)
 }
 
 GraphQLController.prototype.router = r
