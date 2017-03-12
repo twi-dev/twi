@@ -5199,10 +5199,6 @@ lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
-lodash.isfunction@3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.8.tgz#4db709fc81bc4a8fd7127a458a5346c5cdce2c6b"
-
 lodash.isplainobject@4.0.6, lodash.isplainobject@^4.0.4, lodash.isplainobject@^4.0.6, lodash.isplainobject@~4.0.4:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
@@ -6174,12 +6170,11 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parasprite@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.1.2.tgz#8c741173d9871101c430aeec82c0eec8110d71eb"
+parasprite@0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.1.3.tgz#032e2756c68a8f6159aa967b8f7a5c1e5d659694"
   dependencies:
     lodash.isempty "4.4.0"
-    lodash.isfunction "3.0.8"
 
 parse-asn1@^5.0.0:
   version "5.0.0"

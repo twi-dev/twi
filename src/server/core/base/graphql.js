@@ -61,7 +61,7 @@ function makeSchema() {
 
   // Add mutation resolvers if their exists
   if (resolvers.mutation) {
-    schema = setResolvers(schema.mutation("Mutation"), resolvers.query)
+    schema = setResolvers(schema.mutation("Mutation"), resolvers.mutation)
   }
 
   return schema.end()

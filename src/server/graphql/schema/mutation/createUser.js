@@ -1,0 +1,21 @@
+import {GraphQLString as TString} from "graphql"
+
+import TUser from "server/graphql/type/user/TUser"
+
+async function createUser(_, {login, email, password}) {
+  return {
+    userId: "foo",
+    login: "OctetStream",
+    role: {
+      name: "root",
+      code: 0
+    }
+  }
+}
+
+export default resolve => (
+  resolve(TUser, createUser, "Create a new user")
+    .arg("login", TString, true)
+    .arg("email", TString, true)
+    .arg("password", TString, true)
+)
