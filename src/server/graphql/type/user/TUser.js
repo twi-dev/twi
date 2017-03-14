@@ -11,6 +11,7 @@ const TUser = Type("TUser", "Represends a full user information")
   .field("login", TString, true, "User login that represends his/her address")
   .field("email", TString, true, "Represends a main email address")
   .field("gender", TString)
+  .field("registeredAt", TString, "User registration data")
   .field("role", TRole, true, "Represends information about role")
 .end()
 
