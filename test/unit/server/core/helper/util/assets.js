@@ -16,13 +16,13 @@ const assets = pq(`${ROOT}/server/core/helper/util/assets`, {
   }
 }).default
 
-test("Should be a function", async t => {
+test("Should be a function", t => {
   t.plan(1)
 
   t.true(isFunction(assets))
 })
 
-test("Should return a Promise", async t => {
+test("Should return a Promise", t => {
   t.plan(1)
 
   t.true(assets() instanceof Promise)

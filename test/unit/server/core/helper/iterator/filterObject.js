@@ -4,13 +4,13 @@ import isFunction from "lodash/isFunction"
 
 import filter from "server/core/helper/iterator/filterObject"
 
-test("Should should be a function", async t => {
+test("Should should be a function", t => {
   t.plan(1)
 
   t.true(isFunction(filter))
 })
 
-test("Should return expected object due to filter predicate", async t => {
+test("Should return expected object due to filter predicate", t => {
   t.plan(1)
 
   const obj = {

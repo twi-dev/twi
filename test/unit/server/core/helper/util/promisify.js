@@ -5,7 +5,7 @@ import isFunction from "lodash/isFunction"
 
 import pfy from "server/core/helper/util/promisify"
 
-test.beforeEach(async t => {
+test.beforeEach(t => {
   const noop = reject => function noop(val, cb) {
     isFunction(val) && ([cb, val] = [val, null])
 
@@ -26,13 +26,13 @@ test.beforeEach(async t => {
   }
 })
 
-test("Should be a function", async t => {
+test("Should be a function", t => {
   t.plan(1)
 
   t.true(isFunction(pfy))
 })
 
-test("Should return a promisify function", async t => {
+test("Should return a promisify function", t => {
   t.plan(2)
 
   const noop = pfy(t.context.noop())
@@ -69,7 +69,7 @@ test("Should resolve given value from a function", async t => {
   t.is(res, val)
 })
 
-test("Should thow an error when \"reject\" argument is truthy.", async t => {
+test("Should thow an error when \"reject\" argument is truthy.", t => {
   t.plan(1)
 
   const noop = pfy(t.context.noop(true))

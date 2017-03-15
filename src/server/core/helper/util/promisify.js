@@ -1,17 +1,17 @@
 /**
  * Promisify a callback-style function
  *
- * @param function callee – target callback-style function
+ * @param function target – a callback-style function
  *
  * @return function
  */
-const promisify = callee => function(...args) {
+const promisify = target => function(...args) {
   const ctx = this
 
   return new Promise((resolve, reject) => {
-    const fulfill = (err, res) => (err ? reject(err) : resolve(res))
+    const fulfill = (err, res) => err ? reject(err) : resolve(res)
 
-    callee.apply(ctx, [...args, fulfill])
+    target.apply(ctx, [...args, fulfill])
   })
 }
 
