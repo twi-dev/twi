@@ -11,7 +11,7 @@ const mockAssets = {
 }
 
 const assets = pq(`${ROOT}/server/core/helper/util/assets`, {
-  ["promise-fs"]: {
+  "promise-fs": {
     readFile: () => JSON.stringify(mockAssets)
   }
 }).default
@@ -49,9 +49,9 @@ test(
 
     const getAssets = await assets()
 
-    const tryCatch = () => getAssets()
+    const trap = () => getAssets()
 
-    t.throws(tryCatch, "Asset type cannot be empty.")
+    t.throws(trap, "Asset type cannot be empty.")
   }
 )
 
@@ -60,7 +60,7 @@ test("Should throw a TypeError when asset type is not a string", async t => {
 
   const getAssets = await assets()
 
-  const tryCatch = () => getAssets(451)
+  const trap = () => getAssets(451)
 
-  t.throws(tryCatch, "Asset type should be a string.")
+  t.throws(trap, "Asset type should be a string.")
 })

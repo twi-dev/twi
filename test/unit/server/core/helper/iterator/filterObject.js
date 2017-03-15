@@ -10,6 +10,19 @@ test("Should should be a function", async t => {
   t.true(isFunction(filter))
 })
 
-// test("Should return expected object due to filter predicate", async t => {
-//   const predicate = (val, key, obj) => {}
-// })
+test("Should return expected object due to filter predicate", async t => {
+  t.plan(1)
+
+  const obj = {
+    foo: "Foo",
+    bar: "Bar",
+    baz: "Baz"
+  }
+
+  const predicate = val => val.toLowerCase() !== "bar"
+
+  t.deepEqual(filter(obj, predicate), {
+    foo: "Foo",
+    baz: "Baz"
+  })
+})

@@ -17,7 +17,7 @@ test("Should throw a TypeError on illegal ctor invoсation", t => {
     checkCtorCall(NoopCtor, this)
   }
 
-  const callee = () => NoopCtor()
+  const trap = () => NoopCtor()
 
-  t.throws(callee, "Class constructor NoopCtor cannot be invoked without 'new'")
+  t.throws(trap, "Class constructor NoopCtor cannot be invoked without 'new'")
 })

@@ -27,9 +27,9 @@ function mockReadYamlSync(path) {
     return defaultConfig
   } else if (path.endsWith("user")) {
     return userConfig
-  } else {
-    throw new Error(`Can't mocking an unexpected path: ${path}`)
   }
+
+  throw new Error(`Can't mocking an unexpected path: ${path}`)
 }
 
 test.beforeEach(t => {
