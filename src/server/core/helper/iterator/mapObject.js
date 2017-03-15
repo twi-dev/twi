@@ -17,4 +17,4 @@ function mapObject(obj, cb, ctx = null) {
   return res
 }
 
-exports.default = mapObject
+export default mapObject

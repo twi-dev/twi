@@ -71,13 +71,15 @@ const runCompiler = isDev => new Promise((resolve, reject) => {
  *
  * @return Promise
  */
-function makeBackend(cb) {
+const makeBackend = () => new Promise((resolve, reject) => {
+  const fulfill = err => err ? reject(err) : resolve()
+
   ora.color = "cyan"
   ora.text = "Making backend app..."
   ora.start()
 
-  exec(`${ROOT}/bin/cake make`, cb)
-}
+  exec(`${ROOT}/bin/cake make`, fulfill)
+})
 
 /**
  * Make frontend app
@@ -97,26 +99,18 @@ function makeFrontend() {
  *
  * @param component
  */
-function make(component, cmd) {
+function make(component) {
   setEnv(false) // set NODE_ENV to production
 
-  const onRejected = err => onError(err, cmd.parent.T)
+  // const onRejected = err => onError(err, cmd.parent.T)
 
-  const fulfill = onlyServer => function(err) {
-    if (err) {
-      return onRejected(err)
-    }
-
-    onlyServer ? onEnd() : makeFrontend().then(onEnd, onRejected)
-  }
-
+  // Build specified component
   switch (component) {
-    case "backend":
-      return makeBackend(fulfill(true))
-    case "frontend":
-      return makeFrontend().then(onEnd, onError)
-    default:
-      return makeBackend(fulfill(false))
+    case "backend": return makeBackend()
+
+    case "frontend": return makeFrontend()
+
+    default: return makeBackend().then(makeFrontend)
   }
 }
 
@@ -150,32 +144,43 @@ function dev(stackTrace) {
   app(true).then(onFulfilled, onRejected)
 }
 
-function migrate(cmd) {
-  setEnv(false)
+// Not implemented
+// function migrate(cmd) {
+//   setEnv(false)
 
-  const migrate = require(`${ROOT}/setup/backend/migrate`).default
+//   const migrate = require(`${ROOT}/setup/server/migrate`).default
 
-  let promise
-  if (cmd.D) {
-    promise = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R))
-  } else {
-    promise = migrate(cmd)
-  }
+//   let promise
+//   if (cmd.D) {
+//     promise = migrate.importData(cmd.E).then(() => migrate.createSu(cmd.R))
+//   } else {
+//     promise = migrate(cmd)
+//   }
 
-  promise.then(onEnd, onError)
-}
+//   promise.then(onEnd, onError)
+// }
 
+/**
+ * Execute installation process.
+ *
+ * @param commander.Command
+ */
 function setup(cmd) {
   setEnv(false)
 
   function onFulfilled() {
     ora.stop()
 
-    return require(`${ROOT}/setup/backend/setup`).default(cmd)
+    return require(`${ROOT}/setup/server/installer/app`).default(cmd)
   }
 
-  make(undefined, cmd)
-    .then(onFulfilled).then(onEnd, onError)
+  const onRejected = err => onError(err, cmd.parent.T)
+
+  if (cmd.ignoreFirstStage) {
+    return onFulfilled().then(onEnd, onRejected)
+  }
+
+  make(undefined).then(onFulfilled).then(onEnd, onRejected)
 }
 
 function run(stackTrace) {
@@ -199,14 +204,16 @@ function run(stackTrace) {
 }
 
 // Build Twi fron the source
-const actionMake = (component, cmd) => make(component, cmd)
+const actionMake = (component, cmd) => (
+  make(component, cmd).then(onEnd, err => onError(err, cmd.parent.T))
+)
 
 // Run Webpack compiler for development (with devServer)
 // Important note: do not use this command with `twi run`
 const actionWatch = cmd => watch(cmd.parent.T)
 
 // Run only Twi miration (without full setup)
-const actionMigrate = cmd => migrate(cmd)
+// const actionMigrate = cmd => migrate(cmd)
 
 // Run Twi setup scripts
 const actionSetup = cmd => setup(cmd)
@@ -237,22 +244,23 @@ commander
   )
   .option("--not-erase, -e", "run installer without data erasing")
   .option("--configure, -c", "configure app while installation using console")
+  .option("--ignore-first-stage", "ingore app making stage")
   .action(actionSetup)
 
-commander
-  .command("migrate")
-  .alias("m")
-  .description("run only migrations script")
-  .option(
-    "--skip-register, -s",
-    "skip owner account registration (use it ONLY for CI)"
-  )
-  .option(
-    "--register, -r", "create owner account while installation using console"
-  )
-  .option("--not-erase, -e", "run migrate without data erasing")
-  .option("--data-only, -d", "run only data imports")
-  .action(actionMigrate)
+// commander
+//   .command("migrate")
+//   .alias("m")
+//   .description("run only migrations script")
+//   .option(
+//     "--skip-register, -s",
+//     "skip owner account registration (use it ONLY for CI)"
+//   )
+//   .option(
+//     "--register, -r", "create owner account while installation using console"
+//   )
+//   .option("--not-erase, -e", "run migrate without data erasing")
+//   .option("--data-only, -d", "run only data imports")
+//   .action(actionMigrate)
 
 commander
   .command("make [component]")

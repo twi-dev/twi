@@ -3,6 +3,7 @@ import log from "server/core/log"
 
 import isString from "lodash/isString"
 import isPlainObject from "lodash/isPlainObject"
+
 import mapObject from "server/core/helper/iterator/mapObject"
 import objectIterator from "server/core/helper/iterator/objectIterator"
 
@@ -41,7 +42,7 @@ async function processQuestions(questions) {
   const res = {}
 
   for (const [key, question] of objectIterator.entries(questions)) {
-    if (isPlainObject()) {
+    if (isPlainObject(question)) {
       res[key] = await processQuestions(question)
       continue
     }
@@ -49,6 +50,8 @@ async function processQuestions(questions) {
     question[0].name = key
     res[key] = (await tryPrompt(question))[key]
   }
+
+  return res
 }
 
 const prompt = async obj => await processQuestions(normalizeQuestions(obj))
