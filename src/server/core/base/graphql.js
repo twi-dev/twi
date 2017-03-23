@@ -11,6 +11,16 @@ const normalizeRequire = val => (
   "__esModule" in val && val.default ? val.default : val
 )
 
+const makeResolverFromConfig = (type, name, config) => {
+  type = type.resolve({...config.resolve, name})
+
+  for (const [name, arg] of objectIterator.entries(config.args)) {
+    type.arg(name, arg.type, arg.required)
+  }
+
+  return type
+}
+
 /**
  * Add resolvers to given type of app schema
  *
@@ -19,8 +29,6 @@ const normalizeRequire = val => (
  * @return function
  */
 function setResolvers(type, obj) {
-  let res = null
-
   const makeResolverFromFn = name => (...args) => {
     // Reserved for the future parasprite releases. Do not use it now.
     if (isPlainObject(args[0])) {
@@ -33,18 +41,24 @@ function setResolvers(type, obj) {
   }
 
   for (const [name, resolver] of objectIterator.entries(obj)) {
-    const fn = normalizeRequire(resolver)
+    if (isPlainObject(resolver.args)) {
+      type = makeResolverFromConfig(type, name, resolver)
+    } else {
+      const fn = normalizeRequire(resolver)
 
-    res = fn(makeResolverFromFn(name)).end()
+      type = fn(makeResolverFromFn(name))
+    }
 
-    if (!(res instanceof Type)) {
+    type = type.end()
+
+    if (!(type instanceof Type)) {
       throw new ReferenceError(
         `Inllegal .end() invocation in ${name} resolver module.`
       )
     }
   }
 
-  return res.end()
+  return type.end()
 }
 
 function makeSchema() {
