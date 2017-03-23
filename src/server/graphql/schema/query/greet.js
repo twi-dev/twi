@@ -1,11 +1,13 @@
 import {GraphQLString as TString} from "graphql"
+import {toRequired} from "parasprite"
 
 const greet = (_, {name}) => `Hello, ${name}!`
 
 const setResover = resolve => (
   resolve(
-    TString, greet, true,
-    "Just an demonstration resolver that returns \"Hello %username%\" message"
+    toRequired(TString, true), // Needs to fix that thing in parasprite API
+    "Just an demonstration resolver that returns \"Hello %username%\" message",
+    greet
   )
     .arg("name", TString, true)
 )

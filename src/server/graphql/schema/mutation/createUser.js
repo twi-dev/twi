@@ -14,7 +14,7 @@ async function createUser(_, {login, email, password}) {
 }
 
 const setResover = resolve => (
-  resolve(TUser, createUser, "Create a new user")
+  resolve(TUser, "Create a new user", createUser)
     .arg("login", TString, true)
     .arg("email", TString, true)
     .arg("password", TString, true)

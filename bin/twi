@@ -102,8 +102,6 @@ function makeFrontend() {
 function make(component) {
   setEnv(false) // set NODE_ENV to production
 
-  // const onRejected = err => onError(err, cmd.parent.T)
-
   // Build specified component
   switch (component) {
     case "backend": return makeBackend()
