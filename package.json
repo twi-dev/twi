@@ -88,7 +88,7 @@
     "node-yaml": "3.0.3",
     "nodemailer": "3.1.5",
     "ora": "1.1.0",
-    "parasprite": "0.2.0",
+    "parasprite": "0.3.1",
     "passport-local": "1.0.0",
     "path-to-regexp": "1.7.0",
     "pify": "2.3.0",

@@ -1,5 +1,4 @@
 import Schema, {Type} from "parasprite"
-
 import requireHelper from "require-dir"
 import isPlainObject from "lodash/isPlainObject"
 
@@ -7,58 +6,52 @@ import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const SCHEMA_ROOT = `${process.cwd()}/server/graphql/schema`
 
-const normalizeRequire = val => (
-  "__esModule" in val && val.default ? val.default : val
-)
+function setResolver(t, name, config) {
+  const {resolve, args} = config
 
-const makeResolverFromConfig = (type, name, config) => {
-  type = type.resolve({...config.resolve, name})
-
-  for (const [name, arg] of objectIterator.entries(config.args)) {
-    type.arg(name, arg.type, arg.required)
+  if (resolve && !isPlainObject(resolve)) {
+    throw new TypeError(
+      "Resolvers are allowed only as configuration object. " +
+      `Check out the "${name}" resolve declaration.`
+    )
   }
 
-  return type
+  t = t.resolve({...resolve, name})
+
+  for (const [key, arg] of objectIterator.entries(args)) {
+    if (!isPlainObject(arg)) {
+      throw new TypeError(
+        "Arguments are allowed only as configuration object. " +
+        `Check out the "${key}" argument declaration for "${name}" resolver.`
+      )
+    }
+
+    t.arg(key, arg.type, arg.required)
+  }
+
+  return t.end()
 }
 
 /**
  * Add resolvers to given type of app schema
  *
- * @param parasprite.Type type – one of schema root type or GraphQLObjectType
+ * @param parasprite.Type t – one of schema root type or GraphQLObjectType
  *
  * @return function
  */
-function setResolvers(type, obj) {
-  const makeResolverFromFn = name => (...args) => {
-    // Reserved for the future parasprite releases. Do not use it now.
-    if (isPlainObject(args[0])) {
-      return type.resolve({
-        ...args[0], name
-      })
-    }
-
-    return type.resolve(name, ...args)
-  }
-
+function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
-    if (isPlainObject(resolver.args)) {
-      type = makeResolverFromConfig(type, name, resolver)
-    } else {
-      const fn = normalizeRequire(resolver)
+    t = setResolver(t, name, resolver)
 
-      type = fn(makeResolverFromFn(name))
-    }
-
-    type = type.end()
-
-    if (!(type instanceof Type)) {
+    if (!(t instanceof Type)) {
       throw new ReferenceError(
-        `Inllegal .end() invocation in ${name} resolver module.`
+        `Inllegal .end() invocation in "${name}" resolver module. ` +
+        "Resolver creator should return an instance of parasprite.Type."
       )
     }
   }
 
-  return type.end()
+  return t.end()
 }
 
 function makeSchema() {

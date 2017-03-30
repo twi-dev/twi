@@ -1,3 +1,5 @@
+import isEmpty from "lodash/isEmpty"
+
 /**
  * Simplest object iterator which I can imagine :D
  *
@@ -7,6 +9,10 @@
  * @yields any|array
  */
 function* objectIterator(obj, entries = false) {
+  if (isEmpty(obj)) {
+    return
+  }
+
   const keys = Object.keys(obj)
 
   for (const key of keys) {

@@ -5862,9 +5862,9 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parasprite@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.2.0.tgz#68c2e8ecb88f542d60d00fcec84a30844f1d22d4"
+parasprite@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.3.1.tgz#26271874d7ceef86631762e4a24dac798b496c1a"
   dependencies:
     lodash.isplainobject "^4.0.6"
 

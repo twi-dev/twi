@@ -1,5 +1,11 @@
+import isEmpty from "lodash/isEmpty"
+
 // Experemintal
 async function* asyncObjectIterator(obj, entries = false) {
+  if (isEmpty(obj)) {
+    return
+  }
+
   const keys = Object.keys(obj)
 
   for (const key of keys) {

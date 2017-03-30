@@ -2,7 +2,6 @@ const User = ({string, number, date}) => ({
   userId: string(),
   login: string().required(), // Should be also unique
   email: string().required(), // Should be also unique
-  gender: number().integer().default(null),
   role: (
     number()
       .integer()
