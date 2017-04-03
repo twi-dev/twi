@@ -6,6 +6,15 @@ import objectIterator from "server/core/helper/iterator/objectIterator"
 
 const SCHEMA_ROOT = `${process.cwd()}/server/graphql/schema`
 
+/**
+ * Set resolver from config
+ *
+ * @param parasprite.Type t – one of schema root type or GraphQLObjectType
+ * @param string name
+ * @param object config
+ *
+ * @return parasprite.Type
+ */
 function setResolver(t, name, config) {
   const {resolve, args} = config
 
@@ -26,7 +35,7 @@ function setResolver(t, name, config) {
       )
     }
 
-    t.arg(key, arg.type, arg.required)
+    t.arg(key, arg.type, arg.required) // set argument to resolver
   }
 
   return t.end()
@@ -54,6 +63,9 @@ function setResolvers(t, obj) {
   return t.end()
 }
 
+/**
+ * Describe GraphQL schema using parasprite chainable API
+ */
 function makeSchema() {
   const resolvers = requireHelper(SCHEMA_ROOT, {
     recurse: true
@@ -61,12 +73,12 @@ function makeSchema() {
 
   let schema = Schema()
 
-  // Add query resolvers if their exists
+  // Add query resolvers if they exists
   if (resolvers.query) {
     schema = setResolvers(schema.query("Query"), resolvers.query)
   }
 
-  // Add mutation resolvers if their exists
+  // Add mutation resolvers if they exists
   if (resolvers.mutation) {
     schema = setResolvers(schema.mutation("Mutation"), resolvers.mutation)
   }
