@@ -1,8 +1,7 @@
 import {
   DefinePlugin,
   HotModuleReplacementPlugin,
-  LoaderOptionsPlugin,
-  CommonChunksPlugin
+  LoaderOptionsPlugin
 } from "webpack"
 
 import AssetsPlugin from "assets-webpack-plugin"
@@ -81,7 +80,7 @@ function getPlugins(isDev) {
 function getEntry(isDev, port) {
   const entry = {
     main: [
-      `${ROOT}/frontend/core/base/main.js`
+      `${ROOT}/frontend/app/core/base/main.js`
     ],
     mobx: [
       "mobx",
@@ -123,7 +122,7 @@ function configure(isDev, port) {
 
   const resolve = {
     alias: {
-      frontend: `${ROOT}/frontend`,
+      // frontend: `${ROOT}/frontend`,
       mapObject: `${ROOT}/server/core/helper/iterator/mapObject`,
       objectIterator: `${ROOT}/server/core/helper/iterator/objectIterator`
     },
@@ -145,7 +144,7 @@ function configure(isDev, port) {
 
   const config = {
     devtool: isDev ? "eval-source-map" : "source-map",
-    performance: {hints: isDev ? false : "warning"},
+    performance: {hints: isDev === false && "warning"},
     module: {rules},
 
     plugins,

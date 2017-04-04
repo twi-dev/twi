@@ -30,7 +30,7 @@
     "g:w": "npm run gulp:watch",
     "make": "bin/twi make && npm run gulp:make",
     "m": "npm run make",
-    "watch": "twi watch --stack-trace",
+    "watch": "bin/twi watch --stack-trace",
     "w": "npm run watch",
     "dev": "nodemon -x bin/twi dev --stack-trace",
     "d": "npm run dev",
