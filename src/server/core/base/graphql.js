@@ -5,7 +5,7 @@ import isEmpty from "lodash/isEmpty"
 
 import objectIterator from "server/core/helper/iterator/objectIterator"
 
-const SCHEMA_ROOT = `${process.cwd()}/server/graphql/schema`
+const SCHEMA_ROOT = `${process.cwd()}/server/api/graphql/schema`
 
 /**
  * Set resolver from config

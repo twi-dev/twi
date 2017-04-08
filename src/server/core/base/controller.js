@@ -2,14 +2,15 @@ import Router from "koa-router"
 import rd from "require-dir"
 
 import isFunction from "lodash/isFunction"
+import isString from "lodash/isString"
+
+import getType from "server/core/helper/util/getType"
 import objectIterator from "server/core/helper/iterator/objectIterator"
 import {router} from "server/core/helper/decorator/controller"
 import {warn} from "server/core/log"
 
 import NotFoundException from "server/core/error/http/NotFound"
 import NotAllowedException from "server/core/error/http/NotAllowed"
-
-const CONTROLLERS_ROOT = `${process.cwd()}/server/controller`
 
 const r = new Router()
 
@@ -21,8 +22,14 @@ function actionNotAllowed({method, url}) {
   throw new NotAllowedException(`Method ${method} not allowed on route ${url}`)
 }
 
-function makeRoutes() {
-  const controllers = rd(CONTROLLERS_ROOT)
+function makeRoutes(path) {
+  if (!isString(path)) {
+    throw new TypeError(
+      `Path parameter should be a string, but given type is ${getType(path)}`
+    )
+  }
+
+  const controllers = rd(path)
 
   for (const [name, controller] of objectIterator.entries(controllers)) {
     if (!isFunction(controller.default)) {
@@ -41,4 +48,4 @@ function makeRoutes() {
   return r
 }
 
-export default makeRoutes()
+export default makeRoutes

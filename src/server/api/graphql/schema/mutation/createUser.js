@@ -1,6 +1,6 @@
 import {GraphQLString as TString} from "graphql"
 
-import TUser from "server/graphql/type/user/TUser"
+import TUser from "server/api/graphql/type/user/TUser"
 
 async function createUser(_, {login, email, password}) {
   return {
