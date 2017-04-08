@@ -1,6 +1,7 @@
-import Schema, {Type} from "parasprite"
+import Schema from "parasprite"
 import requireHelper from "require-dir"
 import isPlainObject from "lodash/isPlainObject"
+import isEmpty from "lodash/isEmpty"
 
 import objectIterator from "server/core/helper/iterator/objectIterator"
 
@@ -51,13 +52,6 @@ function setResolver(t, name, config) {
 function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
     t = setResolver(t, name, resolver)
-
-    if (!(t instanceof Type)) {
-      throw new ReferenceError(
-        `Inllegal .end() invocation in "${name}" resolver module. ` +
-        "Resolver creator should return an instance of parasprite.Type."
-      )
-    }
   }
 
   return t.end()
@@ -65,21 +59,28 @@ function setResolvers(t, obj) {
 
 /**
  * Describe GraphQL schema using parasprite chainable API
+ *
+ * @return graphql.GraphQLSchema
  */
 function makeSchema() {
   const resolvers = requireHelper(SCHEMA_ROOT, {
     recurse: true
   })
 
+  // Make parasprite.Schema instance to describe GraphQL schema for the app.
   let schema = Schema()
 
   // Add query resolvers if they exists
-  if (resolvers.query) {
-    schema = setResolvers(schema.query("Query"), resolvers.query)
+  if (isEmpty(resolvers.query)) {
+    throw new TypeError(
+      "GraphQL required an \"query\" document on schema."
+    )
   }
 
+  schema = setResolvers(schema.query("Query"), resolvers.query)
+
   // Add mutation resolvers if they exists
-  if (resolvers.mutation) {
+  if (!isEmpty(resolvers.mutation)) {
     schema = setResolvers(schema.mutation("Mutation"), resolvers.mutation)
   }
 

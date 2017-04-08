@@ -22,9 +22,13 @@ const ROOT = process.cwd()
 function mapRules(rules, ...args) {
   const res = []
 
-  for (const rule of objectIterator(rules)) {
+  for (const [name, rule] of objectIterator.entries(rules)) {
     if (isFunction(rule)) {
-      throw new TypeError("Rule module should return a function.")
+      throw new TypeError(
+        "Rule module should return a function. " +
+        `Check out an "exports" section at "${name}" module. ` +
+        "This module should export a function as default."
+      )
     }
 
     res.push(rule.default(...args))
