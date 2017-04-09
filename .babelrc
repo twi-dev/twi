@@ -5,13 +5,17 @@
   "plugins": [
     ["module-resolver", {
       "cwd": "./src",
+      "root": ["."],
       "alias": {
-        "test": "test",
+        "test": "./test",
+        "system": "./system",
         "server": "./server",
+        "static": "./server/static",
+        "api": "./server/api",
         "setup": "./setup",
         "model": "./model",
         "config": "./config",
-        "runtime": "./test/runtime",
+        "frontend": "./test/runtime",
         "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }

@@ -1,6 +1,7 @@
 import Koa from "koa"
 import cors from "kcors"
 import serve from "koa-static"
+import Server from "next/dist/server"
 
 import errorHandler from "server/core/middleware/errorHandler"
 import {static as _static} from "server/core/helper/util/configure"
@@ -12,7 +13,11 @@ const STATIC_ROOT = `${process.cwd()}/static`
 
 const koa = new Koa()
 
-view(koa) // Add Pug view renderer to koa context
+const server = new Server({dev: true, quiet: true})
+
+view(koa, server) // Add view renderer to koa context
+
+server.prepare().then(() => console.log("Compiled"))
 
 koa
   .use(errorHandler())

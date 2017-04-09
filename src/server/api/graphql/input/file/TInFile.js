@@ -1,5 +1,5 @@
 import {GraphQLString as TString} from "graphql"
-import {Input} from "parasprite"
+import Input from "parasprite/Input"
 
 const TInFile = Input(
   "TInFile", "Represends a file type for multipart resolvers"

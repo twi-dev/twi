@@ -228,6 +228,7 @@ commander
 
 commander
   .option("--stack-trace, -t", "show stack trace on errors")
+  .option("--env, -e [env]", "set specified environment for an application")
 
 commander
   .command("setup")

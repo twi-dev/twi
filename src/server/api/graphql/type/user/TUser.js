@@ -2,7 +2,7 @@ import {
   GraphQLString as TString,
   GraphQLID as TID
 } from "graphql"
-import {Type} from "parasprite"
+import Type from "parasprite/Type"
 
 import TRole from "./TRole"
 
