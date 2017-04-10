@@ -184,21 +184,28 @@ function setup(cmd) {
 function run(stackTrace) {
   setEnv(false)
 
-  let ok
-  let app
+  // let ok
+  // let app
 
-  try {
-    ok = require(`${ROOT}/server/core/log`).ok
-    app = require(`${ROOT}/server/core/base/main`).default
-  } catch (err) {
-    return onError(err, stackTrace)
-  }
+  // try {
+  //   ok = require(`${ROOT}/server/core/log`).ok
+  //   app = require(`${ROOT}/server/core/base/main`).default
+  // } catch (err) {
+  //   return onError(err, stackTrace)
+  // }
 
-  const onFulfilled = () => ok("Twi has been sucessfully started.")
+  // const onFulfilled = () => ok("Twi has been sucessfully started.")
+
+  // const onRejected = err => onError(err, stackTrace)
+
+  // app(false).then(onFulfilled, onRejected)
 
   const onRejected = err => onError(err, stackTrace)
 
-  app(false).then(onFulfilled, onRejected)
+  const api = require(`${ROOT}/server/api/core/base/main`).default
+
+  api(process.env.NODE_ENV !== "production", process.env.NODE_ENV)
+    .catch(onRejected)
 }
 
 // Build Twi fron the source

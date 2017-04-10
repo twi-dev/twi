@@ -10,7 +10,7 @@ import getType from "common/helper/util/getType"
 
 const isArray = Array.isArray
 
-class Server {
+class Server extends Koa {
   constructor(name, config = {}) {
     if (isPlainObject(name)) {
       config = name
@@ -29,9 +29,13 @@ class Server {
       )
     }
 
+    super() // fucking ES6 OOP >_<
+
     this.__name = name
-    this.__koa = new Koa()
     this.__port = config.port || 1337
+
+    // Binds
+    this.use = this.use.bind(this)
   }
 
   get name() {
@@ -43,7 +47,7 @@ class Server {
   //
 
   __extFromConfig = config => {
-    objForEach(config, (name, fn) => this.__koa.context[name] = fn)
+    objForEach(config, (name, fn) => this.context[name] = fn)
 
     return this
   }
@@ -52,7 +56,7 @@ class Server {
   // Public
   //
 
-  use = middlewares => {
+  use(middlewares) {
     if (isFunction(middlewares)) {
       middlewares = [middlewares]
     }
@@ -65,7 +69,7 @@ class Server {
     }
 
     // Set up middlewares to Koa instance
-    middlewares.forEach(middleware => this.__koa.use(middleware))
+    middlewares.forEach(middleware => super.use(middleware))
 
     return this
   }
@@ -74,12 +78,12 @@ class Server {
     this.__extFromConfig(isPlainObject(name) ? name : {[name]: fn})
   )
 
-  run = () => new Promise((resolve, reject) => {
+  listen = () => new Promise((resolve, reject) => (
     http
-      .createServer(this.__koa.callback())
+      .createServer(this.callback())
       .on("erorr", reject)
       .listen(this.__port, resolve)
-  })
+  ))
 }
 
 export default Server
