@@ -5,6 +5,7 @@ async function main(dev, env) {
 
   await server.use(async ctx => ctx.body = "Hello, World!").listen()
 
+  console.log(`The ${server.name} has been started.`)
   console.log("Listening on http://localhost:1337")
 }
 

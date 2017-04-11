@@ -29,6 +29,10 @@ class Server extends Koa {
       )
     }
 
+    if (!config.port) {
+      throw new TypeError(`Port required for ${name} server.`)
+    }
+
     super() // fucking ES6 OOP >_<
 
     this.__name = name
@@ -40,6 +44,14 @@ class Server extends Koa {
 
   get name() {
     return this.__name
+  }
+
+  get port() {
+    return this.__port
+  }
+
+  get addr() {
+    return `http://localhost:${this.port}`
   }
 
   //

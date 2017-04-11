@@ -27,25 +27,10 @@ const sourcemaps = require("gulp-sourcemaps")
 const {red, green, cyan} = require("chalk")
 const {transform} = require("babel-core")
 const {noop} = require("gulp-util")
-const {satisfies} = require("semver")
 const chokidar = require("chokidar")
+const mkdir = require("mkdirp")
 
-// const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
-
-// FIXME: Temporarily solution, while babel-preset-env unsupport node v7.6
-const BABERC = (function() {
-  const res = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
-
-  if (satisfies(process.versions.node, "< 7.6")) {
-    return res
-  }
-
-  res.plugins = res.plugins.filter(
-    name => name !== "transform-async-to-generator"
-  )
-
-  return res
-}())
+const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
 const DEFAULT_SRC = `${ROOT}/src`
 
@@ -107,7 +92,7 @@ function onError(err) {
 }
 
 /**
- * Add event handlers to Chocidar watcher
+ * Add event handlers to Chokidar watcher
  *
  * @param chokidar.FSWatcher watcher
  * @param object handlers
@@ -246,12 +231,14 @@ function watch(src, dest) {
     )
 
     const created = err => (
-      err ? onError(err) : glob(`${filename}/**`, fulfill)
+      err && err.code !== "EEXIST"
+        ? onError(err)
+        : glob(`${filename}/**`, fulfill)
     )
 
     const destFilename = getDestFilename(filename, src, dest)
 
-    fs.mkdir(destFilename, created)
+    mkdir(destFilename, created)
   }
 
   /**
@@ -342,7 +329,7 @@ commander
 commander
   .option("--src, -s <directory>", "Set custom source directory")
   .option("--dest, -d <directory>", "Set custom destination directory")
-  .version("The cake is a lie!\nCurrent cake version is 2.1.2")
+  .version("The cake is a lie!\nCurrent cake version is 2.1.3")
   .parse(process.argv)
 
 process
