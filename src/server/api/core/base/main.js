@@ -1,9 +1,26 @@
 import Server from "system/base/Server"
 
-async function main(dev, env) {
-  const server = new Server("api", {dev, env})
+import multipart from "server/api/middleware/multipart"
 
-  await server.use(async ctx => ctx.body = "Hello, World!").listen()
+import view from "./view"
+
+async function main(dev, env) {
+  const server = new Server("api", {dev, env, port: 1337})
+
+  const exts = {
+    render: view({debug: false})
+  }
+
+  const middlewares = [
+    multipart({ignorePaths: ["/graphql"]})
+  ]
+
+  server
+    .ext(exts)
+    .use(async ctx => ctx.body = "Hello, World!")
+    .use(middlewares)
+
+  await server.listen()
 
   console.log(`The ${server.name} has been started.`)
   console.log("Listening on http://localhost:1337")
