@@ -5,8 +5,8 @@ import isString from "lodash/isString"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 
-import objForEach from "common/helper/iterator/sync/objForEach"
-import getType from "common/helper/util/getType"
+import objForEach from "system/helper/iterator/sync/objForEach"
+import getType from "system/helper/util/getType"
 
 const isArray = Array.isArray
 
@@ -36,7 +36,7 @@ class Server extends Koa {
     super() // fucking ES6 OOP >_<
 
     this.__name = name
-    this.__port = config.port || 1337
+    this.__port = config.port
 
     // Binds
     this.use = this.use.bind(this)
