@@ -5,36 +5,40 @@ function transformFileLoader(content, sourceMaps) {
   const cb = this.async()
 
   const emit = (name, code, map, ast) => {
+    console.log(name)
     this.emitFile(name, code, map)
     cb(null, code, map, ast)
   }
 
   const query = utils.getOptions(this)
 
-  const regExpr = query.regExpr
+  const regExp = query.regExp
 
   const resource = this.resource
   const filename = this.resourcePath
+  const context = query.context || this.options.context
   const interpolatedFilename = utils.interpolateName(this, query.name, {
-    context: query.context, content
+    context, content, regExp
   })
 
-  if (!isFunction(query.transform)) {
+  if (!isFunction(query.transformer)) {
     return emit(interpolatedFilename, content, sourceMaps)
   }
 
   try {
-    const res = query.transform({
-      resource, filename, interpolatedFilename, content, sourceMaps, regExpr
+    const res = query.transformer({
+      resource, filename, interpolatedFilename, content, sourceMaps, regExp
     })
 
     if (res instanceof Promise) {
-      return res
-        .then(({content, sourceMaps}) => emit(content, sourceMaps))
-        .catch(cb)
+      const onFulfilled = ({filename, content, sourceMaps}) => emit(
+        filename, content, sourceMaps
+      )
+
+      return res.then(onFulfilled).catch(cb)
     }
 
-    return emit(res.content, res.sourceMaps)
+    return emit(res.filename, res.content, res.sourceMaps)
   } catch (err) {
     return cb(err)
   }

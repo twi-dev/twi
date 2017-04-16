@@ -5,7 +5,6 @@
   "plugins": [
     ["module-resolver", {
       "cwd": "./src",
-      "root": ["."],
       "alias": {
         "test": "./test",
         "system": "./system",
@@ -15,7 +14,7 @@
         "setup": "./setup",
         "model": "./model",
         "config": "./config",
-        "frontend": "./test/runtime",
+        "frontend": "./frontend",
         "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }
