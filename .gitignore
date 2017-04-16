@@ -2,6 +2,8 @@
 .nyc_output
 .dockerignore
 .npmignore
+.next
+
 config/app/user.yaml
 config/app/user.yml
 config/app/test.yaml
@@ -10,14 +12,19 @@ config/cert
 config/runtime/assets.json
 server/graphql
 server
+system
 setup
+common
 node_modules
 foo
 bar
 deploy/sandbox
+
 !src/server/graphql
 !src/server
+!src/system
 !src/setup
+!src/common
 !src/setup/server
 !src/setup/frontend
 
@@ -29,6 +36,7 @@ static/assets/css
 # Tests runtime stuff and code coverage
 coverage
 test/runtime
+!test/unit/system
 !test/unit/server
 !test/unit/frontend
 

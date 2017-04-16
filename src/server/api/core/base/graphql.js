@@ -3,7 +3,7 @@ import requireHelper from "require-dir"
 import isPlainObject from "lodash/isPlainObject"
 import isEmpty from "lodash/isEmpty"
 
-import objectIterator from "server/core/helper/iterator/objectIterator"
+import objectIterator from "system/helper/iterator/sync/objectIterator"
 
 const SCHEMA_ROOT = `${process.cwd()}/server/api/graphql/schema`
 

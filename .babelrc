@@ -6,19 +6,21 @@
     ["module-resolver", {
       "cwd": "./src",
       "alias": {
-        "test": "test",
+        "test": "./test",
+        "system": "./system",
         "server": "./server",
+        "static": "./server/static",
+        "api": "./server/api",
         "setup": "./setup",
         "model": "./model",
         "config": "./config",
-        "runtime": "./test/runtime",
+        "frontend": "./frontend",
         "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }
     }],
     "transform-flow-strip-types",
     "transform-es2015-modules-commonjs",
-    "transform-async-to-generator",
     "transform-decorators-legacy",
     "transform-class-properties",
     "transform-async-generator-functions",
