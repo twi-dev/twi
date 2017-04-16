@@ -36,6 +36,7 @@ static/assets/css
 # Tests runtime stuff and code coverage
 coverage
 test/runtime
+!test/unit/system
 !test/unit/server
 !test/unit/frontend
 

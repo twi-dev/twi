@@ -1,6 +1,7 @@
 import {join} from "path"
 
 import favicon from "koa-favicon"
+import body from "koa-bodyparser"
 
 import {backend} from "system/helper/util/configure"
 
@@ -26,6 +27,7 @@ async function main(dev, env) {
     errorHandler(), // Handle all errors from Koa context
     favicon(FAVICON_PATH), // Server application favicon
     logger(), // Simplest logger
+    body(),
     multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
     r.allowedMethods(),
     r.routes()

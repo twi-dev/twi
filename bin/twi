@@ -181,7 +181,7 @@ function setup(cmd) {
   make(undefined).then(onFulfilled).then(onEnd, onRejected)
 }
 
-function run(stackTrace) {
+function run(service, cmd) {
   setEnv(false)
 
   // let ok
@@ -200,7 +200,7 @@ function run(stackTrace) {
 
   // app(false).then(onFulfilled, onRejected)
 
-  const onRejected = err => onError(err, stackTrace)
+  const onRejected = err => onError(err, true)
 
   const api = require(`${ROOT}/server/api/core/base/main`).default
 
@@ -227,7 +227,7 @@ const actionSetup = cmd => setup(cmd)
 const actionDev = cmd => dev(cmd.parent.T)
 
 // Run Twi app for production
-const actionRun = cmd => run(cmd.parent.T)
+const actionRun = (...args) => run(...args)
 
 commander
   .version(require(`${ROOT}/package.json`).version)
@@ -268,28 +268,30 @@ commander
 //   .option("--data-only, -d", "run only data imports")
 //   .action(actionMigrate)
 
-commander
-  .command("make [component]")
-  .alias("m")
-  .description("Build Twi components")
-  .action(actionMake)
+// commander
+//   .command("make [component]")
+//   .alias("m")
+//   .description("Build Twi components")
+//   .action(actionMake)
+
+// DEPRECATED
+// commander
+//   .command("watch")
+//   .alias("w")
+//   .description("Run Twi with dev static server")
+//   .action(actionWatch)
+
+// DEPRECATED
+// commander
+//   .command("dev")
+//   .alias("d")
+//   .description("Run Twi app in development env (without static server)")
+//   .action(actionDev)
 
 commander
-  .command("watch")
-  .alias("w")
-  .description("Run Twi with dev static server")
-  .action(actionWatch)
-
-commander
-  .command("dev")
-  .alias("d")
-  .description("Run Twi app in development env (without static server)")
-  .action(actionDev)
-
-commander
-  .command("run")
+  .command("run <service>")
   .alias("r")
-  .description("run Twi app")
+  .description("run specified Twi's service")
   .action(actionRun)
 
 commander
