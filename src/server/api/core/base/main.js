@@ -1,24 +1,37 @@
+import {join} from "path"
+
+import favicon from "koa-favicon"
+
+import {backend} from "system/helper/util/configure"
+
 import Server from "system/base/Server"
+import makeController from "system/base/controller"
 
-import multipart from "server/api/middleware/multipart"
+import errorHandler from "api/core/middleware/error-handler"
+import logger from "api/core/middleware/logger"
+import multipart from "api/core/middleware/multipart"
 
-import view from "./view"
+const ROOT = process.cwd()
+
+const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
+
+const r = makeController(join(ROOT, "server/api/controller"))
+
+const port = backend.port
 
 async function main(dev, env) {
-  const server = new Server("api", {dev, env, port: 1337})
-
-  const exts = {
-    render: view({debug: false})
-  }
+  const server = new Server("api", {dev, env, port})
 
   const middlewares = [
-    multipart({ignorePaths: ["/graphql"]})
+    errorHandler(), // Handle all errors from Koa context
+    favicon(FAVICON_PATH), // Server application favicon
+    logger(), // Simplest logger
+    multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
+    r.allowedMethods(),
+    r.routes()
   ]
 
-  server
-    .ext(exts)
-    .use(async ctx => ctx.body = "Hello, World!")
-    .use(middlewares)
+  server.use(middlewares)
 
   await server.listen()
 

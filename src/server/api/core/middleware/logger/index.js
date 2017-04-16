@@ -1,4 +1,4 @@
-import {normal} from "server/core/log"
+import {normal} from "system/log"
 
 const logger = () => async function(ctx, next) {
   const {ip, url, method} = ctx

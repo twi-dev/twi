@@ -7,9 +7,10 @@ import isString from "lodash/isString"
 import merge from "lodash/merge"
 
 import getType from "system/helper/util/getType"
-import objectIterator from "system/helper/iterator/objectIterator"
+import objectIterator from "system/helper/iterator/sync/objectIterator"
 import {router} from "system/helper/decorator/controller"
 import {warn} from "system/log"
+import bind from "system/helper/util/bind"
 
 import NotFoundException from "system/error/http/NotFound"
 import NotAllowedException from "system/error/http/NotAllowed"
