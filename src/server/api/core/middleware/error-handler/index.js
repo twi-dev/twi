@@ -1,7 +1,8 @@
-import log from "server/core/log"
 import Stack from "stack-utils"
 
-const errorHandler = () => async function _errorHandler(ctx, next) {
+import log from "system/log"
+
+const errorHandler = () => async function(ctx, next) {
   try {
     await next()
   } catch (err) {
