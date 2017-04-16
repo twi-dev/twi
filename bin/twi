@@ -112,36 +112,6 @@ function make(component) {
   }
 }
 
-function watch(stackTrace) {
-  setEnv(true) // set NODE_ENV to deveopment
-
-  const onFulfilled = stats => stats && console.log(String(stats))
-
-  const onRejected = err => onError(err, stackTrace)
-
-  runCompiler(true).then(onFulfilled, onRejected)
-}
-
-function dev(stackTrace) {
-  setEnv(true)
-
-  let ok
-  let app
-
-  try {
-    ok = require(`${ROOT}/server/core/log`).ok
-    app = require(`${ROOT}/server/core/base/main`).default
-  } catch (err) {
-    return onError(err, stackTrace)
-  }
-
-  const onFulfilled = () => ok("Twi has been sucessfully started.")
-
-  const onRejected = err => onError(err, stackTrace)
-
-  app(true).then(onFulfilled, onRejected)
-}
-
 // Not implemented
 // function migrate(cmd) {
 //   setEnv(false)
@@ -181,31 +151,28 @@ function setup(cmd) {
   make(undefined).then(onFulfilled).then(onEnd, onRejected)
 }
 
-function run(service, cmd) {
-  setEnv(false)
+function run(name, cmd) {
+  const env = cmd.parent.E || process.env.NODE_ENV || "development"
+  const isDev = env !== "production"
 
-  // let ok
-  // let app
+  const onRejected = err => onError(err, cmd.parent.T)
 
-  // try {
-  //   ok = require(`${ROOT}/server/core/log`).ok
-  //   app = require(`${ROOT}/server/core/base/main`).default
-  // } catch (err) {
-  //   return onError(err, stackTrace)
-  // }
+  let service
+  try {
+    service = require(`${ROOT}/server/${name}/core/base/main`).default
+  } catch (err) {
+    return onRejected(
+      err.code === "MODULE_NOT_FOUND"
+        ? new Error(`Service ${name} is not found.`)
+        : err
+    )
+  }
 
-  // const onFulfilled = () => ok("Twi has been sucessfully started.")
+  const res = service(isDev, env)
 
-  // const onRejected = err => onError(err, stackTrace)
-
-  // app(false).then(onFulfilled, onRejected)
-
-  const onRejected = err => onError(err, true)
-
-  const api = require(`${ROOT}/server/api/core/base/main`).default
-
-  api(process.env.NODE_ENV !== "production", process.env.NODE_ENV)
-    .catch(onRejected)
+  res instanceof Promise
+    ? res.catch(onRejected)
+    : onRejected(new Error("Service executor should return a Promise."))
 }
 
 // Build Twi fron the source
@@ -213,29 +180,22 @@ const actionMake = (component, cmd) => (
   make(component, cmd).then(onEnd, err => onError(err, cmd.parent.T))
 )
 
-// Run Webpack compiler for development (with devServer)
-// Important note: do not use this command with `twi run`
-const actionWatch = cmd => watch(cmd.parent.T)
-
 // Run only Twi miration (without full setup)
 // const actionMigrate = cmd => migrate(cmd)
 
 // Run Twi setup scripts
 const actionSetup = cmd => setup(cmd)
 
-// Run Twi without static server (only for development)
-const actionDev = cmd => dev(cmd.parent.T)
-
 // Run Twi app for production
 const actionRun = (...args) => run(...args)
 
 commander
   .version(require(`${ROOT}/package.json`).version)
-  .usage("<command> [options]")
+  .usage("[options] <command>")
 
 commander
   .option("--stack-trace, -t", "show stack trace on errors")
-  .option("--env, -e [env]", "set specified environment for an application")
+  .option("--env, -e [env]", "set an environment for an application")
 
 commander
   .command("setup")
@@ -268,31 +228,17 @@ commander
 //   .option("--data-only, -d", "run only data imports")
 //   .action(actionMigrate)
 
-// commander
-//   .command("make [component]")
-//   .alias("m")
-//   .description("Build Twi components")
-//   .action(actionMake)
-
-// DEPRECATED
-// commander
-//   .command("watch")
-//   .alias("w")
-//   .description("Run Twi with dev static server")
-//   .action(actionWatch)
-
-// DEPRECATED
-// commander
-//   .command("dev")
-//   .alias("d")
-//   .description("Run Twi app in development env (without static server)")
-//   .action(actionDev)
-
 commander
   .command("run <service>")
   .alias("r")
   .description("run specified Twi's service")
   .action(actionRun)
+
+commander
+  .command("make [component]")
+  .alias("m")
+  .description("Build Twi components")
+  .action(actionMake)
 
 commander
   .parse(process.argv)
