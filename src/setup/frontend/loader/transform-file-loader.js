@@ -5,7 +5,6 @@ function transformFileLoader(content, sourceMaps) {
   const cb = this.async()
 
   const emit = (name, code, map, ast) => {
-    console.log(name)
     this.emitFile(name, code, map)
     cb(null, code, map, ast)
   }

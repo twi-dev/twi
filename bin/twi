@@ -48,22 +48,16 @@ function onEnd() {
 }
 
 /**
- * Run webpack compiler for specified env
- *
- * @param boolean isDev
+ * Compile frontend app
  */
-const runCompiler = isDev => new Promise((resolve, reject) => {
-  let compiler
+const runCompiler = () => new Promise((resolve, reject) => {
+  const fulfill = err => err ? reject(err) : resolve()
 
-  try {
-    compiler = require(`${ROOT}/setup/frontend/compiler/main`).default
-  } catch (err) {
-    return reject(err)
-  }
+  const onGulpFinished = err => (
+    err ? reject(err) : exec(`${ROOT}/node_modules/.bin/next Build`, fulfill)
+  )
 
-  const fulfill = () => compiler(isDev).then(resolve, reject)
-
-  exec(`${ROOT}/node_modules/.bin/gulp make`, fulfill)
+  exec(`${ROOT}/node_modules/.bin/gulp`, onGulpFinished)
 })
 
 /**
@@ -155,17 +149,15 @@ function run(name, cmd) {
   const env = cmd.parent.E || process.env.NODE_ENV || "development"
   const isDev = env !== "production"
 
+  setEnv(isDev) // tmp
+
   const onRejected = err => onError(err, cmd.parent.T)
 
   let service
   try {
     service = require(`${ROOT}/server/${name}/core/base/main`).default
   } catch (err) {
-    return onRejected(
-      err.code === "MODULE_NOT_FOUND"
-        ? new Error(`Service ${name} is not found.`)
-        : err
-    )
+    return onRejected(err)
   }
 
   const res = service(isDev, env)
