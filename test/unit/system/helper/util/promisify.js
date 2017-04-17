@@ -69,12 +69,12 @@ test("Should resolve given value from a function", async t => {
   t.is(res, val)
 })
 
-test("Should thow an error when \"reject\" argument is truthy.", t => {
+test("Should thow an error when \"reject\" argument is truthy.", async t => {
   t.plan(1)
 
   const noop = pfy(t.context.noop(true))
 
-  t.throws(noop(),
+  await t.throws(noop(),
     "This function has been rejected cuz \"reject\" parameter is truthy."
   )
 })
