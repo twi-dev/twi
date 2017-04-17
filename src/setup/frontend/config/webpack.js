@@ -27,8 +27,8 @@ function webpack(cfg, {dev}) {
   )
 
   cfg.resolveLoader.alias = {
-    "transform-file-loader": (
-      `${__dirname}/setup/frontend/loader/transform-file-loader`
+    "transform-file-loader": resolve(
+      __dirname, "..", "loader/transform-file-loader"
     )
   }
 

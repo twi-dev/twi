@@ -54,7 +54,7 @@ const runCompiler = () => new Promise((resolve, reject) => {
   const fulfill = err => err ? reject(err) : resolve()
 
   const onGulpFinished = err => (
-    err ? reject(err) : exec(`${ROOT}/node_modules/.bin/next Build`, fulfill)
+    err ? reject(err) : exec(`${ROOT}/node_modules/.bin/next build`, fulfill)
   )
 
   exec(`${ROOT}/node_modules/.bin/gulp`, onGulpFinished)

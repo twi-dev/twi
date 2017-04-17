@@ -32,6 +32,7 @@ deploy/sandbox
 static/assets/img/**/*.svg
 static/assets/js
 static/assets/css
+static/app
 
 # Tests runtime stuff and code coverage
 coverage
