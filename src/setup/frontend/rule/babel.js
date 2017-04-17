@@ -7,7 +7,7 @@ const ROOT = process.cwd()
 
 const BABERC = JSON.parse(readFileSync(resolve(ROOT, ".babelrc")))
 
-const JSX_PATTERN = /\.jsx?$/
+const JSX_PATTERN = /\.jsx$/
 
 const transformer = ({isDev}) => function(options) {
   const {interpolatedFilename, content, sourceMaps} = options
