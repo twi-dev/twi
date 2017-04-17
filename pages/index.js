@@ -1,1 +1,1 @@
-export default from "../frontend/Foo"
+export default from "../frontend/app/view/home/Home/Home" // eslint-disable-line
