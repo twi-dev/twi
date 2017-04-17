@@ -35,7 +35,7 @@ const transformer = ({isDev}) => function(options) {
   }
 }
 
-const babelRule = ({isDev}) => ({
+const babel = ({isDev}) => ({
   test: JSX_PATTERN,
   exclude: /node_modules/,
   loader: "transform-file-loader",
@@ -45,4 +45,4 @@ const babelRule = ({isDev}) => ({
   }
 })
 
-export default babelRule
+export default babel

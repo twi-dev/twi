@@ -20,26 +20,28 @@ function getRules(options) {
   return res
 }
 
-module.exports = {
-  webpack(cfg, {dev}) {
-    const rules = getRules({isDev: dev})
+function webpack(cfg, {dev}) {
+  const rules = getRules({isDev: dev})
 
-    cfg.plugins = cfg.plugins.map(
-      p => p instanceof UglifyJsPlugin ? new BabiliWebpackPlugin() : p
+  cfg.plugins = cfg.plugins.map(
+    p => p instanceof UglifyJsPlugin ? new BabiliWebpackPlugin() : p
+  )
+
+  cfg.resolveLoader.alias = {
+    "transform-file-loader": (
+      `${__dirname}/setup/frontend/loader/transform-file-loader`
     )
-
-    cfg.resolveLoader.alias = {
-      "transform-file-loader": (
-        `${__dirname}/setup/frontend/loader/transform-file-loader`
-      )
-    }
-
-    cfg.resolve.extensions = [".js", ".jsx", ".json"]
-
-    cfg.resolve.modules.push(join(__dirname, "frontend"))
-
-    cfg.module.rules.push(...rules)
-
-    return cfg
   }
+
+  cfg.resolve.extensions = [".js", ".jsx", ".json"]
+
+  cfg.resolve.modules.push(join(__dirname, "frontend"))
+
+  cfg.module.rules.push(...rules)
+
+  return cfg
+}
+
+module.exports = {
+  webpack
 }

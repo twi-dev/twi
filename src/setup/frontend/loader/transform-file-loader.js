@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+// Based on: https://github.com/zeit/next.js/blob/master/server/build/loaders/emit-file-loader.js
 import utils from "loader-utils"
 import isFunction from "lodash/isFunction"
 
@@ -21,7 +23,11 @@ function transformFileLoader(content, sourceMaps) {
   })
 
   if (!isFunction(query.transformer)) {
-    return emit(interpolatedFilename, content, sourceMaps)
+    return cb(
+      new TypeError(
+        "Transformer function required for transform-file-loader."
+      )
+    )
   }
 
   try {
