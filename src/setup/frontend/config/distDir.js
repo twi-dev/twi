@@ -1,3 +1,3 @@
-const distDir = "static/app"
+const distDir = "runtime/app"
 
 export default distDir

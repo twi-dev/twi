@@ -19,6 +19,7 @@ node_modules
 foo
 bar
 deploy/sandbox
+runtime
 
 !src/server/graphql
 !src/server
@@ -36,7 +37,6 @@ static/app
 
 # Tests runtime stuff and code coverage
 coverage
-test/runtime
 !test/unit/system
 !test/unit/server
 !test/unit/frontend

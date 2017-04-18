@@ -22,8 +22,8 @@ const methods = {
 }
 
 const router = Ctor => prefix => {
-  if (isEmpty(prefix)) {
-    throw new Error("Prefix cannot be empty.")
+  if (!prefix) {
+    prefix = ""
   }
 
   if (!isString(prefix)) {

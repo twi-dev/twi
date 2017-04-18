@@ -1,15 +1,19 @@
+import {join} from "path"
+
 import Next from "next/dist/server"
 
 import {static as _static} from "system/helper/util/configure"
 
 import Server from "system/base/Server"
-import makeController from "system/base/controller"
+import makeRouter from "system/base/router"
 
 import hanlde from "static/core/middleware/request-handler"
 
 import view from "./view"
 
-const r = makeController(`${process.cwd()}/server/static/controller`)
+const ROOT = process.cwd()
+
+const routesCreator = makeRouter(join(ROOT, "server/static/route"))
 
 const port = _static.port
 
@@ -17,12 +21,15 @@ async function main(dev, env) {
   const next = new Next({dev})
   const server = new Server("static", {dev, env, port})
 
+  const r = routesCreator({
+    nonMatched: {
+      get: hanlde(next.getRequestHandler())
+    }
+  })
+
   const exts = {render: view(next)}
 
   const middlewares = [
-    // FIXME: To work with Koa router, I have to handle requests for next.js
-    //  builtin paths
-    hanlde(next.getRequestHandler()),
     r.routes(),
     r.allowedMethods()
   ]

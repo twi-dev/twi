@@ -6,7 +6,7 @@ import body from "koa-bodyparser"
 import {backend} from "system/helper/util/configure"
 
 import Server from "system/base/Server"
-import makeController from "system/base/controller"
+import makeRouter from "system/base/router"
 
 import errorHandler from "api/core/middleware/error-handler"
 import logger from "api/core/middleware/logger"
@@ -16,7 +16,7 @@ const ROOT = process.cwd()
 
 const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
 
-const r = makeController(join(ROOT, "server/api/controller"))
+const r = makeRouter(join(ROOT, "server/api/route"))()
 
 const port = backend.port
 
