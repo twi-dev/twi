@@ -8,7 +8,6 @@ import merge from "lodash/merge"
 
 import getType from "system/helper/util/getType"
 import objectIterator from "system/helper/iterator/sync/objectIterator"
-import {router} from "system/helper/decorator/controller"
 import {warn} from "system/log"
 
 import NotFoundException from "system/error/http/NotFound"
@@ -38,7 +37,10 @@ function actionNotAllowed({method, url}) {
 
 // Default options for controller
 const defaults = {
+  // Name of the home page controller
   indexRoute: "home",
+
+  // Handlers for non-matched routes
   nonMatched: {
     get: actionNotFound,
     all: actionNotAllowed
@@ -101,9 +103,9 @@ const buildRoutes = routes => function(options = {}) {
 
     const prefix = name !== options.indexRoute ? `/${name}` : ""
 
-    const Ctor = router(route.default)(prefix)
+    const Ctor = route.default
 
-    r.use(new Ctor())
+    r.use(prefix, new Ctor())
   }
 
   return mountNonMatchedHandlers(r, options.nonMatched)

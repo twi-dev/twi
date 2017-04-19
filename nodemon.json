@@ -10,7 +10,8 @@
     "theme",
     "localhost",
     "test",
-    "frontend"
+    "frontend",
+    "runtime/app"
   ],
   "ext": "js json yml yaml key cert",
   "exec": "./bin/twi dev --stack-trace"

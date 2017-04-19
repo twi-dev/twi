@@ -27,7 +27,11 @@ async function main(dev, env) {
     }
   })
 
-  const exts = {render: view(next)}
+  const render = view(next)
+
+  const exts = {render}
+
+  console.log(r)
 
   const middlewares = [
     r.routes(),

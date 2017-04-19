@@ -21,20 +21,6 @@ const methods = {
   all: "ALL"
 }
 
-const router = Ctor => prefix => {
-  if (!prefix) {
-    prefix = ""
-  }
-
-  if (!isString(prefix)) {
-    throw new Error("Prefix should be a string.")
-  }
-
-  Ctor.prototype.router.prefix(prefix)
-
-  return Ctor
-}
-
 /**
  * Provides more declarative way to definitions of Koa Router controllers
  * with the ES.next decorators magic! Whoosh!
@@ -71,4 +57,4 @@ const route = (path, method, ...middleware) => function(target, k, descriptor) {
   target.router[method](path, ...middleware, descriptor.value)
 }
 
-export {methods, router, route}
+export {methods, route}

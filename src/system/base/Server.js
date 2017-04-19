@@ -5,6 +5,7 @@ import isString from "lodash/isString"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 
+import objectIterator from "system/helper/iterator/sync/objectIterator"
 import objForEach from "system/helper/iterator/sync/objForEach"
 import getType from "system/helper/util/getType"
 
@@ -58,8 +59,10 @@ class Server extends Koa {
   // Private
   //
 
-  __extFromConfig = config => {
-    objForEach(config, (name, fn) => this.context[name] = fn)
+  __extFromConfig(config) {
+    for (const [key, value] of objectIterator.entries(config)) {
+      Object.defineProperty(this.context, key, {value})
+    }
 
     return this
   }
