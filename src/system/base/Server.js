@@ -96,7 +96,7 @@ class Server extends Koa {
   listen = () => new Promise((resolve, reject) => (
     http
       .createServer(this.callback())
-      .on("erorr", reject)
+      .on("error", reject)
       .listen(this.__port, resolve)
   ))
 }
