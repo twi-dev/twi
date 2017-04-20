@@ -13,7 +13,7 @@ import view from "./view"
 
 const ROOT = process.cwd()
 
-const routesCreator = makeRouter(join(ROOT, "server/static/route"))
+const buildRoutes = makeRouter(join(ROOT, "server/static/route"))
 
 const port = _static.port
 
@@ -21,7 +21,7 @@ async function main(dev, env) {
   const next = new Next({dev})
   const server = new Server("static", {dev, env, port})
 
-  const r = routesCreator({
+  const r = buildRoutes({
     nonMatched: {
       get: hanlde(next.getRequestHandler())
     }
@@ -30,8 +30,6 @@ async function main(dev, env) {
   const render = view(next)
 
   const exts = {render}
-
-  console.log(r)
 
   const middlewares = [
     r.routes(),

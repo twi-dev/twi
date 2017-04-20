@@ -59,7 +59,7 @@ class Server extends Koa {
   // Private
   //
 
-  __extFromConfig(config) {
+  __extFromConfig = config => {
     for (const [key, value] of objectIterator.entries(config)) {
       Object.defineProperty(this.context, key, {value})
     }
