@@ -15,12 +15,12 @@ and isn't ready for production! Stay in touch.**
 
 ## Requirements:
 
-| Dependency name | Version (semver)          |
-|-----------------|---------------------------|
-| Node.js         | >= 7.6                    |
-| Yarn            | >= 0.20.0                 |
-| Redis           | (will be added in future) |
-| RethinkDB       | (will be added in future) |
+| Dependency name                      | Version (semver)          |
+|--------------------------------------|---------------------------|
+| [Node.js](https://nodejs.org/en/)    | >= 7.6                    |
+| [Yarn](https://yarnpkg.com/lang/en/) | >= 0.20.0                 |
+| [Redis](https://redis.io/)           | (will be added in future) |
+| [RethinkDB](https://rethinkdb.com/)  | (will be added in future) |
 
 You also need:
 
@@ -31,7 +31,7 @@ You also need:
 
 * Some server for mail service.
 * Any init system, like [systemd](https://github.com/systemd/systemd)
-* Nodemon for development.
+* [Nodemon](https://github.com/remy/nodemon) for development.
 
 More information about this project you can get from the [Docs](./doc) section.
 
