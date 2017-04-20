@@ -31,7 +31,7 @@
     "g:m": "npm run gulp",
     "gulp:watch": "node_modules/.bin/gulp watch",
     "g:w": "npm run gulp:watch",
-    "make": "bin/twi make && npm run gulp:make",
+    "make": "bin/twi make",
     "m": "npm run make",
     "watch": "bin/twi watch --stack-trace",
     "w": "npm run watch",
