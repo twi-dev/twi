@@ -4,7 +4,7 @@ const getProtocolName = secure => `http${secure ? "s" : ""}://`
 
 const getLocalHostname = port => `http://localhost:${port}`
 
-const getConfiguredHostname = (host, secure) => (
+const getConfiguredHostname = (host = "localhost", secure) => (
   `${getProtocolName(secure)}${host}`
 )
 

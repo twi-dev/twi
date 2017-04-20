@@ -4,6 +4,19 @@
  * @param function target – a callback-style function
  *
  * @return function
+ *
+ * Example
+ * ```js
+ * import fs from "fs"
+ *
+ * const readFile = promisify(fs.readFile)
+ *
+ * const onFulfilled = content => console.log(String(content))
+ *
+ * const onRejected = err => console.error(err)
+ *
+ * readFile(require.main.filename).then(onFulfilled, onRejected)
+ * ```
  */
 const promisify = target => function(...args) {
   const ctx = this
