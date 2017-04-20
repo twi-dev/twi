@@ -1,6 +1,6 @@
 # Twi
 
-Fanfiction library engine
+Fanfiction library engine, mostly focused on My Little Pony: Friendship is Magin community.
 
 [![dependencies Status](https://david-dm.org/octet-stream/twi/status.svg)](https://david-dm.org/octet-stream/twi)
 [![devDependencies Status](https://david-dm.org/octet-stream/twi/dev-status.svg)](https://david-dm.org/octet-stream/twi?type=dev)
