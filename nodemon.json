@@ -14,5 +14,5 @@
     "runtime/app"
   ],
   "ext": "js json yml yaml key cert",
-  "exec": "./bin/twi dev --stack-trace"
+  "exec": "./bin/twi --stack-trace --env development run api"
 }

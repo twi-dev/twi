@@ -14,8 +14,14 @@
   },
   "scripts": {
     "setup": "bin/twi setup",
-    "twi": "bin/twi run",
-    "start": "npm run setup && npm run run",
+    "twi:api": "./bin/twi --stack-trace --env production run api",
+    "twi:api:dev": "nodemon -x ./bin/twi -- --stack-trace --env development run api",
+    "twi:static": "./bin/twi --stack-trace --env production run static",
+    "twi:static:dev": "nodemon -x ./bin/twi -- --stack-trace --env development run static",
+    "t:a": "npm run twi:api",
+    "t:a:d": "npm run twi:api:dev",
+    "t:s": "npm run twi:static",
+    "t:s:d": "npm run twi:static:dev",
     "cake:make": "bin/cake make",
     "c:m": "npm run cake:make",
     "cake:watch": "bin/cake watch",
@@ -91,7 +97,6 @@
     "parasprite": "0.3.3",
     "passport-local": "1.0.0",
     "path-to-regexp": "1.7.0",
-    "pify": "2.3.0",
     "promise-fs": "1.2.3",
     "pug": "2.0.0-beta11",
     "redis": "2.7.0",
@@ -143,7 +148,6 @@
     "eslint-plugin-react": "6.9.0",
     "extract-text-webpack-plugin": "2.1.0",
     "glob": "7.1.1",
-    "globby": "6.1.0",
     "graphql-tag": "1.2.4",
     "gulp": "3.9.1",
     "gulp-csso": "2.0.0",
@@ -174,7 +178,6 @@
     "react-document-title": "2.0.2",
     "react-dom": "15.4.2",
     "react-dropzone": "3.8.0",
-    "react-hot-loader": "3.0.0-beta.6",
     "react-router": "3.0.0",
     "react-svg-loader": "1.1.1",
     "rimraf": "2.6.1",
@@ -188,8 +191,6 @@
     "vinyl-fs": "2.4.4",
     "vinyl-sourcemaps-apply": "0.2.1",
     "web-animations-js": "2.2.2",
-    "webpack": "2.3.3",
-    "webpack-dev-middleware": "1.10.1",
-    "webpack-hot-middleware": "2.17.1"
+    "webpack": "2.3.3"
   }
 }
