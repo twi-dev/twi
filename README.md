@@ -25,7 +25,8 @@ and isn't ready for production! Stay in touch.**
 You also need:
 
 * Linux or macOS to run Twi.
-   I doesn't support Windows and have no plans about that,
+
+   I don't support Windows and have no plans about that,
    but feel free to add this feature if you want to do.
 
 * Some server for mail service.
