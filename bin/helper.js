@@ -15,10 +15,10 @@ const IS_YARN_EXISTS = (function() {
 
 function tryDeps() {
   try {
-    statSync(`${ROOT}/node_modules/`)
+    return statSync(`${ROOT}/node_modules/`)
   } catch (err) {
     if (err.code !== "ENOENT") {
-      return process.emit("error", err)
+      throw err
     }
 
     console.log("Install dependencies before you begin.")

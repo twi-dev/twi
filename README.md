@@ -10,7 +10,8 @@ Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Mag
 **IMPORTANT NOTE: Project is still in development
 and isn't ready for production! Stay in touch.**
 
-**I'm also doesn't accept pull requests (but feel free to ask me about this project), because Twi have no stable API, docs and contributing policy.**
+**I'm also doesn't accept pull requests (but feel free to ask me about this project),**
+**because Twi have no stable API, docs and contributing policy.**
 **All that things will be added soon.**
 
 ## Requirements:
