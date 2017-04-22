@@ -1,12 +1,20 @@
+import isFunction from "lodash/isFunction"
+
 import getType from "../util/getType"
 
 const isArray = Array.isArray
 
 function isListOf(list, predicate, ctx = null) {
-  if (isArray(list) === false) {
+  if (!isArray(list)) {
     throw new TypeError(
-      `Allowed only array as list. Given type of ${getType(list)} ` +
-      "can't be used with this checker."
+      "Expected an array as \"list\" argument, " +
+      `but given value is type of ${getType(list)}.`
+    )
+  }
+
+  if (!isFunction(predicate)) {
+    throw new TypeError(
+      `Predicate should be a function, not type of ${getType(predicate)}.`
     )
   }
 

@@ -1,26 +1,37 @@
 import http from "http"
 
 import Koa from "koa"
+import merge from "lodash/merge"
 import isString from "lodash/isString"
+import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 import getType from "system/helper/util/getType"
+import isListOf from "system/helper/typechecker/isListOf"
 import getHostname from "system/helper/util/getHostname"
 
 const isArray = Array.isArray
 
+const defaults = {
+  dev: false,
+  test: false,
+  debug: true,
+  env: process.env.NODE_ENV || "development"
+}
+
 class Server extends Koa {
-  constructor(name, config = {}) {
+  constructor(name, config) {
     if (isPlainObject(name)) {
       config = name
+
       name = config.name
+
+      delete config.name
     }
 
-    if (!isString(name)) {
-      throw new TypeError("Server name should be a string.")
-    }
+    config = merge({}, defaults, config)
 
     if (!name) {
       throw new TypeError(
@@ -30,7 +41,11 @@ class Server extends Koa {
       )
     }
 
-    if (!config.port) {
+    if (!isString(name)) {
+      throw new TypeError("Server name should be a string.")
+    }
+
+    if (!isInteger(config.port)) {
       throw new TypeError(`Port required for ${name} server.`)
     }
 
@@ -39,6 +54,7 @@ class Server extends Koa {
     this.__name = name
     this.__port = config.port
     this.__host = config.host
+    this.__dev = config.dev
 
     // Binds
     this.use = this.use.bind(this)
@@ -87,14 +103,14 @@ class Server extends Koa {
    * @return Server
    */
   use(middlewares) {
-    if (isFunction(middlewares)) {
+    if (!isArray(middlewares)) {
       middlewares = [middlewares]
     }
 
-    if (!isArray(middlewares)) {
+    if (!isListOf(middlewares, isFunction)) {
       throw new TypeError(
         "Middlewares argument should be a function or " +
-        `an array of the functions, but given type is: ${getType(middlewares)}.`
+        "an array of the functions."
       )
     }
 
