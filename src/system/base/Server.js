@@ -45,8 +45,12 @@ class Server extends Koa {
       throw new TypeError("Server name should be a string.")
     }
 
-    if (!isInteger(config.port)) {
+    if (!config.port) {
       throw new TypeError(`Port required for ${name} server.`)
+    }
+
+    if (!isInteger(config.port)) {
+      throw new TypeError("Given port should be an integer.")
     }
 
     super() // fucking ES6 OOP >_<

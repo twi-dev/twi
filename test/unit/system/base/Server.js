@@ -1,7 +1,5 @@
 import test from "ava"
 
-// import req from "supertest"
-
 import Server from "system/base/Server"
 
 test("Should create a Server instance with given name", t => {
@@ -176,4 +174,17 @@ test("Shluld throw an error when port is has no given", t => {
 
   t.true(err instanceof TypeError)
   t.is(err.message, "Port required for noop server.")
+})
+
+test("Should also throw a TypeError when given port is no an integer", t => {
+  t.plan(3)
+
+  const trap = () => new Server("boop", {
+    port: "totally not a string"
+  })
+
+  const err = t.throws(trap)
+
+  t.true(err instanceof TypeError)
+  t.is(err.message, "Given port should be an integer.")
 })
