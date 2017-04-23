@@ -1,3 +1,5 @@
+import {join} from "path"
+
 import {write} from "node-yaml"
 
 import prompt from "setup/server/helper/prompt"
@@ -10,7 +12,10 @@ const QUESTIONS = {
 }
 
 const configure = async () => (
-  await write(`${process.cwd()}/config/app/user.yaml`, await prompt(QUESTIONS))
+  await write(
+    join(process.cwd(), "config/app/user.yaml"),
+    await prompt(QUESTIONS)
+  )
 )
 
 async function setup(cmd) {

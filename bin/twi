@@ -133,7 +133,7 @@ function setup(cmd) {
   function onFulfilled() {
     ora.stop()
 
-    return require(`${ROOT}/setup/server/installer/app`).default(cmd)
+    return require(`${ROOT}/setup/server/installer`).default(cmd)
   }
 
   const onRejected = err => onError(err, cmd.parent.T)
