@@ -15,7 +15,16 @@ const ora = require("ora")()
 const {cross} = require("figures")
 const {red} = require("chalk")
 
+// DEPRECATED
 const setEnv = isDev => isDev ? "development" : "production"
+
+const getEnv = ({development, production, E} = {}) => {
+  if (development) return "development"
+
+  if (production) return "production"
+
+  return E || "development"
+}
 
 /**
  * Process error handler
@@ -146,7 +155,7 @@ function setup(cmd) {
 }
 
 function run(name, cmd) {
-  const env = cmd.parent.E || process.env.NODE_ENV || "development"
+  const env = getEnv(cmd.parent)
   const isDev = env !== "production"
 
   setEnv(isDev) // tmp
@@ -187,6 +196,10 @@ commander
 
 commander
   .option("--stack-trace, -t", "show stack trace on errors")
+  .option("--development", "set env to development")
+  .option("--production", "set env to production")
+  .option("--debug", "set env to debug")
+  .option("--test", "set env to test")
   .option("--env, -e [env]", "set an environment for an application")
 
 commander

@@ -11,15 +11,13 @@ const QUESTIONS = {
   }
 }
 
-const configure = async () => (
-  await write(
-    join(process.cwd(), "config/app/user.yaml"),
-    await prompt(QUESTIONS)
-  )
+const configure = async env => await write(
+  join(process.cwd(), `config/app/${env}.yaml`),
+  await prompt(QUESTIONS)
 )
 
 async function setup(cmd) {
-  cmd.C && await configure()
+  cmd.C && await configure(cmd.parent.E)
 }
 
 export default setup

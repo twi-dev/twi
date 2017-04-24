@@ -154,6 +154,7 @@
     "gulp-util": "3.0.7",
     "gulp-watch": "4.3.8",
     "highlight.js": "9.10.0",
+    "husky": "^0.13.3",
     "ignore-styles": "5.0.1",
     "inquirer": "3.0.6",
     "jeet": "6.1.5",
