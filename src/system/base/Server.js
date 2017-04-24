@@ -8,7 +8,6 @@ import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
-import getType from "system/helper/util/getType"
 import isListOf from "system/helper/typechecker/isListOf"
 import getHostname from "system/helper/util/getHostname"
 
