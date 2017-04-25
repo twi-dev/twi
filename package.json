@@ -31,7 +31,7 @@
     "g:m": "yarn gulp",
     "gulp:watch": "node_modules/.bin/gulp watch",
     "g:w": "yarn gulp:watch",
-    "make": "bin/twi make",
+    "make": "mkdir -p runtime && bin/twi make",
     "m": "yarn make",
     "watch": "bin/twi watch --stack-trace",
     "w": "yarn watch",
