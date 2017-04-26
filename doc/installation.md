@@ -1,6 +1,7 @@
 # Installation
 
-**Important: Before you begin, please, read the [Introduction](./introduction.md) section of the docs.**
+<!-- will be added in future -->
+<!-- **Important: Before you begin, please, read the [Introduction](./introduction.md) section of the docs.** -->
 
 **Note: The project is still in early stage of development. You may have some issues with installation, but I'm working on project API stabilization. Stay in touch!**
 

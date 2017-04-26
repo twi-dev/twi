@@ -35,8 +35,8 @@
     "m": "yarn make",
     "watch": "bin/twi watch --stack-trace",
     "w": "yarn watch",
-    "dev": "nodemon -x bin/twi dev --stack-trace",
-    "d": "yarn dev",
+    "make:frontend": "node_modules/.bin/mkdirp runtime && bin/twi make frontend",
+    "m:f": "yarn make:frontend",
     "lint": "node_modules/.bin/eslint src && node_modules/.bin/eslint frontend",
     "test": "node_modules/.bin/ava",
     "cleanup": "node_modules/.bin/rimraf .nyc_output coverage runtime server static/**/*.svg static/**/*.css static/**/*.js system",
@@ -45,7 +45,7 @@
     "report": "yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test",
     "report:codecov": "node_modules/.bin/nyc report --reporter=lcov yarn test",
     "codecov": "node_modules/.bin/codecov",
-    "ci": "yarn make && yarn lint && yarn coverage && yarn report:codecov && yarn codecov"
+    "ci": "yarn make && yarn lint && yarn coverage && yarn report:codecov && yarn codecov && yarn cleanup"
   },
   "ava": {
     "require": [
@@ -156,7 +156,7 @@
     "gulp-util": "3.0.7",
     "gulp-watch": "4.3.8",
     "highlight.js": "9.10.0",
-    "husky": "^0.13.3",
+    "husky": "0.13.3",
     "ignore-styles": "5.0.1",
     "inquirer": "3.0.6",
     "jeet": "6.1.5",
@@ -170,6 +170,7 @@
     "normalize.css": "5.0.0",
     "nyc": "10.1.2",
     "poststylus": "0.2.3",
+    "prettier": "1.2.2",
     "prop-types": "15.5.8",
     "proxyquire": "1.7.11",
     "react": "15.4.2",

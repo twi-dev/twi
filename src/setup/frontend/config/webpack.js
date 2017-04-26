@@ -16,7 +16,7 @@ function getRules(options) {
     res.push(val.default(options))
   }
 
-  return res
+  return res.reverse()
 }
 
 function webpack(cfg, {dev}) {

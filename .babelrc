@@ -14,7 +14,7 @@
         "setup": "./setup",
         "model": "./model",
         "config": "./config",
-        "frontend": "./frontend",
+        "frontend": "./runtime/app",
         "package.json": "./package.json",
         "ignore-require": "./test/helper/ignore-require"
       }
