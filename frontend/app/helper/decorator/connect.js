@@ -44,12 +44,12 @@ function connect(Target) {
     }
 
     render() {
-      const stores = this.stores || {}
+      const stores = this.stores
 
       return createElement(
-        Provider, {stores}, createElement(
+        Provider, {...stores}, createElement(
           compose(inject(mapStoresToProps), observer)(Target), {
-            ...this.props, ...stores
+            ...this.props
           }
         )
       )
