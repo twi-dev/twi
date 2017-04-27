@@ -7,11 +7,13 @@ const titleDecorator = title => Target => {
   const name = Target.displayName || Target.name || "Unknown"
 
   const DecorateTitle = props => {
-    title = (props.app && props.app.title) || title || ""
+    title = (props.stores.app && props.stores.app.title) || title || ""
 
     return createElement(
       DocumentTitle, {title}, createElement(
-        observer(Target), {...props}
+        observer(Target), {
+          ...props
+        }
       )
     )
   }

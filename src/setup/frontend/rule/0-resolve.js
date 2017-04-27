@@ -7,8 +7,12 @@ const resolve = () => ({
   options: {
     babelrc: false,
     plugins: [
-      "transform-es2015-modules-commonjs",
-      "babel-plugin-transform-export-extensions",
+      "syntax-jsx",
+      "syntax-decorators",
+      "syntax-async-functions",
+      "syntax-class-properties",
+      "syntax-object-rest-spread",
+      "transform-export-extensions",
       ["module-resolver", {
         cwd: ROOT,
         alias: {
