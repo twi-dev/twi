@@ -15,15 +15,24 @@ const ora = require("ora")()
 const {cross} = require("figures")
 const {red} = require("chalk")
 
-// DEPRECATED
-const setEnv = isDev => isDev ? "development" : "production"
-
 const getEnv = ({development, production, E} = {}) => {
-  if (development) return "development"
+  let name = ""
 
-  if (production) return "production"
+  if (development) {
+    name = "development"
+  } else if (production) {
+    name = "production"
+  } else {
+    name = E
+  }
 
-  return E || "development"
+  name || (name = "development")
+
+  const dev = name !== "production"
+  const test = name === "test"
+  const debug = name === "debug"
+
+  return Object.freeze({name, dev, test, debug})
 }
 
 /**
@@ -103,8 +112,6 @@ function makeFrontend() {
  * @param component
  */
 function make(component) {
-  setEnv(false) // set NODE_ENV to production
-
   // Build specified component
   switch (component) {
     case "backend": return makeBackend()
@@ -137,8 +144,6 @@ function make(component) {
  * @param commander.Command
  */
 function setup(cmd) {
-  setEnv(false)
-
   function onFulfilled() {
     ora.stop()
 
@@ -156,9 +161,6 @@ function setup(cmd) {
 
 function run(name, cmd) {
   const env = getEnv(cmd.parent)
-  const isDev = env !== "production"
-
-  setEnv(isDev) // tmp
 
   const onRejected = err => onError(err, cmd.parent.T)
 
@@ -169,7 +171,7 @@ function run(name, cmd) {
     return onRejected(err)
   }
 
-  const res = service(isDev, env)
+  const res = service(env)
 
   res instanceof Promise
     ? res.catch(onRejected)
@@ -198,8 +200,6 @@ commander
   .option("--stack-trace, -t", "show stack trace on errors")
   .option("--development", "set env to development")
   .option("--production", "set env to production")
-  .option("--debug", "set env to debug")
-  .option("--test", "set env to test")
   .option("--env, -e [env]", "set an environment for an application")
 
 commander

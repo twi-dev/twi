@@ -17,7 +17,9 @@ const buildRoutes = makeRouter(join(ROOT, "server/static/route"))
 
 const port = _static.port
 
-async function main(dev, env) {
+async function main(env) {
+  const dev = env.dev
+
   const next = new Next({dev})
   const server = new Server("static", {dev, env, port})
 
