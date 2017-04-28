@@ -16,7 +16,8 @@ const resolve = () => ({
       ["module-resolver", {
         cwd: ROOT,
         alias: {
-          frontend: "./frontend"
+          frontend: "./frontend",
+          "iterator/sync": "./system/helper/iterator/sync"
         }
       }]
     ]

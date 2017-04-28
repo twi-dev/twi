@@ -10,6 +10,7 @@ const mapStoresToProps = stores => ({...stores})
 
 /**
  * Connect MobX store(s) to a Targer component
+ * To connect stores, you could to declare static getInitiaStores method.
  *
  * @param object stores – MobX stores that you would like to
  *   connect to your component.
@@ -21,10 +22,6 @@ function connect(Target) {
 
   class Connect extends Component {
     static displayName = `Connect(${name})`
-
-    static defaultProps = {
-      stores: null
-    }
 
     constructor(props) {
       super()

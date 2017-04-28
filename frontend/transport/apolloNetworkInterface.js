@@ -5,7 +5,7 @@ import {
   HTTPFetchNetworkInterface
 } from "apollo-client/transport/networkInterface"
 
-import toFormData from "frontend/core/helper/util/toFormData"
+import toFormData from "frontend/helper/util/toFormData"
 
 class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
   fetchFromRemoteEndpoint({request, options}) {
