@@ -20,14 +20,13 @@ config/app/test.yml
 config/runtime/assets.json
 # End
 
+# Main
 server/graphql
 server
 system
 setup
 common
 node_modules
-foo
-bar
 deploy/sandbox
 runtime
 
@@ -46,6 +45,7 @@ static/assets/css
 
 # Tests runtime stuff and code coverage
 coverage
+
 !test/unit/system
 !test/unit/server
 !test/unit/frontend

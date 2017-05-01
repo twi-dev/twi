@@ -15,8 +15,7 @@ const jeet = require("jeet")
 const svgmin = require("gulp-svgmin")
 
 // Stylus paths
-const STYLUS_SRC_DIR = `${__dirname}/frontend/stylus`
-const STYLUS_SRC = [`${STYLUS_SRC_DIR}/error/*.styl`]
+const STYLUS_SRC = `${__dirname}/frontend/stylus/global/*.styl`
 const STYLUS_DEST = `${__dirname}/static/assets/css`
 
 // SVG paths
@@ -40,6 +39,7 @@ gulp.task("stylus", () => {
     .pipe(plumber(onError))
     .pipe(stylus({
       "include css": true,
+      include: "node_modules",
       use: [
         rupture(),
         jeet(),
