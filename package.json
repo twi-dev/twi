@@ -5,19 +5,17 @@
   "author": "Nick K.",
   "license": "MIT",
   "repository": "git@github.com:octet-stream/twi.git",
-  "bugs": {
-    "url": "https://github.com/octet-stream/twi/issues"
-  },
+  "bugs": "https://github.com/octet-stream/twi/issues",
   "main": "bin/twi",
   "bin": {
     "twi": "bin/twi"
   },
   "scripts": {
     "setup": "bin/twi setup",
-    "twi:api": "./bin/twi --stack-trace --env production api",
-    "twi:api:dev": "nodemon -x ./bin/twi -- --stack-trace --env development api",
-    "twi:static": "./bin/twi --stack-trace --env production static",
-    "twi:static:dev": "nodemon -x ./bin/twi -- --stack-trace --env development static",
+    "twi:api": "./bin/twi --stack-trace --env production run api",
+    "twi:api:dev": "nodemon -x ./bin/twi -- --stack-trace --env development run api",
+    "twi:static": "./bin/twi --stack-trace --env production run static",
+    "twi:static:dev": "nodemon -x ./bin/twi -- --stack-trace --env development run static",
     "t:a": "yarn twi:api",
     "t:a:d": "yarn twi:api:dev",
     "t:s": "yarn twi:static",
@@ -121,6 +119,7 @@
     "babel-plugin-dynamic-import-webpack": "1.0.1",
     "babel-plugin-module-resolver": "2.5.0",
     "babel-plugin-transform-async-generator-functions": "6.22.0",
+    "babel-plugin-transform-async-to-generator": "6.24.1",
     "babel-plugin-transform-class-properties": "6.23.0",
     "babel-plugin-transform-decorators-legacy": "1.3.4",
     "babel-plugin-transform-do-expressions": "6.22.0",

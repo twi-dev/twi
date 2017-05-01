@@ -7,6 +7,8 @@ import BabiliWebpackPlugin from "babili-webpack-plugin"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 
+const UglifyJsPlugin = optimize.UglifyJsPlugin
+
 function getRules(options) {
   const res = []
 
@@ -19,11 +21,15 @@ function getRules(options) {
   return res.reverse()
 }
 
+const isUglifyJsPlugin = val => (
+  val instanceof UglifyJsPlugin || val.constructor.name === "UglifyJsPlugin"
+)
+
 function webpack(cfg, {dev}) {
   const rules = getRules({isDev: dev})
 
   cfg.plugins = cfg.plugins.map(
-    p => p instanceof optimize.UglifyJsPlugin ? new BabiliWebpackPlugin() : p
+    p => isUglifyJsPlugin(p) ? new BabiliWebpackPlugin() : p
   )
 
   cfg.resolveLoader.alias = {

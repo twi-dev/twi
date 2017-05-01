@@ -1,5 +1,3 @@
-"use strict"
-
 module.exports = [
   {
     pic: "twilight-sparkle.png"
