@@ -4,12 +4,22 @@
 .npmignore
 .next
 
+# Configs rules
+config/cert/**
+config/service/**/*.yml
+config/base/**/*.yml
+
+!config/base/default.yml
+!config/service/**/default.yml
+
+# Deprecated
 config/app/user.yaml
 config/app/user.yml
 config/app/test.yaml
 config/app/test.yml
-config/cert
 config/runtime/assets.json
+# End
+
 server/graphql
 server
 system
@@ -33,7 +43,6 @@ runtime
 static/assets/img/**/*.svg
 static/assets/js
 static/assets/css
-static/app
 
 # Tests runtime stuff and code coverage
 coverage
@@ -53,9 +62,3 @@ yarn-error.log
 # An old codebase
 *.old
 *-old
-
-# Deprecated (TODO: remove these rules)
-theme/**/src/coffee-old
-config/assets.json
-config/test.yaml
-config/test.yml
