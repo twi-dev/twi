@@ -56,6 +56,13 @@
       "!./test/helper/**/*.js"
     ]
   },
+  "nyc": {
+    "include": [
+      "src",
+      "frontend",
+      "bin/helper.js"
+    ]
+  },
   "dependencies": {
     "bcryptjs": "2.4.3",
     "camelcase": "4.0.0",
@@ -166,7 +173,7 @@
     "mobx-remotedev": "0.2.5",
     "mobx-utils": "2.0.1",
     "normalize.css": "5.0.0",
-    "nyc": "10.1.2",
+    "nyc": "10.3.0",
     "poststylus": "0.2.3",
     "prettier": "1.2.2",
     "prop-types": "15.5.8",
