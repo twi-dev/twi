@@ -1,6 +1,7 @@
 {
   "name": "twi",
   "version": "0.2.0",
+  "codename": "Testing, Testing, 1, 2, 3",
   "description": "Fanfiction library engine",
   "author": "Nick K.",
   "license": "MIT",
@@ -94,6 +95,7 @@
     "koa-convert": "1.2.0",
     "koa-csrf": "3.0.4",
     "koa-favicon": "2.0.0",
+    "koa-jwt": "^3.2.1",
     "koa-passport": "3.0.0",
     "koa-rbac": "1.0.5",
     "koa-router": "7.0.1",

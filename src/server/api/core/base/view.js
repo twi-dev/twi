@@ -1,39 +1,28 @@
+import {join} from "path"
+
 import {compile} from "pug"
 import {readFile} from "promise-fs"
-import {version} from "package.json"
+import {version, codename} from "package.json"
 
 import merge from "lodash/merge"
 import isFunction from "lodash/isFunction"
 
-import getHostname from "system/helper/util/getHostname"
-
-import {
-  app, static as _static, isDev
-} from "system/helper/util/configure"
-
-const VIEWS = `${process.cwd()}/view`
-
-const staticHostname = getHostname(
-  _static.host,
-  _static.port,
-  _static.secure
-)
+const VIEWS = join(process.cwd(), "view")
 
 // Default settions of view renderer
 const defaults = {
   views: VIEWS,
-  debug: isDev,
-  cache: !isDev
+  debug: false,
+  cache: false,
+  locals: {
+    system: {
+      version,
+      codename
+    }
+  }
 }
 
-// Twi summary
-const twi = {
-  name: app.name,
-  lang: app.lang,
-  version
-}
-
-// Cache for Pug's template function
+// Tiny cache for Pug's template functions
 const cache = {}
 
 /**
@@ -80,12 +69,7 @@ const getViewRenderer = options => async function render(filename, locals) {
     `${options.views}/${filename}.pug`, options
   )
 
-  locals = merge({}, locals, {
-    twi,
-    sys: {
-      static: staticHostname
-    }
-  })
+  locals = merge({}, locals, options.locals)
 
   this.body = fn(locals)
 }

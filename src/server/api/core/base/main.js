@@ -24,10 +24,10 @@ async function main(options) {
 
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
-    favicon(FAVICON_PATH), // Server application favicon
     logger(), // Simplest logger
     body(),
     multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
+    favicon(FAVICON_PATH), // Server application favicon
     r.allowedMethods(),
     r.routes()
   ]
