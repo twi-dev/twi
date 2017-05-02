@@ -3,10 +3,9 @@ import {join} from "path"
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
 
-import {backend} from "system/helper/util/configure"
-
 import Server from "system/base/Server"
 import makeRouter from "system/base/router"
+import getConfig from "system/base/getConfig"
 
 import errorHandler from "api/core/middleware/error-handler"
 import logger from "api/core/middleware/logger"
@@ -18,10 +17,10 @@ const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
 
 const r = makeRouter(join(ROOT, "server/api/route"))()
 
-const port = backend.port
+async function main(options) {
+  const config = await getConfig(options.name, options.env)
 
-async function main(dev, env) {
-  const server = new Server("api", {dev, env, port})
+  const server = new Server({...config, ...options})
 
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context

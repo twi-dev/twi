@@ -1,7 +1,7 @@
 import http from "http"
 
 import Koa from "koa"
-import merge from "lodash/merge"
+// import merge from "lodash/merge"
 import isString from "lodash/isString"
 import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
@@ -13,15 +13,15 @@ import getHostname from "system/helper/util/getHostname"
 
 const isArray = Array.isArray
 
-const defaults = {
-  dev: false,
-  test: false,
-  debug: true,
-  env: process.env.NODE_ENV || "development"
-}
+// const defaults = {
+//   dev: false,
+//   test: false,
+//   debug: true,
+//   env: process.env.NODE_ENV || "development"
+// }
 
 class Server extends Koa {
-  constructor(name, config) {
+  constructor(name, config = {}) {
     if (isPlainObject(name)) {
       config = name
 
@@ -30,7 +30,7 @@ class Server extends Koa {
       delete config.name
     }
 
-    config = merge({}, defaults, config)
+    // config = merge({}, defaults, config)
 
     if (!name) {
       throw new TypeError(
@@ -168,12 +168,15 @@ class Server extends Koa {
   /**
    * Start server that will belistening on port from config.
    */
-  listen = () => new Promise((resolve, reject) => (
-    http
-      .createServer(this.callback())
+  listen = () => new Promise((resolve, reject) => {
+    const server = http.createServer(this.callback())
+
+    const onFulfilled = () => resolve(server)
+
+    server
       .on("error", reject)
-      .listen(this.__port, resolve)
-  ))
+      .listen(this.port, onFulfilled)
+  })
 }
 
 export default Server

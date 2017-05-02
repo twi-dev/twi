@@ -45,14 +45,14 @@ async function getConfig(serviceName, env) {
 
   const servicePath = join(CONFIGS_ROOT, "service", serviceName)
 
-  const base = await readConfig(join(CONFIGS_ROOT, "base"), env.name)
+  const system = await readConfig(join(CONFIGS_ROOT, "system"), env.name)
   const serviceConfig = await readConfig(servicePath, env.name)
 
   if (process.env.NODE_ENV !== env.name) {
     process.env.NODE_ENV = env.name
   }
 
-  return deepFreeze({env, base, [serviceName]: serviceConfig})
+  return deepFreeze({...serviceConfig, env, system})
 }
 
 export default getConfig

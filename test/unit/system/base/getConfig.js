@@ -58,7 +58,7 @@ test("Should return an expected config file", async t => {
     debug: false
   }
 
-  const baseDefault = {
+  const system = {
     name: "My Awesome unicorn App"
   }
 
@@ -68,11 +68,13 @@ test("Should return an expected config file", async t => {
 
   const unicorn = merge({}, unicornDefault, unicornDevelopment)
 
-  const expectedConfig = {env, base: baseDefault, unicorn}
+  const expectedConfig = {
+    ...unicorn, env, system
+  }
 
   function read(path) {
-    if (path.endsWith("base/default.yml")) {
-      return baseDefault
+    if (path.endsWith("system/default.yml")) {
+      return system
     }
 
     if (path.endsWith("unicorn/default.yml")) {

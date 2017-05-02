@@ -1,6 +1,6 @@
 {
   "ignore": [
-    "gulpfile.coffee",
+    "gulpfile.js",
     ".gitignore",
     ".npmignore",
     "package.json",

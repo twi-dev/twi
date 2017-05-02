@@ -164,14 +164,14 @@ function run(name, cmd) {
 
   const onRejected = err => onError(err, cmd.parent.T)
 
-  let service
+  let executor
   try {
-    service = require(`${ROOT}/server/${name}/core/base/main`).default
+    executor = require(`${ROOT}/server/${name}/core/base/main`).default
   } catch (err) {
     return onRejected(err)
   }
 
-  const res = service(env)
+  const res = executor({name, env})
 
   res instanceof Promise
     ? res.catch(onRejected)

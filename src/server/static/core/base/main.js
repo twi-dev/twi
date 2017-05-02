@@ -2,10 +2,9 @@ import {join} from "path"
 
 import Next from "next/dist/server"
 
-import {static as _static} from "system/helper/util/configure"
-
 import Server from "system/base/Server"
 import makeRouter from "system/base/router"
+import getConfig from "system/base/getConfig"
 
 import hanlde from "static/core/middleware/request-handler"
 
@@ -15,13 +14,13 @@ const ROOT = process.cwd()
 
 const buildRoutes = makeRouter(join(ROOT, "server/static/route"))
 
-const port = _static.port
+async function main(options) {
+  const dev = options.env.dev
 
-async function main(env) {
-  const dev = env.dev
+  const config = await getConfig(options.name, options.env)
 
   const next = new Next({dev})
-  const server = new Server("static", {dev, env, port})
+  const server = new Server({...config, ...options})
 
   const r = buildRoutes({
     nonMatched: {

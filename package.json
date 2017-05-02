@@ -38,10 +38,11 @@
     "m:f": "yarn make:frontend",
     "lint": "node_modules/.bin/eslint bin frontend src test next.config.js gulpfile.js",
     "test": "node_modules/.bin/ava",
-    "cleanup": "node_modules/.bin/rimraf .nyc_output coverage runtime server static/**/*.svg static/**/*.css static/**/*.js system",
+    "cleanup:report": "node_modules/.bin/rimraf .nyc_output runtime server static/**/*.svg static/**/*.css static/**/*.js system",
+    "cleanup": "yarn cleanup:report && node_modules/.bin/rimraf coverage",
     "precommit": "yarn make && yarn lint && yarn test",
     "coverage": "node_modules/.bin/nyc yarn test",
-    "report": "yarn make:test && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
+    "report": "yarn make:test && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup:report && yarn make",
     "report:codecov": "node_modules/.bin/nyc report --reporter=lcov yarn test",
     "codecov": "node_modules/.bin/codecov",
     "ci": "yarn lint && yarn make:test && yarn coverage && yarn report:codecov && yarn codecov && yarn cleanup"
