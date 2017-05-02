@@ -30,7 +30,7 @@
     "gulp:watch": "node_modules/.bin/gulp watch",
     "g:w": "yarn gulp:watch",
     "make": "node_modules/.bin/mkdirp runtime && bin/twi make",
-    "make:test": "NODE_ENV=test bin/cake make && NODE_ENV=test node_modules/.bin/next build",
+    "make:test": "node_modules/.bin/mkdirp && NODE_ENV=test bin/cake make && NODE_ENV=test node_modules/.bin/next build",
     "m": "yarn make",
     "watch": "bin/twi watch --stack-trace",
     "w": "yarn watch",
