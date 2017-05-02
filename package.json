@@ -57,10 +57,16 @@
     ]
   },
   "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "extension": [
+      ".jsx"
+    ],
     "include": [
+      "bin/helper.js",
       "src",
-      "frontend",
-      "bin/helper.js"
+      "frontend"
     ]
   },
   "dependencies": {
@@ -124,6 +130,7 @@
     "babel-eslint": "7.1.1",
     "babel-loader": "6.4.0",
     "babel-plugin-dynamic-import-webpack": "1.0.1",
+    "babel-plugin-istanbul": "4.1.3",
     "babel-plugin-module-resolver": "2.5.0",
     "babel-plugin-transform-async-generator-functions": "6.22.0",
     "babel-plugin-transform-async-to-generator": "6.24.1",

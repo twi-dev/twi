@@ -106,7 +106,7 @@ test("Should throw a TypeError when called without service name", async t => {
   t.is(err.message, "Service name should be a string.")
 })
 
-test("Shoul throw a TypeError when env is not a plain object", async t => {
+test("Should throw a TypeError when env is not a plain object", async t => {
   t.plan(3)
 
   const err = await t.throws(getConfig("unicorn"))

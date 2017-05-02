@@ -32,6 +32,11 @@ const mkdir = require("mkdirp")
 
 const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
+// tmp
+if (process.env.NODE_ENV === "test") {
+  BABERC.plugins.push("istanbul")
+}
+
 const DEFAULT_SRC = `${ROOT}/src`
 
 const assign = Object.assign
