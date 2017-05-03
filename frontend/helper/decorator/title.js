@@ -1,13 +1,14 @@
 import {createElement} from "react"
 import {observer} from "mobx-react"
-
 import DocumentTitle from "react-document-title"
 
-const titleDecorator = title => Target => {
+import isFunction from "lodash/isFunction"
+
+const decorateTitle = Target => {
   const name = Target.displayName || Target.name || "Unknown"
 
-  const DecorateTitle = props => {
-    title = (props.stores.app && props.stores.app.title) || title || ""
+  const Title = props => {
+    const title = (props.app && props.app.title) || ""
 
     return createElement(
       DocumentTitle, {title}, createElement(
@@ -18,9 +19,17 @@ const titleDecorator = title => Target => {
     )
   }
 
-  DecorateTitle.displayName = `DecorateTitle(${name})`
+  if (isFunction(Target.getInitialProps)) {
+    Title.getInitialProps = Target.getInitialProps
+  }
 
-  return DocumentTitle
+  if (isFunction(Target.getInitialStores)) {
+    Title.getInitialStores = Target.getInitialStores
+  }
+
+  Title.displayName = `DecorateTitle(${name})`
+
+  return Title
 }
 
-export default titleDecorator
+export default decorateTitle

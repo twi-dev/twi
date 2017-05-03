@@ -10,7 +10,7 @@ const mapStoresToProps = stores => ({...stores})
 
 /**
  * Connect MobX store(s) to a Targer component
- * To connect stores, you could to declare static getInitiaStores method.
+ * To connect stores, you could to declare static getInitialStores method.
  *
  * @param object stores – MobX stores that you would like to
  *   connect to your component.
@@ -29,8 +29,8 @@ function connect(Target) {
       this.stores = {}
 
       let stores = {}
-      if (isFunction(Target.getInitiaStores)) {
-        stores = Target.getInitiaStores(props)
+      if (isFunction(Target.getInitialStores)) {
+        stores = Target.getInitialStores(props)
       }
 
       if (isPlainObject(stores) && !isEmpty(stores)) {
