@@ -1,38 +1,38 @@
 {
-  "name": "Библиотека Твайлайт",
+  "name": "Twilight's Library",
   "icons": [
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-36.png",
+      "src": "\/img/icns/chrome/chrome-twi-36.png",
       "sizes": "36x36",
       "type": "image\/png",
       "density": 0.75
     },
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-48.png",
+      "src": "\/img/icns/chrome/chrome-twi-48.png",
       "sizes": "48x48",
       "type": "image\/png",
       "density": 1
     },
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-72.png",
+      "src": "\/img/icns/chrome/chrome-twi-72.png",
       "sizes": "72x72",
       "type": "image\/png",
       "density": 1.5
     },
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-96.png",
+      "src": "\/img/icns/chrome/chrome-twi-96.png",
       "sizes": "96x96",
       "type": "image\/png",
       "density": 2
     },
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-144.png",
+      "src": "\/img/icns/chrome/chrome-twi-144.png",
       "sizes": "144x144",
       "type": "image\/png",
       "density": 3
     },
     {
-      "src": "\/img/icns/chrome/chrome-ponyfiction-js-192.png",
+      "src": "\/img/icns/chrome/chrome-twi-192.png",
       "sizes": "192x192",
       "type": "image\/png",
       "density": 4

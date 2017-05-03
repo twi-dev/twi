@@ -12,7 +12,8 @@
     "test",
     "runtime",
     "pages",
-    "frontend"
+    "frontend",
+    "static"
   ],
   "ext": "js jsx json yml yaml key cert",
   "exec": "./bin/twi --stack-trace --env development run static"
