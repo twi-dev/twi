@@ -2,6 +2,13 @@
 
 html, body
   font-size 12px
+  
+html
+  height 100%
+  
+body
+  &, & > div:first-child
+    height 100%
 
 a
   text-decoration none
@@ -9,3 +16,7 @@ a
 textarea, input, button
   &:focus, &:active
     outline none
+
+#__next
+  &, & > div
+    height 100%

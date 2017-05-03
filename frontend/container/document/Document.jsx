@@ -87,29 +87,29 @@ class TwiDocument extends Document {
           <link
             rel="apple-touch-icon" sizes="120x120"
             href={
-              "/static/assets/img/icns/apple-touch-icon/" +
-              "120/apple-touch-icon-120.png"
+              "/static/assets/img/icns/apple-touch-icon" +
+              "/120/apple-touch-icon-120.png"
             }
           />
           <link
             rel="apple-touch-icon" sizes="144x144"
             href={
-              "/static/assets/img/icns/apple-touch-icon/" +
-              "144/apple-touch-icon-144.png"
+              "/static/assets/img/icns/apple-touch-icon" +
+              "/144/apple-touch-icon-144.png"
             }
           />
           <link
             rel="apple-touch-icon" sizes="152x152"
             href={
-              "/static/assets/img/icns/apple-touch-icon/" +
-              "152/apple-touch-icon-152.png"
+              "/static/assets/img/icns/apple-touch-icon" +
+              "/152/apple-touch-icon-152.png"
             }
           />
           <link
             rel="apple-touch-icon" sizes="180x180"
             href={
-              "/static/assets/img/icns/apple-touch-icon/" +
-              "180/apple-touch-icon-180.png"
+              "/static/assets/img/icns/apple-touch-icon" +
+              "/180/apple-touch-icon-180.png"
             }
           />
           <link
@@ -124,6 +124,14 @@ class TwiDocument extends Document {
         <body>
           <Main />
           <Script />
+
+          <link
+            rel="stylesheet"
+            href={
+              "https://fonts.googleapis.com/css" +
+              "?family=Roboto:400,400italic,700,700italic"
+            }
+          />
         </body>
       </html>
     )
