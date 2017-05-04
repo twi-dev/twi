@@ -1,3 +1,5 @@
+import FormData from "isomorphic-form-data"
+
 import isPlainObject from "lodash/isPlainObject"
 import isArray from "lodash/isArray"
 import isEmpty from "lodash/isEmpty"

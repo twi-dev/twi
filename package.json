@@ -87,6 +87,7 @@
     "graphql-server-koa": "0.6.0",
     "http2": "3.3.6",
     "isomorphic-fetch": "2.2.1",
+    "isomorphic-form-data": "^1.0.0",
     "jsonwebtoken": "7.3.0",
     "junk": "2.1.0",
     "kcors": "2.2.0",

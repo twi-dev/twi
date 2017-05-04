@@ -1,7 +1,11 @@
+import {Readable} from "stream"
+
 import busboy from "then-busboy"
 import pathToRegexp from "path-to-regexp"
 import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
+
+import recursiveMap from "system/helper/iterator/sync/recursiveMap"
 
 const defaults = {
   processFiles: false,
@@ -25,13 +29,15 @@ const multipart = options => async function(ctx, next) {
     return await next()
   }
 
-  let data = await busboy(ctx.req)
+  let body = await busboy(ctx.req)
 
   if (isFunction(processFiles)) {
-    data = await processFiles(data)
+    body = recursiveMap(
+      body, part => part instanceof Readable ? processFiles(part) : part
+    )
   }
 
-  ctx.request.body = data
+  ctx.request.body = body
 
   await next()
 }

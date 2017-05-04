@@ -1,13 +1,18 @@
-import "whatwg-fetch" // tmp
+import fetch from "isomorphic-fetch"
 
-import {printAST} from "apollo-client"
-import {
-  HTTPFetchNetworkInterface
-} from "apollo-client/transport/networkInterface"
+import {printAST, HTTPFetchNetworkInterface} from "apollo-client"
 
 import toFormData from "frontend/helper/util/toFormData"
 
-class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
+class FormDataHTTPNetworkInterface extends HTTPFetchNetworkInterface {
+  constructor(options = {}) {
+    const url = options.url
+
+    delete options.url
+
+    super(url, options)
+  }
+
   fetchFromRemoteEndpoint({request, options}) {
     // Transform variables obj to FormData
     const body = toFormData(request.variables, "variables")
@@ -29,9 +34,4 @@ class FormDataHTTPFetchNetworkInterface extends HTTPFetchNetworkInterface {
   }
 }
 
-const createNetworkInterface = opts => (
-  new FormDataHTTPFetchNetworkInterface(opts.uri, opts)
-)
-
-export {FormDataHTTPFetchNetworkInterface}
-export default createNetworkInterface
+export default FormDataHTTPNetworkInterface

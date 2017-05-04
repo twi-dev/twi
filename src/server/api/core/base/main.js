@@ -2,6 +2,7 @@ import {join} from "path"
 
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
+import cors from "kcors"
 
 import Server from "system/base/Server"
 import makeRouter from "system/base/router"
@@ -25,6 +26,7 @@ async function main(options) {
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
     logger(), // Simplest logger
+    cors(), // TODO: Configure allowed Origins
     body(),
     multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
     favicon(FAVICON_PATH), // Server application favicon
