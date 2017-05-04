@@ -1,4 +1,5 @@
 import React from "react"
+import {instanceOf} from "prop-types"
 
 import compose from "lodash/fp/compose"
 
@@ -15,6 +16,10 @@ Home.getInitialStores = function() {
   })
 
   return {app}
+}
+
+Home.propTypes = {
+  app: instanceOf(Application).isRequired
 }
 
 export default compose(connect, title)(Home)
