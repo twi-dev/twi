@@ -37,7 +37,7 @@
     "w": "yarn watch",
     "make:frontend": "node_modules/.bin/mkdirp runtime && bin/twi make frontend",
     "m:f": "yarn make:frontend",
-    "lint": "node_modules/.bin/eslint bin frontend src test next.config.js gulpfile.js",
+    "lint": "node_modules/.bin/eslint bin frontend src next.config.js gulpfile.js",
     "test": "node_modules/.bin/ava",
     "cleanup:report": "node_modules/.bin/rimraf .nyc_output runtime server static/**/*.svg static/**/*.css static/**/*.js system",
     "cleanup": "yarn cleanup:report && node_modules/.bin/rimraf coverage",

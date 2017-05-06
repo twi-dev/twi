@@ -46,9 +46,12 @@ static/assets/css
 # Tests runtime stuff and code coverage
 coverage
 
-!test/unit/system
-!test/unit/server
-!test/unit/frontend
+test/**/*.js
+test/**/*.jsx
+test/**/*.map
+
+!src/test/**/*.js
+!src/test/**/*.jsx
 
 # Junks
 npm-debug.log
