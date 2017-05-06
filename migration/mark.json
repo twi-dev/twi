@@ -1,0 +1,90 @@
+[
+  {
+    "color": "#02a1db",
+    "name": "Second Person"
+  },
+  {
+    "color": "#888888",
+    "name": "Alternative Universe"
+  },
+  {
+    "color": "#f59c00",
+    "name": "Comedy"
+  },
+  {
+    "color": "#b93737",
+    "name": "Dark"
+  },
+  {
+    "color": "#4d3281",
+    "name": "Equestria Girls"
+  },
+  {
+    "color": "#b5835a",
+    "name": "Human"
+  },
+  {
+    "color": "#3f74ce",
+    "name": "Random"
+  },
+  {
+    "color": "#bd42a7",
+    "name": "Sad"
+  },
+  {
+    "color": "#4b86ff",
+    "name": "Slice Of Life"
+  },
+  {
+    "color": "#ffb54b",
+    "name": "Tragedy"
+  },
+  {
+    "color": "#45c950",
+    "name": "Adventure"
+  },
+  {
+    "color": "#b5695a",
+    "name": "Anthro"
+  },
+  {
+    "color": "#47b8a0",
+    "name": "Crossover"
+  },
+  {
+    "color": "#ec50ca",
+    "name": "Drama"
+  },
+  {
+    "color": "#6d232f",
+    "name": "Horror"
+  },
+  {
+    "color": "#444444",
+    "name": "Mystery"
+  },
+  {
+    "color": "#974bff",
+    "name": "Romance"
+  },
+  {
+    "color": "#d84a9d",
+    "name": "Erotic"
+  },
+  {
+    "color": "#992584",
+    "name": "Sex"
+  },
+  {
+    "color": "#5d63a5",
+    "name": "Sci-Fi"
+  },
+  {
+    "color": "#d62b2b",
+    "name": "Thriller"
+  },
+  {
+    "color": "#ca6565",
+    "name": "Fluff"
+  }
+]

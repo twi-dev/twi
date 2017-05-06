@@ -1,0 +1,270 @@
+[
+  {
+    "pic": "twilight-sparkle.png",
+    "name": "Twilight Sparkle"
+  },
+  {
+    "pic": "pinkie-pie.png",
+    "name": "Pinkie Pie"
+  },
+  {
+    "pic": "applejack.png",
+    "name": "Applejack"
+  },
+  {
+    "pic": "rainbow-dash.png",
+    "name": "Rainbow Dash"
+  },
+  {
+    "pic": "rarity.png",
+    "name": "Rarity"
+  },
+  {
+    "pic": "fluttershy.png",
+    "name": "Fluttershy"
+  },
+  {
+    "pic": "apple-bloom.png",
+    "name": "Apple Bloom"
+  },
+  {
+    "pic": "sweetie-belle.png",
+    "name": "Sweetie Belle"
+  },
+  {
+    "pic": "scootaloo.png",
+    "name": "Scootaloo"
+  },
+  {
+    "pic": "spike.png",
+    "name": "Spike"
+  },
+  {
+    "pic": "princess-celestia.png",
+    "name": "Princess Celestia"
+  },
+  {
+    "pic": "princess-luna.png",
+    "name": "Princess Luna"
+  },
+  {
+    "pic": "princess-mi-amore-cadenza.png",
+    "name": "Princess Mi Amore Cadenza"
+  },
+  {
+    "pic": "princess-flurry-heart.png",
+    "name": "Princess Flurry Heart"
+  },
+  {
+    "pic": "prince-blueblood.png",
+    "name": "Prince Blueblood"
+  },
+  {
+    "pic": "owlowiscious.png",
+    "name": "Owlowiscious"
+  },
+  {
+    "pic": "anon.png",
+    "name": "Anon"
+  },
+  {
+    "pic": "human.png",
+    "name": "Human"
+  },
+  {
+    "pic": "fleetfoot.png",
+    "name": "Fleetfoot"
+  },
+  {
+    "pic": "soarin.png",
+    "name": "Soarin"
+  },
+  {
+    "pic": "surprise.png",
+    "name": "Surprise"
+  },
+  {
+    "pic": "spitfire.png",
+    "name": "Spitfire"
+  },
+  {
+    "pic": "blaze.png",
+    "name": "Blaze"
+  },
+  {
+    "pic": "misty-fly.png",
+    "name": "Misty Fly"
+  },
+  {
+    "pic": "lightning-dust.png",
+    "name": "Lightning Dust"
+  },
+  {
+    "pic": "cloud-kicker.png",
+    "name": "Cloud Kicker"
+  },
+  {
+    "pic": "cloudchaser.png",
+    "name": "Cloudchaser"
+  },
+  {
+    "pic": "thunderlane.png",
+    "name": "Thunderlane"
+  },
+  {
+    "pic": "meadow-flower.png",
+    "name": "Meadow Flower"
+  },
+  {
+    "pic": "bulk-biceps.png",
+    "name": "Bulk Biceps"
+  },
+  {
+    "pic": "snowdrop.png",
+    "name": "Snowdrop"
+  },
+  {
+    "pic": "cheerilee.png",
+    "name": "Cheerilee"
+  },
+  {
+    "pic": "blossomforth.png",
+    "name": "Blossomforth"
+  },
+  {
+    "pic": "derpy-hooves.png",
+    "name": "Derpy Hooves"
+  },
+  {
+    "pic": "discord.png",
+    "name": "Discord"
+  },
+  {
+    "pic": "nightmare-moon.png",
+    "name": "Nightmare Moon"
+  },
+  {
+    "pic": "octavia-melody.png",
+    "name": "Octavia Melody"
+  },
+  {
+    "pic": "vinyl-scratch.png",
+    "name": "Vinyl Scratch"
+  },
+  {
+    "pic": "lyra-heartstrings.png",
+    "name": "Lyra Heartstrings"
+  },
+  {
+    "pic": "lemon-hearts.png",
+    "name": "Lemon Hearts"
+  },
+  {
+    "pic": "twinkleshine.png",
+    "name": "Twinkleshine"
+  },
+  {
+    "pic": "minuette.png",
+    "name": "Minuette"
+  },
+  {
+    "pic": "moondancer.png",
+    "name": "Moondancer"
+  },
+  {
+    "pic": "sweetie-drops.png",
+    "name": "Sweetie Drops"
+  },
+  {
+    "pic": "golden-harvest.png",
+    "name": "Golden Harvest"
+  },
+  {
+    "pic": "shining-armor.png",
+    "name": "Shining Armor"
+  },
+  {
+    "pic": "zecora.png",
+    "name": "Zecora"
+  },
+  {
+    "pic": "coco-pommel.png",
+    "name": "Coco Pommel"
+  },
+  {
+    "pic": "angel-bunny.png",
+    "name": "Angel Bunny"
+  },
+  {
+    "pic": "night-light.png",
+    "name": "Night Light"
+  },
+  {
+    "pic": "twilight-velvet.png",
+    "name": "Twilight Velvet"
+  },
+  {
+    "pic": "diamond-tiara.png",
+    "name": "Diamond Tiara"
+  },
+  {
+    "pic": "silver-spoon.png",
+    "name": "Silver Spoon"
+  },
+  {
+    "pic": "king-sombra.png",
+    "name": "King Sombra"
+  },
+  {
+    "pic": "queen-chrysalis.png",
+    "name": "Queen Chrysalis"
+  },
+  {
+    "pic": "lord-tirek.png",
+    "name": "Lord Tirek"
+  },
+  {
+    "pic": "big-macintosh.png",
+    "name": "Big Macintosh"
+  },
+  {
+    "pic": "granny-smith.png",
+    "name": "Granny Smith"
+  },
+  {
+    "pic": "babs-seed.png",
+    "name": "Babs Seed"
+  },
+  {
+    "pic": "roseluck.png",
+    "name": "Roseluck"
+  },
+  {
+    "pic": "princess-ember.png",
+    "name": "Princess Ember"
+  },
+  {
+    "pic": "littlepip.png",
+    "name": "Littlepip"
+  },
+  {
+    "pic": "blackjack.png",
+    "name": "Blackjack"
+  },
+  {
+    "pic": "velvet-remedy.png",
+    "name": "Velvet Remedy"
+  },
+  {
+    "pic": "original-character.png",
+    "name": "Original Character"
+  },
+  {
+    "pic": "trixie-lulamoon.png",
+    "name": "Trixie Lulamoon"
+  },
+  {
+    "pic": "fleur-dis-lee.png",
+    "name": "Fleur Dis Lee"
+  }
+]
