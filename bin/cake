@@ -33,6 +33,9 @@ const mkdir = require("mkdirp")
 const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 
 // tmp
+BABERC.plugins.push("dynamic-import-node")
+
+// tmp
 if (process.env.NODE_ENV === "test") {
   BABERC.plugins.push("istanbul")
 }
