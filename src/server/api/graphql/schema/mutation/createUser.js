@@ -1,29 +1,18 @@
 import {GraphQLString as TString} from "graphql"
 
+import bind from "system/helper/util/bind"
+
 import TInFile from "server/api/graphql/input/file/TInFile"
 import TInContacts from "server/api/graphql/input/user/TInContacts"
 
 import TUser from "server/api/graphql/type/user/TUser"
 
-// import User from "server/api/model/User"
-
-async function createUser(_, {login, email, password}) {
-  return {
-    userId: "foo",
-    login,
-    email,
-    password,
-    role: {
-      name: "root",
-      code: 0
-    }
-  }
-}
+import User from "server/api/model/User"
 
 const resolve = {
   type: TUser,
   required: true,
-  handler: createUser,
+  handler: bind(User, User.createUser),
   description: (
     "This method will create a new user using basic information of him."
   )

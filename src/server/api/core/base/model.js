@@ -24,7 +24,7 @@ function createModel(Model, options = {}) {
 
   const name = Model.name
 
-  if (!isFunction(Model)) {
+  if (!isFunction(Model.getModelFields)) {
     throw new TypeError(
       `Required static method ${name}.getModelFields() { ... } on a model.`
     )

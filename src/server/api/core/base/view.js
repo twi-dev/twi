@@ -57,21 +57,25 @@ async function compileTemplate(filename, options) {
   return options.cache ? (cache[filename] = fn) : fn
 }
 
+async function render(filename, locals, options) {
+  const fn = await compileTemplate(
+    join(options.views, `${filename}.pug`), options
+  )
+
+  locals = merge({}, locals, options.locals)
+
+  return fn(locals)
+}
+
 /**
  * Get render function for Koa context
  *
  * @param object options
  *
- * @return function render
+ * @return function renderer
  */
-const getViewRenderer = options => async function render(filename, locals) {
-  const fn = await compileTemplate(
-    `${options.views}/${filename}.pug`, options
-  )
-
-  locals = merge({}, locals, options.locals)
-
-  this.body = fn(locals)
+const getViewRenderer = options => async function renderer(filename, locals) {
+  this.body = await render(filename, locals, options)
 }
 
 /**
@@ -86,4 +90,5 @@ const view = options => getViewRenderer(
   })
 )
 
+export {render}
 export default view

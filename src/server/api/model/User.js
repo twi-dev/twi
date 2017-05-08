@@ -1,7 +1,7 @@
 import moment from "moment"
 import {hash} from "bcryptjs"
 
-import isPlainObject from "lodash/isPlainObject"
+// import isPlainObject from "lodash/isPlainObject"
 
 import createModel from "server/api/core/base/model"
 
@@ -53,18 +53,25 @@ class User {
     }
   })
 
-  static async createUser(user) {
-    if (!isPlainObject(user)) {
-      throw new TypeError("The data of new user should be provided as object")
-    }
+  // static async getUserByLogin(_, {login}) {
+  //   const user = await this.findOne({login})
+
+  //   return user.toObject()
+  // }
+
+  static async createUser(_, user) {
+    // Weird thing, I know that. Just for more readable code :)
+    const Model = this
 
     const password = hash(user.password, 15)
 
     const role = User.roles.user
 
-    return new this({
-      ...user, password, role
-    }).save()
+    const model = new Model({...user, password, role})
+    const createdUser = await model.save()
+
+    // Also, we have to sent an email to given address before return user
+    return createdUser.toObject()
   }
 
   static roles = {
