@@ -27,7 +27,9 @@ session:
   sessidName: usessid
 
 # Mail configs
-smtp:
+mail:
+  from: Pony Postmare # Human-readable name of the service
+
   # Hostname of your mail server
   host: null
   port: null
@@ -36,9 +38,10 @@ smtp:
   # Can be only "true" of "false"
   secure: true
 
-  # E-mail address for noreply bot. Something like this:
-  # noreply@yourdomain.com
-  user: null
+  auth:
+    # E-mail address for noreply bot. Something like this:
+    # noreply@yourdomain.com
+    user: null
 
-  # Password of noreply bot account
-  pass: null
+    # Password of noreply bot account
+    pass: null

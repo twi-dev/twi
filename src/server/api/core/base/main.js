@@ -8,9 +8,11 @@ import Server from "system/base/Server"
 import makeRouter from "system/base/router"
 import getConfig from "system/base/getConfig"
 
-import errorHandler from "api/core/middleware/error-handler"
-import logger from "api/core/middleware/logger"
-import multipart from "api/core/middleware/multipart"
+import errorHandler from "server/api/core/middleware/error-handler"
+import logger from "server/api/core/middleware/logger"
+import multipart from "server/api/core/middleware/multipart"
+
+import createMailerService from "server/api/core/mail"
 
 const ROOT = process.cwd()
 
@@ -22,6 +24,13 @@ async function main(options) {
   const config = await getConfig(options.name, options.env)
 
   const server = new Server({...config, ...options})
+
+  const mail = createMailerService({
+    mail: config.mail,
+    system: config.system
+  })
+
+  server.ext({mail}) // I don't think is that a good idea :D
 
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
