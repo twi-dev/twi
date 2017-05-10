@@ -8,6 +8,8 @@ import isPlainObject from "lodash/isPlainObject"
 
 const CONFIGS_ROOT = join(process.cwd(), "config")
 
+const cache = new Map()
+
 async function readConfig(dir, name) {
   const defaultConfig = await read(join(dir, "default.yml"))
 
@@ -43,6 +45,10 @@ async function getConfig(serviceName, env) {
     throw new TypeError("Env should be passed as object.")
   }
 
+  if (cache.has(serviceName)) {
+    return cache.get(serviceName)
+  }
+
   const servicePath = join(CONFIGS_ROOT, "service", serviceName)
 
   const system = await readConfig(join(CONFIGS_ROOT, "system"), env.name)
@@ -52,7 +58,9 @@ async function getConfig(serviceName, env) {
     process.env.NODE_ENV = env.name
   }
 
-  return deepFreeze({...serviceConfig, env, system})
+  return cache
+    .set(serviceName, deepFreeze({...serviceConfig, env, system}))
+    .get(serviceName)
 }
 
 export default getConfig
