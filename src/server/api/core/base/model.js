@@ -5,6 +5,8 @@ import isPlainObject from "lodash/isPlainObject"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 
+mongoose.Promise = Promise
+
 const Types = (() => {
   const res = {}
 
@@ -51,11 +53,11 @@ function createModel(Model, options = {}) {
   return model
 }
 
-// function createConnection(config = {}) {
-//   const connectionString = ""
+async function createConnection(config = {}) {
+  const replicaUri = `${config.host}:${config.port}/${config.name}`
 
-//   return mongoose.connect(connectionString)
-// }
+  return await mongoose.connect(replicaUri)
+}
 
-// export {createConnection}
+export {createConnection}
 export default createModel

@@ -35,7 +35,7 @@ class User {
     },
     password: {
       type: TString,
-      required: true
+      required: [true, "Password required for user"]
     },
     role: {
       type: TNumber,
@@ -45,12 +45,15 @@ class User {
       type: TDate,
       default: moment
     },
-    avatar: TString,
-    contacts: {
-      vk: TString,
-      fb: TString,
-      twitter: TString
-    }
+    avatar: {
+      type: TString,
+      default: null
+    },
+    // contacts: {
+    //   vk: TString,
+    //   fb: TString,
+    //   twitter: TString
+    // }
   })
 
   // static async getUserByLogin(_, {login}) {
@@ -63,15 +66,25 @@ class User {
     // Weird thing, I know that. Just for more readable code :)
     const Model = this
 
-    const password = hash(user.password, 15)
+    const password = await hash(user.password, 15)
 
     const role = User.roles.user
 
     const model = new Model({...user, password, role})
+
     const createdUser = await model.save()
 
     // Also, we have to sent an email to given address before return user
-    return createdUser.toObject()
+    return {
+      ...createdUser.toObject(),
+
+      userId: createdUser._id, // eslint-disable-line
+      // tmp
+      role: {
+        name: "user",
+        code: 0
+      }
+    }
   }
 
   static roles = {

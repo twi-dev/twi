@@ -45,6 +45,7 @@ async function getConfig(serviceName, env) {
     throw new TypeError("Env should be passed as object.")
   }
 
+  // Return config from cache if exists
   if (cache.has(serviceName)) {
     return cache.get(serviceName)
   }
@@ -58,9 +59,12 @@ async function getConfig(serviceName, env) {
     process.env.NODE_ENV = env.name
   }
 
-  return cache
-    .set(serviceName, deepFreeze({...serviceConfig, env, system}))
-    .get(serviceName)
+  const config = deepFreeze({...serviceConfig, env, system})
+
+  // Add config to cache
+  cache.set(serviceName, config)
+
+  return config
 }
 
 export default getConfig

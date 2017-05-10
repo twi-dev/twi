@@ -12,7 +12,8 @@ import errorHandler from "server/api/core/middleware/error-handler"
 import logger from "server/api/core/middleware/logger"
 import multipart from "server/api/core/middleware/multipart"
 
-import createMailerService from "server/api/core/mail"
+import createMailService from "server/api/core/mail"
+import {createConnection} from "server/api/core/base/model"
 
 const ROOT = process.cwd()
 
@@ -25,12 +26,10 @@ async function main(options) {
 
   const server = new Server({...config, ...options})
 
-  const mail = createMailerService({
+  const mail = createMailService({
     mail: config.mail,
     system: config.system
   })
-
-  server.ext({mail}) // I don't think is that a good idea :D
 
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
@@ -43,8 +42,11 @@ async function main(options) {
     r.routes()
   ]
 
-  server.use(middlewares)
+  server
+    .ext({mail})
+    .use(middlewares)
 
+  await createConnection(config.database)
   await server.listen()
 
   console.log(`The ${server.name} has been started.`)

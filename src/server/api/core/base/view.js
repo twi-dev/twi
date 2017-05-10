@@ -23,7 +23,7 @@ const defaults = {
 }
 
 // Tiny cache for Pug's template functions
-const cache = {}
+const cache = new Map()
 
 /**
  * Run Pug compiler
@@ -48,13 +48,13 @@ const compileFile = async (filename, options) => compile(
  * @return function
  */
 async function compileTemplate(filename, options) {
-  if (options.cache && isFunction(cache[filename])) {
-    return cache[filename]
+  if (options.cache && isFunction(cache.get(filename))) {
+    return cache.get(filename)
   }
 
   const fn = await compileFile(filename, options)
 
-  return options.cache ? (cache[filename] = fn) : fn
+  return options.cache ? cache.set(filename).get(filename) : fn
 }
 
 async function render(filename, locals, options) {
