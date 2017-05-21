@@ -55,12 +55,6 @@ class Server extends Koa {
       ...config
     })
 
-    defProp(this, "config", {
-      get() {
-        return this.__config
-      }
-    })
-
     // Binds
     this.use = this.use.bind(this)
   }
@@ -81,6 +75,10 @@ class Server extends Koa {
     const {env, host, port, secure} = this.config
 
     return getHostname(host, port, secure, env.dev)
+  }
+
+  get config() {
+    return this.__config
   }
 
   //

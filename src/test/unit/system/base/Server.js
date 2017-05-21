@@ -29,9 +29,11 @@ test("Should return a local address in dev mode", t => {
   t.plan(1)
 
   const port = 1337
-  const dev = true
+  const env = {
+    dev: true
+  }
 
-  const server = new Server("noop", {port, dev})
+  const server = new Server("noop", {port, env})
 
   t.is(server.addr, `http://localhost:${port}`)
 })
