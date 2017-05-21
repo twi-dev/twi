@@ -4,26 +4,10 @@
 .npmignore
 .next
 
-# Configs rules
-config/cert/**
-config/service/**/*.yml
-config/base/**/*.yml
-
-!config/base/default.yml
-!config/service/**/default.yml
-
-# Deprecated
-config/app/user.yaml
-config/app/user.yml
-config/app/test.yaml
-config/app/test.yml
-config/runtime/assets.json
-# End
-
 # Main
 server/graphql
 server
-system
+system/**/*.js
 setup
 common
 node_modules
@@ -53,6 +37,22 @@ test/**/*.map
 !src/test/**/*.js
 !src/test/**/*.jsx
 
+# Configs rules
+config/cert/**
+config/service/**/*.yml
+config/system/**/*.yml
+
+!config/system/default.yml
+!config/service/**/default.yml
+
+# Deprecated
+config/app/user.yaml
+config/app/user.yml
+config/app/test.yaml
+config/app/test.yml
+config/runtime/assets.json
+# End
+
 # Junks
 npm-debug.log
 yarn-error.log
@@ -61,6 +61,7 @@ yarn-error.log
 *.doc
 *.docx
 *.odt
+*.map
 
 # An old codebase
 *.old
