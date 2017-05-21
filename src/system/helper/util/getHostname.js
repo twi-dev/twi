@@ -1,5 +1,3 @@
-import {isDev} from "./configure"
-
 const getProtocolName = secure => `http${secure ? "s" : ""}://`
 
 const getLocalHostname = port => `http://localhost:${port}`
@@ -8,13 +6,8 @@ const getConfiguredHostname = (host = "localhost", secure) => (
   `${getProtocolName(secure)}${host}`
 )
 
-const getHostname = (host, port, secure) => (
-  isDev ? getLocalHostname(port) : getConfiguredHostname(host, secure)
+const getHostname = (host, port, secure, dev) => (
+  dev ? getLocalHostname(port) : getConfiguredHostname(host, secure)
 )
-
-export {
-  getConfiguredHostname,
-  getLocalHostname
-}
 
 export default getHostname

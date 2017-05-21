@@ -1,18 +1,16 @@
 import {GraphQLString as TString} from "graphql"
 
-import bind from "system/helper/util/bind"
-
 import TInFile from "server/api/graphql/input/file/TInFile"
 import TInContacts from "server/api/graphql/input/user/TInContacts"
 
 import TUser from "server/api/graphql/type/user/TUser"
 
-import User from "server/api/model/User"
+import createUser from "server/api/graphql/resolve/mutation/user/createUser"
 
 const resolve = {
   type: TUser,
   required: true,
-  handler: bind(User, User.createUser),
+  handler: createUser,
   description: (
     "This method will create a new user using basic information of him."
   )

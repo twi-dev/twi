@@ -28,11 +28,15 @@ session:
 
 # Mail configs
 mail:
-  from: Pony Postmare # Human-readable name of the service
+  from: Postmare # Human-readable name of the service
 
   # Hostname of your mail server
   host: null
   port: null
+
+  # Or just provide a service name, if you're using something like Yandex or Google
+  # You can find more information in Nodemailer's docs
+  service: null
 
   # Use SSL?
   # Can be only "true" of "false"

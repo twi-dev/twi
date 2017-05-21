@@ -3,7 +3,6 @@ import {basename, extname} from "path"
 import Router from "koa-router"
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
-import {isDev} from "system/helper/util/configure"
 import noop from "system/middleware/noop"
 
 import checkCtorCall from "system/helper/util/checkCtorCall"
@@ -29,7 +28,13 @@ const processFiles = ({originalName, path, mime, enc}) => ({
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
 // GraphiQL IDE handler. Will rendered only in "development" env
-const actionGraphiQL = isDev ? graphiqlKoa({endpointURL}) : noop()
+const actionGraphiQL = async function(ctx, next) {
+  const dev = ctx.app.config.env.dev
+
+  const middleware = dev ? graphiqlKoa({endpointURL}) : noop()
+
+  await middleware(ctx, next)
+}
 
 // GraphQL queries/mutations/subscriptions handler
 const actionGraphQL = graphqlKoa(async context => ({schema, context}))

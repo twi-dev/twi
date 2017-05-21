@@ -1,24 +1,18 @@
 import http from "http"
 
 import Koa from "koa"
-// import merge from "lodash/merge"
 import isString from "lodash/isString"
 import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
+import deepFreeze from "deep-freeze"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 import isListOf from "system/helper/typechecker/isListOf"
 import getHostname from "system/helper/util/getHostname"
 
 const isArray = Array.isArray
-
-// const defaults = {
-//   dev: false,
-//   test: false,
-//   debug: true,
-//   env: process.env.NODE_ENV || "development"
-// }
+const defProp = Object.defineProperty
 
 class Server extends Koa {
   constructor(name, config = {}) {
@@ -55,9 +49,17 @@ class Server extends Koa {
     super() // fucking ES6 OOP >_<
 
     this.__name = name
-    this.__port = config.port
-    this.__host = config.host
-    this.__dev = config.dev
+
+    // Private member
+    this.__config = deepFreeze({
+      ...config
+    })
+
+    defProp(this, "config", {
+      get() {
+        return this.__config
+      }
+    })
 
     // Binds
     this.use = this.use.bind(this)
@@ -70,13 +72,15 @@ class Server extends Koa {
 
   // Get a port that will be listening by the server
   get port() {
-    return this.__port
+    return this.config.port
   }
 
   // Get configured server address
   // Note: This is NOT an actual address that will be used by Node.js server
   get addr() {
-    return getHostname(this.__host, this.__port, false)
+    const {env, host, port, secure} = this.config
+
+    return getHostname(host, port, secure, env.dev)
   }
 
   //
@@ -85,7 +89,7 @@ class Server extends Koa {
 
   __extFromConfig = config => {
     for (const [key, value] of objectIterator.entries(config)) {
-      Object.defineProperty(this.context, key, {value})
+      defProp(this.context, key, {value})
     }
 
     return this

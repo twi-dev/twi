@@ -1,3 +1,5 @@
+const join = require("path").join
+
 // Common plugins
 const gulp = require("gulp")
 const gutil = require("gulp-util")
@@ -15,12 +17,12 @@ const jeet = require("jeet")
 const svgmin = require("gulp-svgmin")
 
 // Stylus paths
-const STYLUS_SRC = `${__dirname}/frontend/stylus/global/*.styl`
-const STYLUS_DEST = `${__dirname}/static/assets/css`
+const STYLUS_SRC = join(__dirname, "frontend/stylus/global/*.styl")
+const STYLUS_DEST = join(__dirname, "static/assets/css")
 
 // SVG paths
-const SVG_SRC = `${__dirname}/frontend/svg/**/*.svg`
-const SVG_DEST = `${__dirname}/static/assets/img`
+const SVG_SRC = join(__dirname, "frontend/svg/**/*.svg")
+const SVG_DEST = join(__dirname, "static/assets/img")
 
 let isDev = false
 

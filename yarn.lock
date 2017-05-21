@@ -2095,23 +2095,6 @@ co-body@^5.0.0:
     raw-body "^2.2.0"
     type-is "^1.6.14"
 
-co-from-stream@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/co-from-stream/-/co-from-stream-0.0.0.tgz#1a5cd8ced77263946094fa39f2499a63297bcaf9"
-  dependencies:
-    co-read "0.0.1"
-
-co-fs@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/co-fs/-/co-fs-1.2.0.tgz#a6df045ce58c04eed45586ff4385032813aba64e"
-  dependencies:
-    co-from-stream "0.0.0"
-    thunkify "0.0.1"
-
-co-read@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/co-read/-/co-read-0.0.1.tgz#f81b3eb8a86675fec51e3d883a7f564e873c9389"
-
 co-with-promise@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co-with-promise/-/co-with-promise-4.6.0.tgz#413e7db6f5893a60b942cf492c4bec93db415ab7"
@@ -4854,12 +4837,12 @@ js-tokens@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.0.tgz#a2f2a969caae142fb3cd56228358c89366957bd1"
 
-js-yaml@3.6.1, js-yaml@~3.6.0, js-yaml@~3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
+js-yaml@3.8.4:
+  version "3.8.4"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.8.4.tgz#520b4564f86573ba96662af85a8cafa7b4b5a6f6"
   dependencies:
     argparse "^1.0.7"
-    esprima "^2.6.0"
+    esprima "^3.1.1"
 
 js-yaml@^3.5.1, js-yaml@^3.8.2:
   version "3.8.3"
@@ -4867,6 +4850,13 @@ js-yaml@^3.5.1, js-yaml@^3.8.2:
   dependencies:
     argparse "^1.0.7"
     esprima "^3.1.1"
+
+js-yaml@~3.6.0, js-yaml@~3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^2.6.0"
 
 jsbn@~0.1.0:
   version "0.1.0"
@@ -6030,13 +6020,14 @@ node-pre-gyp@^0.6.29:
     tar "~2.2.1"
     tar-pack "~3.3.0"
 
-node-yaml@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/node-yaml/-/node-yaml-3.0.3.tgz#be539ebe9d4dbb3fbb8697cdcd87303ad7fd693d"
+node-yaml@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/node-yaml/-/node-yaml-3.1.0.tgz#0de65307c1a8cc3a18473d5fb0ee8e1432079b55"
   dependencies:
     co "4.6.0"
-    co-fs "1.2.0"
-    js-yaml "3.6.1"
+    js-yaml "3.8.4"
+    junk "2.1.0"
+    promise-fs "1.2.3"
 
 nodejieba@^1.3.0:
   version "1.4.11"
@@ -8311,10 +8302,6 @@ through2@^0.6.0, through2@^0.6.1:
 through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
-
-thunkify@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/thunkify/-/thunkify-0.0.1.tgz#bd5d36b1069b4078e5dcbac8fab45359bea6183d"
 
 tildify@^1.0.0:
   version "1.2.0"

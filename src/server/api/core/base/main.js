@@ -7,6 +7,7 @@ import cors from "kcors"
 import Server from "system/base/Server"
 import makeRouter from "system/base/router"
 import getConfig from "system/base/getConfig"
+import log from "system/log"
 
 import errorHandler from "server/api/core/middleware/error-handler"
 import logger from "server/api/core/middleware/logger"
@@ -49,8 +50,8 @@ async function main(options) {
   await createConnection(config.database)
   await server.listen()
 
-  console.log(`The ${server.name} has been started.`)
-  console.log("Listening on http://localhost:1337")
+  log.ok(`The ${server.name} has been started.`)
+  log.ok(`Listening on ${server.addr} address.`)
 }
 
 export default main
