@@ -21,7 +21,7 @@ and isn't ready for production! Stay in touch.**
 | [Node.js](https://nodejs.org/en/)    | >= 7.6                    |
 | [Yarn](https://yarnpkg.com/lang/en/) | >= 0.20.0                 |
 | [Redis](https://redis.io/)           | (will be added in future) |
-| [RethinkDB](https://rethinkdb.com/)  | (will be added in future) |
+| [MongoDB](https://www.mongodb.com/)  | (will be added in future) |
 
 You also need:
 
