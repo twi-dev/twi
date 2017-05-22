@@ -1,11 +1,9 @@
 import moment from "moment"
 import {hash} from "bcryptjs"
 
-// import isPlainObject from "lodash/isPlainObject"
+import {createModel, Model} from "server/api/core/base/model"
 
-import createModel from "server/api/core/base/model"
-
-class User {
+class User extends Model {
   /**
    * Get schema of this model
    *
@@ -19,11 +17,11 @@ class User {
     login: {
       type: TString,
       unique: true,
-      required: [true, "Login is required for each user."],
+      required: [true, "Login is required for user."],
       validate: {
         validator: val => /^[a-z0-9-_.]+$/i.test(val),
         message: (
-          "User login have unnesessary format: Addlowed only " +
+          "User login have unnesessary format: Allowed only " +
           "alphabetic characters, numbers and - _ . symbols."
         )
       }
@@ -39,7 +37,7 @@ class User {
     },
     role: {
       type: TNumber,
-      default: 0 // Default role is "user"
+      default: User.roles.regular
     },
     registeredAt: {
       type: TDate,
@@ -49,51 +47,78 @@ class User {
       type: TString,
       default: null
     },
-    // contacts: {
-    //   vk: TString,
-    //   fb: TString,
-    //   twitter: TString
-    // }
+    contacts: {
+      type: {
+        vk: TString,
+        fb: TString,
+        twitter: TString
+      },
+      default: {
+        vk: null,
+        fb: null,
+        twitter: null
+      }
+    }
   })
 
-  // static async getUserByLogin(_, {login}) {
-  //   const user = await this.findOne({login})
-
-  //   return user.toObject()
-  // }
-
-  static async createUser(_, user) {
+  static async createUser(user) {
     // Weird thing, I know that. Just for more readable code :)
     const Model = this
 
     const password = await hash(user.password, 15)
 
-    const role = User.roles.user
+    const role = User.roles.regular
 
     const model = new Model({...user, password, role})
 
     const createdUser = await model.save()
 
     // Also, we have to sent an email to given address before return user
-    return {
-      ...createdUser.toObject(),
+    return createdUser
+  }
 
-      userId: createdUser._id, // eslint-disable-line
-      // tmp
-      role: {
-        name: "user",
-        code: 0
-      }
+  /**
+   * Available user roles
+   *
+   * @return object
+   */
+  static get roles() {
+    return {
+      regular: 0,
+      banned: 1,
+      suspended: 2,
+      moderator: 3,
+      admin: 4,
+      owner: 5
     }
   }
 
-  static roles = {
-    user: 0,
-    banned: 1,
-    suspended: 2,
-    moderator: 3,
-    admin: 4,
-    owner: 5
+  get userId() {
+    return this.id || this._id
+  }
+
+  get roleInfo() {
+    const role = this.role
+
+    const [name, code] = Object
+      .entries(User.roles)
+      .find(entry => role === entry[1])
+
+    return {name, code}
+  }
+
+  toJS(...args) {
+    const user = super.toJS(...args)
+
+    console.log(user)
+
+    const role = this.roleInfo
+
+    const userId = this.userId
+
+    return {
+      ...user, role, userId
+    }
   }
 }
 

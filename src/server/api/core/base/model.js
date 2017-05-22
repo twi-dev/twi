@@ -5,6 +5,10 @@ import isPlainObject from "lodash/isPlainObject"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 
+const isPrototypeOf = (parent, child) => (
+  Object.prototype.isPrototypeOf.call(parent, child)
+)
+
 mongoose.Promise = Promise
 
 const Types = (() => {
@@ -17,22 +21,59 @@ const Types = (() => {
   return res
 })()
 
-// const models = new Map()
-
-function createModel(Model, options = {}) {
-  if (!isFunction(Model)) {
-    throw new TypeError("Model should be implemented as class.")
+class Model extends mongoose.Model {
+  /**
+   * Get field that will be used for schema of the current Model.
+   *
+   * @param object Types – object of Mongoose types
+   *
+   * @return object – an object of the fields
+   *
+   * @access public
+   * @static
+   */
+  static getModelFields() {
+    throw new TypeError(
+      "This method should be implemented on a child model."
+    )
   }
 
-  const name = Model.name
+  /**
+   * Get an ID of the current Model instance.
+   *
+   * @return mongoose.Schema.Types.ObjectId
+   */
+  get id() {
+    return this._id
+  }
 
-  if (!isFunction(Model.getModelFields)) {
+  /**
+   * This method is just an alias for mongoose.Schema#toObject,
+   *   but use can customize this method safely,
+   *   because it will not be used by Mongoose.
+   */
+  toJS(...args) {
+    return this.toObject(...args)
+  }
+}
+
+/**
+ * Create a Mongoose model from given class.
+ */
+function createModel(Target, options = {}) {
+  if (!isPrototypeOf(Model, Target)) {
+    throw new TypeError("Target model should extend a class Model.")
+  }
+
+  const name = Target.name
+
+  if (!isFunction(Target.getModelFields)) {
     throw new TypeError(
       `Required static method ${name}.getModelFields() { ... } on a model.`
     )
   }
 
-  const schemaFields = Model.getModelFields(Types)
+  const schemaFields = Target.getModelFields(Types)
 
   if (!isPlainObject(schemaFields)) {
     throw new TypeError(
@@ -40,15 +81,11 @@ function createModel(Model, options = {}) {
     )
   }
 
-  delete Model.getModelFields // remove this helper static method from a Model
+  delete Target.getModelFields // remove this helper static method from a Model
 
   const schema = new Schema(schemaFields, options)
 
-  schema.loadClass(Model)
-
-  const model = mongoose.model(name, schema)
-
-  // models.set(name, model)
+  const model = mongoose.model(Target, schema)
 
   return model
 }
@@ -59,5 +96,5 @@ async function createConnection(config = {}) {
   return await mongoose.connect(replicaUri)
 }
 
-export {createConnection}
+export {createConnection, createModel, Model}
 export default createModel
