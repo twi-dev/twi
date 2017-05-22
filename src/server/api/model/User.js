@@ -110,8 +110,6 @@ class User extends Model {
   toJS(...args) {
     const user = super.toJS(...args)
 
-    console.log(user)
-
     const role = this.roleInfo
 
     const userId = this.userId
