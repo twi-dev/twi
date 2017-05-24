@@ -4,7 +4,7 @@ First of all, thank you so much for taking the time to contribute! You're awesom
 
 Following document is the set of out contributing guidelines.
 It also includes all the Twilight's Library (aka "Twi") documentation.
-Feel free to report a bugs, purpose the new features or open pull requests.
+Feel free to report bugs, purpose the new features or open pull requests.
 
 ## Table of content
 
