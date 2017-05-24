@@ -1,8 +1,8 @@
 import {GraphQLString as TString} from "graphql"
 import Input from "parasprite/Input"
 
-const TInFile = Input(
-  "TInFile", "Represends a file type for multipart resolvers"
+const TFileInput = Input(
+  "TFileInput", "Represends a file type for multipart resolvers"
 )
   .field("originalName", TString, true)
   .field("path", TString, true)
@@ -10,4 +10,4 @@ const TInFile = Input(
   .field("enc", TString, true)
 .end()
 
-export default TInFile
+export default TFileInput

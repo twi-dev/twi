@@ -166,6 +166,7 @@
     "enzyme": "2.7.1",
     "eslint": "3.19.x",
     "glob": "7.1.1",
+    "graphql-custom-types": "^0.7.3",
     "graphql-tag": "1.2.4",
     "gulp": "3.9.1",
     "gulp-csso": "2.0.0",
