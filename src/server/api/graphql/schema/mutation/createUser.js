@@ -1,8 +1,5 @@
-import {GraphQLString as TString} from "graphql"
-
-import TInFile from "server/api/graphql/input/file/TInFile"
-import TInContacts from "server/api/graphql/input/user/TInContacts"
-
+// import TInContacts from "server/api/graphql/input/user/TInContacts"
+import TUserInput from "server/api/graphql/input/user/TUserInput"
 import TUser from "server/api/graphql/type/user/TUser"
 
 import createUser from "server/api/graphql/resolve/mutation/user/createUser"
@@ -16,32 +13,15 @@ const resolve = {
   )
 }
 
-const login = {
-  type: TString,
+// const contacts = {
+//   type: TInContacts
+// }
+
+const user = {
+  type: TUserInput,
   required: true
 }
 
-const email = {
-  type: TString,
-  required: true
-}
-
-const password = {
-  type: TString,
-  required: true
-}
-
-const avatar = {
-  type: TInFile,
-  description: "Avatar for a user profile"
-}
-
-const contacts = {
-  type: TInContacts
-}
-
-const args = {
-  login, email, password, avatar, contacts
-}
+const args = {user}
 
 export {resolve, args}

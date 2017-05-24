@@ -1,10 +1,10 @@
 import User from "server/api/model/User"
 
-async function createUser(_, args) {
-  const user = await User.createUser({...args})
+async function createUser(_, {user}) {
+  const createdUser = await User.create({...user})
 
   // TODO: Add an email verification using redis and mail service.
-  return user.toJS()
+  return createdUser.toJS()
 }
 
 export default createUser

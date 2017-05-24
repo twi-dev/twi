@@ -1,3 +1,5 @@
+import {join} from "path"
+
 import Schema from "parasprite"
 import requireHelper from "require-dir"
 import isPlainObject from "lodash/isPlainObject"
@@ -5,7 +7,7 @@ import isEmpty from "lodash/isEmpty"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 
-const SCHEMA_ROOT = `${process.cwd()}/server/api/graphql/schema`
+const SCHEMA_ROOT = join(process.cwd(), "server/api/graphql/schema")
 
 /**
  * Set resolver from config
@@ -51,7 +53,7 @@ function setResolver(t, name, config) {
  */
 function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
-    t = setResolver(t, name, resolver)
+    setResolver(t, name, resolver)
   }
 
   return t.end()

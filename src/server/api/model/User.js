@@ -61,7 +61,14 @@ class User extends Model {
     }
   })
 
-  static async createUser(user) {
+  /**
+   * Create a new regular user.
+   *
+   * @param TUserInput user
+   *
+   * @return TUser
+   */
+  static async create(user) {
     // Weird thing, I know that. Just for more readable code :)
     const Model = this
 
@@ -75,6 +82,14 @@ class User extends Model {
 
     // Also, we have to sent an email to given address before return user
     return createdUser
+  }
+
+  static async getByLogin(login) {
+    const Model = this
+
+    const user = await Model.findOne({login})
+
+    return user
   }
 
   /**
