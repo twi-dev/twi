@@ -1,5 +1,5 @@
-// import TInContacts from "server/api/graphql/input/user/TInContacts"
 import TUserInput from "server/api/graphql/input/user/TUserInput"
+
 import TUser from "server/api/graphql/type/user/TUser"
 
 import createUser from "server/api/graphql/resolve/mutation/user/createUser"
@@ -9,13 +9,9 @@ const resolve = {
   required: true,
   handler: createUser,
   description: (
-    "This method will create a new user using basic information of him."
+    "This method will create a new user using basic information."
   )
 }
-
-// const contacts = {
-//   type: TInContacts
-// }
 
 const user = {
   type: TUserInput,
