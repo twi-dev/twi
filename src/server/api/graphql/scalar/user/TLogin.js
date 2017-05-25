@@ -31,7 +31,7 @@ const parseValue = value => validateLogin({
 const parseLiteral = ast => validateLogin({...ast})
 
 const TLogin = new GraphQLScalarType({
-  name: "TLogin",
+  name: "Login",
   description: (
     "The user human-readable unique identifier. Allowed only " +
     "alphabetic characters, numbers and - _ . symbols."
