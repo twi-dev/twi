@@ -22,6 +22,8 @@ function validateLogin(ast) {
       "alphabetic characters, numbers and - _ . symbols.", [ast]
     )
   }
+
+  return value
 }
 
 const parseValue = value => validateLogin({

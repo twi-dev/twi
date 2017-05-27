@@ -52,8 +52,20 @@ class Model extends mongoose.Model {
    *   but use can customize this method safely,
    *   because it will not be used by Mongoose.
    */
+  _toJS(...args) {
+    const obj = this.toObject(...args)
+    const id = this.id
+
+    const idKey = "_id"
+    delete obj[idKey]
+
+    return {
+      ...obj, id
+    }
+  }
+
   toJS(...args) {
-    return this.toObject(...args)
+    return this._toJS(...args)
   }
 }
 

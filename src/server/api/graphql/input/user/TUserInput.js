@@ -7,7 +7,7 @@ import TLogin from "server/api/graphql/scalar/user/TLogin"
 import TFileInput from "../file/TFileInput"
 import TContactsInput from "./TContactsInput"
 
-const TUserInput = Input("TUserInput", "Basic user information.")
+const TUserInput = Input("UserInput", "Basic user information.")
   .field("login", TLogin, "An unique human-readable user identifier.", true)
   .field("email", TEmail, "An email address.", true)
   .field("password", TString, "User secured (or not :D) password.", true)

@@ -108,10 +108,6 @@ class User extends Model {
     }
   }
 
-  get userId() {
-    return this.id || this._id
-  }
-
   get roleInfo() {
     const role = this.role
 
@@ -127,10 +123,10 @@ class User extends Model {
 
     const role = this.roleInfo
 
-    const userId = this.userId
+    const id = this.id
 
     return {
-      ...user, role, userId
+      ...user, role, id
     }
   }
 }
