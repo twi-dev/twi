@@ -1,3 +1,5 @@
+import {resolve, join} from "path"
+
 import mongoose, {Schema, Model} from "mongoose"
 
 import isFunction from "lodash/isFunction"
@@ -19,6 +21,8 @@ const isPrototypeOf = (parent, child) => (
   Object.prototype.isPrototypeOf.call(parent, child)
 )
 
+const schemasPath = resolve(__dirname, "..", "schema")
+
 /**
  * Create a Mongoose model from given class.
  */
@@ -29,21 +33,33 @@ function createModel(Target, options = {}) {
 
   const name = Target.name
 
-  if (!isFunction(Target.getModelFields)) {
+  let getModelFields = null
+
+  if (isFunction(Target.getModelFields)) {
+    getModelFields = Target.getModelFields
+
+    // remove this helper static method from a Model
+    delete Target.getModelFields
+  } else {
+    getModelFields = require(join(schemasPath, Target.name)).default
+  }
+
+  // Check given function
+  if (!isFunction(getModelFields)) {
     throw new TypeError(
-      `Required static method ${name}.getModelFields() { ... } on a model.`
+      `Required static method ${name}.getModelFields() { ... } on a model. ` +
+      "Or, it can also be described as an external module at: " +
+      `${join(schemasPath, Target.name)}.js`
     )
   }
 
-  const schemaFields = Target.getModelFields(Types)
+  const schemaFields = getModelFields(Types)
 
   if (!isPlainObject(schemaFields)) {
     throw new TypeError(
       `${name}.getModelFields method should return a plain object.`
     )
   }
-
-  delete Target.getModelFields // remove this helper static method from a Model
 
   const schema = new Schema(schemaFields, options)
 
