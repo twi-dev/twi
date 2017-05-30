@@ -16,7 +16,7 @@ tryDeps() // Check deps before including external packages
 const commander = require("commander")
 const {cross, tick, pointer} = require("figures")
 const vfs = require("vinyl-fs")
-const glob = require("glob")
+const globby = require("globby")
 const junk = require("junk")
 const rimraf = require("rimraf")
 const through = require("through2")
@@ -209,11 +209,9 @@ function processFiles(files, src, dest) {
 function make(src, dest) {
   ora.start()
 
-  const fulfill = (err, files) => (
-    err == null ? processFiles(files, src, dest) : onError(err)
-  )
+  const onFulfilled = files => processFiles(files, src, dest)
 
-  glob(`${src}/**`, fulfill)
+  globby(`${src}/**`).then(onFulfilled, onError)
 }
 
 /**
@@ -234,14 +232,12 @@ function watch(src, dest) {
    * @param string filename
    */
   function onAddDir(filename) {
-    const fulfill = (err, files) => (
-      err ? onError(err) : processFiles(files, src, dest)
-    )
+    const onFulfilled = files => processFiles(files, src, dest)
 
     const created = err => (
       err && err.code !== "EEXIST"
         ? onError(err)
-        : glob(`${filename}/**`, fulfill)
+        : globby(`${filename}/**`).then(onFulfilled, onError)
     )
 
     const destFilename = getDestFilename(filename, src, dest)

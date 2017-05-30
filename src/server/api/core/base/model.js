@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose"
+import mongoose, {Schema, Model as MongooseModel} from "mongoose"
 
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
@@ -21,7 +21,7 @@ const Types = (() => {
   return res
 })()
 
-class Model extends mongoose.Model {
+class Model extends MongooseModel {
   /**
    * Get field that will be used for schema of the current Model.
    *
@@ -32,7 +32,7 @@ class Model extends mongoose.Model {
    * @access public
    * @static
    */
-  static getModelFields() {
+  static getModelFields = () => {
     throw new TypeError(
       "This method should be implemented on a child model."
     )
@@ -51,6 +51,8 @@ class Model extends mongoose.Model {
    * This method is just an alias for mongoose.Schema#toObject,
    *   but use can customize this method safely,
    *   because it will not be used by Mongoose.
+   *
+   * @access protected
    */
   _toJS(...args) {
     const obj = this.toObject(...args)
@@ -109,4 +111,3 @@ async function createConnection(config = {}) {
 }
 
 export {createConnection, createModel, Model}
-export default createModel

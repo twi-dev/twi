@@ -27,5 +27,45 @@
     "transform-exponentiation-operator",
     "transform-export-extensions",
     "transform-object-rest-spread"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        ["module-resolver", {
+          "cwd": "./src",
+          "alias": {
+            "test": "./runtime/backend/test",
+            "system": "./runtime/backend/system",
+            "server": "./runtime/backend/server",
+            "static": "./runtime/backend/server/static",
+            "api": "./runtime/backend/server/api",
+            "setup": "./runtime/backend/setup",
+            "model": "./runtime/backend/model",
+            "config": "./runtime/backend/config",
+            "frontend": "./runtime/app",
+            "package.json": "./package.json"
+          }
+        }]
+      ]
+    },
+    "spec": {
+      "plugins": [
+        ["module-resolver", {
+          "cwd": "./src",
+          "alias": {
+            "test": "./runtime/backend/test",
+            "system": "./runtime/backend/system",
+            "server": "./runtime/backend/server",
+            "static": "./runtime/backend/server/static",
+            "api": "./runtime/backend/server/api",
+            "setup": "./runtime/backend/setup",
+            "model": "./runtime/backend/model",
+            "config": "./runtime/backend/config",
+            "frontend": "./runtime/app",
+            "package.json": "./package.json"
+          }
+        }]
+      ]
+    }
+  }
 }

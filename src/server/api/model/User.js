@@ -35,6 +35,10 @@ class User extends Model {
       type: TString,
       required: [true, "Password required for user"]
     },
+    status: {
+      type: TNumber,
+      default: User.statuses.unactivated
+    },
     role: {
       type: TNumber,
       default: User.roles.regular
@@ -74,9 +78,7 @@ class User extends Model {
 
     const password = await hash(user.password, 15)
 
-    const role = User.roles.regular
-
-    const model = new Model({...user, password, role})
+    const model = new Model({...user, password})
 
     const createdUser = await model.save()
 
@@ -92,6 +94,15 @@ class User extends Model {
     return user
   }
 
+  static statuses() {
+    return {
+      unactivated: 0,
+      activated: 1,
+      suspended: 2,
+      banned: 3
+    }
+  }
+
   /**
    * Available user roles
    *
@@ -99,12 +110,10 @@ class User extends Model {
    */
   static get roles() {
     return {
-      regular: 0,
-      banned: 1,
-      suspended: 2,
-      moderator: 3,
-      admin: 4,
-      owner: 5
+      owner: 0,
+      admin: 1,
+      moderator: 2,
+      regular: 3,
     }
   }
 
@@ -114,6 +123,16 @@ class User extends Model {
     const [name, code] = Object
       .entries(User.roles)
       .find(entry => role === entry[1])
+
+    return {name, code}
+  }
+
+  get statusInfo() {
+    const status = this.status
+
+    const [name, code] = Object
+      .entries(User.statuses)
+      .find(entry => status === entry[1])
 
     return {name, code}
   }
