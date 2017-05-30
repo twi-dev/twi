@@ -1,7 +1,7 @@
 import moment from "moment"
 import {hash} from "bcryptjs"
 
-import {createModel, Model} from "server/api/core/base/model"
+import {createModel, Model} from "server/api/core/database/model"
 
 class User extends Model {
   /**

@@ -14,7 +14,7 @@ import logger from "server/api/core/middleware/logger"
 import multipart from "server/api/core/middleware/multipart"
 
 import createMailService from "server/api/core/mail"
-import {createConnection} from "server/api/core/base/model"
+import createConnection from "server/api/core/base/database"
 
 const ROOT = process.cwd()
 
