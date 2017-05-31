@@ -11,3 +11,4 @@ Feel free to report bugs, purpose the new features or open pull requests.
 1. What should I know before I get started?
 
   * Code of Conduct
+  * Code style guide
