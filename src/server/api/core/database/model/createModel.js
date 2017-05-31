@@ -76,7 +76,7 @@ function createModel(Target, options = {}) {
   try {
     getModelFields = require(join(schemasPath, camelCase(Target.name))).default
   } catch (err) {
-    if (err.code !== "ENOENT") {
+    if (err.code !== "MODULE_NOT_FOUND") {
       throw err
     }
   }
