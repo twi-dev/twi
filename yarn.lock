@@ -6338,9 +6338,9 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parasprite@0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.3.4.tgz#cd0d633477f3a38fbcdd47fef0698fbd96918669"
+parasprite@0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.3.5.tgz#f51c4552987ee8fa05d85921fd7a517fa99f0168"
   dependencies:
     lodash.isplainobject "4.0.6"
 
@@ -7507,9 +7507,9 @@ request@^2.81.0:
     tunnel-agent "^0.6.0"
     uuid "^3.0.0"
 
-require-dir@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/require-dir/-/require-dir-0.3.1.tgz#b5a8e28bae0343bb0d0cc38ab1f531e1931b264a"
+require-dir@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/require-dir/-/require-dir-0.3.2.tgz#c1d5c75e9fbffde9f2e6b33e383db4f594b5a6a9"
 
 require-directory@^2.1.1:
   version "2.1.1"
