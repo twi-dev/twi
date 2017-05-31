@@ -1,70 +1,8 @@
-import moment from "moment"
 import {hash} from "bcryptjs"
 
 import {createModel, Model} from "server/api/core/database/model"
 
 class User extends Model {
-  /**
-   * Get schema of this model
-   *
-   * @param object type
-   *
-   * @return object
-   *
-   * @static
-   */
-  static getModelFields = ({TString, TNumber, TDate}) => ({
-    login: {
-      type: TString,
-      unique: true,
-      required: [true, "Login is required for user."],
-      validate: {
-        validator: val => /^[a-z0-9-_.]+$/i.test(val),
-        message: (
-          "User login have unnesessary format: Allowed only " +
-          "alphabetic characters, numbers and - _ . symbols."
-        )
-      }
-    },
-    email: {
-      type: TString,
-      unique: true,
-      required: [true, "Required an email for user"]
-    },
-    password: {
-      type: TString,
-      required: [true, "Password required for user"]
-    },
-    status: {
-      type: TNumber,
-      default: User.statuses.unactivated
-    },
-    role: {
-      type: TNumber,
-      default: User.roles.regular
-    },
-    registeredAt: {
-      type: TDate,
-      default: moment
-    },
-    avatar: {
-      type: TString,
-      default: null
-    },
-    contacts: {
-      type: {
-        vk: TString,
-        fb: TString,
-        twitter: TString
-      },
-      default: {
-        vk: null,
-        fb: null,
-        twitter: null
-      }
-    }
-  })
-
   /**
    * Create a new regular user.
    *
@@ -94,7 +32,7 @@ class User extends Model {
     return user
   }
 
-  static statuses() {
+  static get statuses() {
     return {
       unactivated: 0,
       activated: 1,

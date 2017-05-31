@@ -1,5 +1,7 @@
 import {resolve, join} from "path"
 
+import camelCase from "camelcase"
+
 import mongoose, {Schema, Model} from "mongoose"
 
 import isFunction from "lodash/isFunction"
@@ -21,10 +23,46 @@ const isPrototypeOf = (parent, child) => (
   Object.prototype.isPrototypeOf.call(parent, child)
 )
 
+const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
+
+const getOwnPropertyNames = Object.getOwnPropertyNames
+
 const schemasPath = resolve(__dirname, "..", "schema")
 
 /**
+ * Get all static values and getters results from given Model
+ *
+ * @param Function Model
+ *
+ * @return object
+ */
+function getStaticValues(Model) {
+  const res = {}
+
+  for (const name of getOwnPropertyNames(Model)) {
+    if (/^(length|name|prototype)$/.test(name)) {
+      continue
+    }
+
+    const descriptor = getOwnPropertyDescriptor(Model, name)
+
+    if (isFunction(descriptor.get)) {
+      res[name] = descriptor.get()
+    } else if (!isFunction(descriptor.value)) {
+      res[name] = descriptor.value
+    }
+  }
+
+  return res
+}
+
+/**
  * Create a Mongoose model from given class.
+ *
+ * @param Function Target
+ * @param object options
+ *
+ * @param object – mongoose model
  */
 function createModel(Target, options = {}) {
   if (!isPrototypeOf(Model, Target)) {
@@ -35,25 +73,25 @@ function createModel(Target, options = {}) {
 
   let getModelFields = null
 
-  if (isFunction(Target.getModelFields)) {
+  try {
+    getModelFields = require(join(schemasPath, camelCase(Target.name))).default
+  } catch (err) {
+    if (err.code !== "ENOENT") {
+      throw err
+    }
+  }
+
+  if (!isFunction(getModelFields)) {
     getModelFields = Target.getModelFields
 
     // remove this helper static method from a Model
     delete Target.getModelFields
-  } else {
-    getModelFields = require(join(schemasPath, Target.name)).default
+    delete Target.prototype.constructor.getModelFields
   }
 
-  // Check given function
-  if (!isFunction(getModelFields)) {
-    throw new TypeError(
-      `Required static method ${name}.getModelFields() { ... } on a model. ` +
-      "Or, it can also be described as an external module at: " +
-      `${join(schemasPath, Target.name)}.js`
-    )
-  }
+  const values = getStaticValues(Target)
 
-  const schemaFields = getModelFields(Types)
+  const schemaFields = getModelFields(Types, values)
 
   if (!isPlainObject(schemaFields)) {
     throw new TypeError(
