@@ -3,6 +3,14 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
     type: TString,
     required: true
   },
+  description: {
+    type: TString,
+    required: true
+  },
+  slug: {
+    type: TString,
+    required: true
+  },
   author: {
     ref: "User",
     type: TObjectId,
@@ -11,7 +19,8 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
   coauthors: [{
     user: {
       ref: "User",
-      type: TObjectId
+      type: TObjectId,
+      required: true
     },
     role: {
       type: TNumber,
@@ -19,17 +28,38 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
     }
   }],
   chapters: [{
-    ref: "StoryChapter",
-    type: TObjectId
+    ref: "Chapter",
+    type: TObjectId,
+    required: true
   }],
   characters: [{
-    ref: "StoryCharacter",
-    type: TObjectId
+    ref: "Character",
+    type: TObjectId,
+    required: true
   }],
   genres: [{
-    ref: "StoryGenre",
-    type: TObjectId
-  }]
+    ref: "Genre",
+    type: TObjectId,
+    required: true
+  }],
+  ratings: [{
+    user: {
+      ref: "User",
+      type: TObjectId,
+      required: true
+    },
+    value: {
+      type: TNumber,
+      require: true,
+      min: 1,
+      max: 5
+    }
+  }],
+  ratingAvg: {
+    type: TNumber,
+    default: 0,
+    min: 0
+  }
 })
 
 export default getModelFields

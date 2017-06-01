@@ -35,11 +35,15 @@ const schemasPath = resolve(__dirname, "..", "schema")
  * @param Function Model
  *
  * @return object
+ *
+ * @api private
  */
 function getStaticValues(Model) {
   const res = {}
 
-  for (const name of getOwnPropertyNames(Model)) {
+  const names = getOwnPropertyNames(Model)
+
+  for (const name of names) {
     if (/^(length|name|prototype)$/.test(name)) {
       continue
     }
@@ -63,6 +67,8 @@ function getStaticValues(Model) {
  * @param object options
  *
  * @param object – mongoose model
+ *
+ * @api public
  */
 function createModel(Target, options = {}) {
   if (!isPrototypeOf(Model, Target)) {

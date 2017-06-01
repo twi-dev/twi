@@ -1,9 +1,9 @@
 import {join} from "path"
 
 import Schema from "parasprite"
-import requireHelper from "require-dir"
 import isPlainObject from "lodash/isPlainObject"
 import isEmpty from "lodash/isEmpty"
+import rd from "require-dir"
 
 import objectIterator from "system/helper/iterator/sync/objectIterator"
 
@@ -65,7 +65,7 @@ function setResolvers(t, obj) {
  * @return graphql.GraphQLSchema
  */
 function makeSchema() {
-  const resolvers = requireHelper(SCHEMA_ROOT, {
+  const resolvers = rd(SCHEMA_ROOT, {
     recurse: true
   })
 
