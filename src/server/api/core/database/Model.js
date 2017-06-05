@@ -2,22 +2,6 @@ import {Model as MongooseModel} from "mongoose"
 
 class Model extends MongooseModel {
   /**
-   * Get field that will be used for schema of the current Model.
-   *
-   * @param object Types – object of Mongoose types
-   *
-   * @return object – an object of the fields
-   *
-   * @access public
-   * @static
-   */
-  static getModelFields = () => {
-    throw new TypeError(
-      "This method should be implemented on a child model."
-    )
-  }
-
-  /**
    * Get an ID of the current Model instance.
    *
    * @return mongoose.Schema.Types.ObjectId
