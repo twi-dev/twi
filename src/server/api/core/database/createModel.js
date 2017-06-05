@@ -27,7 +27,7 @@ const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 
 const getOwnPropertyNames = Object.getOwnPropertyNames
 
-const schemasPath = resolve(__dirname, "..", "schema")
+const SCHEMAS_ROOT = resolve(__dirname, "..", "..", "database/schema")
 
 /**
  * Get all static values and getters results from given Model
@@ -60,6 +60,43 @@ function getStaticValues(Model) {
   return res
 }
 
+function getSchema(name, values) {
+  const path = join(SCHEMAS_ROOT, camelCase(name))
+
+  let module = null
+  try {
+    module = require(path)
+  } catch (err) {
+    if (err.code !== "MODULE_NOT_FOUND") {
+      throw err
+    }
+
+    throw TypeError(
+      `Can't found a schema for model ${name} at path ${path}.js`
+    )
+  }
+
+  const getModelFields = module.default
+
+  if (!isFunction(getModelFields)) {
+    throw new TypeError(
+      "Schema module should export a function as default."
+    )
+  }
+
+  const schemaFields = getModelFields(Types, values)
+
+  if (!isPlainObject(schemaFields)) {
+    throw new TypeError(
+      `Schema function ${getModelFields.name} should return a plain object.`
+    )
+  }
+
+  const schema = new Schema({...schemaFields})
+
+  return schema
+}
+
 /**
  * Create a Mongoose model from given class.
  *
@@ -70,42 +107,14 @@ function getStaticValues(Model) {
  *
  * @api public
  */
-function createModel(Target, options = {}) {
+function createModel(Target) {
   if (!isPrototypeOf(Model, Target)) {
     throw new TypeError("Target model should extend a class Model.")
   }
 
-  const name = Target.name
-
-  let getModelFields = null
-
-  try {
-    getModelFields = require(join(schemasPath, camelCase(Target.name))).default
-  } catch (err) {
-    if (err.code !== "MODULE_NOT_FOUND") {
-      throw err
-    }
-  }
-
-  if (!isFunction(getModelFields)) {
-    getModelFields = Target.getModelFields
-
-    // remove this helper static method from a Model
-    delete Target.getModelFields
-    delete Target.prototype.constructor.getModelFields
-  }
-
   const values = getStaticValues(Target)
 
-  const schemaFields = getModelFields(Types, values)
-
-  if (!isPlainObject(schemaFields)) {
-    throw new TypeError(
-      `${name}.getModelFields method should return a plain object.`
-    )
-  }
-
-  const schema = new Schema(schemaFields, options)
+  const schema = getSchema(Target.name, values)
 
   const model = mongoose.model(Target, schema)
 

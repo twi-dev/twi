@@ -1,6 +1,6 @@
 import {hash} from "bcryptjs"
 
-import {createModel, Model} from "server/api/core/database/model"
+import {createModel, Model} from "server/api/core/database"
 
 class User extends Model {
   /**
