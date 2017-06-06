@@ -4,6 +4,7 @@ import camelCase from "camelcase"
 
 import mongoose, {Schema, Model} from "mongoose"
 
+import isEmpty from "lodash/isEmpty"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 
@@ -27,7 +28,7 @@ const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 
 const getOwnPropertyNames = Object.getOwnPropertyNames
 
-const SCHEMAS_ROOT = resolve(__dirname, "..", "..", "database/schema")
+const DATABASE_ROOT = resolve(__dirname, "..", "..", "database")
 
 /**
  * Get all static values and getters results from given Model
@@ -61,7 +62,7 @@ function getStaticValues(Model) {
 }
 
 function getSchema(name, values) {
-  const path = join(SCHEMAS_ROOT, camelCase(name))
+  const path = join(DATABASE_ROOT, "schema", camelCase(name))
 
   let module = null
   try {
@@ -97,6 +98,33 @@ function getSchema(name, values) {
   return schema
 }
 
+function setMiddlewares(name, schema) {
+  const path = join(DATABASE_ROOT, "middleware", camelCase(name))
+
+  let middlewares = null
+  try {
+    middlewares = require(path)
+  } catch (err) {
+    if (err.code !== "MODULE_NOT_FOUND") {
+      throw err
+    }
+  }
+
+  if (isEmpty(middlewares)) {
+    return schema
+  }
+
+  if (!isPlainObject(middlewares)) {
+    throw new TypeError("Middlewares module should export a plain object.")
+  }
+
+  for (const {kind, type, parallel, handler} of objectIterator(middlewares)) {
+    schema[kind](type, parallel, handler)
+  }
+
+  return schema
+}
+
 /**
  * Create a Mongoose model from given class.
  *
@@ -112,9 +140,11 @@ function createModel(Target) {
     throw new TypeError("Target model should extend a class Model.")
   }
 
+  const name = Target.name
+
   const values = getStaticValues(Target)
 
-  const schema = getSchema(Target.name, values)
+  const schema = setMiddlewares(name, getSchema(name, values))
 
   const model = mongoose.model(Target, schema)
 
