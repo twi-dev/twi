@@ -14,7 +14,7 @@ const fulfillSerial = handler => function(next) {
 }
 
 const fulfillParallel = handler => function(next, cb) {
-  next()
+  next() // Exec the next middleware from queue, huh?
 
   const onFulfilled = res => cb(null, res)
 
@@ -26,12 +26,10 @@ const wrapMiddleware = (kind, parallel) => handler => {
     return fulfillPost(handler)
   }
 
-  return parallel === true
-    ? fulfillParallel(handler)
-    : fulfillSerial(handler)
+  return parallel ? fulfillParallel(handler) : fulfillSerial(handler)
 }
 
-const defineMIddleware = (kind, type, parallel) => handler => {
+const defineMiddleware = (kind, type, parallel) => handler => {
   parallel = Boolean(parallel)
 
   if (!type || !isString(type)) {
@@ -47,8 +45,8 @@ const defineMIddleware = (kind, type, parallel) => handler => {
   return {kind, type, parallel, handler}
 }
 
-const pre = (...args) => defineMIddleware("pre", ...args)
+const pre = (...args) => defineMiddleware("pre", ...args)
 
-const post = handler => defineMIddleware("post", handler)
+const post = handler => defineMiddleware("post", handler)
 
 export {pre, post}
