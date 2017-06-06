@@ -1,59 +1,54 @@
 import isFunction from "lodash/isFunction"
 import isString from "lodash/isString"
 
-import getType from "system/helper/util/getType"
-
-const fulfillPost = (document, next) => function(handler) {
+const fulfillPost = handler => function(doc, next) {
   const onFulfilled = res => next(null, res)
 
-  handler(document).then(onFulfilled, err => next(err))
+  handler(doc).then(onFulfilled, err => next(err))
 }
 
-const fulfillSerial = next => function(handler) {
+const fulfillSerial = handler => function(next) {
   const onFulfilled = res => next(null, res)
 
-  handler(this).then(onFulfilled, err => next(err))
+  handler.call(this, this).then(onFulfilled, err => next(err))
 }
 
-const fulfillParallel = (next, cb) => function(handler) {
+const fulfillParallel = handler => function(next, cb) {
   next()
 
   const onFulfilled = res => cb(null, res)
 
-  handler(this).then(onFulfilled, cb)
+  handler.call(this, this).then(onFulfilled, cb)
 }
 
-const wrapAsyncMiddleware = (kind, parallel) => handler => function(...args) {
+const wrapMiddleware = (kind, parallel) => handler => {
   if (kind.toLowerCase() === "post") {
-    return fulfillPost(...args)(handler)
+    return fulfillPost(handler)
   }
 
   return parallel === true
-    ? fulfillParallel(...args).call(this, handler)
-    : fulfillSerial(...args).call(this, handler)
+    ? fulfillParallel(handler)
+    : fulfillSerial(handler)
 }
 
 const defineMIddleware = (kind, type, parallel) => handler => {
   parallel = Boolean(parallel)
 
   if (!type || !isString(type)) {
-    throw new TypeError("Middleware type should be a non-empty function.")
+    throw new TypeError("Middleware type should be a non-empty string.")
   }
 
   if (!isFunction(handler)) {
-    throw new TypeError(
-      "Middleware handler should be a function, " +
-      `but given value is ${getType(handler)}`
-    )
+    throw new TypeError("Middleware handler should be a function.")
   }
 
-  handler = wrapAsyncMiddleware(kind, parallel)(handler)
+  handler = wrapMiddleware(kind, parallel)(handler)
 
   return {kind, type, parallel, handler}
 }
 
 const pre = (...args) => defineMIddleware("pre", ...args)
 
-const post = (...args) => defineMIddleware("post", ...args)
+const post = handler => defineMIddleware("post", handler)
 
 export {pre, post}
