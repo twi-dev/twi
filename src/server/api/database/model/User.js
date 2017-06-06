@@ -2,6 +2,7 @@ import {hash} from "bcryptjs"
 
 import {createModel, Model} from "server/api/core/database"
 
+@createModel
 class User extends Model {
   /**
    * Create a new regular user.
@@ -88,4 +89,4 @@ class User extends Model {
   }
 }
 
-export default createModel(User)
+export default User
