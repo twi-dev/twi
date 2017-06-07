@@ -59,6 +59,9 @@
       "!./test/helper/**/*.js"
     ]
   },
+  "nyc": {
+    "exclude": "test"
+  },
   "dependencies": {
     "apollo-client": "1.0.0-rc.2",
     "bcryptjs": "2.4.3",
