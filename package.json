@@ -34,6 +34,7 @@
     "m": "yarn make",
     "watch": "bin/twi watch --stack-trace",
     "w": "yarn watch",
+    "make:spec": "node_modules/.bin/mkdirp runtime && ./node_modules/.bin/babel src -s -d .",
     "make:frontend": "node_modules/.bin/mkdirp runtime && bin/twi make frontend",
     "make:backend": "bin/cake make",
     "m:f": "yarn make:frontend",
@@ -44,33 +45,18 @@
     "precommit": "yarn lint",
     "prepush": "yarn make && npm run test",
     "coverage": "node_modules/.bin/nyc npm run test",
-    "report": "yarn make && yarn coverage && node_modules/.bin/nyc report --reporter=html npm run test && yarn cleanup:report && yarn make",
+    "report": "yarn make:spec && yarn coverage && node_modules/.bin/nyc report --reporter=html npm run test && yarn cleanup:report && yarn make",
     "report:codecov": "node_modules/.bin/nyc report --reporter=lcov npm run test",
     "codecov": "node_modules/.bin/codecov",
     "ci": "yarn lint && yarn make && yarn coverage && yarn report:codecov && yarn codecov && yarn cleanup"
   },
   "ava": {
     "require": [
-      "babel-register",
       "./test/helper/env/browser"
     ],
-    "babel": "inherit",
     "files": [
       "./test/unit/**/*.js",
       "!./test/helper/**/*.js"
-    ]
-  },
-  "nyc": {
-    "require": [
-      "babel-register"
-    ],
-    "extension": [
-      ".jsx"
-    ],
-    "include": [
-      "bin/helper.js",
-      "src",
-      "frontend"
     ]
   },
   "dependencies": {
@@ -140,6 +126,7 @@
     "@octetstream/eslint-config": "1.0.1",
     "autoprefixer": "6.7.7",
     "ava": "0.19.1",
+    "babel-cli": "^6.24.1",
     "babel-core": "6.23.1",
     "babel-loader": "6.4.0",
     "babel-plugin-dynamic-import-node": "1.0.2",
@@ -173,7 +160,7 @@
     "gulp": "3.9.1",
     "gulp-csso": "2.0.0",
     "gulp-plumber": "1.1.0",
-    "gulp-sourcemaps": "2.4.1",
+    "gulp-sourcemaps": "^2.6.0",
     "gulp-stylus": "2.6.0",
     "gulp-svgmin": "1.2.2",
     "gulp-util": "3.0.7",
@@ -201,7 +188,7 @@
     "supertest": "3.0.0",
     "through2": "2.0.3",
     "vinyl-fs": "2.4.4",
-    "vinyl-sourcemaps-apply": "0.2.1",
+    "vinyl-sourcemaps-apply": "^0.2.1",
     "web-animations-js": "2.2.2",
     "webpack": "2.3.3"
   }

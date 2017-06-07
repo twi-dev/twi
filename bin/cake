@@ -6,7 +6,7 @@
  * @license MIT
  * @author Nick K. <https://github.com/octet-stream>
  */
-const {dirname, resolve, isAbsolute} = require("path")
+const {dirname, join, resolve, relative, isAbsolute} = require("path")
 const fs = require("fs")
 
 const {ROOT, tryDeps} = require("./helper")
@@ -35,16 +35,13 @@ const BABERC = JSON.parse(fs.readFileSync(resolve(ROOT, ".babelrc")))
 // tmp
 BABERC.plugins.push("dynamic-import-node")
 
-// tmp
-if (process.env.NODE_ENV === "test") {
-  BABERC.plugins.push("istanbul")
-}
-
 const DEFAULT_SRC = `${ROOT}/src`
 
 const assign = Object.assign
 
 let isDev = false
+
+const test = process.env.NODE_ENV === "test"
 
 const resolveFullSrcPath = (path = DEFAULT_SRC) => (
   isAbsolute(path) ? path : resolve(ROOT, path)
@@ -155,13 +152,13 @@ function compileFile(file, enc, cb) {
         babelrc: false,
         filename: file.path,
         filenameRelative: file.relative,
-        sourceMap: isDev ? "inline" : true,
+        sourceMap: Boolean(file.sourceMap),
         sourceFileName: file.relative,
         sourceMapTarget: file.relative
       })
     )
 
-    if (file.sourceMap && contents.map && !isDev) {
+    if (contents.map && test) {
       applySourceMap(file, contents.map)
     }
 
@@ -185,17 +182,31 @@ function processFiles(files, src, dest) {
   files = files.filter(file => junk.not(file) && file !== DEFAULT_SRC)
 
   // Get destination path for each given file
-  const fulfill = ({path}) => dirname(getDestFilename(path, src, dest))
+  const fulfillPath = ({path}) => dirname(getDestFilename(path, src, dest))
 
+  function fulfillSourcePath(_, file) {
+    const dest = fulfillPath(file)
+    const ref = relative(dest, src)
+
+    return join(ref, file.path.replace(src, ""))
+  }
+
+  // TODO: Add gulp-plumber instead of .on calls after each .pipe
   vfs.src(files)
     .on("error", onError)
-    .pipe(isDev ? noop() : sourcemaps.init())
+    .pipe(test ? sourcemaps.init() : noop())
     .on("error", onError)
     .pipe(through.obj(compileFile))
     .on("error", onError)
-    .pipe(isDev ? noop() : sourcemaps.write("."))
+    .pipe(
+      // TODO: Improve that thing.
+      sourcemaps.mapSources(fulfillSourcePath)
+    )
     .on("error", onError)
-    .pipe(vfs.dest(fulfill))
+    // TODO: Refactor this code
+    .pipe(test ? sourcemaps.write(".") : noop())
+    .on("error", onError)
+    .pipe(vfs.dest(fulfillPath))
     .on("error", onError)
     .on("end", isDev ? onContinueWatching : onEnd)
 }
