@@ -84,7 +84,7 @@
   version "0.8.6"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
 
-"@types/graphql@^0.9.0":
+"@types/graphql@^0.9.0", "@types/graphql@^0.9.1":
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.9.1.tgz#b04ebe84bc997cc60dbea2ed4d0d4342c737f99d"
 
@@ -588,7 +588,7 @@ babel-core@6.23.1:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-core@6.24.0, babel-core@^6.17.0, babel-core@^6.23.1:
+babel-core@6.24.0, babel-core@^6.17.0:
   version "6.24.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.0.tgz#8f36a0a77f5c155aed6f920b844d23ba56742a02"
   dependencies:
@@ -612,7 +612,7 @@ babel-core@6.24.0, babel-core@^6.17.0, babel-core@^6.23.1:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-core@^6.24.1:
+babel-core@^6.23.1, babel-core@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.1.tgz#8c428564dce1e1f41fb337ec34f4c3b022b5ad83"
   dependencies:
@@ -3845,33 +3845,33 @@ graphql-anywhere@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-2.2.0.tgz#652c3fa23a4a6cfeb98817512fb48100b97f3d5c"
 
-graphql-custom-types@0.7.3:
+graphql-custom-types@^0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/graphql-custom-types/-/graphql-custom-types-0.7.3.tgz#9dbde917b3ee07b208f5f450b5bff2406e009a46"
 
-graphql-iso-date@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.1.1.tgz#38dc4d50af1e8072ba61be3b7fe2d7accc0458bc"
+graphql-iso-date@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.2.0.tgz#21f9352d165e624599ec4ea249e806966197f1dc"
 
-graphql-server-core@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.7.0.tgz#a658b3b0704f8a19b24254b64bef6b3d0ddce8ba"
+graphql-server-core@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.8.0.tgz#44cb0bc91c47fccbd1f6ccd60fcfaca4684c9fe3"
   optionalDependencies:
     "@types/graphql" "^0.9.0"
 
-graphql-server-koa@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/graphql-server-koa/-/graphql-server-koa-0.7.2.tgz#94a575a5e5e7f4252ed5aaddac45c15552357456"
+graphql-server-koa@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-koa/-/graphql-server-koa-0.8.0.tgz#e92794111c1a54232ee34aecabcbd51d422c80c1"
   dependencies:
-    graphql-server-core "^0.7.0"
-    graphql-server-module-graphiql "^0.7.2"
+    graphql-server-core "^0.8.0"
+    graphql-server-module-graphiql "^0.8.0"
   optionalDependencies:
-    "@types/graphql" "^0.9.0"
+    "@types/graphql" "^0.9.1"
     "@types/koa" "^2.0.39"
 
-graphql-server-module-graphiql@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.7.2.tgz#aa1f2a26eadbf7127c1b077e633d5086da52b330"
+graphql-server-module-graphiql@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.8.0.tgz#469c2dd2a8aeb9bb50971b283a11cc0876d3d281"
 
 graphql-tag@1.2.4:
   version "1.2.4"
@@ -5004,9 +5004,9 @@ kareem@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.4.1.tgz#ed76200044fa041ef32b4da8261e2553f1173531"
 
-kcors@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/kcors/-/kcors-2.2.0.tgz#223aa0f759605bf97dc456a72ffeeb6b239af40e"
+kcors@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/kcors/-/kcors-2.2.1.tgz#7160a94f2eae633436d2cef8eadd0ce232386779"
 
 keygrip@~1.0.1:
   version "1.0.1"

@@ -1,6 +1,5 @@
-import {GraphQLString as TString} from "graphql"
-
 import TUser from "server/api/graphql/type/user/TUser"
+import TLogin from "server/api/graphql/scalar/user/TLogin"
 
 import getUser from "server/api/graphql/resolve/query/user/getUser"
 
@@ -11,7 +10,7 @@ const resolve = {
 }
 
 const login = {
-  type: TString,
+  type: TLogin,
   required: true
 }
 

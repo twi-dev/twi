@@ -25,10 +25,21 @@ class User extends Model {
     return createdUser
   }
 
-  static async getByLogin(login) {
+  static async getByLogin(username) {
     const Model = this
 
-    const user = await Model.findOne({login})
+    username = new RegExp(`^${username}$`, "i")
+
+    const user = await Model.findOne({
+      $or: [
+        {
+          login: username
+        },
+        {
+          email: username
+        }
+      ]
+    })
 
     return user
   }
