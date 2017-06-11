@@ -179,7 +179,7 @@ function watch(src, dest, config) {
   })
 }
 
-function run(src, dest, config) {
+function build(src, dest, config) {
   src = resolveFullSrcPath(src, config.root)
   dest = resolveFullDestPath(dest, config.root)
 
@@ -194,4 +194,4 @@ function run(src, dest, config) {
     : make(src, dest, config)
 }
 
-module.exports = run
+module.exports = build
