@@ -3845,11 +3845,11 @@ graphql-anywhere@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-2.2.0.tgz#652c3fa23a4a6cfeb98817512fb48100b97f3d5c"
 
-graphql-custom-types@^0.7.3:
+graphql-custom-types@0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/graphql-custom-types/-/graphql-custom-types-0.7.3.tgz#9dbde917b3ee07b208f5f450b5bff2406e009a46"
 
-graphql-iso-date@^3.2.0:
+graphql-iso-date@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.2.0.tgz#21f9352d165e624599ec4ea249e806966197f1dc"
 
@@ -3859,7 +3859,7 @@ graphql-server-core@^0.8.0:
   optionalDependencies:
     "@types/graphql" "^0.9.0"
 
-graphql-server-koa@^0.8.0:
+graphql-server-koa@0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/graphql-server-koa/-/graphql-server-koa-0.8.0.tgz#e92794111c1a54232ee34aecabcbd51d422c80c1"
   dependencies:
@@ -5004,7 +5004,7 @@ kareem@1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/kareem/-/kareem-1.4.1.tgz#ed76200044fa041ef32b4da8261e2553f1173531"
 
-kcors@^2.2.1:
+kcors@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/kcors/-/kcors-2.2.1.tgz#7160a94f2eae633436d2cef8eadd0ce232386779"
 
@@ -7947,6 +7947,10 @@ spdx-license-ids@^1.0.2:
 speakingurl@^10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/speakingurl/-/speakingurl-10.0.0.tgz#24ef980de85194d17f2daea30a6b2c2cc51115bb"
+
+sprintf-js@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
 
 sprintf-js@~1.0.2:
   version "1.0.3"
