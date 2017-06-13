@@ -42,11 +42,17 @@ const defineMiddleware = (kind, type, parallel) => handler => {
 
   handler = wrapMiddleware(kind, parallel)(handler)
 
-  return {kind, type, parallel, handler}
+  const middleware = {kind, type, handler}
+
+  if (kind.toLowerCase() !== "post") {
+    middleware.parallel = parallel
+  }
+
+  return middleware
 }
 
 const pre = (...args) => defineMiddleware("pre", ...args)
 
-const post = handler => defineMiddleware("post", handler)
+const post = (...args) => defineMiddleware("post", ...args)
 
 export {pre, post}

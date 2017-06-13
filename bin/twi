@@ -90,7 +90,7 @@ const makeBackend = () => new Promise((resolve, reject) => {
   ora.text = "Making backend app..."
   ora.start()
 
-  exec(`${ROOT}/bin/cake make`, fulfill)
+  exec(`NODE_ENV=production ${ROOT}/bin/cake make`, fulfill)
 })
 
 /**

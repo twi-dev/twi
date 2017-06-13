@@ -13,9 +13,20 @@ const dev = name !== "production"
 const test = name === "test"
 const debug = name === "debug"
 
-build(join(ROOT, "src"), ROOT, {
+function onFulfilled() {
+  process.exit(0)
+}
+
+function onRejected(err) {
+  console.log(err)
+  process.exit(1)
+}
+
+build({
+  src: join(ROOT, "src"),
+  dest: ROOT,
   root: ROOT,
   env: {
     name, dev, test, debug
   }
-})
+}).then(onFulfilled, onRejected)

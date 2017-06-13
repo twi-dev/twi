@@ -32,6 +32,8 @@ function transformFile(file, enc, {env: {test}}, cb) {
     return cb(null, file)
   }
 
+  console.log(fmt("Compile %s", [file.path]))
+
   try {
     const contents = transform(String(file.contents),
       assign({}, babelrc, {
@@ -63,13 +65,14 @@ const processFile = config => through.obj((file, enc, cb) => {
       return cb(err)
     }
 
-    if (content) {
+    if (!content) {
       return cb(new Error("Babelrc required."))
     }
 
     try {
       babelrc = JSON.parse(content)
 
+      // Add node-specific dynamic import polyfill
       babelrc.plugins.push("dynamic-import-node")
     } catch (err) {
       return cb(err)

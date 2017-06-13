@@ -1,19 +1,42 @@
+const dirname = require("path").dirname
+
 const vfs = require("vinyl-fs")
 const junk = require("junk")
 const plumber = require("gulp-plumber")
+const stat = require("promise-fs").stat
 
 const processFile = require("./processFile")
 
-const getDestPath = (src, dest) => filename => filename.replace(src, dest)
+const getDestPath = (src, dest) => ({path}) => dirname(path.replace(src, dest))
 
-const errorHandler = error => process.emit("error", error)
+async function filterFiles(files, src) {
+  const res = []
 
-const onEnd = (dev = false) => function() {
-  if (!dev) {
-    console.log("Done without errors.")
-    process.exit(0)
+  let ref = []
+  for (const file of files) {
+    ref.push(stat(file))
   }
+
+  ref = await Promise.all(ref)
+
+  for (const [key, val] of ref.entries()) {
+    if (!val.isDirectory() && junk.not(val) && val !== src) {
+      res.push(files[key])
+    }
+  }
+
+  return res
 }
+
+const run = (files, config) => new Promise((resolve, reject) => {
+  const {src, dest} = config
+
+  vfs.src(files)
+    .pipe(plumber({errorHandler: reject}))
+    .pipe(processFile(config))
+    .pipe(vfs.dest(getDestPath(src, dest)))
+    .on("end", resolve)
+})
 
 /**
  * Process given files via vinyl-fs, through2 and babel
@@ -22,17 +45,10 @@ const onEnd = (dev = false) => function() {
  * @param string src
  * @param string dest
  */
-function processFiles(files, config) {
-  const dev = config.env.dev
-  const {src, dest} = config
+const processFiles = (files, config) => new Promise((resolve, reject) => {
+  const onFulfilled = files => run(files, config)
 
-  files = files.filter(file => junk.not(file) || file !== src)
-
-  vfs.src(files)
-    .pipe(plumber({errorHandler}))
-    .pipe(processFile(config))
-    .pipe(getDestPath(src, dest))
-    .on("end", onEnd(dev))
-}
+  filterFiles(files, config.src).then(onFulfilled).then(resolve, reject)
+})
 
 module.exports = processFiles
