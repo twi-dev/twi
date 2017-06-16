@@ -1,11 +1,3 @@
-#!/usr/bin/env node
-
-/**
- * Build your Babel project with a cake!
- *
- * @license MIT
- * @author Nick K. <https://github.com/octet-stream>
- */
 const {resolve, isAbsolute} = require("path")
 const fs = require("fs")
 

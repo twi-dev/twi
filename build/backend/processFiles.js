@@ -12,14 +12,14 @@ const getDestPath = (src, dest) => ({path}) => dirname(path.replace(src, dest))
 async function filterFiles(files, src) {
   const res = []
 
-  let ref = []
+  let stats = []
   for (const file of files) {
-    ref.push(stat(file))
+    stats.push(stat(file))
   }
 
-  ref = await Promise.all(ref)
+  stats = await Promise.all(stats)
 
-  for (const [key, val] of ref.entries()) {
+  for (const [key, val] of stats.entries()) {
     if (!val.isDirectory() && junk.not(val) && val !== src) {
       res.push(files[key])
     }
