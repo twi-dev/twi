@@ -144,10 +144,12 @@ function make(component) {
  * @param commander.Command
  */
 function setup(cmd) {
+  const env = getEnv(cmd.parent)
+
   function onFulfilled() {
     ora.stop()
 
-    return require(`${ROOT}/setup/server/installer`).default(cmd)
+    return require(`${ROOT}/setup/installer`).default(cmd, env)
   }
 
   const onRejected = err => onError(err, cmd.parent.T)
@@ -156,7 +158,9 @@ function setup(cmd) {
     return onFulfilled().then(onEnd, onRejected)
   }
 
-  make(undefined).then(onFulfilled).then(onEnd, onRejected)
+  // make(undefined).then(onFulfilled).then(onEnd, onRejected)
+
+  onFulfilled().then(onEnd, onError)
 }
 
 function run(name, cmd) {

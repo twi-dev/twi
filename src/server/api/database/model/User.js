@@ -60,7 +60,7 @@ class User extends Model {
    */
   static get roles() {
     return {
-      owner: 0,
+      su: 0,
       admin: 1,
       moderator: 2,
       regular: 3,

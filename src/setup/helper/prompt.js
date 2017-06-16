@@ -1,11 +1,11 @@
 import inquirer from "inquirer"
-import log from "server/core/log"
+import log from "system/log"
 
 import isString from "lodash/isString"
 import isPlainObject from "lodash/isPlainObject"
 
-import mapObject from "server/core/helper/iterator/mapObject"
-import objectIterator from "server/core/helper/iterator/objectIterator"
+import mapObject from "system/helper/iterator/sync/mapObject"
+import objectIterator from "system/helper/iterator/sync/objectIterator"
 
 const isArray = Array.isArray
 
