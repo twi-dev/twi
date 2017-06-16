@@ -1,11 +1,11 @@
 const {resolve, isAbsolute} = require("path")
 const fs = require("fs")
 
-const {cross, pointer} = require("figures")
+const {pointer} = require("figures")
 const globby = require("globby")
 const rimraf = require("rimraf")
 const isFunction = require("lodash/isFunction")
-const {red, cyan} = require("chalk")
+const {cyan} = require("chalk")
 const chokidar = require("chokidar")
 const mkdir = require("mkdirp")
 
@@ -22,22 +22,6 @@ const resolveFullDestPath = (path, root) => (
 const getDestFilename = (filename, src, dest) => (
   filename.replace(src, dest)
 )
-
-/**
- * Error hanlder for all in-process errors
- *
- * @param Error err
- */
-const onError = ({dev}) => function(err) {
-  if (dev) {
-    console.log(err)
-    console.log(red(cross), "Watching for changes...")
-    return
-  }
-
-  console.log(red(cross), err)
-  process.exit(1)
-}
 
 /**
  * Add event handlers to Chokidar watcher
@@ -72,7 +56,7 @@ function mapHandlers(watcher, handlers) {
 const make = config => new Promise((resolve, reject) => {
   const onFulfilled = files => processFiles(files, config).then(resolve, reject)
 
-  globby(`${config.src}/**`).then(onFulfilled, onError(config.env))
+  globby(`${config.src}/**`).then(onFulfilled, reject)
 })
 
 /**
@@ -86,6 +70,14 @@ const watch = config => new Promise((_, reject) => {
   console.log(cyan(pointer), "You can press Control+C to exit.")
 
   const {src, dest} = config
+
+  function unlink(filename) {
+    filename = getDestFilename(filename, src, dest)
+
+    console.log("Remore %s", filename)
+
+    rimraf(filename, err => err && reject(err))
+  }
 
   /**
    * Create a directory on "addDir" event and compile included files (if exists)
@@ -103,6 +95,8 @@ const watch = config => new Promise((_, reject) => {
 
     const destFilename = getDestFilename(filename, src, dest)
 
+    console.log("Create a directory %s", destFilename)
+
     mkdir(destFilename, created)
   }
 
@@ -118,18 +112,14 @@ const watch = config => new Promise((_, reject) => {
    *
    * @param string filename
    */
-  const onUnlink = filename => rimraf(
-    getDestFilename(filename, src, dest), err => err && onError(err)
-  )
+  const onUnlink = filename => unlink(filename)
 
   /**
    * Remore given directory on "unlinkDir" event
    *
    * @param string filename
    */
-  const onUnlinkDir = filename => rimraf(
-    getDestFilename(filename, src, dest), err => err && onError(err)
-  )
+  const onUnlinkDir = filename => unlink(filename)
 
   /**
    * Rebuild file/directory on change event
@@ -142,7 +132,7 @@ const watch = config => new Promise((_, reject) => {
       stat.isDirectory() ? onAddDir(filename) : onAdd(filename)
     )
 
-    const onStat = (err, stat) => err ? onError(err) : fulfill(stat)
+    const onStat = (err, stat) => err ? reject(err) : fulfill(stat)
 
     // TODO: I think it's actually triggering only for files events.
     //   I need a tiny research of chokidar docs and maybe fix that thing.

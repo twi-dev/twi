@@ -4,6 +4,7 @@ const vfs = require("vinyl-fs")
 const junk = require("junk")
 const plumber = require("gulp-plumber")
 const stat = require("promise-fs").stat
+const isEmpty = require("lodash/isEmpty")
 
 const processFile = require("./processFile")
 
@@ -29,13 +30,21 @@ async function filterFiles(files, src) {
 }
 
 const run = (files, config) => new Promise((resolve, reject) => {
-  const {src, dest} = config
+  if (isEmpty(files)) {
+    return resolve()
+  }
 
-  vfs.src(files)
+  const {src, dest} = config
+  const dev = config.env.dev
+
+  const stream = vfs.src(files)
     .pipe(plumber({errorHandler: reject}))
     .pipe(processFile(config))
     .pipe(vfs.dest(getDestPath(src, dest)))
-    .on("end", resolve)
+
+  if (!dev) {
+    stream.on("end", resolve)
+  }
 })
 
 /**

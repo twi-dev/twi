@@ -3,7 +3,6 @@ import {basename, extname} from "path"
 import Router from "koa-router"
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
-import {info} from "system/log"
 import noop from "system/middleware/noop"
 
 import checkCtorCall from "system/helper/util/checkCtorCall"
