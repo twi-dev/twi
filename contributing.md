@@ -38,7 +38,7 @@ import Type from "parasprite/Type"
 
 // Implementation
 const TUser = Type("User")
-  /* some filed of type */
+  /* some field of type */
 .end()
 
 // Exports from current module
