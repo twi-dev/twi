@@ -79,7 +79,7 @@ const getViewRenderer = options => async function renderer(filename, locals) {
 }
 
 /**
- * Set up Pug view renderer on Koa context
+ * Setting up Pug view renderer on Koa context
  *
  * @param Koa koa
  * @param options object
