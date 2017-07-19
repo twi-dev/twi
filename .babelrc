@@ -1,7 +1,4 @@
 {
-  "presets": [
-    "react"
-  ],
   "plugins": [
     ["module-resolver", {
       "cwd": ".",
