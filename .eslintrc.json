@@ -12,5 +12,10 @@
         "src/test/unit/**/*.{js,jsx}"
       ]
     }]
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
   }
 }
