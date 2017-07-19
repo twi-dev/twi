@@ -1,5 +1,5 @@
 {
-  "name": "twi",
+  "name": "@twi-project/server",
   "version": "0.2.0",
   "codename": "Testing, Testing, 1, 2, 3",
   "description": "Fanfiction library engine",

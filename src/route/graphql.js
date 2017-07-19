@@ -3,12 +3,12 @@ import {basename, extname} from "path"
 import Router from "koa-router"
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
-import noop from "system/middleware/noop"
+import noop from "core/middleware/noop"
 
-import checkCtorCall from "system/helper/util/checkCtorCall"
+import checkCtorCall from "core/helper/util/checkCtorCall"
 
-import multipart from "api/core/middleware/multipart"
-import schema from "api/core/base/graphql"
+import multipart from "core/middleware/multipart"
+import schema from "core/base/graphql"
 
 /**
  * A function that transforms a file ReadableStream object

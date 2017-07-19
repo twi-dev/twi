@@ -1,4 +1,4 @@
-import {route, methods} from "system/helper/decorator/controller"
+import {route, methods} from "core/helper/decorator/controller"
 
 const post = methods.post
 
