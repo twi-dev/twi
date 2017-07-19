@@ -32,7 +32,7 @@
     "g:w": "yarn gulp:watch",
     "make": "bin/twi make backend",
     "m": "yarn make",
-    "watch": "bin/twi watch --stack-trace",
+    "watch": "bin/cake",
     "w": "yarn watch",
     "make:spec": "node_modules/.bin/mkdirp runtime && ./node_modules/.bin/babel src -s -d .",
     "make:frontend": "node_modules/.bin/mkdirp runtime && bin/twi make frontend",
@@ -43,12 +43,12 @@
     "cleanup:report": "node_modules/.bin/rimraf .nyc_output runtime server static/**/*.svg static/**/*.css static/**/*.js system",
     "cleanup": "yarn cleanup:report && node_modules/.bin/rimraf coverage",
     "precommit": "yarn lint",
-    "prepush": "yarn make && npm run test",
+    "prepush": "yarn make",
     "coverage": "node_modules/.bin/nyc npm run test",
     "report": "yarn make:spec && yarn coverage && node_modules/.bin/nyc report --reporter=html npm run test && yarn cleanup:report && yarn make",
     "report:codecov": "node_modules/.bin/nyc report --reporter=lcov npm run test",
     "codecov": "node_modules/.bin/codecov",
-    "ci": "yarn lint && yarn make && yarn coverage && yarn report:codecov && yarn codecov && yarn cleanup"
+    "ci": "yarn lint"
   },
   "ava": {
     "require": [
