@@ -1,22 +1,10 @@
 {
-  "presets": [
-    "react"
-  ],
   "plugins": [
     ["module-resolver", {
-      "cwd": "./src",
+      "cwd": ".",
+      "root": ["./src"],
       "alias": {
-        "test": "./test",
-        "system": "./system",
-        "server": "./server",
-        "static": "./server/static",
-        "api": "./server/api",
-        "setup": "./setup",
-        "model": "./model",
-        "config": "./config",
-        "frontend": "./runtime/app",
-        "package.json": "./package.json",
-        "ignore-require": "./test/helper/ignore-require"
+        "package.json": "./package.json"
       }
     }],
     "transform-flow-strip-types",

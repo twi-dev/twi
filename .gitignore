@@ -1,26 +1,33 @@
-# Main
+# Junks and runtime things
 .nyc_output
 .dockerignore
 .npmignore
-.next
+npm-debug.log
+yarn-error.log
+.DS_Store
+*.rdb
+*.doc
+*.docx
+*.odt
+*.map
 
 # Main
-server/graphql
-server
-system/**/*.js
-setup
-common
 node_modules
-deploy/sandbox
-runtime
+deploy
 
-!src/server/graphql
-!src/server
-!src/system
-!src/setup
-!src/common
-!src/setup/server
-!src/setup/frontend
+database
+
+graphql/**/*.js
+core/**/*.js
+route/**/*.js
+setup/**/*.js
+
+!src/database
+# graphql
+# deploy
+# core
+# route
+# setup
 
 # Static content (styles, images, script etc)
 static/assets/img/**/*.svg
@@ -45,27 +52,10 @@ config/system/**/*.yml
 !config/system/default.yml
 !config/service/**/default.yml
 
-# Deprecated
-config/app/user.yaml
-config/app/user.yml
-config/app/test.yaml
-config/app/test.yml
-config/runtime/assets.json
-# End
-
-# Junks
-npm-debug.log
-yarn-error.log
-.DS_Store
-*.rdb
-*.doc
-*.docx
-*.odt
-*.map
-
 # An old codebase
 *.old
 *-old
 
 .*.dockerfile
 test.js
+cli/**/*.js
