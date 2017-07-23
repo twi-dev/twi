@@ -13,7 +13,15 @@
   },
   "scripts": {
     "make": "NODE_ENV=production bin/cake make",
-    "watch": "NODE_ENV=development bin/cake watch"
+    "watch": "NODE_ENV=development bin/cake watch",
+    "cleanup": "node_modules/.bin/rimraf cli core database graphql route setup test",
+    "lint": "node_modules/.bin/eslint bin build src migration",
+    "test": "node_modules/.bin/ava",
+    "coverage": "node_modules/.bin/nyc yarn test",
+    "codecov": "node_modules/.bin/codecov",
+    "report": "yarn make:test && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
+    "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
+    "ci": "yarn make:spec && yarn coverage && yarn report:codecov && yarn codecov"
   },
   "ava": {
     "files": [

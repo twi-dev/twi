@@ -42,5 +42,5 @@ log.info = info
 log.warn = warn
 log.error = error
 
-export {log, normal, ok, info, warn, error}
+export {normal, ok, info, warn, error}
 export default log
