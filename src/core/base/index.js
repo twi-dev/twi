@@ -23,7 +23,9 @@ const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
 const r = makeRouter(join(ROOT, "route"))()
 
 async function main(options) {
-  const config = await getConfig(options.name, options.env)
+  const config = await getConfig(options.env)
+
+  console.log(config)
 
   const server = new Server({...config, ...options})
 

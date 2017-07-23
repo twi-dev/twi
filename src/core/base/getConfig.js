@@ -3,29 +3,24 @@ import {join} from "path"
 import {read} from "node-yaml"
 import merge from "lodash/merge"
 import deepFreeze from "deep-freeze"
-import isString from "lodash/isString"
 import isPlainObject from "lodash/isPlainObject"
 
-const CONFIGS_ROOT = join(process.cwd(), "config")
+const CONFIGS_ROOT = join(process.cwd(), "config", "system")
 
-const cache = new Map()
+let cache = null
 
-async function readConfig(dir, name) {
+async function readConfig(dir, env) {
   const defaultConfig = await read(join(dir, "default.yml"))
-
-  if (!name) {
-    return defaultConfig
-  }
 
   let config = {}
   try {
-    config = await read(join(dir, `${name}.yml`))
+    config = await read(join(dir, `${env}.yml`))
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err
     }
 
-    if (name === "production") {
+    if (env === "production") {
       throw new Error(
         "Production config required." +
         `Is production.yml exists in "${dir}" directory?`
@@ -36,33 +31,24 @@ async function readConfig(dir, name) {
   return merge({}, defaultConfig, config)
 }
 
-async function getConfig(serviceName, env) {
-  if (!isString(serviceName)) {
-    throw new TypeError("Service name should be a string.")
-  }
-
+async function getConfig(env) {
   if (!isPlainObject(env)) {
     throw new TypeError("Env should be passed as object.")
   }
 
-  // Return config from cache if exists
-  if (cache.has(serviceName)) {
-    return cache.get(serviceName)
+  if (isPlainObject(cache)) {
+    return cache
   }
 
-  const servicePath = join(CONFIGS_ROOT, "service", serviceName)
-
-  const system = await readConfig(join(CONFIGS_ROOT, "system"), env.name)
-  const serviceConfig = await readConfig(servicePath, env.name)
+  let config = await readConfig(CONFIGS_ROOT, env.name)
 
   if (process.env.NODE_ENV !== env.name) {
     process.env.NODE_ENV = env.name
   }
 
-  const config = deepFreeze({...serviceConfig, env, system})
+  config = deepFreeze({...config, env})
 
-  // Add config to cache
-  cache.set(serviceName, config)
+  cache = config // Add a config to cache
 
   return config
 }

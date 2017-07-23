@@ -4,8 +4,8 @@ const command = "run"
 
 const description = "run Twi server"
 
-async function run() {
-  // noop
+async function run(env) {
+  await server({env})
 }
 
 export {

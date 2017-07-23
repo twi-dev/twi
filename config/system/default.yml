@@ -10,3 +10,50 @@ name: Twilight's Library
 # Is sign up ebable on your site?
 # Can be only "true" or "false"
 enableSignup: true
+
+host: localhost
+port: 2319
+secure: false
+
+database:
+  host: localhost
+  port: null
+  user: root
+  pass: null
+  name: twi
+
+# Sesstion storage configs
+session:
+  # Your secret key for session storage. This is default value.
+  # Note: This value is required.
+  secret: null
+
+  # Cookie prefix
+  prefix: twi
+  delimiter: .
+  sessidName: usessid
+
+# Mail configs
+mail:
+  from: Postmare # Human-readable name of the service
+
+  # Hostname of your mail server
+  host: null
+  port: null
+
+  # Or just provide a service name, if you're using something like Yandex or Google
+  # You can find more information in Nodemailer's docs
+  service: null
+
+  # Use SSL?
+  # Can be only "true" of "false"
+  secure: true
+
+  auth:
+    # E-mail address for noreply bot. Something like this:
+    # noreply@yourdomain.com
+    user: null
+
+    # Password of noreply bot account
+    pass: null
+
