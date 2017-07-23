@@ -22,7 +22,7 @@
     "codecov": "node_modules/.bin/codecov",
     "report": "yarn make:spec && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
     "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
-    "ci": "yarn make:spec && yarn coverage && yarn report:codecov && yarn codecov",
+    "ci": "yarn make:spec && yarn coverage && yarn report:ci && yarn codecov",
     "precommit": "yarn lint",
     "prepush": "yarn report"
   },
