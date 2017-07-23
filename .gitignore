@@ -58,3 +58,4 @@ config/system/**/*.yml
 
 .*.dockerfile
 test.js
+cli/**/*.js

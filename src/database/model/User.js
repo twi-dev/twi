@@ -11,7 +11,7 @@ class User extends Model {
    *
    * @return TUser
    */
-  static async create(user) {
+  static async createOne(user) {
     // Weird thing, I know that. Just for more readable code :)
     const Model = this
 

@@ -2,7 +2,7 @@ import {createModel, Model} from "server/api/core/database"
 
 @createModel
 class Story extends Model {
-  static async create(owner, story) {
+  static async createOne(owner, story) {
     const Model = this
 
     const model = new Model({...story})
