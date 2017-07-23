@@ -5,8 +5,11 @@ import invariant from "core/helper/util/invariant"
 
 import setCommand from "./setCommand"
 
+import getEnv from "../helper/getEnv"
+
 function getCommands(path, commander) {
   const commands = rd(path)
+  const env = getEnv()
 
   invariant(
     isEmpty(commands),
@@ -15,7 +18,7 @@ function getCommands(path, commander) {
   )
 
   for (const [name, config] of Object.entries(commands)) {
-    setCommand(commander, {
+    setCommand(commander, env, {
       ...config, action: config.default || config[name] || config
     })
   }

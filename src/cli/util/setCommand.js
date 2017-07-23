@@ -1,10 +1,12 @@
 import wrapAction from "./wrapAction"
 
-function setCommand(commander, {command, alias, description, action, option}) {
+function setCommand(
+  commander, env, {command, alias, description, action, option}
+) {
   commander
     .command(command)
     .description(description)
-    .action(wrapAction(action))
+    .action(wrapAction(action, env))
 
   if (alias) {
     commander.alias(alias)
