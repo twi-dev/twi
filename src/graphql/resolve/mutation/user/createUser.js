@@ -1,4 +1,4 @@
-import User from "server/api/database/model/User"
+import User from "database/model/User"
 
 async function createUser(_, {user}) {
   const createdUser = await User.create({...user})

@@ -2,7 +2,7 @@ import {join} from "path"
 
 import {createTransport} from "nodemailer"
 
-import {render} from "server/api/core/base/view"
+import {render} from "core/base/view"
 
 const MAIL_VIEWS = join(process.cwd(), "view", "mail")
 

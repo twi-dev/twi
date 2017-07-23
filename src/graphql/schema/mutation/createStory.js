@@ -1,7 +1,7 @@
-import TStoryInput from "server/api/graphql/input/story/TStoryInput"
-import TStory from "server/api/graphql/type/story/TStory"
+import TStoryInput from "graphql/input/story/TStoryInput"
+import TStory from "graphql/type/story/TStory"
 
-import createStory from "../../resolve/mutation/story/createStory"
+import createStory from "graphql/resolve/mutation/story/createStory"
 
 const resolve = {
   type: TStory,

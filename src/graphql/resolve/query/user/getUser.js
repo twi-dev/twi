@@ -1,4 +1,4 @@
-import User from "server/api/database/model/User"
+import User from "database/model/User"
 
 async function getUser(_, {login}) {
   const user = await User.getByLogin(login)

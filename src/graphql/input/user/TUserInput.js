@@ -2,7 +2,7 @@ import {GraphQLString as TString} from "graphql"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
 import Input from "parasprite/Input"
 
-import TLogin from "server/api/graphql/scalar/user/TLogin"
+import TLogin from "graphql/scalar/user/TLogin"
 
 import TFileInput from "../file/TFileInput"
 import TContactsInput from "./TContactsInput"

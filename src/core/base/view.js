@@ -2,10 +2,11 @@ import {join} from "path"
 
 import {compile} from "pug"
 import {readFile} from "promise-fs"
-import {version, codename} from "package.json"
 
 import merge from "lodash/merge"
 import isFunction from "lodash/isFunction"
+
+import {version, codename} from "../../package.json"
 
 const VIEWS = join(process.cwd(), "view")
 

@@ -13,8 +13,8 @@ import errorHandler from "core/middleware/error-handler"
 import logger from "core/middleware/logger"
 import multipart from "core/middleware/multipart"
 
-import createMailService from "server/mail"
-import createConnection from "server/base/database"
+import createMailService from "core/mail"
+import createConnection from "core/base/database"
 
 const ROOT = process.cwd()
 

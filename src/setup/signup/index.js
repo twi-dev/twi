@@ -2,11 +2,11 @@ import {hash} from "bcryptjs"
 
 import prompt from "setup/helper/prompt"
 
-import log from "system/log"
-import getConfig from "system/base/getConfig"
+import log from "core/log"
+import getConfig from "core/base/getConfig"
 
-import createConnection from "server/api/core/base/database"
-import User from "server/api/database/model/User"
+import createConnection from "core/base/database"
+import User from "database/model/User"
 
 const getMainInfo = async () => await prompt({
   login: "Your login:",

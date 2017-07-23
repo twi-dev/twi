@@ -2,7 +2,7 @@ import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 import {GraphQLDateTime as TDateTime} from "graphql-iso-date"
 import Type from "parasprite/Type"
 
-import Chapter from "server/api/database/model/Chapter"
+import Chapter from "database/model/Chapter"
 
 import TChapter from "./TChapter"
 

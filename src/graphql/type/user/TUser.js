@@ -3,13 +3,12 @@ import {GraphQLDateTime as TDateTime} from "graphql-iso-date"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
 import Type from "parasprite/Type"
 
+import getUserStories from "graphql/resolve/query/story/getUserStories"
 
 import TRole from "./TRole"
 
 import TStory from "../story/TStory"
 import TLogin from "../../scalar/user/TLogin"
-
-import getUserStories from "../../resolve/query/story/getUserStories"
 
 const TUser = Type("User", "Represends a full user information")
   .field("id", TID, true, "User unique identifer at the system")

@@ -1,8 +1,8 @@
-import TUserInput from "server/api/graphql/input/user/TUserInput"
+import TUserInput from "graphql/input/user/TUserInput"
 
-import TUser from "server/api/graphql/type/user/TUser"
+import TUser from "graphql/type/user/TUser"
 
-import createUser from "server/api/graphql/resolve/mutation/user/createUser"
+import createUser from "graphql/resolve/mutation/user/createUser"
 
 const resolve = {
   type: TUser,

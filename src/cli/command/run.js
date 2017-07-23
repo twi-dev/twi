@@ -1,4 +1,4 @@
-// import server from "core/base"
+import server from "core/base"
 
 const command = "run"
 

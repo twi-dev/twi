@@ -1,7 +1,7 @@
-import TUser from "server/api/graphql/type/user/TUser"
-import TLogin from "server/api/graphql/scalar/user/TLogin"
+import TUser from "graphql/type/user/TUser"
+import TLogin from "graphql/scalar/user/TLogin"
 
-import getUser from "server/api/graphql/resolve/query/user/getUser"
+import getUser from "graphql/resolve/query/user/getUser"
 
 const resolve = {
   type: TUser,
