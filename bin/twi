@@ -12,7 +12,13 @@ const getCommands = require("../cli/util")
 
 const COMMANDS_ROOT = join(ROOT, "cli", "command")
 
+function onError(err) {
+  console.error(err)
+}
+
 const init = commander => getCommands(COMMANDS_ROOT, commander)
+
+process.on("error", onError)
 
 init(cli)
   .version(version)

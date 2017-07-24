@@ -22,7 +22,7 @@ async function readConfig(dir, env) {
 
     if (env === "production") {
       throw new Error(
-        "Production config required." +
+        "Production config required. " +
         `Is production.yml exists in "${dir}" directory?`
       )
     }

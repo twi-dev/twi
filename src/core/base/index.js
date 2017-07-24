@@ -6,7 +6,6 @@ import cors from "kcors"
 
 import Server from "core/base/Server"
 import makeRouter from "core/base/router"
-import getConfig from "core/base/getConfig"
 import log from "core/log"
 
 import errorHandler from "core/middleware/error-handler"
@@ -22,12 +21,8 @@ const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
 
 const r = makeRouter(join(ROOT, "route"))()
 
-async function main(options) {
-  const config = await getConfig(options.env)
-
-  console.log(config)
-
-  const server = new Server({...config, ...options})
+async function main(config) {
+  const server = new Server(config)
 
   const mail = createMailService({
     mail: config.mail,

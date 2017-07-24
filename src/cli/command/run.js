@@ -1,11 +1,14 @@
 import server from "core/base"
+import getConfig from "core/base/getConfig"
 
 const command = "run"
 
 const description = "run Twi server"
 
 async function run(env) {
-  await server({env})
+  const config = await getConfig(env)
+
+  await server(config)
 }
 
 export {

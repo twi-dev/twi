@@ -15,29 +15,9 @@ const isArray = Array.isArray
 const defineProperty = Object.defineProperty
 
 class Server extends Koa {
-  constructor(name, config = {}) {
-    if (isPlainObject(name)) {
-      config = name
-
-      name = config.name
-
-      delete config.name
-    }
-
-    if (!name) {
-      throw new TypeError(
-        "The name is required for the Server instance. " +
-        "Note: If you've passed config as first argument, " +
-        "than you can set this argument as \"name\" property."
-      )
-    }
-
-    if (!isString(name)) {
-      throw new TypeError("Server name should be a string.")
-    }
-
+  constructor(config = {}) {
     if (!config.port) {
-      throw new TypeError(`Port required for ${name} server.`)
+      throw new TypeError(`Port required for ${config.name} server.`)
     }
 
     if (!isInteger(config.port)) {
@@ -45,8 +25,6 @@ class Server extends Koa {
     }
 
     super() // fucking ES6 OOP >_<
-
-    this.__name = name
 
     // Private member
     this.__config = deepFreeze({
@@ -59,7 +37,7 @@ class Server extends Koa {
 
   // Get server name
   get name() {
-    return this.__name
+    return this.config.name
   }
 
   // Get a port that will be listening by the server

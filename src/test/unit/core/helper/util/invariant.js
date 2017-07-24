@@ -1,5 +1,4 @@
 import test from "ava"
-import {spy} from "sinon"
 
 import invariant from "core/helper/util/invariant"
 
@@ -46,17 +45,4 @@ test("Should throw an error from given class instance", t => {
 
   t.true(err instanceof SomeError)
   t.is(err.message, "Some error message.")
-})
-
-test("Should invoke predicate if it is a function", t => {
-  t.plan(2)
-
-  const predicate = spy(() => true)
-
-  const trap = () => invariant(
-    predicate, "I just don't know what went wrong..."
-  )
-
-  t.throws(trap)
-  t.true(predicate.called)
 })
