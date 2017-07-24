@@ -46,3 +46,16 @@ test("Should throw an error from given class instance", t => {
   t.true(err instanceof SomeError)
   t.is(err.message, "Some error message.")
 })
+
+test("Should throw an error with given class", t => {
+  t.plan(3)
+
+  class SomeError extends Error {}
+
+  const trap = () => invariant(true, SomeError, "Some %s error message.", "foo")
+
+  const err = t.throws(trap)
+
+  t.true(err instanceof SomeError)
+  t.is(err.message, "Some foo error message.")
+})
