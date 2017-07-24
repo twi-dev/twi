@@ -8,13 +8,25 @@ mongoose.Promise = Promise
 function getConnectionSctring({host, port, name}) {
   let connectionSctring = "mongodb://"
 
-  invariant(host == null, "Host is required parameter for database connection.")
+  invariant(
+    host == null, TypeError,
+    "Host is required parameter for database connection."
+  )
 
-  invariant(isString(host) === false, "Host should be passed as a string.")
+  invariant(
+    isString(host) === false, TypeError,
+    "Host should be passed as a string."
+  )
 
-  invariant(name == null, "Database is required for a connection.")
+  invariant(
+    name == null, TypeError,
+    "Database is required for a connection."
+  )
 
-  invariant(isString(name) === false, "Database name should be a string.")
+  invariant(
+    isString(name) === false, TypeError,
+    "Database name should be a string."
+  )
 
   connectionSctring += host
 
