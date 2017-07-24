@@ -1,7 +1,6 @@
 import http from "http"
 
 import Koa from "koa"
-import isString from "lodash/isString"
 import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"

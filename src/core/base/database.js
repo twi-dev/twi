@@ -31,7 +31,8 @@ async function createConnection(config = {}) {
   const replicaUri = getConnectionSctring(config)
 
   return await mongoose.connect(replicaUri, {
-    useMongoClient: true
+    useMongoClient: true,
+    promiseLibrary: Promise
   })
 }
 
