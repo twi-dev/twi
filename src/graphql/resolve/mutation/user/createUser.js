@@ -1,10 +1,10 @@
 import User from "database/model/User"
 
 async function createUser(_, {user}) {
-  const createdUser = await User.create({...user})
+  user = await User.createOne({...user})
 
-  // TODO: Add an email verification using redis and mail service.
-  return createdUser.toJS()
+  // TODO: Add an email verification using redis and an email service.
+  return user
 }
 
 export default createUser

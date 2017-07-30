@@ -5,6 +5,7 @@ import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 import deepFreeze from "deep-freeze"
+import invariant from "@octetstream/invariant"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
 import isListOf from "core/helper/typechecker/isListOf"
@@ -15,15 +16,11 @@ const defineProperty = Object.defineProperty
 
 class Server extends Koa {
   constructor(config = {}) {
-    if (!config.port) {
-      throw new TypeError(`Port required for ${config.name} server.`)
-    }
+    invariant(!config.port, TypeError, "Port is required.")
 
-    if (!isInteger(config.port)) {
-      throw new TypeError("Given port should be an integer.")
-    }
+    invariant(!isInteger(config.port), TypeError, "Port should be an integer.")
 
-    super() // fucking ES6 OOP >_<
+    super()
 
     // Private member
     this.__config = deepFreeze({
@@ -61,6 +58,12 @@ class Server extends Koa {
   //
 
   __extFromConfig = config => {
+    invariant(
+      !isPlainObject(config),
+      "Extensions should be passed as s plsin JavaScript object " +
+      "or as name and a funtion. See the Server#ext docs for more info."
+    )
+
     for (const [key, value] of objectIterator.entries(config)) {
       defineProperty(this.context, key, {value})
     }
@@ -87,12 +90,10 @@ class Server extends Koa {
       middlewares = [middlewares]
     }
 
-    if (!isListOf(middlewares, isFunction)) {
-      throw new TypeError(
-        "Middlewares argument should be a function or " +
-        "an array of the functions."
-      )
-    }
+    invariant(
+      !isListOf(middlewares, isFunction), TypeError,
+      "Middlewars should be passed as a functino or an array of functions."
+    )
 
     // Set up middlewares to Koa instance
     middlewares.forEach(middleware => super.use(middleware))
@@ -143,7 +144,7 @@ class Server extends Koa {
   )
 
   /**
-   * Start server that will belistening on port from config.
+   * Start server that will be listening on port from config.
    */
   listen = () => new Promise((resolve, reject) => {
     const server = http.createServer(this.callback())

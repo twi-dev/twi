@@ -7,6 +7,6 @@
  *
  * @return Function
  */
-const selfInvokingClass = (Ctor, ctx, args) => new Ctor(args)
+const selfInvokingClass = (Ctor, ctx, args) => new Ctor(...args)
 
 export default selfInvokingClass

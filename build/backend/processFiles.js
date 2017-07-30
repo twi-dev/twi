@@ -10,6 +10,11 @@ const processFile = require("./processFile")
 
 const getDestPath = (src, dest) => ({path}) => dirname(path.replace(src, dest))
 
+const compilationErrorHandler = err => {
+  // TODO: Improve errors
+  console.error("Error!", err.message, err.codeFrame, err.pos, err.loc)
+}
+
 async function filterFiles(files, src) {
   const res = []
 
@@ -37,8 +42,10 @@ const run = (files, config) => new Promise((resolve, reject) => {
   const {src, dest} = config
   const dev = config.env.dev
 
+  const errorHandler = dev ? compilationErrorHandler : reject
+
   const stream = vfs.src(files)
-    .pipe(plumber({errorHandler: reject}))
+    .pipe(plumber({errorHandler}))
     .pipe(processFile(config))
     .pipe(vfs.dest(getDestPath(src, dest)))
 

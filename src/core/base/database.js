@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
 import isString from "lodash/isString"
 
-import invariant from "core/helper/util/invariant"
+import invariant from "@octetstream/invariant"
 
 mongoose.Promise = Promise
 
-function getConnectionSctring({host, port, name}) {
+function getConnectionString({host, port, name}) {
   invariant(host == null, "Host is required for a connection.")
 
   invariant(!isString(host), TypeError, "Host should be passed as a string.")
@@ -14,23 +14,23 @@ function getConnectionSctring({host, port, name}) {
 
   invariant(!isString(name), TypeError, "Database name should be a string.")
 
-  let connectionSctring = "mongodb://"
+  let connectionString = "mongodb://"
 
-  connectionSctring += host
+  connectionString += host
 
-  if (port && isString(port)) {
-    connectionSctring += `:${port}`
+  if (port) {
+    connectionString += `:${port}`
   }
 
-  connectionSctring += `/${name}`
+  connectionString += `/${name}`
 
-  return connectionSctring
+  return connectionString
 }
 
 async function createConnection(config = {}) {
-  const replicaUri = getConnectionSctring(config)
+  const connectionString = getConnectionString(config)
 
-  return await mongoose.connect(replicaUri, {
+  return await mongoose.connect(connectionString, {
     useMongoClient: true,
     promiseLibrary: Promise
   })

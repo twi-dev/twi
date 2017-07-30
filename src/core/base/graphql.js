@@ -1,6 +1,7 @@
 import {join} from "path"
 
 import Schema from "parasprite"
+import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash/isPlainObject"
 import isEmpty from "lodash/isEmpty"
 import rd from "require-dir"
@@ -72,18 +73,44 @@ function makeSchema() {
   // Make parasprite.Schema instance to describe GraphQL schema for the app.
   let schema = Schema()
 
-  // Add query resolvers if they exists
-  if (isEmpty(resolvers.query)) {
-    throw new TypeError(
-      "GraphQL required an \"query\" document on schema."
-    )
-  }
+  invariant(
+    isEmpty(resolvers.query), TypeError,
+    "Query field is required for GraphQL schema."
+  )
 
-  schema = setResolvers(schema.query("Query"), resolvers.query)
+  schema = setResolvers(
+    schema.query(
+      "Shelves",
+      "A Shelves type provides the root fields with available query resolvers."
+    ),
+
+    resolvers.query
+  )
 
   // Add mutation resolvers if they exists
   if (!isEmpty(resolvers.mutation)) {
-    schema = setResolvers(schema.mutation("Mutation"), resolvers.mutation)
+    schema = setResolvers(
+      schema.mutation(
+        "Spells",
+        "A Spells type provides the root fields " +
+        "with available mutation resolvers."
+      ),
+
+      resolvers.mutation
+    )
+  }
+
+  // Add subscription resolvers if they exists
+  if (!isEmpty(resolvers.subscription)) {
+    schema = setResolvers(
+      schema.subscription(
+        "MagicFlow",
+        "A MagicFlow type provides the root fields " +
+        "with available subscription resolvers."
+      ),
+
+      resolvers.subscription
+    )
   }
 
   return schema.end()

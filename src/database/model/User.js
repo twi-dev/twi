@@ -12,25 +12,17 @@ class User extends Model {
    * @return TUser
    */
   static async createOne(user) {
-    // Weird thing, I know that. Just for more readable code :)
-    const Model = this
-
     const password = await hash(user.password, 15)
 
-    const model = new Model({...user, password})
+    user = await this({...user, password}).save()
 
-    const createdUser = await model.save()
-
-    // Also, we have to sent an email to given address before return user
-    return createdUser
+    return await user.toJS()
   }
 
   static async getByLogin(username) {
-    const Model = this
-
     username = new RegExp(`^${username}$`, "i")
 
-    const user = await Model.findOne({
+    const user = await this.findOne({
       $or: [
         {
           login: username
@@ -87,15 +79,13 @@ class User extends Model {
     return {name, code}
   }
 
-  toJS(...args) {
-    const user = super.toJS(...args)
+  async toJS(...args) {
+    const user = await super.toJS(...args)
 
     const role = this.roleInfo
 
-    const id = this.id
-
     return {
-      ...user, role, id
+      ...user, role
     }
   }
 }

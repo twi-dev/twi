@@ -4,6 +4,7 @@ import {read} from "node-yaml"
 import merge from "lodash/merge"
 import deepFreeze from "deep-freeze"
 import isPlainObject from "lodash/isPlainObject"
+import invariant from "@octetstream/invariant"
 
 const CONFIGS_ROOT = join(process.cwd(), "config", "system")
 
@@ -20,21 +21,18 @@ async function readConfig(dir, env) {
       throw err
     }
 
-    if (env === "production") {
-      throw new Error(
-        "Production config required. " +
-        `Is production.yml exists in "${dir}" directory?`
-      )
-    }
+    invariant(
+      env === "production",
+      "Production config required. Is production.yml exists in %s directory?",
+      dir
+    )
   }
 
   return merge({}, defaultConfig, config)
 }
 
 async function getConfig(env) {
-  if (!isPlainObject(env)) {
-    throw new TypeError("Env should be passed as object.")
-  }
+  invariant(!isPlainObject(env, TypeError, "Env should be passed as object."))
 
   if (isPlainObject(cache)) {
     return cache
@@ -48,7 +46,7 @@ async function getConfig(env) {
 
   config = deepFreeze({...config, env})
 
-  cache = config // Add a config to cache
+  cache = config // Cache an app configuration
 
   return config
 }

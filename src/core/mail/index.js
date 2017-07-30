@@ -1,5 +1,6 @@
 import {join} from "path"
 
+import {sprintf as fmt} from "sprintf-js"
 import {createTransport} from "nodemailer"
 
 import {render} from "core/base/view"
@@ -11,7 +12,8 @@ let transporter = null
 const sendPlain = async (to, subject, content, options) => {
   const message = {to, subject}
 
-  message.from = `${options.mail.from} <${options.mail.auth.user}>`
+  // message.from = `${options.mail.from} <${options.mail.auth.user}>`
+  message.from = fmt("%s <%s>", options.mail.from, options.mail.user)
 
   const type = options.html === true ? "text" : "html"
 
