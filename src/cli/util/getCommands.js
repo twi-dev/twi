@@ -1,7 +1,7 @@
 import rd from "require-dir"
 import isEmpty from "lodash/isEmpty"
 
-import invariant from "core/helper/util/invariant"
+import invariant from "@octetstream/invariant"
 
 import setCommand from "./setCommand"
 
