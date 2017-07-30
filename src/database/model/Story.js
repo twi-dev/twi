@@ -2,14 +2,10 @@ import {createModel, Model} from "core/database"
 
 @createModel
 class Story extends Model {
-  static async createOne(owner, story) {
-    const Model = this
+  static async createOne(creator, story) {
+    story = await this({...story, creator}).save()
 
-    const model = new Model({...story})
-
-    await model.validate()
-
-    return await model.save()
+    return await story.toJS()
   }
 }
 

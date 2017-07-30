@@ -18,7 +18,7 @@ function getCommands(path, commander) {
   )
 
   for (const [name, config] of Object.entries(commands)) {
-    setCommand(commander, env, {
+    setCommand(commander, env, name, {
       ...config, action: config.default || config[name] || config
     })
   }

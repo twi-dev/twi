@@ -17,7 +17,7 @@ import createSU from "setup/signup"
 //   await prompt(QUESTIONS)
 // )
 
-async function setup(cmd, env) {
+async function setup(env) {
   // cmd.C && await configure(cmd.parent.E)
 
   await createSU(env)

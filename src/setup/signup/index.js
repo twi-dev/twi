@@ -38,8 +38,18 @@ async function getPassword() {
 }
 
 async function createSU(env) {
-  const {database} = await getConfig("api", env)
-  await createConnection(database)
+  const {database} = await getConfig(env)
+
+  const connection = await createConnection(database)
+
+  // TODO: Maybe needs some improvements.
+  if (await User.findOne({role: User.roles.su})) {
+    await connection.close()
+
+    return log.warn(
+      "Can't continue the operation because the owner already exists."
+    )
+  }
 
   const user = await getMainInfo()
 
@@ -47,11 +57,9 @@ async function createSU(env) {
 
   const role = User.roles.su
 
-  const su = new User({
-    ...user, password, role
-  })
+  await User({...user, password, role}).save()
 
-  await su.save()
+  await connection.close()
 }
 
 export default createSU
