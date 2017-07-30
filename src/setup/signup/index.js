@@ -57,7 +57,10 @@ async function createSU(env) {
 
   const role = User.roles.su
 
-  await User({...user, password, role}).save()
+  const status = User.statuses.activated
+
+  // TODO: Don't forget to receive greetings message for owner
+  await User({...user, password, role, status}).save()
 
   await connection.close()
 }
