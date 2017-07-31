@@ -11,6 +11,7 @@ import cors from "core/middleware/cors"
 import logger from "core/middleware/logger"
 import multipart from "core/middleware/multipart"
 import errorHandler from "core/middleware/error-handler"
+import xPoweredBy from "core/middleware/x-powered-by"
 
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
@@ -24,13 +25,11 @@ const r = makeRouter(join(ROOT, "route"))()
 async function main(config) {
   const server = new Server(config)
 
-  const mail = createMailService({
-    mail: config.mail,
-    system: config.system
-  })
+  const mail = createMailService(config)
 
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
+    xPoweredBy(),
     logger(), // Simplest logger
     cors({allowMethods: ["GET", "POST"]}), // TODO: Configure allowed Origins
     body(),
