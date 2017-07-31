@@ -23,6 +23,8 @@ route/**/*.js
 setup/**/*.js
 
 !src/database
+!src/core/database
+
 # graphql
 # deploy
 # core
