@@ -1,12 +1,12 @@
 import TStoryInput from "graphql/input/story/TStoryInput"
 import TStory from "graphql/type/story/TStory"
 
-import createStory from "graphql/resolve/mutation/story/createStory"
+import addStory from "graphql/resolve/mutation/story/addStory"
 
 const resolve = {
   type: TStory,
   required: true,
-  handler: createStory
+  handler: addStory
 }
 
 const story = {

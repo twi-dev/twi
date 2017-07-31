@@ -2,15 +2,15 @@ import {join} from "path"
 
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
-import cors from "kcors"
 
 import Server from "core/base/Server"
 import makeRouter from "core/base/router"
 import log from "core/log"
 
-import errorHandler from "core/middleware/error-handler"
+import cors from "core/middleware/cors"
 import logger from "core/middleware/logger"
 import multipart from "core/middleware/multipart"
+import errorHandler from "core/middleware/error-handler"
 
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
@@ -32,7 +32,7 @@ async function main(config) {
   const middlewares = [
     errorHandler(), // Handle all errors from Koa context
     logger(), // Simplest logger
-    cors(), // TODO: Configure allowed Origins
+    cors({allowMethods: ["GET", "POST"]}), // TODO: Configure allowed Origins
     body(),
     multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
     favicon(FAVICON_PATH), // Server application favicon

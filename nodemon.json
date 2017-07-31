@@ -1,18 +1,15 @@
 {
   "ignore": [
-    "gulpfile.js",
     ".gitignore",
     ".npmignore",
-    "package.json",
     ".git",
+    "package.json",
     "src",
     "node_modules",
     "theme",
     "localhost",
     "test",
-    "runtime",
     "pages",
-    "frontend",
     "static",
     "migration"
   ],

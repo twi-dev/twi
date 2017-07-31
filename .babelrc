@@ -14,6 +14,7 @@
     "transform-async-generator-functions",
     "transform-exponentiation-operator",
     "transform-export-extensions",
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    "dynamic-import-node"
   ]
 }

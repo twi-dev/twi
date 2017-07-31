@@ -6,6 +6,8 @@ import deepFreeze from "deep-freeze"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
+import {version, codename} from "../../package.json"
+
 const CONFIGS_ROOT = join(process.cwd(), "config", "system")
 
 let cache = null
@@ -28,7 +30,7 @@ async function readConfig(dir, env) {
     )
   }
 
-  return merge({}, defaultConfig, config)
+  return merge({}, defaultConfig, config, {version, codename})
 }
 
 async function getConfig(env) {
