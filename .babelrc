@@ -7,7 +7,6 @@
         "package.json": "./package.json"
       }
     }],
-    "transform-flow-strip-types",
     "transform-es2015-modules-commonjs",
     "transform-decorators-legacy",
     "transform-class-properties",

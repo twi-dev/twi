@@ -33,6 +33,16 @@ session:
   delimiter: .
   sessidName: usessid
 
+# Static server configuration
+# Status: not implemented
+static:
+  adapter: null
+  auth:
+    user: null
+    pass: null
+  options: null
+
+
 # Mail configs
 mail:
   from: Postmare # Human-readable name of the service
