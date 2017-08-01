@@ -7,6 +7,12 @@ class Story extends Model {
 
     return await story.toJS()
   }
+
+  static async getManyByAuthor(author) {
+    const stories = await this.find().where({author}).exec()
+
+    return await Promise.all(stories.map(s => s.toJS()))
+  }
 }
 
 export default Story
