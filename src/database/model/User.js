@@ -14,9 +14,7 @@ class User extends Model {
   static async createOne(user) {
     const password = await hash(user.password, 15)
 
-    user = await this({...user, password}).save()
-
-    return await user.toJS()
+    return await super.createOne({...user, password})
   }
 
   static async getByLogin(username) {

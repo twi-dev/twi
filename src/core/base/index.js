@@ -1,5 +1,6 @@
 import {join} from "path"
 
+import serveStatic from "koa-static"
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
 
@@ -35,6 +36,7 @@ async function main(config) {
     body(),
     multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
     favicon(FAVICON_PATH), // Server application favicon
+    serveStatic(join(ROOT, "static")),
     r.allowedMethods(),
     r.routes()
   ]
