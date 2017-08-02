@@ -16,7 +16,7 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
     type: TObjectId,
     required: true
   },
-  coauthors: [{
+  coAuthors: [{
     user: {
       ref: "User",
       type: TObjectId,
@@ -32,6 +32,10 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
     type: TObjectId,
     required: true
   }],
+  chaptersCount: {
+    type: TNumber,
+    default: 0
+  },
   characters: [{
     ref: "Character",
     type: TObjectId,

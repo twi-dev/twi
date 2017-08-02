@@ -60,23 +60,51 @@ class User extends Model {
   }
 
   get roleInfo() {
-    const role = this.role
-
     const [name, code] = Object
       .entries(User.roles)
-      .find(entry => role === entry[1])
+      .find(entry => this.role === entry[1])
 
     return {name, code}
   }
 
   get statusInfo() {
-    const status = this.status
-
     const [name, code] = Object
       .entries(User.statuses)
-      .find(entry => status === entry[1])
+      .find(entry => this.status === entry[1])
 
     return {name, code}
+  }
+
+  get isBanned() {
+    return this.status === User.statuses.banned
+  }
+
+  get isSuspended() {
+    return this.status === User.statuses.suspended
+  }
+
+  get isActivated() {
+    return this.status === User.statuses.activated
+  }
+
+  get isUnactivated() {
+    return this.status === User.statuses.unactivated
+  }
+
+  get isUser() {
+    return this.role === User.roles.regular
+  }
+
+  get isModerator() {
+    return this.role === User.roles.moderator
+  }
+
+  get isAdmin() {
+    return this.role === User.roles.admin
+  }
+
+  get isSu() {
+    return this.role === User.roles.su
   }
 
   async toJS(...args) {

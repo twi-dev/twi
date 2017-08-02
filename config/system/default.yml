@@ -31,7 +31,7 @@ session:
   # Cookie prefix
   prefix: twi
   delimiter: .
-  sessidName: usessid
+  name: usessid
 
 # Static server configuration
 # Status: not implemented
