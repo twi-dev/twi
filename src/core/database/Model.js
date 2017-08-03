@@ -31,6 +31,10 @@ class Model extends MongooseModel {
       return await this.createOne(docs, options)
     }
 
+    if (docs.length === 1) {
+      return await this.createOne(docs.shift(), options)
+    }
+
     docs = await this.insertMany(docs, options)
 
     return await Promise.all(docs.map(doc => doc.toJS()))

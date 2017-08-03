@@ -11,7 +11,7 @@ const checkUserDecorator = message => resolver => async function(
 ) {
   message || (message = DEFAULT_MESSAGE)
 
-  invariant(!ctx.state.user, Forbidden, message)
+  invariant((!ctx.state.user || !ctx.isAuthenticated()), Forbidden, message)
 
   return await resolver(parent, args, ctx, ...others)
 }
@@ -25,7 +25,7 @@ const checkUserDecorator = message => resolver => async function(
  */
 function checkUser(messageOrTarget) {
   if (messageOrTarget && isString(messageOrTarget)) {
-    return checkUser(messageOrTarget)
+    return checkUserDecorator(messageOrTarget)
   }
 
   invariant(
