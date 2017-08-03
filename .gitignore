@@ -15,15 +15,16 @@ yarn-error.log
 node_modules
 deploy
 
-database
+database/**/*.js
+database/**/*.md
 
 graphql/**/*.js
 core/**/*.js
 route/**/*.js
 setup/**/*.js
 
-!src/database
-!src/core/database
+!src/database/**/*.js
+!src/core/database/**/*.js
 
 # graphql
 # deploy

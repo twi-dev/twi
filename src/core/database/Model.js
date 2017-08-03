@@ -16,7 +16,7 @@ class Model extends MongooseModel {
       !isPlainObject(doc), TypeError, "Document should be passed as object."
     )
 
-    doc = await this(doc, options).save()
+    doc = await this(doc).save(options)
 
     return await doc.toJS()
   }

@@ -85,3 +85,14 @@ test("Should throw an error with default message", async t => {
   t.true(err instanceof Forbidden)
   t.is(err.message, "Access denied.")
 })
+
+test("Should throw a TypeError when no arguments passed", t => {
+  t.plan(3)
+
+  const trap = () => checkUser()
+
+  const err = t.throws(trap)
+
+  t.true(err instanceof TypeError)
+  t.is(err.message, "Target function is required.")
+})

@@ -63,11 +63,8 @@ function cors(options) {
     let origin
 
     if (typeof options.origin === "function") {
-      // origin = options.origin(ctx)
+      const origin = await options.origin(ctx)
 
-      const res = options.origin(ctx)
-
-      origin = res instanceof Promise ? (await res) : res
       if (!origin) {
         return await next()
       }

@@ -27,6 +27,9 @@ test("Should call execSync when statSync throws an ENOENT err", t => {
   const execSync = sinon.spy()
 
   const helper = pq(HELPER_PATH, {
+    console: {
+      log() {}
+    },
     fs: {
       statSync
     },
@@ -56,6 +59,9 @@ test(
     })
 
     const helper = pq(HELPER_PATH, {
+      console: {
+        log() {}
+      },
       fs: {
         statSync
       },
@@ -86,6 +92,9 @@ test("Should throw an Error when statSync fails with not ENOENT code", t => {
   t.plan(1)
 
   const helper = pq(HELPER_PATH, {
+    console: {
+      log() {}
+    },
     fs: {
       statSync() { throw new Error("Plain error withot ENOENT code") }
     },

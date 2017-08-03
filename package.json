@@ -124,6 +124,7 @@
     "gulp-util": "3.0.8",
     "husky": "0.14.3",
     "inquirer": "3.2.1",
+    "mockgoose": "^7.3.3",
     "mongomem": "0.1.9",
     "nyc": "11.1.0",
     "prettier": "1.5.3",

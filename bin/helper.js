@@ -2,7 +2,9 @@ const {resolve} = require("path")
 const {statSync} = require("fs")
 const {execSync} = require("child_process")
 
-const ROOT = resolve(`${__dirname}/../`)
+const console = require("console")
+
+const ROOT = resolve(__dirname, "..")
 
 const IS_YARN_EXISTS = (function() {
   try {
