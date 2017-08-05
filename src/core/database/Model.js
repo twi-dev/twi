@@ -49,7 +49,7 @@ class Model extends MongooseModel {
    *
    * @return array
    */
-  static async getManyById(ids) {
+  static async findManyById(ids) {
     invariant(
       !isArray(ids), TypeError, "Documents IDs should be passed as array."
     )

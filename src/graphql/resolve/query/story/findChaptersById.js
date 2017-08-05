@@ -1,9 +1,9 @@
 import Chapter from "database/model/Chapter"
 
-async function getChaptersById({chapters}, {cursor}) {
+async function findChaptersById({chapters}, {cursor}) {
   chapters = await Chapter.getManyById(chapters, cursor)
 
   return chapters
 }
 
-export default getChaptersById
+export default findChaptersById

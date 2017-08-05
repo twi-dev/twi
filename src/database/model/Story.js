@@ -41,7 +41,7 @@ class Story extends Model {
   }
 
   /**
-   * Get stories created by given author
+   * Find stories created by given author
    *
    * @param {string} author – ID of an author which stories you are looking for
    *
@@ -49,7 +49,7 @@ class Story extends Model {
    *
    * @throws {NotFound} – if no stories created by this user founded
    */
-  static async getManyByAuthor(author) {
+  static async findManyByAuthor(author) {
     const stories = await this.find().where({author}).exec()
 
     invariant(!stories, NotFound, "No stories created by this user founded.")

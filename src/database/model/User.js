@@ -66,7 +66,7 @@ class User extends Model {
    *
    * @throws {NotFound} – when user is not found
    */
-  static async getByLogin(login) {
+  static async findByLogin(login) {
     login = new RegExp(`^${login}$`, "i")
 
     const user = await this.findOne().where({login}).exec()

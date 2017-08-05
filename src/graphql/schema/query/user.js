@@ -1,12 +1,12 @@
 import TUser from "graphql/type/user/TUser"
 import TLogin from "graphql/scalar/user/TLogin"
 
-import getUser from "graphql/resolve/query/user/getUser"
+import findUserByLogin from "graphql/resolve/query/user/findUserByLogin"
 
 const resolve = {
   type: TUser,
   required: true,
-  handler: getUser,
+  handler: findUserByLogin,
 }
 
 const login = {

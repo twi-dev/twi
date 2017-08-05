@@ -7,7 +7,7 @@ import TChapter from "./TChapter"
 
 import TAuthor from "../user/TAuthor"
 
-import getChaptersById from "../../resolve/query/story/getChaptersById"
+import findChaptersById from "../../resolve/query/story/findChaptersById"
 
 const TStory = Type(
   "Story", "Represends available information about the stories"
@@ -17,7 +17,7 @@ const TStory = Type(
   .field("author", TAuthor, true)
   .field("slug", TString, true)
   .field("createdAt", TDateTime, true)
-  .resolve("chapters", [TChapter, true], true, getChaptersById)
+  .resolve("chapters", [TChapter, true], true, findChaptersById)
     .arg("cursor", TInt)
   .end()
 .end()
