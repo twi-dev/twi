@@ -69,3 +69,17 @@ test("Should throw an error on User.createMany invocation", async t => {
     "This method is not allowed in this class. Use User.createOne instead."
   )
 })
+
+test("Should just return requested user", async t => {
+  t.plan(1)
+
+  await User.createOne({
+    login: "SomeUser",
+    email: "someuser@someemail.co",
+    password: "123"
+  })
+
+  const user = await User.getByLogin("SomeUser")
+
+  t.is(user.login, "SomeUser")
+})
