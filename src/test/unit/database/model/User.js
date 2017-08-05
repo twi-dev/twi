@@ -71,7 +71,7 @@ test("Should throw an error on User.createMany invocation", async t => {
   )
 })
 
-test("User.getByLogin should just return requested user", async t => {
+test("User.findByLogin should just return requested user", async t => {
   t.plan(1)
 
   await User.createOne({
@@ -80,17 +80,17 @@ test("User.getByLogin should just return requested user", async t => {
     password: "123"
   })
 
-  const user = await User.getByLogin("SomeUser")
+  const user = await User.findByLogin("SomeUser")
 
   t.is(user.login, "SomeUser")
 })
 
 test(
-  "User.getByLogin should throw a NotFound error when user is not found",
+  "User.findByLogin should throw a NotFound error when user is not found",
   async t => {
     t.plan(4)
 
-    const err = await t.throws(User.getByLogin("OctetStream"))
+    const err = await t.throws(User.findByLogin("OctetStream"))
 
     t.true(err instanceof NotFound)
     t.is(err.message, "Can't find user with login /^OctetStream$/i.")
