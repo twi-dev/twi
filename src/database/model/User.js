@@ -23,7 +23,7 @@ class User extends Model {
   /**
    * Available user roles
    *
-   * @return object
+   * @return {object}
    */
   static get roles() {
     return {
@@ -37,9 +37,9 @@ class User extends Model {
   /**
    * Create a new regular user.
    *
-   * @param TUserInput user
+   * @param {object} – user information
    *
-   * @return TUser
+   * @return {object}
    */
   static async createOne(user) {
     const password = await hash(user.password, 15)
@@ -61,11 +61,11 @@ class User extends Model {
   /**
    * Get user by his login
    *
-   * @param string login
+   * @param {string} login
    *
-   * @return object
+   * @return {object}
    *
-   * @throws NotFound when user is not found
+   * @throws {NotFound} – when user is not found
    */
   static async getByLogin(login) {
     login = new RegExp(`^${login}$`, "i")
@@ -78,7 +78,9 @@ class User extends Model {
   }
 
   /**
-   * Get user role nsme
+   * Get user role name
+   *
+   * @private
    */
   get __role() {
     const role = findKey(User.roles, code => code === this.role)
@@ -88,6 +90,8 @@ class User extends Model {
 
   /**
    * Get user status name
+   *
+   * @private
    */
   get __status() {
     const role = findKey(User.statuses, code => code === this.status)
@@ -98,7 +102,7 @@ class User extends Model {
   /**
    * Check if given user account have banned status
    *
-   * @return boolean
+   * @return {boolean}
    */
   get isBanned() {
     return this.status === User.statuses.banned
@@ -107,7 +111,7 @@ class User extends Model {
   /**
    * Check if given user account have suspended status
    *
-   * @return boolean
+   * @return {boolean}
    */
   get isSuspended() {
     return this.status === User.statuses.suspended
@@ -116,7 +120,7 @@ class User extends Model {
   /**
    * Check if given user account have activated status
    *
-   * @return boolean
+   * @return {boolean}
    */
   get isActivated() {
     return this.status === User.statuses.activated
@@ -125,7 +129,7 @@ class User extends Model {
   /**
    * Check if given user account have unactivated status
    *
-   * @return boolean
+   * @return {boolean}
    */
   get isUnactivated() {
     return this.status === User.statuses.unactivated
@@ -133,6 +137,8 @@ class User extends Model {
 
   /**
    * Check if user is "USER"
+   *
+   * @return {boolean}
    */
   get isUser() {
     return this.role === User.roles.user
@@ -140,6 +146,8 @@ class User extends Model {
 
   /**
    * Check if user is "MOD"
+   *
+   * @return {boolean}
    */
   get isMod() {
     return this.role === User.roles.mod
@@ -147,6 +155,8 @@ class User extends Model {
 
   /**
    * Check if user is "ADMIN"
+   *
+   * @return {boolean}
    */
   get isAdmin() {
     return this.role === User.roles.admin
@@ -154,6 +164,8 @@ class User extends Model {
 
   /**
    * Check if user is "SU"
+   *
+   * @return {boolean}
    */
   get isSu() {
     return this.role === User.roles.su
