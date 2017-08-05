@@ -5,6 +5,7 @@ import {compare} from "bcryptjs"
 import createConnection from "test/helper/database"
 
 import User from "database/model/User"
+import NotFound from "core/error/http/NotFound"
 
 test.before(async () => await createConnection())
 
@@ -70,7 +71,7 @@ test("Should throw an error on User.createMany invocation", async t => {
   )
 })
 
-test("Should just return requested user", async t => {
+test("User.getByLogin should just return requested user", async t => {
   t.plan(1)
 
   await User.createOne({
@@ -83,3 +84,16 @@ test("Should just return requested user", async t => {
 
   t.is(user.login, "SomeUser")
 })
+
+test(
+  "User.getByLogin should throw a NotFound error when user is not found",
+  async t => {
+    t.plan(4)
+
+    const err = await t.throws(User.getByLogin("OctetStream"))
+
+    t.true(err instanceof NotFound)
+    t.is(err.message, "Can't find user with login /^OctetStream$/i.")
+    t.is(err.status, 404)
+  }
+)

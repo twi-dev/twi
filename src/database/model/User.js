@@ -4,40 +4,13 @@ import invariant from "@octetstream/invariant"
 import {createModel, Model} from "core/database"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
+import NotFound from "core/error/http/NotFound"
 
 @createModel
 class User extends Model {
   /**
-   * Create a new regular user.
-   *
-   * @param TUserInput user
-   *
-   * @return TUser
+   * USer account status
    */
-  static async createOne(user) {
-    const password = await hash(user.password, 15)
-
-    const role = User.roles.user
-
-    return await super.createOne({...user, password, role})
-  }
-
-  static async createMany() {
-    invariant(
-      true,
-      "This method is not allowed in this class. Use %s.createOne instead.",
-      User.name
-    )
-  }
-
-  static async getByLogin(login) {
-    login = new RegExp(`^${login}$`, "i")
-
-    const user = await this.findOne().where({login}).exec()
-
-    return await user.toJS()
-  }
-
   static get statuses() {
     return {
       unactivated: 0,
@@ -61,46 +34,127 @@ class User extends Model {
     }
   }
 
+  /**
+   * Create a new regular user.
+   *
+   * @param TUserInput user
+   *
+   * @return TUser
+   */
+  static async createOne(user) {
+    const password = await hash(user.password, 15)
+
+    const role = User.roles.user
+
+    return await super.createOne({...user, password, role})
+  }
+
+  // NOTE: Just an unallowed method
+  static async createMany() {
+    invariant(
+      true,
+      "This method is not allowed in this class. Use %s.createOne instead.",
+      User.name
+    )
+  }
+
+  /**
+   * Get user by his login
+   *
+   * @param string login
+   *
+   * @return object
+   *
+   * @throws NotFound when user is not found
+   */
+  static async getByLogin(login) {
+    login = new RegExp(`^${login}$`, "i")
+
+    const user = await this.findOne().where({login}).exec()
+
+    invariant(!user, NotFound, "Can't find user with login %s.", String(login))
+
+    return await user.toJS()
+  }
+
+  /**
+   * Get user role nsme
+   */
   get __role() {
     const role = findKey(User.roles, code => code === this.role)
 
     return role
   }
 
+  /**
+   * Get user status name
+   */
   get __status() {
     const role = findKey(User.statuses, code => code === this.status)
 
     return role
   }
 
+  /**
+   * Check if given user account have banned status
+   *
+   * @return boolean
+   */
   get isBanned() {
     return this.status === User.statuses.banned
   }
 
+  /**
+   * Check if given user account have suspended status
+   *
+   * @return boolean
+   */
   get isSuspended() {
     return this.status === User.statuses.suspended
   }
 
+  /**
+   * Check if given user account have activated status
+   *
+   * @return boolean
+   */
   get isActivated() {
     return this.status === User.statuses.activated
   }
 
+  /**
+   * Check if given user account have unactivated status
+   *
+   * @return boolean
+   */
   get isUnactivated() {
     return this.status === User.statuses.unactivated
   }
 
+  /**
+   * Check if user is "USER"
+   */
   get isUser() {
     return this.role === User.roles.user
   }
 
+  /**
+   * Check if user is "MOD"
+   */
   get isMod() {
     return this.role === User.roles.mod
   }
 
+  /**
+   * Check if user is "ADMIN"
+   */
   get isAdmin() {
     return this.role === User.roles.admin
   }
 
+  /**
+   * Check if user is "SU"
+   */
   get isSu() {
     return this.role === User.roles.su
   }
