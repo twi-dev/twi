@@ -8,4 +8,4 @@ node_js:
 install:
   - yarn
 script:
-  - travis wait yarn run ci
+  - travis_wait yarn run ci
