@@ -1,6 +1,8 @@
+cache: yarn
 os:
   - osx
   - linux
+sudo: false
 language: node_js
 node_js:
   - 7
@@ -8,4 +10,4 @@ node_js:
 install:
   - yarn
 script:
-  - travis_wait yarn run ci
+  - yarn run ci

@@ -4,11 +4,12 @@ import {
 } from "graphql"
 import Type from "parasprite/Type"
 
+import TChapterContent from "./TChapterContent"
+
 const TChapter = Type("Chapter", "Represends information about chapter")
   .field("id", TID, true)
   .field("title", TString, true)
-  .field("text", TString, true)
-  .field("rendered", TString, true)
+  .field("content", TChapterContent, true)
 .end()
 
 export default TChapter

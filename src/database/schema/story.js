@@ -1,4 +1,4 @@
-const getModelFields = ({TObjectId, TString, TNumber}) => ({
+const getModelFields = ({TObjectId, TString, TNumber, TBoolean}) => ({
   title: {
     type: TString,
     required: true
@@ -9,7 +9,8 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
   },
   slug: {
     type: TString,
-    required: true
+    required: true,
+    unique: true
   },
   author: {
     ref: "User",
@@ -27,6 +28,14 @@ const getModelFields = ({TObjectId, TString, TNumber}) => ({
       required: true
     }
   }],
+  isTranslation: {
+    type: TBoolean,
+    default: false
+  },
+  isCompleted: {
+    type: TBoolean,
+    default: false
+  },
   chapters: [{
     ref: "Chapter",
     type: TObjectId,

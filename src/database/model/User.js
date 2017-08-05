@@ -3,7 +3,6 @@ import invariant from "@octetstream/invariant"
 
 import {createModel, Model} from "core/database"
 
-import findKey from "core/helper/iterator/sync/objFindKey"
 import NotFound from "core/error/http/NotFound"
 
 @createModel
@@ -83,9 +82,7 @@ class User extends Model {
    * @private
    */
   get __role() {
-    const role = findKey(User.roles, code => code === this.role)
-
-    return role
+    return this._findKey(User.roles, this.role)
   }
 
   /**
@@ -94,9 +91,7 @@ class User extends Model {
    * @private
    */
   get __status() {
-    const role = findKey(User.statuses, code => code === this.status)
-
-    return role
+    return this._findKey(User.statuses, this.status)
   }
 
   /**

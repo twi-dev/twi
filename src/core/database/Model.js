@@ -3,6 +3,8 @@ import {Model as MongooseModel} from "mongoose"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
+import findKey from "core/helper/iterator/sync/objFindKey"
+
 const isArray = Array.isArray
 
 class Model extends MongooseModel {
@@ -56,6 +58,18 @@ class Model extends MongooseModel {
 
     return await Promise.all(docs.map(doc => doc.toJS()))
   }
+
+  /**
+   * Find field key in target object
+   *
+   * @protected
+   *
+   * @param {object} target
+   * @param {any} search
+   *
+   * @return {string}
+   */
+  _findKey = (target, search) => findKey(target, val => val === search)
 
   /**
    * Get an ID of the current Model instance.
