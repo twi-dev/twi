@@ -1,4 +1,5 @@
-import isEmpty from "lodash/isEmpty"
+import invariant from "@octetstream/invariant"
+import isObject from "lodash/isObject"
 
 /**
  * Simplest object iterator which I can imagine :D
@@ -9,9 +10,7 @@ import isEmpty from "lodash/isEmpty"
  * @yields any|array
  */
 function* objectIterator(obj, entries = false) {
-  if (isEmpty(obj)) {
-    return
-  }
+  invariant(!isObject(obj), TypeError, "Allowed only objects as iterable.")
 
   for (const [key, value] of Object.entries(obj)) {
     yield entries ? [key, value] : value
