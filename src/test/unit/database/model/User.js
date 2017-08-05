@@ -8,7 +8,7 @@ import User from "database/model/User"
 
 test.before(async () => await createConnection())
 
-test("Should create a user with given params", async t => {
+test("User.createOne should create a user with given params", async t => {
   t.plan(3)
 
   const user = await User.createOne({
@@ -20,4 +20,52 @@ test("Should create a user with given params", async t => {
   t.is(user.login, "TwilightSparkle")
   t.is(user.email, "twi@golden-oak.eq")
   t.true(await compare("purplesmart123", user.password))
+})
+
+test("User.createOne should return correct default fields", async t => {
+  t.plan(4)
+
+  const user = await User.createOne({
+    login: "Foo",
+    email: "foo@bar.co",
+    password: "123"
+  })
+
+  t.is(user.role, "user")
+  t.true(user.isUser)
+
+  t.is(user.status, "unactivated")
+  t.true(user.isUnactivated)
+})
+
+test("User.createOne should allow to create only regular user", async t => {
+  t.plan(4)
+
+  const user = await User.createOne({
+    login: "Bar",
+    email: "bar@tarr.co",
+    password: "123",
+    role: User.roles.su // Should be replaced with User.roles.user
+  })
+
+  t.false(user.isSu, "User created with User.createOne should not be a SU")
+
+  t.false(
+    user.isAdmin, "User created with User.createOne should not be an ADMIN"
+  )
+
+  t.false(
+    user.isMod, "User created with User.createOne should not be a MOD"
+  )
+
+  t.true(user.isUser)
+})
+
+test("Should throw an error on User.createMany invocation", async t => {
+  t.plan(1)
+
+  await t.throws(
+    User.createMany(),
+    "This method is not allowed in this class. Use User.createOne instead."
+  )
 })

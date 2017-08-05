@@ -66,8 +66,11 @@ class Model extends MongooseModel {
     return this._id
   }
 
-  async toJS(...args) {
-    const obj = this.toObject(...args)
+  async toJS(options) {
+    const obj = this.toObject({
+      ...options, virtuals: true
+    })
+
     const id = this.id
 
     return {

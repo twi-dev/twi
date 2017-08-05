@@ -1,6 +1,9 @@
 import {hash} from "bcryptjs"
+import invariant from "@octetstream/invariant"
 
 import {createModel, Model} from "core/database"
+
+import findKey from "core/helper/iterator/sync/objFindKey"
 
 @createModel
 class User extends Model {
@@ -14,24 +17,25 @@ class User extends Model {
   static async createOne(user) {
     const password = await hash(user.password, 15)
 
-    return await super.createOne({...user, password})
+    const role = User.roles.user
+
+    return await super.createOne({...user, password, role})
   }
 
-  static async getByLogin(username) {
-    username = new RegExp(`^${username}$`, "i")
+  static async createMany() {
+    invariant(
+      true,
+      "This method is not allowed in this class. Use %s.createOne instead.",
+      User.name
+    )
+  }
 
-    const user = await this.findOne({
-      $or: [
-        {
-          login: username
-        },
-        {
-          email: username
-        }
-      ]
-    })
+  static async getByLogin(login) {
+    login = new RegExp(`^${login}$`, "i")
 
-    return user
+    const user = await this.findOne().where({login}).exec()
+
+    return await user.toJS()
   }
 
   static get statuses() {
@@ -52,25 +56,21 @@ class User extends Model {
     return {
       su: 0,
       admin: 1,
-      moderator: 2,
-      regular: 3,
+      mod: 2,
+      user: 3,
     }
   }
 
-  get roleInfo() {
-    const [name, code] = Object
-      .entries(User.roles)
-      .find(entry => this.role === entry[1])
+  get __role() {
+    const role = findKey(User.roles, code => code === this.role)
 
-    return {name, code}
+    return role
   }
 
-  get statusInfo() {
-    const [name, code] = Object
-      .entries(User.statuses)
-      .find(entry => this.status === entry[1])
+  get __status() {
+    const role = findKey(User.statuses, code => code === this.status)
 
-    return {name, code}
+    return role
   }
 
   get isBanned() {
@@ -90,11 +90,11 @@ class User extends Model {
   }
 
   get isUser() {
-    return this.role === User.roles.regular
+    return this.role === User.roles.user
   }
 
-  get isModerator() {
-    return this.role === User.roles.moderator
+  get isMod() {
+    return this.role === User.roles.mod
   }
 
   get isAdmin() {
@@ -105,13 +105,14 @@ class User extends Model {
     return this.role === User.roles.su
   }
 
-  async toJS(...args) {
-    const user = await super.toJS(...args)
+  async toJS(options) {
+    const user = await super.toJS(options)
 
-    const role = this.roleInfo
+    const role = this.__role
+    const status = this.__status
 
     return {
-      ...user, role
+      ...user, role, status
     }
   }
 }

@@ -37,7 +37,7 @@ const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
   },
   role: {
     type: TNumber,
-    default: roles.regular
+    default: roles.user
   },
   registeredAt: {
     type: TDate,
