@@ -38,9 +38,9 @@ const DATABASE_ROOT = resolve(__dirname, "..", "..", "database")
 /**
  * Get all static values and getters results from given Model
  *
- * @param Function Model
+ * @param {Function} Model
  *
- * @return object
+ * @return {object}
  *
  * @api private
  */
@@ -136,10 +136,9 @@ function setMiddlewares(name, schema) {
 /**
  * Create a Mongoose model from given class.
  *
- * @param Function Target
- * @param object options
+ * @param {Function} Target
  *
- * @param object – mongoose model
+ * @param {Model} – mongoose model
  *
  * @api public
  */

@@ -3,11 +3,10 @@ import moment from "moment"
 /**
  * Get schema of this model
  *
- * @param object type
+ * @param {object} type
+ * @param {object} virtuals
  *
- * @return object
- *
- * @static
+ * @return {object}
  */
 const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
   login: {

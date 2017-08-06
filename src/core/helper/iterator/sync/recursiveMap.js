@@ -7,11 +7,11 @@ const isArray = Array.isArray
 /**
  * Iterate given object recursively
  *
- * @param array|object obj – iterable object
- * @param function cb – the function invoked per iteration
- * @param any ctx – "this" context for given callback
+ * @param {array|object} obj – iterable object
+ * @param {function} cb – the function invoked per iteration
+ * @param {any} ctx – "this" context for given callback
  *
- * @return object
+ * @return {object}
  */
 function recursiveMap(obj, cb, ctx) {
   if (!(isPlainObject(obj) || isArray(obj))) {

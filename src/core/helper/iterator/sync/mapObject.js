@@ -3,9 +3,11 @@ import objectIterator from "./objectIterator"
 /**
  * Map given object with callback and return new one
  *
- * @param object obj – iterable object
- * @param function cb – callback
- * @param any ctx – "this" context that will using with the callback
+ * @param {object} obj – iterable object
+ * @param {function} cb – callback
+ * @param {any} ctx – "this" context that will using with the callback
+ *
+ * @return {object}
  */
 function mapObject(obj, cb, ctx = null) {
   const res = {}

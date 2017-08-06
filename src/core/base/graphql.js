@@ -13,9 +13,9 @@ const SCHEMA_ROOT = join(process.cwd(), "graphql/schema")
 /**
  * Set resolver from config
  *
- * @param parasprite.Type t – one of schema root type or GraphQLObjectType
- * @param string name
- * @param object config
+ * @param {parasprite.Type} t – one of schema root type or GraphQLObjectType
+ * @param {string} name
+ * @param {object} config
  *
  * @return parasprite.Type
  */
@@ -48,9 +48,9 @@ function setResolver(t, name, config) {
 /**
  * Add resolvers to given type of app schema
  *
- * @param parasprite.Type t – one of schema root type or GraphQLObjectType
+ * @param {parasprite.Type} t – one of schema root type or GraphQLObjectType
  *
- * @return function
+ * @return {function}
  */
 function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
@@ -63,7 +63,7 @@ function setResolvers(t, obj) {
 /**
  * Describe GraphQL schema using parasprite chainable API
  *
- * @return graphql.GraphQLSchema
+ * @return {graphql.GraphQLSchema}
  */
 function makeSchema() {
   const resolvers = rd(SCHEMA_ROOT, {

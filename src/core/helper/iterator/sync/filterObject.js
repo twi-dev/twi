@@ -3,12 +3,13 @@ import objectIterator from "./objectIterator"
 /**
  * Filter given object with predicate function
  *
- * @param object obj – any iterable plain object
- * @param function predicate – the function invoked per iteration.
+ * @param {object} obj – any iterable plain object
+ * @param {function} predicate – the function invoked per iteration.
  *   Should return boolean value.
- * @param any ctx
  *
- * @return object – filtered object
+ * @param {any} ctx
+ *
+ * @return {object} – filtered object
  */
 function filterObject(obj, predicate, ctx) {
   const res = {}

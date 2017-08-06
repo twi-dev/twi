@@ -166,7 +166,10 @@ class User extends Model {
     return this.role === User.roles.su
   }
 
-  async toJS(options) {
+  /**
+   * @see Model#toJS
+   */
+  toJS = async options => {
     const user = await super.toJS(options)
 
     const role = this.__role

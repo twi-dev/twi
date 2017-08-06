@@ -29,10 +29,10 @@ const cache = new Map()
 /**
  * Run Pug compiler
  *
- * @param string filename
- * @param object options
+ * @param {string} filename
+ * @param {object} options
  *
- * @return function
+ * @return {function}
  */
 const compileFile = async (filename, options) => compile(
   await readFile(filename), {
@@ -43,10 +43,10 @@ const compileFile = async (filename, options) => compile(
 /**
  * Compile template from given path
  *
- * @param string filename
- * @param object options
+ * @param {string} filename
+ * @param {object} options
  *
- * @return function
+ * @return {function}
  */
 async function compileTemplate(filename, options) {
   if (options.cache && isFunction(cache.get(filename))) {
@@ -71,9 +71,9 @@ async function render(filename, locals, options) {
 /**
  * Get render function for Koa context
  *
- * @param object options
+ * @param {object} options
  *
- * @return function renderer
+ * @return {function} renderer
  */
 const getViewRenderer = options => async function renderer(filename, locals) {
   this.body = await render(filename, locals, options)
@@ -82,8 +82,8 @@ const getViewRenderer = options => async function renderer(filename, locals) {
 /**
  * Setting up Pug view renderer on Koa context
  *
- * @param Koa koa
- * @param options object
+ * @param {Koa} koa
+ * @param {object} options
  */
 const view = options => getViewRenderer(
   merge({}, defaults, options, {

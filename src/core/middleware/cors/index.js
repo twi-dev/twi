@@ -17,7 +17,7 @@ const defaults = {
 /**
  * CORS middleware
  *
- * @param object options
+ * @param {object} options
  */
 function cors(options) {
   options = {

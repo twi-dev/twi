@@ -48,10 +48,12 @@ const defaults = {
 }
 
 /**
- * @param Router router
+ * @param {Router} router
  * @param object handlers
  *
- * @return Router
+ * @return {Router}
+ *
+ * @api private
  */
 function mountNonMatchedHandlers(router, handlers) {
   for (const [key, handler] of objectIterator.entries(handlers)) {
@@ -78,12 +80,12 @@ function mountNonMatchedHandlers(router, handlers) {
 /**
  * Build given routes
  *
- * @param object routes
+ * @param {object} routes
  *
- * @return functino:
- *   - @param object options
+ * @return {function} that takes the following params:
+ *   - @param {object} options
  *
- *   - @return Router
+ *   - @return {Router}
  */
 const buildRoutes = routes => function(options = {}) {
   if (!isPlainObject(options)) {
@@ -114,8 +116,8 @@ const buildRoutes = routes => function(options = {}) {
 /**
  * Make controller function that will build routes from given directory
  *
- * @param string path
- * @param object options – is set, the Router will be returned immediately
+ * @param {string} path
+ * @param {object} options – is set, the Router will be returned immediately
  *
  * @return function|Router
  */

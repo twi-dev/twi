@@ -25,9 +25,9 @@ const methods = {
  * Provides more declarative way to definitions of Koa Router controllers
  * with the ES.next decorators magic! Whoosh!
  *
- * @param string path – a path of your route
- * @param string method – a name of HTTP method
- * @param function|array middleware – a list of route middlewares
+ * @param {string} path – a path of your route
+ * @param {string} method – a name of HTTP method
+ * @param {function|array} middleware – a list of route middlewares
  */
 const route = (path, method, ...middleware) => function(target, k, descriptor) {
   if (!isString(path)) {

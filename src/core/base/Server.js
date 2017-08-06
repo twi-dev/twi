@@ -53,10 +53,9 @@ class Server extends Koa {
     return this.__config
   }
 
-  //
-  // Private
-  //
-
+  /**
+   * @private
+   */
   __extFromConfig = config => {
     invariant(
       !isPlainObject(config),
@@ -71,19 +70,15 @@ class Server extends Koa {
     return this
   }
 
-  //
-  // Public
-  //
-
   /**
    * Add milldeware to queue
    *
    * @see Koa.js docs tp get more information about middlewares
    *
-   * @param AsyncFunction|function|array middleware – a function or a list
+   * @param {AsyncFunction|function|array} middleware – a function or a list
    *  of functions that will be added to Koa.js middleware queue
    *
-   * @return Server
+   * @return {Server}
    */
   use(middlewares) {
     if (!isArray(middlewares)) {
@@ -107,10 +102,12 @@ class Server extends Koa {
    *   from it instance in middlewares.
    * @see src/server/api/core/base/view.js as working example.
    *
-   * @param string|object – method name or palin object with sets of methods
+   * @param {string|object} – method name or palin object with sets of methods
    *   in format: {name: fn}
-   * @param fn – handler that will extends Context
-   * @return Server
+   *
+   * @param {function} fn – handler that will extends Context
+   *
+   * @return {Server}
    *
    * Example:
    *
@@ -136,8 +133,6 @@ class Server extends Koa {
    *    await next()
    *  }
    * ```
-   *
-   * TODO: Move an example from below to the docs or wiki.
    */
   ext = (name, fn) => (
     this.__extFromConfig(isPlainObject(name) ? name : {[name]: fn})

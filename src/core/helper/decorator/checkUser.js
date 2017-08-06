@@ -19,9 +19,9 @@ const checkUserDecorator = message => resolver => async function(
 /**
  * Check if user is authenticated.
  *
- * @param string|function
+ * @param {string|function}
  *
- * @return AsyncFunction|function
+ * @return {AsyncFunction|function}
  */
 function checkUser(messageOrTarget) {
   if (messageOrTarget && isString(messageOrTarget)) {

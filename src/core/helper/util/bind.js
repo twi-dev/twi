@@ -1,8 +1,8 @@
 /**
  * Bind function to specified context
  *
- * @param any ctx
- * @param function fn
+ * @param {any} ctx
+ * @param {function} fn
  *
  * @return function
  */

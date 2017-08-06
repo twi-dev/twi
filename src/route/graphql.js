@@ -47,7 +47,9 @@ r.get("/", actionGraphiQL)
 
 r.all("/", multipart({processFiles}), actionGraphQL)
 
-// Noop Ctor for GraphQL routes
+/**
+ * @constructor
+ */
 function GraphQLController() {
   checkCtorCall(GraphQLController, this)
 }

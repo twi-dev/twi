@@ -11,7 +11,10 @@ class Model extends MongooseModel {
   /**
    * Create one document with given params
    *
-   * @return object
+   * @param {object} doc
+   * @param {object|null|undefined} optinos
+   *
+   * @return {object}
    */
   static async createOne(doc, options) {
     invariant(
@@ -26,7 +29,10 @@ class Model extends MongooseModel {
   /**
    * Create many documents with given params
    *
-   * @return object
+   * @param {array|object} docs
+   * @param {object|null|undefined} optinos
+   *
+   * @return {object}
    */
   static async createMany(docs, options) {
     if (!isArray(docs)) {
@@ -43,20 +49,32 @@ class Model extends MongooseModel {
   }
 
   /**
+   * Find whatever documents. (10 per page)
+   *
+   * @param {number} cursor – page number
+   * @param {object} filters – advanced search parameters
+   *
+   * @return {array}
+   */
+  static async findMany(cursor = 0, filters = {}) {
+    const docs = await this.find({...filters}).skip(cursor * 10).limit(10)
+
+    return await Promise.all(docs.map(doc => doc.toJS()))
+  }
+
+  /**
    * Find some docs by IDs
    *
-   * @param array ids – IDs of documents you are looking for
+   * @param {array} ids – IDs of documents you are looking for
    *
-   * @return array
+   * @return {array}
    */
-  static async findManyById(ids) {
+  static async findManyById(ids, cursor) {
     invariant(
       !isArray(ids), TypeError, "Documents IDs should be passed as array."
     )
 
-    const docs = await this.find().where({_id: {$in: ids}}).exec()
-
-    return await Promise.all(docs.map(doc => doc.toJS()))
+    return await this.findMany(cursor, {_id: {$in: ids}})
   }
 
   /**
@@ -80,7 +98,14 @@ class Model extends MongooseModel {
     return this._id
   }
 
-  async toJS(options) {
+  /**
+   * Converts a mongoose document to JavaScript plain object
+   *
+   * @param {object|null|undefined} optinos
+   *
+   * @return {object}
+   */
+  toJS = async options => {
     const obj = this.toObject({
       ...options, virtuals: true
     })

@@ -41,6 +41,19 @@ class Story extends Model {
   }
 
   /**
+   * Find whatever stories. (10 per page)
+   *
+   * @param {number} cursor – page number
+   *
+   * @return {array}
+   */
+  static async findMany(cursor = 0) {
+    const stories = await this.find().skip(cursor * 10).limit(10)
+
+    return await Promise.all(stories.map(s => s.toJS()))
+  }
+
+  /**
    * Find stories created by given author
    *
    * @param {string} author – ID of an author which stories you are looking for
@@ -62,6 +75,9 @@ class Story extends Model {
    */
   __getRoleName = role => this._findKey(Story.roles, role)
 
+  /**
+   * @see Model#toJS
+   */
   async toJS(options) {
     // TODO: Add a co-authors population
     const story = await super.toJS(options)
