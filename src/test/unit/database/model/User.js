@@ -93,7 +93,7 @@ test(
     const err = await t.throws(User.findOneByLogin("OctetStream"))
 
     t.true(err instanceof NotFound)
-    t.is(err.message, "Can't find user with login /^OctetStream$/i.")
+    t.is(err.message, "Can't find user with login OctetStream.")
     t.is(err.status, 404)
   }
 )

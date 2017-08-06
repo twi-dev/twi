@@ -67,11 +67,13 @@ class User extends Model {
    * @throws {NotFound} – when user is not found
    */
   static async findOneByLogin(login) {
+    const ref = login
+
     login = new RegExp(`^${login}$`, "i")
 
     const user = await this.findOne().where({login}).exec()
 
-    invariant(!user, NotFound, "Can't find user with login %s.", String(login))
+    invariant(!user, NotFound, "Can't find user with login %s.", String(ref))
 
     return await user.toJS()
   }
