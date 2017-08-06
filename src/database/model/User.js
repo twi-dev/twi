@@ -66,7 +66,7 @@ class User extends Model {
    *
    * @throws {NotFound} – when user is not found
    */
-  static async findByLogin(login) {
+  static async findOneByLogin(login) {
     login = new RegExp(`^${login}$`, "i")
 
     const user = await this.findOne().where({login}).exec()
@@ -172,8 +172,8 @@ class User extends Model {
   async toJS(options) {
     const user = await super.toJS(options)
 
-    const role = this.__role
-    const status = this.__status
+    const role = this.__role.toUpperCase()
+    const status = this.__status.toUpperCase()
 
     return {
       ...user, role, status

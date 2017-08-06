@@ -32,10 +32,10 @@ test("User.createOne should return correct default fields", async t => {
     password: "123"
   })
 
-  t.is(user.role, "user")
+  t.is(user.role, "USER")
   t.true(user.isUser)
 
-  t.is(user.status, "unactivated")
+  t.is(user.status, "UNACTIVATED")
   t.true(user.isUnactivated)
 })
 
@@ -71,7 +71,7 @@ test("Should throw an error on User.createMany invocation", async t => {
   )
 })
 
-test("User.findByLogin should just return requested user", async t => {
+test("User.findOneByLogin should just return requested user", async t => {
   t.plan(1)
 
   await User.createOne({
@@ -80,17 +80,17 @@ test("User.findByLogin should just return requested user", async t => {
     password: "123"
   })
 
-  const user = await User.findByLogin("SomeUser")
+  const user = await User.findOneByLogin("SomeUser")
 
   t.is(user.login, "SomeUser")
 })
 
 test(
-  "User.findByLogin should throw a NotFound error when user is not found",
+  "User.findOneByLogin should throw a NotFound error when user is not found",
   async t => {
     t.plan(4)
 
-    const err = await t.throws(User.findByLogin("OctetStream"))
+    const err = await t.throws(User.findOneByLogin("OctetStream"))
 
     t.true(err instanceof NotFound)
     t.is(err.message, "Can't find user with login /^OctetStream$/i.")

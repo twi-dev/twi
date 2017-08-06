@@ -1,10 +1,12 @@
-cache: yarn
 os:
   - osx
   - linux
 sudo: false
+cache: yarn
+service: mongodb
 language: node_js
 node_js:
+  - stable
   - 7
   - 8
 install:
