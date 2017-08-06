@@ -105,7 +105,7 @@ class Model extends MongooseModel {
    *
    * @return {object}
    */
-  toJS = async options => {
+  async toJS(options) {
     const obj = this.toObject({
       ...options, virtuals: true
     })

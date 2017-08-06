@@ -169,7 +169,7 @@ class User extends Model {
   /**
    * @see Model#toJS
    */
-  toJS = async options => {
+  async toJS(options) {
     const user = await super.toJS(options)
 
     const role = this.__role
