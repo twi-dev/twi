@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 async function createConnection() {
   mongoose.Promise = Promise
 
+  // Don't forget to add a user for this connection
   const conn = await mongoose.connect("mongodb://localhost/twi-test", {
     useMongoClient: true,
     promiseLibrary: Promise
