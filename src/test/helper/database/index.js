@@ -1,18 +1,29 @@
-import {Mockgoose} from "mockgoose"
 import mongoose from "mongoose"
-import {v4} from "uuid"
 
 async function createConnection() {
-  const mockgoose = new Mockgoose(mongoose)
-
   mongoose.Promise = Promise
 
-  await mockgoose.prepareStorage()
-
-  return await mongoose.connect(`mongodb://localhost/twi-test-${v4()}`, {
+  const conn = await mongoose.connect("mongodb://localhost/twi-test", {
     useMongoClient: true,
     promiseLibrary: Promise
   })
+
+  // Clean each collection if it's not
+  const queue = []
+  for (const collection of Object.values(conn.collections)) {
+    queue.push(collection.remove())
+  }
+
+  await Promise.all(queue)
+
+  return conn
 }
 
-export default createConnection
+async function closeConnection() {
+  return await mongoose.connection.db.dropDatabase()
+}
+
+export {
+  createConnection,
+  closeConnection
+}

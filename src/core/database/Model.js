@@ -1,5 +1,6 @@
 import {Model as MongooseModel} from "mongoose"
 
+import isInteger from "lodash/isInteger"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
@@ -56,8 +57,12 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findMany(cursor = 0, filters = {}) {
-    const docs = await this.find({...filters}).skip(cursor * 10).limit(10)
+  static async findMany(cursor = 0, filters = {}, limit = 10) {
+    if (isInteger(filters)) {
+      [limit, filters] = [filters, {}]
+    }
+
+    const docs = await this.find({...filters}).skip(cursor * limit).limit(limit)
 
     return await Promise.all(docs.map(doc => doc.toJS()))
   }
@@ -69,12 +74,16 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findManyById(ids, cursor) {
+  static async findManyById(ids, cursor, filters) {
     invariant(
       !isArray(ids), TypeError, "Documents IDs should be passed as array."
     )
 
-    return await this.findMany(cursor, {_id: {$in: ids}})
+    if (isPlainObject(cursor)) {
+      [filters, cursor] = [cursor, undefined]
+    }
+
+    return await this.findMany(cursor, {...filters, _id: {$in: ids}})
   }
 
   /**

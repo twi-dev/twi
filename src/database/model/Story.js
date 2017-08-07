@@ -1,4 +1,4 @@
-import shortid from "shortid"
+import nanoid from "nanoid"
 import isEmpty from "lodash/isEmpty"
 import invariant from "@octetstream/invariant"
 
@@ -23,10 +23,22 @@ class Story extends Model {
     }
   }
 
+  /**
+   * Create one story
+   *
+   * @param {mongoose.Types.ObjectId|string} author – A user id which will
+   *  be added as story author
+   *
+   * @param {object} story – story content
+   *
+   * @return {object} – created story
+   */
   static async createOne(author, story) {
+    invariant(isEmpty(story), TypeError, "Story data cannot be empty.")
+
     const chapter = await Chapter.createOne(story.chapter, 1)
 
-    const slug = shortid()
+    const slug = nanoid()
 
     return await super.createOne({...story, author, slug, chapter})
   }

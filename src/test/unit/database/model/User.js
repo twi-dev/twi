@@ -2,12 +2,12 @@ import test from "ava"
 
 import {compare} from "bcryptjs"
 
-import createConnection from "test/helper/database"
+import {createConnection, closeConnection} from "test/helper/database"
 
 import User from "database/model/User"
 import NotFound from "core/error/http/NotFound"
 
-test.before(async () => await createConnection())
+test.before(createConnection)
 
 test("User.createOne should create a user with given params", async t => {
   t.plan(3)
@@ -97,3 +97,5 @@ test(
     t.is(err.status, 404)
   }
 )
+
+test.after(closeConnection)
