@@ -1,9 +1,9 @@
 import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
-import {GraphQLDateTime as TDateTime} from "graphql-iso-date"
 
 import Type from "parasprite/Type"
 
 import TChapter from "./TChapter"
+import TStoryDates from "./TStoryDates"
 
 import TAuthor from "../user/TAuthor"
 
@@ -16,7 +16,7 @@ const TStory = Type(
   .field("description", TString, true)
   .field("author", TAuthor, true)
   .field("slug", TString, true)
-  .field("createdAt", TDateTime, true)
+  .field("dates", TStoryDates, true)
   .resolve("chapters", [TChapter, true], true, findChaptersById)
     .arg("cursor", TInt)
   .end()

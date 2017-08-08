@@ -21,7 +21,7 @@ const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
       )
     }
   },
-  email: {
+  email: { // Private email address
     type: TString,
     unique: true,
     required: [true, "Required an email for user"]
@@ -38,9 +38,15 @@ const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
     type: TNumber,
     default: roles.user
   },
-  registeredAt: {
-    type: TDate,
-    default: moment
+  dates: {
+    registeredAt: {
+      type: TDate,
+      default: moment
+    },
+    lastVisit: {
+      type: TDate,
+      default: null
+    }
   },
   avatar: {
     type: TString,
@@ -50,12 +56,14 @@ const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
     type: {
       vk: TString,
       fb: TString,
-      twitter: TString
+      twitter: TString,
+      email: TString // Public email address
     },
     default: {
       vk: null,
       fb: null,
-      twitter: null
+      twitter: null,
+      email: null
     }
   }
 })

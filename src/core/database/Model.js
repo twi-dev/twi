@@ -1,5 +1,7 @@
 import {Model as MongooseModel} from "mongoose"
 
+import merge from "lodash/merge"
+import isEmpty from "lodash/isEmpty"
 import isInteger from "lodash/isInteger"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
@@ -10,6 +12,53 @@ const isArray = Array.isArray
 
 class Model extends MongooseModel {
   /**
+   * @protected
+   */
+  static get _defaultOptions() {
+    return {
+      toJS: true
+    }
+  }
+
+  /**
+   * Get merged options object, based on given ones and defaults.
+   *
+   * @param {object|null|undefined} options
+   *
+   * @return {object}
+   *
+   * @protected
+   */
+  static _getOptions(options) {
+    return merge({}, this._defaultOptions, (options || {}))
+  }
+
+  /**
+   * Convert documents to JavaScript plain object using toJS method of
+   *   the each document.
+   *
+   * @param {mongoose.Document|mongoose.Document[]} docs
+   * @param {object|null|undefined} options
+   *
+   * @return {object}
+   *
+   * @protected
+   */
+  static async _tryConvert(docs, options = {}) {
+    if (isEmpty(options)) {
+      options = this._getOptions(options)
+    }
+
+    if (Boolean(options.toJS) === false) {
+      return docs
+    }
+
+    return await (
+      isArray(docs) ? Promise.all(docs.map(doc => doc.toJS())) : docs.toJS()
+    )
+  }
+
+  /**
    * Create one document with given params
    *
    * @param {object} doc
@@ -17,14 +66,16 @@ class Model extends MongooseModel {
    *
    * @return {object}
    */
-  static async createOne(doc, options) {
+  static async createOne(doc, options = {}) {
+    options = this._getOptions(options)
+
     invariant(
       !isPlainObject(doc), TypeError, "Document should be passed as object."
     )
 
     doc = await this(doc).save(options)
 
-    return await doc.toJS()
+    return await this._tryConvert(doc, options)
   }
 
   /**
@@ -35,7 +86,9 @@ class Model extends MongooseModel {
    *
    * @return {object}
    */
-  static async createMany(docs, options) {
+  static async createMany(docs, options = {}) {
+    options = this._getOptions(options)
+
     if (!isArray(docs)) {
       return await this.createOne(docs, options)
     }
@@ -46,7 +99,7 @@ class Model extends MongooseModel {
 
     docs = await this.insertMany(docs, options)
 
-    return await Promise.all(docs.map(doc => doc.toJS()))
+    return await this._tryConvert(docs, options)
   }
 
   /**
@@ -57,14 +110,16 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findMany(cursor = 0, filters = {}, limit = 10) {
+  static async findMany(cursor = 0, filters = {}, limit = 10, options = {}) {
+    options = this._getOptions(options)
+
     if (isInteger(filters)) {
       [limit, filters] = [filters, {}]
     }
 
     const docs = await this.find({...filters}).skip(cursor * limit).limit(limit)
 
-    return await Promise.all(docs.map(doc => doc.toJS()))
+    return await this._tryConvert(docs, options)
   }
 
   /**
@@ -74,7 +129,9 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findManyById(ids, cursor, filters) {
+  static async findManyById(ids, cursor, filters, options = {}) {
+    options = this._getOptions(options)
+
     invariant(
       !isArray(ids), TypeError, "Documents IDs should be passed as array."
     )
@@ -83,18 +140,18 @@ class Model extends MongooseModel {
       [filters, cursor] = [cursor, undefined]
     }
 
-    return await this.findMany(cursor, {...filters, _id: {$in: ids}})
+    return await this.findMany(cursor, {...filters, _id: {$in: ids}}, options)
   }
 
   /**
    * Find field key in target object
    *
-   * @protected
-   *
    * @param {object} target
    * @param {any} search
    *
    * @return {string}
+   *
+   * @protected
    */
   _findKey = (target, search) => findKey(target, val => val === search)
 
