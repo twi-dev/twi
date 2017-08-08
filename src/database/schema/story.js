@@ -1,4 +1,6 @@
-const getModelFields = ({TObjectId, TString, TNumber, TBoolean}) => ({
+import moment from "moment"
+
+const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
   title: {
     type: TString,
     required: true
@@ -8,9 +10,16 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean}) => ({
     required: true
   },
   slug: {
-    type: TString,
-    required: true,
-    unique: true
+    full: {
+      type: TString,
+      required: true,
+      unique: true
+    },
+    short: {
+      type: TString,
+      required: true,
+      unique: true
+    }
   },
   author: {
     ref: "User",
@@ -36,14 +45,27 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean}) => ({
     type: TBoolean,
     default: false
   },
-  chapters: [{
-    ref: "Chapter",
-    type: TObjectId,
-    required: true
-  }],
-  chaptersCount: {
-    type: TNumber,
-    default: 0
+  dates: {
+    createdAt: {
+      type: TDate,
+      default: moment
+    },
+    updatedAt: {
+      type: TDate,
+      default: null
+    }
+  },
+  chapters: {
+    list: [{
+      ref: "Chapter",
+      type: TObjectId,
+      required: true
+    }],
+    count: {
+      type: TNumber,
+      default: 0,
+      min: 0
+    }
   },
   characters: [{
     ref: "Character",
@@ -55,23 +77,25 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean}) => ({
     type: TObjectId,
     required: true
   }],
-  ratings: [{
-    user: {
-      ref: "User",
-      type: TObjectId,
-      required: true
-    },
-    value: {
+  rating: {
+    votes: [{
+      user: {
+        ref: "User",
+        type: TObjectId,
+        required: true
+      },
+      vote: {
+        type: TNumber,
+        require: true,
+        min: 1,
+        max: 5
+      }
+    }],
+    avg: {
       type: TNumber,
-      require: true,
-      min: 1,
-      max: 5
+      default: 0,
+      min: 0
     }
-  }],
-  ratingAvg: {
-    type: TNumber,
-    default: 0,
-    min: 0
   }
 })
 

@@ -3680,7 +3680,7 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-limax@1.5.0:
+limax@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/limax/-/limax-1.5.0.tgz#bbe7f2d3231cef709ebef8c32e3c75bce8fa5734"
   dependencies:

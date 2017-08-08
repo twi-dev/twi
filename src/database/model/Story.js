@@ -1,4 +1,4 @@
-import nanoid from "nanoid"
+import limax from "limax"
 import isEmpty from "lodash/isEmpty"
 import invariant from "@octetstream/invariant"
 
@@ -7,6 +7,8 @@ import {createModel, Model} from "core/database"
 import Chapter from "database/model/Chapter"
 
 import NotFound from "core/error/http/NotFound"
+
+import nanoid from "core/helper/util/slug"
 
 @createModel
 class Story extends Model {
@@ -18,7 +20,7 @@ class Story extends Model {
       beta: 0,
       painter: 1,
       translator: 2,
-      cowriter: 3,
+      writer: 3,
       editor: 4 // Aka grammarly
     }
   }
@@ -38,7 +40,18 @@ class Story extends Model {
 
     const chapter = await Chapter.createOne(story.chapter, 1)
 
-    const slug = nanoid()
+    const short = nanoid()
+    const full = `${limax(story.title)}.${short}`
+
+    const slug = {
+      short,
+      full
+    }
+
+    // Get role codename for each co-author
+    for (const [idx, coAuthor] of story.coAuthors) {
+      story.coAuthors[idx].role = this.roles[coAuthor.role.toLowerCase()]
+    }
 
     return await super.createOne({...story, author, slug, chapter})
   }
@@ -83,6 +96,34 @@ class Story extends Model {
   }
 
   /**
+   * Get story by short/full slug
+   *
+   * @param {string} slug
+   *
+   * @return {object}
+   *
+   * @throws {NotFound}
+   */
+  static async findOneBySlug(slug) {
+    const story = await this.findOne()
+      .where({
+        $or: [
+          {
+            "slug.short": slug
+          },
+          {
+            "slug.full": slug
+          }
+        ]
+      })
+      .exec()
+
+    invariant(!story, NotFound, "Can't find the story with %s slug.", slug)
+
+    return await story.toJS()
+  }
+
+  /**
    * @private
    */
   __getRoleName = role => this._findKey(Story.roles, role)
@@ -95,8 +136,8 @@ class Story extends Model {
     const story = await super.toJS(options)
 
     if (!isEmpty(this.coAuthors)) {
-      for (const [idx, user] of this.coAuthors.entries()) {
-        this.coAuthors[idx].role = this.__getRoleName(user.role)
+      for (const [idx, coAuthor] of this.coAuthors.entries()) {
+        this.coAuthors[idx].role = this.__getRoleName(coAuthor.role)
       }
     }
 
