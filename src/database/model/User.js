@@ -43,9 +43,15 @@ class User extends Model {
   static async createOne(user) {
     const password = await hash(user.password, 15)
 
-    const role = User.roles.user
+    if (user.role != null) {
+      user.role = User.roles.user
+    }
 
-    return await super.createOne({...user, password, role})
+    if (user.status != null) {
+      user.status = User.statuses.user
+    }
+
+    return await super.createOne({...user, password})
   }
 
   // NOTE: Just an unallowed method
