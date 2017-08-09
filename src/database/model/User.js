@@ -1,5 +1,8 @@
 import {hash} from "bcryptjs"
+
 import invariant from "@octetstream/invariant"
+import isPlainObject from "lodash/isPlainObject"
+import isEmpty from "lodash/isEmpty"
 
 import {createModel, Model} from "core/database"
 
@@ -40,7 +43,14 @@ class User extends Model {
    *
    * @return {object}
    */
-  static async createOne(user) {
+  static async createOne(user, options) {
+    invariant(
+      !isPlainObject(user), TypeError,
+      "User data information should be passed as plain JavaScript object."
+    )
+
+    invariant(isEmpty(user), TypeError, "User information cannot be empty.")
+
     const password = await hash(user.password, 15)
 
     if (user.role != null) {
@@ -51,7 +61,7 @@ class User extends Model {
       user.status = User.statuses.user
     }
 
-    return await super.createOne({...user, password})
+    return await super.createOne({...user, password}, options)
   }
 
   // NOTE: Just an unallowed method

@@ -2,6 +2,9 @@ import test from "ava"
 
 import {compare} from "bcryptjs"
 import {internet} from "faker"
+import {Document} from "mongoose"
+
+import isPlainObject from "lodash/isPlainObject"
 
 import {createConnection, closeConnection} from "test/helper/database"
 
@@ -67,6 +70,56 @@ test(
     t.is(user.status, "UNACTIVATED")
   }
 )
+
+test("Created user should be returned as plain object by default", async t => {
+  t.plan(1)
+
+  const login = t.context.login
+  const email = t.context.email
+  const password = t.context.password
+
+  const user = await User.createOne({login, email, password})
+
+  t.true(isPlainObject(user))
+})
+
+test(
+  "Created user should be returned as a Document when option toJS is false",
+  async t => {
+    t.plan(1)
+
+    const login = t.context.login
+    const email = t.context.email
+    const password = t.context.password
+
+    const user = await User.createOne({login, email, password}, {
+      toJS: false
+    })
+
+    t.true(user instanceof Document)
+  }
+)
+
+test("Should throw a TypeError on invocation witout any arguments", async t => {
+  t.plan(3)
+
+  const err = await t.throws(User.createOne())
+
+  t.true(err instanceof TypeError)
+  t.is(
+    err.message,
+    "User data information should be passed as plain JavaScript object."
+  )
+})
+
+test("Should throw a TypeError when user data object is empty", async t => {
+  t.plan(3)
+
+  const err = await t.throws(User.createOne({}))
+
+  t.true(err instanceof TypeError)
+  t.is(err.message, "User information cannot be empty.")
+})
 
 test("Should throw an error on User.createMany invocation", async t => {
   t.plan(1)
