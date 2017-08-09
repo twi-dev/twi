@@ -109,30 +109,24 @@ class Server extends Koa {
    *
    * @return {Server}
    *
-   * Example:
+   * @example
+   * // So, after you've create a Server instance, you can extend Koa.js context
+   * //  using this method if you want to use custiom methods from middlewares:
    *
-   * So, after you've create a Server instance, you can extend Koa.js context
-   *   using this method if you want to use custiom methods from middlewares:
+   * // Note: "this" keyword in your extension will be point to Koa.js context
+   * const greeter = (name = "Anon Pony") => this.body = `Hello, ${name}!`
    *
-   * ```js
-   *   // Note: "this" keyword in your extension will be point to Koa.js context
-   *   const greeter = (name = "Anon Pony") => this.body = `Hello, ${name}!`
+   * // I've recomended passing extensions as a plain object
+   * //   of "name" => "fn" pair,
+   * //   cuz this is more shorter way than passing "name" and "function"
+   * //   as two different params.
+   * server.ext({greeter})
    *
-   *   // I've recomended passing extensions as a plain object
-   *   //   of "name" => "fn" pair,
-   *   //   cuz this is more shorter way than passing "name" and "function"
-   *   //   as two different params.
-   *   server.ext({greeter})
-   * ```
-   *
-   * ...and after that, you can use your extension from middlewares, like so:
-   *
-   * ```js
-   *  async function greeterMiddleware(ctx, next) {
-   *    ctx.greeter(ctx.query.name)
-   *    await next()
-   *  }
-   * ```
+   * // ...and after that, you can use your extension from middlewares, like so:
+   * async function greeterMiddleware(ctx, next) {
+   *   ctx.greeter(ctx.query.name)
+   *   await next()
+   * }
    */
   ext = (name, fn) => (
     this.__extFromConfig(isPlainObject(name) ? name : {[name]: fn})
