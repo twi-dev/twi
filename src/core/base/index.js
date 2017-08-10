@@ -50,6 +50,7 @@ async function main(config) {
 
   log.ok(`The ${server.name} has been started.`)
   log.ok(`Listening on ${server.addr} address.`)
+  log.ok("GraphQL endpoint mounted at %s/graphql", server.addr)
 }
 
 export default main

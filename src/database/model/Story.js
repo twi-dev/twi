@@ -50,7 +50,7 @@ class Story extends Model {
 
     invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
-    const chapter = await Chapter.createOne(story.chapter, 1)
+    const chapter = await Chapter.createOne(story.chapter, undefined)
 
     const short = nanoid()
     const full = `${limax(story.title)}.${short}`
@@ -88,12 +88,8 @@ class Story extends Model {
    *
    * @throws {NotFound} – if no stories created by this user founded
    */
-  static async findManyByAuthor(author) {
-    const stories = await this.find().where({author}).exec()
-
-    invariant(!stories, NotFound, "No stories created by this user founded.")
-
-    return await Promise.all(stories.map(s => s.toJS()))
+  static async findManyByAuthor(author, cursor, options = {}) {
+    return await super.findMany(cursor, {author}, undefined, options)
   }
 
   /**

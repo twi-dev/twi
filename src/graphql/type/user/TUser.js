@@ -13,7 +13,11 @@ import TUserContacts from "./TUserContacts"
 import TStory from "../story/TStory"
 import TLogin from "../../scalar/user/TLogin"
 
-const TUser = Type("User", "Represends a full user information")
+import INode, {isTypeOf} from "../../interface/common/INode"
+
+const TUser = Type(
+  "User", "Represends a full user information", [INode], isTypeOf
+)
   .field("id", TID, "User unique identifer at the system", true)
   .field("login", TLogin, "User login that represends his/her address", true)
   .field("dates", TUserDates, "User registration dates", true)

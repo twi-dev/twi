@@ -19,7 +19,7 @@ class Chapter extends Model {
    *
    * @return {object}
    */
-  static async createOne(story, chapter) {
+  static async createOne(chapter, story = "") {
     const content = {
       original: chapter.text,
       rendered: md.render(chapter.text)

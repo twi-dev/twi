@@ -1,3 +1,5 @@
+import console from "console"
+
 import {pointer, tick, info as _info, warning, cross} from "figures"
 import {white, green, cyan, yellow, red} from "chalk"
 import {sprintf as fmt} from "sprintf-js"
@@ -18,27 +20,22 @@ const METHODS = [
   "error"
 ]
 
-// TODO: Move "level" param to first position
-function log(message, level, ...format) {
-  if (!LABELS.includes(level)) {
-    format.unshift(level)
-  }
-
+function log(level, message, ...format) {
   const method = METHODS[level]
   const label = LABELS[level]
 
   console[method](fmt(`${label} ${message}`, ...format))
 }
 
-const normal = (...message) => log(...message, 0)
+const normal = (message, ...format) => log(0, message, ...format)
 
-const ok = (...message) => log(...message, 1)
+const ok = (message, ...format) => log(1, message, ...format)
 
-const info = (...message) => log(...message, 2)
+const info = (message, ...format) => log(2, message, ...format)
 
-const warn = (...message) => log(...message, 3)
+const warn = (message, ...format) => log(3, message, ...format)
 
-const error = (...message) => log(...message, 4)
+const error = (message, ...format) => log(4, message, ...format)
 
 log.normal = normal
 log.ok = ok
