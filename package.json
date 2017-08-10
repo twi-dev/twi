@@ -31,8 +31,9 @@
   },
   "ava": {
     "files": [
-      "./test/unit/**/*.js",
-      "!./test/helper/**/*.js"
+      "test/**/*.js",
+      "!test/**/__hook__/**",
+      "!test/helper/**"
     ]
   },
   "nyc": {

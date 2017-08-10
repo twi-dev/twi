@@ -117,6 +117,10 @@ class Model extends MongooseModel {
       [limit, filters] = [filters, {}]
     }
 
+    if (isPlainObject(limit)) {
+      [options, limit] = [limit, 10]
+    }
+
     const docs = await this.find({...filters}).skip(cursor * limit).limit(limit)
 
     return await this._tryConvert(docs, options)

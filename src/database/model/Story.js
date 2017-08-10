@@ -1,5 +1,6 @@
 import limax from "limax"
 import isEmpty from "lodash/isEmpty"
+import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
 import {createModel, Model} from "core/database"
@@ -9,6 +10,8 @@ import Chapter from "database/model/Chapter"
 import NotFound from "core/error/http/NotFound"
 
 import nanoid from "core/helper/util/slug"
+
+const isArray = Array.isArray
 
 @createModel
 class Story extends Model {
@@ -35,8 +38,17 @@ class Story extends Model {
    *
    * @return {object} – created story
    */
-  static async createOne(author, story) {
-    invariant(isEmpty(story), TypeError, "Story data cannot be empty.")
+  static async createOne(author, story, options) {
+    invariant(!author, TypeError, "Can't create a story: No author's ID given.")
+
+    invariant(
+      !isPlainObject(story), TypeError,
+      "Story data should be passed as plain JavaScript object."
+    )
+
+    invariant(isEmpty(story), TypeError, "Story information is required.")
+
+    invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
     const chapter = await Chapter.createOne(story.chapter, 1)
 
@@ -48,12 +60,14 @@ class Story extends Model {
       full
     }
 
-    // Get role codename for each co-author
-    for (const [idx, coAuthor] of story.coAuthors) {
-      story.coAuthors[idx].role = this.roles[coAuthor.role.toLowerCase()]
+    if (isArray(story.coAuthors)) {
+      // Get role codename for each co-author
+      for (const [idx, coAuthor] of story.coAuthors.entries()) {
+        story.coAuthors[idx].role = this.roles[coAuthor.role.toLowerCase()]
+      }
     }
 
-    return await super.createOne({...story, author, slug, chapter})
+    return await super.createOne({...story, author, slug, chapter}, options)
   }
 
   // NOTE: Just an unallowed method
@@ -63,19 +77,6 @@ class Story extends Model {
       "This method is not allowed in this class. Use %s.createOne instead.",
       Story.name
     )
-  }
-
-  /**
-   * Find whatever stories. (10 per page)
-   *
-   * @param {number} cursor – page number
-   *
-   * @return {array}
-   */
-  static async findMany(cursor = 0) {
-    const stories = await this.find().skip(cursor * 10).limit(10)
-
-    return await Promise.all(stories.map(s => s.toJS()))
   }
 
   /**
