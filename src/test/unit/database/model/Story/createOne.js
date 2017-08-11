@@ -1,14 +1,42 @@
 import test from "ava"
 
+import {lorem} from "faker"
+
 import {createConnection, closeConnection} from "test/helper/database"
 
-import createUser from "test/unit/database/model/__hook__/createUser"
 
 import Story from "database/model/Story"
+
+import createUser from "../__hook__/createUser"
+
+import generateCharacters from "../__helper__/generateCharacters"
+import generateGenres from "../__helper__/generateGenres"
 
 test.before(createConnection)
 
 test.beforeEach(createUser)
+
+test.failing("Should just create a story with given data", async t => {
+  t.plan(1)
+
+  const characters = await generateCharacters(10)
+  const genres = await generateGenres(10)
+
+  const title = lorem.word()
+  const desription = lorem.paragraph()
+
+  const chapter = {
+    title, text: lorem.paragraphs()
+  }
+
+  const story = await Story.createOne(t.context.user.id, {
+    title, desription, characters, genres, chapter
+  })
+
+  console.log(story)
+
+  t.pass()
+})
 
 test("Should throw an error when no author's ID given", async t => {
   t.plan(3)
