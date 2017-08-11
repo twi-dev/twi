@@ -52,6 +52,15 @@ test("Should just create a story with given data", async t => {
   t.is(story.chapters.count, 1)
 })
 
+test("Should throw an error on Story.createMany invocation", async t => {
+  t.plan(1)
+
+  await t.throws(
+    Story.createMany(),
+    "This method is not allowed in this class. Use Story.createOne instead."
+  )
+})
+
 test("Should throw an error when no author's ID given", async t => {
   t.plan(3)
 
