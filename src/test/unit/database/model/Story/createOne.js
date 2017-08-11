@@ -6,6 +6,7 @@ import {createConnection, closeConnection} from "test/helper/database"
 
 
 import Story from "database/model/Story"
+import Chapter from "database/model/Chapter"
 
 import createUser from "../__hook__/createUser"
 
@@ -16,26 +17,39 @@ test.before(createConnection)
 
 test.beforeEach(createUser)
 
-test.failing("Should just create a story with given data", async t => {
-  t.plan(1)
+test("Should just create a story with given data", async t => {
+  t.plan(7)
 
-  const characters = await generateCharacters(10)
-  const genres = await generateGenres(10)
+  const characters = (await generateCharacters(10)).map(({id}) => id)
+  const genres = (await generateGenres(10)).map(({id}) => id)
 
   const title = lorem.word()
-  const desription = lorem.paragraph()
+  const description = lorem.paragraph()
+
+  const text = lorem.paragraphs()
 
   const chapter = {
-    title, text: lorem.paragraphs()
+    title, text
   }
 
   const story = await Story.createOne(t.context.user.id, {
-    title, desription, characters, genres, chapter
+    title, description, characters, genres, chapter
   })
 
-  console.log(story)
+  const expectedChapters = await Chapter.find({_id: {$in: story.chapters.list}})
 
-  t.pass()
+  t.is(String(story.author), t.context.user.id)
+  t.is(story.title, title)
+  t.is(story.description, description)
+
+  t.deepEqual(story.characters.map(id => String(id)), characters)
+  t.deepEqual(story.genres.map(id => String(id)), genres)
+  t.deepEqual(
+    story.chapters.list.map(id => String(id)),
+    expectedChapters.map(({id}) => id)
+  )
+
+  t.is(story.chapters.count, 1)
 })
 
 test("Should throw an error when no author's ID given", async t => {

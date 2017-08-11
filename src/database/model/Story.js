@@ -28,6 +28,23 @@ class Story extends Model {
     }
   }
 
+  static async __getNextChapterNumber(story) {
+    if (!story) {
+      return 1
+    }
+
+    story = await Story.findById(story).select("chapters").exec()
+
+    const [max] = await this
+      .find()
+      .where({_id: {$in: story.chapters}})
+      .sort({number: -1})
+      .limit(1)
+      .exec()
+
+    return max ? max.number + 1 : 1
+  }
+
   /**
    * Create one story
    *
@@ -50,7 +67,13 @@ class Story extends Model {
 
     invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
-    const chapter = await Chapter.createOne(story.chapter, undefined)
+    const count = await this.__getNextChapterNumber()
+
+    const chapter = await Chapter.createOne(story.chapter, count)
+
+    const chapters = {
+      list: [chapter.id], count
+    }
 
     const short = nanoid()
     const full = `${limax(story.title)}.${short}`
@@ -67,7 +90,7 @@ class Story extends Model {
       }
     }
 
-    return await super.createOne({...story, author, slug, chapter}, options)
+    return await super.createOne({...story, author, slug, chapters}, options)
   }
 
   // NOTE: Just an unallowed method

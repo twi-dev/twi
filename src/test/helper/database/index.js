@@ -4,24 +4,16 @@ async function createConnection() {
   mongoose.Promise = Promise
 
   // Don't forget to add a user for this connection
-  const conn = await mongoose.connect("mongodb://localhost/twi-test", {
+  const connection = await mongoose.connect("mongodb://localhost/twi-test", {
     useMongoClient: true,
     promiseLibrary: Promise
   })
 
-  // Clean each collection if it's not
-  const queue = []
-  for (const collection of Object.values(conn.collections)) {
-    queue.push(collection.remove())
-  }
-
-  await Promise.all(queue)
-
-  return conn
+  return connection
 }
 
 async function closeConnection() {
-  return await mongoose.connection.db.dropDatabase()
+  return await mongoose.disconnect()
 }
 
 export {
