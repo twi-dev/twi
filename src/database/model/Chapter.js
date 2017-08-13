@@ -1,4 +1,5 @@
 import Markdown from "markdown-it"
+import invariant from "@octetstream/invariant"
 
 import {createModel, Model} from "core/database"
 
@@ -18,6 +19,8 @@ class Chapter extends Model {
    * @return {object}
    */
   static async createOne(chapter, number) {
+    invariant(!number, TypeError, "Chapter number is required.")
+
     const content = {
       original: chapter.text,
       rendered: md.render(chapter.text)

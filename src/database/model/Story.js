@@ -9,7 +9,7 @@ import Chapter from "database/model/Chapter"
 
 import NotFound from "core/error/http/NotFound"
 
-import nanoid from "core/helper/util/slug"
+import nanoid from "core/helper/util/nanoid"
 
 const isArray = Array.isArray
 
@@ -138,7 +138,7 @@ class Story extends Model {
       })
       .exec()
 
-    invariant(!story, NotFound, "Can't find the story with %s slug.", slug)
+    invariant(!story, NotFound, "Can't find the story with slug: %s", slug)
 
     return await story.toJS()
   }

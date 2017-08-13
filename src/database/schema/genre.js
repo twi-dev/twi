@@ -3,6 +3,11 @@ const getModelFields = ({TString}) => ({
     type: TString,
     required: true
   },
+  code: {
+    type: TString,
+    required: true,
+    unique: true
+  },
   color: {
     type: TString,
     required: true,
