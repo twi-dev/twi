@@ -1,14 +1,10 @@
 import moment from "moment"
 
-const getModelFields = ({TString, /* TNumber, */ TDate}) => ({
+const getModelFields = ({TString, TDate}) => ({
   title: {
     type: TString,
     required: true
   },
-  // number: {
-  //   type: TNumber,
-  //   required: true
-  // },
   content: {
     original: {
       type: TString,
@@ -19,13 +15,15 @@ const getModelFields = ({TString, /* TNumber, */ TDate}) => ({
       required: true
     }
   },
-  createdAt: {
-    type: TDate,
-    default: moment
-  },
-  updatedAt: {
-    type: TDate,
-    default: moment
+  dates: {
+    createdAt: {
+      type: TDate,
+      default: moment
+    },
+    updatedAt: {
+      type: TDate,
+      default: moment
+    }
   }
 })
 

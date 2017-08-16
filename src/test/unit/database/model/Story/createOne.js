@@ -38,7 +38,7 @@ test("Should just create a story with given data", async t => {
 
   const expectedChapters = await Chapter.find({_id: {$in: story.chapters.list}})
 
-  t.is(String(story.author), t.context.user.id)
+  t.is(String(story.publisher), t.context.user.id)
   t.is(story.title, title)
   t.is(story.description, description)
 
@@ -61,13 +61,13 @@ test("Should throw an error on Story.createMany invocation", async t => {
   )
 })
 
-test("Should throw an error when no author's ID given", async t => {
+test("Should throw an error when no publisher's ID given", async t => {
   t.plan(3)
 
   const err = await t.throws(Story.createOne())
 
   t.true(err instanceof TypeError)
-  t.is(err.message, "Can't create a story: No author's ID given.")
+  t.is(err.message, "Can't create a story: No publisher's ID given.")
 })
 
 test("Should throw a TypeError when no story information given", async t => {

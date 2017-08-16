@@ -21,12 +21,23 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
       unique: true
     }
   },
-  author: {
+  publisher: {
     ref: "User",
     type: TObjectId,
     required: true
   },
-  coAuthors: [{
+  translation: {
+    flag: {
+      type: TBoolean,
+      default: false
+    },
+    author: {
+      name: TString, // author's nickname
+      profile: TString // link to an author profile or site
+    },
+    original: TString
+  },
+  collaborators: [{
     user: {
       ref: "User",
       type: TObjectId,
@@ -37,10 +48,6 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
       required: true
     }
   }],
-  isTranslation: {
-    type: TBoolean,
-    default: false
-  },
   isCompleted: {
     type: TBoolean,
     default: false

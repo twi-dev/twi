@@ -105,7 +105,7 @@
   },
   "devDependencies": {
     "@octetstream/eslint-config": "1.0.1",
-    "ava": "0.21.0",
+    "ava": "0.22.0",
     "babel-cli": "6.24.1",
     "babel-core": "6.25.0",
     "babel-plugin-dynamic-import-node": "1.0.2",

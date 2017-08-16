@@ -49,15 +49,17 @@ class Story extends Model {
   /**
    * Create one story
    *
-   * @param {mongoose.Types.ObjectId|string} author – A user id which will
-   *  be added as story author
+   * @param {mongoose.Types.ObjectId|string} publisher – A user id which will
+   *  be added as story publisher
    *
    * @param {object} story – story content
    *
    * @return {object} – created story
    */
-  static async createOne(author, story, options) {
-    invariant(!author, TypeError, "Can't create a story: No author's ID given.")
+  static async createOne(publisher, story, options) {
+    invariant(
+      !publisher, TypeError, "Can't create a story: No publisher's ID given."
+    )
 
     invariant(
       !isPlainObject(story), TypeError,
@@ -83,14 +85,16 @@ class Story extends Model {
       full
     }
 
-    if (isArray(story.coAuthors)) {
-      // Get role codename for each co-author
-      for (const [idx, coAuthor] of story.coAuthors.entries()) {
-        story.coAuthors[idx].role = this.roles[coAuthor.role.toLowerCase()]
+    if (isArray(story.collaborators)) {
+      // Get role codename for each collaborator
+      for (const [idx, collaborator] of story.collaborators.entries()) {
+        const role = collaborator.role.toLowerCase()
+
+        story.collaborators[idx].role = this.roles[role]
       }
     }
 
-    return await super.createOne({...story, author, slug, chapters}, options)
+    return await super.createOne({...story, publisher, slug, chapters}, options)
   }
 
   // NOTE: Just an unallowed method
@@ -167,12 +171,12 @@ class Story extends Model {
    * @see Model#toJS
    */
   async toJS(options) {
-    // TODO: Add a co-authors population
+    // TODO: Add a co-collaborators population
     const story = await super.toJS(options)
 
-    if (!isEmpty(this.coAuthors)) {
-      for (const [idx, coAuthor] of this.coAuthors.entries()) {
-        this.coAuthors[idx].role = this.__getRoleName(coAuthor.role)
+    if (!isEmpty(this.collaborators)) {
+      for (const [idx, collaborator] of this.collaborators.entries()) {
+        this.collaborators[idx].role = this.__getRoleName(collaborator.role)
       }
     }
 
