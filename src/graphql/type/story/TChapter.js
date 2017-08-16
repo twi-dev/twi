@@ -1,6 +1,6 @@
 import {
   GraphQLID as TID,
-  GraphQLInt as TInt,
+  // GraphQLInt as TInt,
   GraphQLString as TString
 } from "graphql"
 import Type from "parasprite/Type"
