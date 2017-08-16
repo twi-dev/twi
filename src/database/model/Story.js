@@ -110,7 +110,7 @@ class Story extends Model {
     chapter = await Chapter.createOne(chapter, options)
 
     story.chapters.list.push(chapter.id)
-    story.chapters.count = story.chapters.list.length + 1
+    story.chapters.count = story.chapters.list.length
 
     await story.save()
 
