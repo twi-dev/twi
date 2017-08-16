@@ -6,11 +6,13 @@ import findStories from "graphql/resolve/query/story/findStories"
 const resolve = {
   type: [TStory],
   required: true,
-  handler: findStories
+  handler: findStories,
+  description: "Get all available stories (only 10 per page)."
 }
 
 const cursor = {
-  type: TInt
+  type: TInt,
+  description: "Just a position at stories list (aka page number)."
 }
 
 const args = {cursor}

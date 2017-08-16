@@ -6,12 +6,16 @@ import findStoryBySlug from "graphql/resolve/query/story/findStoryBySlug"
 const resolve = {
   type: TStory,
   required: true,
-  handler: findStoryBySlug
+  handler: findStoryBySlug,
+  description: "Get one story by it slug."
 }
 
 const slug = {
   type: TString,
-  required: true
+  required: true,
+  description: (
+    "An unique story full/short identifer that based on name + random string."
+  )
 }
 
 const args = {slug}
