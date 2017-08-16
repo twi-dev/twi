@@ -94,6 +94,14 @@ class User extends Model {
     return await user.toJS()
   }
 
+  static async findOneById(user, options = {}) {
+    user = await this.findById(user)
+
+    invariant(!user, NotFound, "Can't find requested user.")
+
+    return this._tryConvert(user, options)
+  }
+
   /**
    * Get user role name
    *
