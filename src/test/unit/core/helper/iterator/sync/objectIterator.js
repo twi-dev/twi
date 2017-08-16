@@ -24,6 +24,16 @@ test("Should return entries array when \"entries\" flag is set to true", t => {
   t.deepEqual(actual, expected)
 })
 
+test("objectIterator.entries should also return an object entries", t => {
+  t.plan(1)
+
+  const expected = ["someKey", "some value"]
+
+  const actual = iterator.entries({someKey: "some value"}).next().value
+
+  t.deepEqual(actual, expected)
+})
+
 test("Should throw a TypeError when non-object value passed.", t => {
   t.plan(3)
 
