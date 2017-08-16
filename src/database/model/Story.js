@@ -28,6 +28,7 @@ class Story extends Model {
     }
   }
 
+  // DEPRECATED
   static async __getNextChapterNumber(story) {
     if (!story) {
       return 1
@@ -67,12 +68,11 @@ class Story extends Model {
 
     invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
-    const count = await this.__getNextChapterNumber()
-
-    const chapter = await Chapter.createOne(story.chapter, count)
+    const chapter = await Chapter.createOne(story.chapter)
 
     const chapters = {
-      list: [chapter.id], count
+      list: [chapter.id],
+      count: 1
     }
 
     const short = nanoid()
@@ -100,6 +100,21 @@ class Story extends Model {
       "This method is not allowed in this class. Use %s.createOne instead.",
       Story.name
     )
+  }
+
+  static async addOneChapter(creator, story, chapter, options = {}) {
+    story = await this.findById(story)
+
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    chapter = await Chapter.createOne(chapter, options)
+
+    story.chapters.list.push(chapter.id)
+    story.chapters.count = story.chapters.list.length + 1
+
+    await story.save()
+
+    return chapter
   }
 
   /**

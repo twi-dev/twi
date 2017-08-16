@@ -1,14 +1,14 @@
 import moment from "moment"
 
-const getModelFields = ({TString, TNumber, TDate}) => ({
+const getModelFields = ({TString, /* TNumber, */ TDate}) => ({
   title: {
     type: TString,
     required: true
   },
-  number: {
-    type: TNumber,
-    required: true
-  },
+  // number: {
+  //   type: TNumber,
+  //   required: true
+  // },
   content: {
     original: {
       type: TString,

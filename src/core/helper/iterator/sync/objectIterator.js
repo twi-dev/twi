@@ -10,6 +10,10 @@ import isObject from "lodash/isObject"
  * @yields {any|array}
  */
 function* objectIterator(obj, entries = false) {
+  if (!obj) {
+    return
+  }
+
   invariant(!isObject(obj), TypeError, "Allowed only objects as iterable.")
 
   for (const [key, value] of Object.entries(obj)) {

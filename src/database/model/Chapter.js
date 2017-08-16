@@ -1,7 +1,11 @@
 import Markdown from "markdown-it"
 import invariant from "@octetstream/invariant"
+import isPlainObject from "lodash/isPlainObject"
+import isString from "lodash/isString"
 
 import {createModel, Model} from "core/database"
+
+import getType from "core/helper/util/getType"
 
 // TODO: Setting up this one
 const md = new Markdown({
@@ -18,15 +22,27 @@ class Chapter extends Model {
    *
    * @return {object}
    */
-  static async createOne(chapter, number) {
-    invariant(!number, TypeError, "Chapter number is required.")
+  static async createOne(chapter, options = {}) {
+    invariant(
+      !chapter, TypeError, "Chapter is required. Received %s", getType(chapter)
+    )
+
+    invariant(
+      !isPlainObject(chapter), TypeError,
+      "Chapter should be a plain object. Received %s", getType(chapter)
+    )
+
+    invariant(
+      !isString(chapter.text), TypeError,
+      "Chapter text should be a string. Received %", getType(chapter.text)
+    )
 
     const content = {
       original: chapter.text,
       rendered: md.render(chapter.text)
     }
 
-    return await super.createOne({...chapter, content, number})
+    return await super.createOne({...chapter, content}, options)
   }
 }
 

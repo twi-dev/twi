@@ -21,6 +21,7 @@
     "cleanup:all": "yarn cleanup && node_modules/.bin/rimraf .nyc_output coverage",
     "lint": "node_modules/.bin/eslint bin build src migration",
     "test": "node_modules/.bin/ava && node ./test/helper/database/clear",
+    "t": "yarn test",
     "coverage": "node_modules/.bin/nyc yarn test",
     "codecov": "node_modules/.bin/codecov",
     "report": "yarn make:spec && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
