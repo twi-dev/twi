@@ -1,4 +1,4 @@
-import {resolve, dirname} from "path"
+import {resolve} from "path"
 
 import test from "ava"
 
