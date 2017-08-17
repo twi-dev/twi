@@ -72,8 +72,8 @@ test("Should just create a story with given data", async t => {
 test("Should create a short slug with Nano ID", async t => {
   t.plan(1)
 
-  const originalStoyModel = mongoose.models.Story.bind(null)
-  const originalStoySchema = Object.assign({}, mongoose.modelSchemas.Story)
+  const originalStoryModel = mongoose.models.Story.bind(null)
+  const originalStorySchema = Object.assign({}, mongoose.modelSchemas.Story)
 
   delete mongoose.models.Story
   delete mongoose.modelSchemas.Story
@@ -109,8 +109,8 @@ test("Should create a short slug with Nano ID", async t => {
   delete mongoose.models.Story
   delete mongoose.modelSchemas.Story
 
-  mongoose.models.Story = originalStoyModel.bind(null)
-  mongoose.modelSchemas.Story = Object.assign({}, originalStoySchema)
+  mongoose.models.Story = originalStoryModel.bind(null)
+  mongoose.modelSchemas.Story = Object.assign({}, originalStorySchema)
 })
 
 test(
@@ -118,8 +118,8 @@ test(
   async t => {
     t.plan(1)
 
-    const originalStoyModel = mongoose.models.Story.bind(null)
-    const originalStoySchema = Object.assign({}, mongoose.modelSchemas.Story)
+    const originalStoryModel = mongoose.models.Story.bind(null)
+    const originalStorySchema = Object.assign({}, mongoose.modelSchemas.Story)
 
     delete mongoose.models.Story
     delete mongoose.modelSchemas.Story
@@ -158,8 +158,8 @@ test(
     delete mongoose.models.Story
     delete mongoose.modelSchemas.Story
 
-    mongoose.models.Story = originalStoyModel.bind(null)
-    mongoose.modelSchemas.Story = Object.assign({}, originalStoySchema)
+    mongoose.models.Story = originalStoryModel.bind(null)
+    mongoose.modelSchemas.Story = Object.assign({}, originalStorySchema)
   }
 )
 
