@@ -16,7 +16,7 @@ const isArray = Array.isArray
 @createModel
 class Story extends Model {
   /**
-   * Co-authors roles
+   * Collaborators roles
    */
   static get roles() {
     return {
@@ -26,24 +26,6 @@ class Story extends Model {
       writer: 3,
       editor: 4 // Aka grammarly
     }
-  }
-
-  // DEPRECATED
-  static async __getNextChapterNumber(story) {
-    if (!story) {
-      return 1
-    }
-
-    story = await Story.findById(story).select("chapters").exec()
-
-    const [max] = await this
-      .find()
-      .where({_id: {$in: story.chapters}})
-      .sort({number: -1})
-      .limit(1)
-      .exec()
-
-    return max ? max.number + 1 : 1
   }
 
   /**
@@ -163,6 +145,12 @@ class Story extends Model {
   }
 
   /**
+   * Get role name by the code.
+   *
+   * @param {number} code
+   *
+   * @return {string|undefined}
+   *
    * @private
    */
   __getRoleName = role => this._findKey(Story.roles, role)
@@ -171,7 +159,7 @@ class Story extends Model {
    * @see Model#toJS
    */
   async toJS(options) {
-    // TODO: Add a co-collaborators population
+    // TODO: Add a collaborators population
     const story = await super.toJS(options)
 
     if (!isEmpty(this.collaborators)) {

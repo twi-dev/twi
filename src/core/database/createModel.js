@@ -73,9 +73,7 @@ function getSchema(name, values) {
   try {
     module = require(path)
   } catch (err) {
-    if (err.code !== "MODULE_NOT_FOUND") {
-      throw err
-    }
+    invariant(err.code !== "MODULE_NOT_FOUND", err)
 
     invariant(
       true, "Can't find a schema for %s model. Expected module %s.js " +
@@ -97,7 +95,7 @@ function getSchema(name, values) {
     !isPlainObject(schemaFields), TypeError,
     "Schema function should return a plain object." +
     "Check out the function %s in %s module.",
-    (getModelFields.name || "[anonymous]"), path
+    getModelFields.name, path
   )
 
   const schema = new Schema({...schemaFields})
@@ -112,9 +110,7 @@ function setMiddlewares(name, schema) {
   try {
     middlewares = require(path)
   } catch (err) {
-    if (err.code !== "MODULE_NOT_FOUND") {
-      throw err
-    }
+    invariant(err.code !== "MODULE_NOT_FOUND", err)
   }
 
   if (isEmpty(middlewares)) {
