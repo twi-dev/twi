@@ -17,7 +17,11 @@ const Genre = pq("../../../../../database/model/Genre", {
   }
 }).default
 
-test.before(createConnection)
+test.before(async () => {
+  await createConnection()
+
+  await Genre.remove({})
+})
 
 test("Should just create a genre with given params", async t => {
   t.plan(2)
