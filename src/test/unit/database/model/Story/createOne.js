@@ -19,17 +19,6 @@ import createUser from "../__hook__/createUser"
 import generateCharacters from "../__helper__/generateCharacters"
 import generateGenres from "../__helper__/generateGenres"
 
-// const spyoid = spy(nanoid)
-// const spyax = spy(limax)
-
-// const Story = pq("../../../../../database/model/Story", {
-//   limax: spyax,
-//   "../../core/helper/util/nanoid": {
-//     default: spyoid
-//   }
-// }).default
-
-
 test.before(createConnection)
 
 test.beforeEach(createUser)
