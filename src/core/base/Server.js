@@ -8,8 +8,9 @@ import deepFreeze from "deep-freeze"
 import invariant from "@octetstream/invariant"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
-import isListOf from "core/helper/typechecker/isListOf"
 import getHostname from "core/helper/util/getHostname"
+import isListOf from "core/helper/typechecker/isListOf"
+import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 const defineProperty = Object.defineProperty
@@ -20,7 +21,17 @@ class Server extends Koa {
 
     invariant(!isInteger(config.port), TypeError, "Port should be an integer.")
 
+    invariant(
+      !isArray(config.session.secret), TypeError,
+      "Session secret keys should be an array. Received %s",
+      getType(config.session.secret)
+    )
+
     super()
+
+    this.keys = [
+      ...config.session.secret
+    ]
 
     // Private member
     this.__config = deepFreeze({
@@ -85,13 +96,23 @@ class Server extends Koa {
       middlewares = [middlewares]
     }
 
-    invariant(
-      !isListOf(middlewares, isFunction), TypeError,
-      "Middlewars should be passed as a functino or an array of functions."
-    )
+    for (const [pos, middleware] of middlewares.entries()) {
+      if (isFunction(middleware)) {
+        super.use(middleware)
+      } else if (isArray(middleware)) {
+        const [fn, config] = middleware
 
-    // Set up middlewares to Koa instance
-    middlewares.forEach(middleware => super.use(middleware))
+        super.use(fn(config))
+      } else {
+        invariant(
+          true, TypeError,
+          "Each passed middleware should be a function or an array " +
+          "with a function as the first element and a config object " +
+          "as the second. Received %s at position %i",
+          getType(middleware), pos
+        )
+      }
+    }
 
     return this
   }

@@ -1,6 +1,7 @@
 import {join} from "path"
 
 import serveStatic from "koa-static"
+// import passport from "koa-passport"
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
 
@@ -29,14 +30,26 @@ async function main(config) {
   const mail = createMailService(config)
 
   const middlewares = [
-    errorHandler(), // Handle all errors from Koa context
-    xPoweredBy(),
-    logger(), // Simplest logger
-    cors({allowMethods: ["GET", "POST"]}), // TODO: Configure allowed Origins
-    body(),
-    multipart({ignorePaths: ["/graphql"]}), // Hanlde multipart/form-data
-    favicon(FAVICON_PATH), // Server application favicon
-    serveStatic(join(ROOT, "static")),
+    [errorHandler],
+    [xPoweredBy],
+    [logger],
+    [
+      cors,
+      {
+        allowMethods: [
+          "GET", "POST"
+        ]
+      }
+    ],
+    [body],
+    [
+      multipart,
+      {
+        ignorePaths: ["/graphql"]
+      }
+    ],
+    [favicon, FAVICON_PATH],
+    [serveStatic, join(ROOT, "static")],
     r.allowedMethods(),
     r.routes()
   ]
