@@ -48,13 +48,18 @@ function setResolver(t, name, config) {
 /**
  * Add resolvers to given type of app schema
  *
+ * Note that you can ignore each of these resolver by adding .__ignore suffix
+ *   to a filename or "ignore" (should be set to "true") field in a config.
+ *
  * @param {parasprite.Type} t – one of schema root type or GraphQLObjectType
  *
  * @return {function}
  */
 function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
-    setResolver(t, name, resolver)
+    if (!(/\.__ignore__/.test(name) || resolver.ignore === true)) {
+      setResolver(t, name, resolver)
+    }
   }
 
   return t.end()
