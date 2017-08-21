@@ -9,7 +9,6 @@ import invariant from "@octetstream/invariant"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
 import getHostname from "core/helper/util/getHostname"
-import isListOf from "core/helper/typechecker/isListOf"
 import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
