@@ -1,9 +1,11 @@
 import {join} from "path"
 
 import serveStatic from "koa-static"
-// import passport from "koa-passport"
+import passport from "koa-passport"
+import session from "koa-session"
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
+import redis from "koa-redis"
 
 import Server from "core/base/Server"
 import makeRouter from "core/base/router"
@@ -18,6 +20,8 @@ import xPoweredBy from "core/middleware/x-powered-by"
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
 
+import login from "core/auth/login"
+
 const ROOT = process.cwd()
 
 const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
@@ -28,6 +32,8 @@ async function main(config) {
   const server = new Server(config)
 
   const mail = createMailService(config)
+
+  passport.use(login)
 
   const middlewares = [
     [errorHandler],
@@ -50,6 +56,13 @@ async function main(config) {
     ],
     [favicon, FAVICON_PATH],
     [serveStatic, join(ROOT, "static")],
+
+    session({
+      store: redis()
+    }, server),
+
+    passport.initialize(),
+    passport.session(),
     r.allowedMethods(),
     r.routes()
   ]

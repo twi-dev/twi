@@ -57,4 +57,41 @@ const route = (path, method, ...middleware) => function(target, k, descriptor) {
   target.router[method](path, ...middleware, descriptor.value)
 }
 
-export {methods, route}
+route.get = (path, ...middlewares) => (
+  route(path, methods.get, ...middlewares)
+)
+
+route.post = (path, ...middlewares) => (
+  route(path, methods.post, ...middlewares)
+)
+
+route.put = (path, ...middlewares) => (
+  route(path, methods.put, ...middlewares)
+)
+
+route.delete = (path, ...middlewares) => (
+  route(path, methods.delete, ...middlewares)
+)
+
+route.del = (path, ...middlewares) => (
+  route(path, methods.delete, ...middlewares)
+)
+
+route.patch = (path, ...middlewares) => (
+  route(path, methods.patch, ...middlewares)
+)
+
+route.options = (path, ...middlewares) => (
+  route(path, methods.options, ...middlewares)
+)
+
+route.head = (path, ...middlewares) => (
+  route(path, methods.head, ...middlewares)
+)
+
+route.all = (path, ...middlewares) => (
+  route(path, methods.all, ...middlewares)
+)
+
+export {methods}
+export default route

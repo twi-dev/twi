@@ -7,6 +7,7 @@ import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
+import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
@@ -45,6 +46,10 @@ class Model extends MongooseModel {
    * @protected
    */
   static async _tryConvert(docs, options = {}) {
+    if (!docs) {
+      return null
+    }
+
     if (isEmpty(options)) {
       options = this._getOptions(options)
     }
@@ -100,6 +105,17 @@ class Model extends MongooseModel {
     docs = await this.insertMany(docs, options)
 
     return await this._tryConvert(docs, options)
+  }
+
+  static async findOne(filters, options = {}) {
+    invariant(
+      !isPlainObject(filters), TypeError,
+      "Search rules object is requested. Received %s", getType(filters)
+    )
+
+    const doc = await super.findOne().where({...filters}).exec()
+
+    return await this._tryConvert(doc, options)
   }
 
   /**

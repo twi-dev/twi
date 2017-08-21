@@ -82,16 +82,38 @@ class User extends Model {
    *
    * @throws {NotFound} – when user is not found
    */
-  static async findOneByLogin(login) {
+  static async findOneByLogin(login, options = {}) {
     const ref = login
 
     login = new RegExp(`^${login}$`, "i")
 
-    const user = await this.findOne().where({login}).exec()
+    const user = await this.findOne({login}, options)
 
     invariant(!user, NotFound, "Can't find user with login %s.", String(ref))
 
-    return await user.toJS()
+    return user
+  }
+
+  static async findOneByUsername(username, options = {}) {
+    const ref = username
+
+    // TODO: don't forget to validate format
+    username = new RegExp(`^${username}$`, "i")
+
+    const user = await this.findOne({
+      $or: [
+        {
+          login: username
+        },
+        {
+          email: username
+        }
+      ]
+    }, options)
+
+    invariant(!user, NotFound, "Can't find user with username %s.", String(ref))
+
+    return user
   }
 
   static async findOneById(user, options = {}) {

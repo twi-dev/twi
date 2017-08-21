@@ -1,11 +1,11 @@
-import {route, methods} from "core/helper/decorator/controller"
+import passport from "koa-passport"
 
-const post = methods.post
+import route from "core/helper/decorator/controller"
 
 class AuthController {
-  @route("/login", post)
+  @route.post("/login", passport.authenticate("local"))
   async actionLogin(ctx) {
-    ctx.body = "Not Implemented"
+    ctx.body = {}
   }
 }
 

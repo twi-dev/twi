@@ -7,6 +7,8 @@
 # Name of your app.
 name: Twilight's Library
 
+clientApp: null
+
 # Is sign up ebable on your site?
 # Can be only "true" or "false"
 enableSignup: true
