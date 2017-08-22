@@ -1,5 +1,7 @@
 import {join} from "path"
 
+import {isType as isGraphQLType} from "graphql"
+
 import Schema from "parasprite"
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash/isPlainObject"
@@ -7,8 +9,46 @@ import isEmpty from "lodash/isEmpty"
 import rd from "require-dir"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
+import getType from "core/helper/util/getType"
+
+const isArray = Array.isArray
 
 const SCHEMA_ROOT = join(process.cwd(), "graphql/schema")
+
+function setArgs(t, args, resolver) {
+  invariant(
+    !isPlainObject(args), TypeError,
+    "Resolver arguments should be exported as plain object. Received %s",
+    getType(args)
+  )
+
+  for (const entry of objectIterator.entries(args)) {
+    const name = entry[0]
+    let arg = entry[1]
+
+    if (isGraphQLType(arg)) {
+      arg = {
+        type: arg,
+        required: false
+      }
+    } else if (isArray(arg) && isGraphQLType(arg[0])) {
+      arg = {
+        type: arg[0],
+        required: Boolean(arg[1])
+      }
+    } else if (!(isEmpty(arg) || isPlainObject(arg))) {
+      invariant(
+        true, TypeError,
+        "Argument configuration is required if argument has been declared. " +
+        "Allowed formats: any GraphQL type, an array or plain object. " +
+        "Received %s. Check out a declaration of %s argument in %s resolver.",
+        getType(arg), name, resolver
+      )
+    }
+
+    t.arg(name, arg.type, arg.required)
+  }
+}
 
 /**
  * Set resolver from config
@@ -22,24 +62,16 @@ const SCHEMA_ROOT = join(process.cwd(), "graphql/schema")
 function setResolver(t, name, config) {
   const {resolve, args} = config
 
-  if (resolve && !isPlainObject(resolve)) {
-    throw new TypeError(
-      "Resolvers are allowed only as configuration object. " +
-      `Check out the "${name}" resolve declaration.`
-    )
-  }
+  invariant(
+    (resolve && !isPlainObject(resolve)), TypeError,
+    "Resolvers are allowed only as configuration object. " +
+    "Check out the \"%s\" resolve declaration.", name
+  )
 
   t = t.resolve({...resolve, name})
 
-  for (const [key, arg] of objectIterator.entries(args)) {
-    if (!isPlainObject(arg)) {
-      throw new TypeError(
-        "Arguments are allowed only as configuration object. " +
-        `Check out the "${key}" argument declaration for "${name}" resolver.`
-      )
-    }
-
-    t.arg(key, arg.type, arg.required) // set argument to resolver
+  if (!isEmpty(args)) {
+    setArgs(t, args, name)
   }
 
   return t.end()
