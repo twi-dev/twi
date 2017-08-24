@@ -31,8 +31,14 @@ const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 const actionGraphiQL = async function(ctx, next) {
   const {dev, debug, test} = ctx.app.config.env
 
+  // Dirty hack -_-
+  // Need to be improved
+  const subscriptionsEndpoint = (
+    `ws://${ctx.app.addr.replace(/^.*:\/\//, "")}${endpointURL}`
+  )
+
   const middleware = (dev || debug || test)
-    ? graphiqlKoa({endpointURL})
+    ? graphiqlKoa({endpointURL, subscriptionsEndpoint})
     : noop()
 
   await middleware(ctx, next)

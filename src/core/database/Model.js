@@ -12,6 +12,10 @@ import getType from "core/helper/util/getType"
 const isArray = Array.isArray
 
 class Model extends MongooseModel {
+  static get subscriptionTypes() {
+    invariant(true, "Should be implemented in a child class.")
+  }
+
   /**
    * @protected
    */

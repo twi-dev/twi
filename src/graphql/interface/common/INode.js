@@ -1,14 +1,9 @@
 import {GraphQLID as TID} from "graphql"
+import {Types} from "mongoose"
 
 import Interface from "parasprite/Interface"
 
-class Node {
-  constructor(id) {
-    this.id = id
-  }
-}
-
-const isTypeOf = val => val instanceof Node
+const isTypeOf = val => Types.ObjectId.isValid(val.id)
 
 const INode = Interface("Node", "An object with an ID.")
   .field("id", TID, true)
@@ -16,7 +11,4 @@ const INode = Interface("Node", "An object with an ID.")
 
 export default INode
 
-export {
-  Node,
-  isTypeOf
-}
+export {isTypeOf}

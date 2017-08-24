@@ -11,7 +11,7 @@ import NotFound from "core/error/http/NotFound"
 @createModel
 class User extends Model {
   /**
-   * USer account status
+   * User account status
    */
   static get statuses() {
     return {

@@ -1,11 +1,12 @@
 import {join} from "path"
 
+import {SubscriptionServer} from "subscriptions-transport-ws"
+import {execute, subscribe} from "graphql"
+
 import serveStatic from "koa-static"
 import passport from "koa-passport"
-import session from "koa-session"
 import favicon from "koa-favicon"
 import body from "koa-bodyparser"
-import redis from "koa-redis"
 
 import Server from "core/base/Server"
 import makeRouter from "core/base/router"
@@ -21,6 +22,8 @@ import createMailService from "core/mail"
 import createConnection from "core/base/database"
 
 import login from "core/auth/login"
+
+import schema from "./graphql"
 
 const ROOT = process.cwd()
 
@@ -57,12 +60,7 @@ async function main(config) {
     [favicon, FAVICON_PATH],
     [serveStatic, join(ROOT, "static")],
 
-    session({
-      store: redis()
-    }, server),
-
     passport.initialize(),
-    passport.session(),
     r.allowedMethods(),
     r.routes()
   ]
@@ -72,7 +70,24 @@ async function main(config) {
     .use(middlewares)
 
   await createConnection(config.database)
-  await server.listen()
+
+  const httpServer = await server.listen()
+
+  // Experimental!
+  SubscriptionServer.create({
+    execute,
+    schema,
+    subscribe,
+    // async onConnect(...args) {
+    //   console.log(args)
+    // },
+    // onOperation() {
+    //   console.log("some onOperation")
+    // }
+  }, {
+    server: httpServer,
+    path: "/graphql"
+  })
 
   log.ok(`The ${server.name} has been started.`)
   log.ok(`Listening on ${server.addr} address.`)

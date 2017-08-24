@@ -5,6 +5,7 @@ import {isType as isGraphQLType} from "graphql"
 import Schema from "parasprite"
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash/isPlainObject"
+import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 import rd from "require-dir"
 
@@ -68,7 +69,16 @@ function setResolver(t, name, config) {
     "Check out the \"%s\" resolve declaration.", name
   )
 
-  t = t.resolve({...resolve, name})
+  if (isFunction(resolve.subscribe)) {
+    const handler = resolve.subscribe
+
+    t = t.subscribe({...resolve, name, handler})
+  } else if (isFunction(resolve.handler)) {
+    t = t.resolve({...resolve, name})
+  } else {
+    invariant(true, "Reolver handler/subscribe function is required.")
+  }
+
 
   if (!isEmpty(args)) {
     setArgs(t, args, name)

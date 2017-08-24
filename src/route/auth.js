@@ -1,9 +1,9 @@
-import passport from "koa-passport"
+// import passport from "koa-passport"
 
 import route from "core/helper/decorator/controller"
 
 class AuthController {
-  @route.post("/login", passport.authenticate("local"))
+  @route.post("/login")
   async actionLogin(ctx) {
     ctx.body = {}
   }
