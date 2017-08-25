@@ -76,7 +76,7 @@ function setResolver(t, name, config) {
   } else if (isFunction(resolve.handler)) {
     t = t.resolve({...resolve, name})
   } else {
-    invariant(true, "Reolver handler/subscribe function is required.")
+    invariant(true, "Resolver handler/subscribe function is required.")
   }
 
 
