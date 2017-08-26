@@ -9,14 +9,6 @@ import Server from "core/base/Server"
 import makeRouter from "core/base/router"
 import log from "core/log"
 
-
-// import cors from "core/middleware/cors"
-// import logger from "core/middleware/logger"
-// import client from "core/middleware/client"
-// import multipart from "core/middleware/multipart"
-// import errorHandler from "core/middleware/000-error-handler"
-// import xPoweredBy from "core/middleware/001-x-powered-by"
-
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
 
