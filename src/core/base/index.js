@@ -3,10 +3,7 @@ import {join} from "path"
 import {SubscriptionServer} from "subscriptions-transport-ws"
 import {execute, subscribe} from "graphql"
 
-import serveStatic from "koa-static"
 import passport from "koa-passport"
-import favicon from "koa-favicon"
-import body from "koa-bodyparser"
 
 import Server from "core/base/Server"
 import makeRouter from "core/base/router"
