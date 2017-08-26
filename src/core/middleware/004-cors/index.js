@@ -143,4 +143,10 @@ function cors(options) {
   }
 }
 
-export default cors
+const configureCors = () => cors({
+  allowMethods: [
+    "GET", "POST"
+  ]
+})
+
+export default configureCors

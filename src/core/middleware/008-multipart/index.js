@@ -12,7 +12,7 @@ const defaults = {
   ignorePaths: []
 }
 
-const multipart = options => async function(ctx, next) {
+const multipart = options => async function multipartParser(ctx, next) {
   if (ctx.method.toLowerCase() !== "post") {
     return await next()
   }
@@ -43,3 +43,4 @@ const multipart = options => async function(ctx, next) {
 }
 
 export default multipart
+export {multipart} // tmp

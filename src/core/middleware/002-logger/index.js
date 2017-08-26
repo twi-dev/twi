@@ -1,6 +1,6 @@
 import {normal} from "core/log"
 
-const logger = () => async function(ctx, next) {
+const logger = () => async function loggerMiddleware(ctx, next) {
   const {ip, url, method} = ctx
 
   // normal(`${ip} -> ${method} ${url}`)

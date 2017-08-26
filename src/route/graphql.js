@@ -7,7 +7,7 @@ import noop from "core/middleware/noop"
 
 import checkCtorCall from "core/helper/util/checkCtorCall"
 
-import multipart from "core/middleware/multipart"
+import {multipart} from "core/middleware/008-multipart"
 import schema from "core/base/graphql"
 
 /**
