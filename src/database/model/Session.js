@@ -46,11 +46,11 @@ class Session extends Model {
     // TODO: Move tokens stuff to Session.generateTokens method
     const tokenUUID = uuid()
 
-    const refreshToken = await sign(tokenUUID, config.jwt.secret)
+    const refreshToken = await sign(tokenUUID, config.jwt.secret.refreshToken)
 
     const accessToken = await sign({
       ...pick(user, ["id", "role", "status"])
-    }, config.jwt.secret, {
+    }, config.jwt.secret.accessToken, {
       expiresIn: "15m"
     })
 

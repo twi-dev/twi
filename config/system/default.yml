@@ -25,7 +25,10 @@ database:
   name: twi
 
 jwt:
-  secret: null
+  expiresIn: 15m # Only for access token
+  secret:
+    accessToken: null
+    refreshToken: null
 
 # DEPRECATED
 # Sesstion storage configs
