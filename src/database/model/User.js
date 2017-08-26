@@ -121,7 +121,7 @@ class User extends Model {
 
     invariant(!user, NotFound, "Can't find requested user.")
 
-    return this._tryConvert(user, options)
+    return await this._tryConvert(user, options)
   }
 
   /**

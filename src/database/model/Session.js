@@ -33,7 +33,7 @@ class Session extends Model {
    * @throws {NotFound} when requested user not found by his email
    * @throws {Error} when wrong password given
    */
-  static async sign({email, password}, {ip, client, app: {config}}) {
+  static async sign({email, password}, {ip, client, app: {config}}, options) {
     const user = await User.findOne({email})
 
     invariant(
@@ -62,7 +62,7 @@ class Session extends Model {
         name: client.browser.name,
         os: client.os.name,
       }
-    })
+    }, options)
 
     return {
       accessToken,

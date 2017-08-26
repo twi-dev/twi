@@ -3,6 +3,7 @@ import {Model as MongooseModel} from "mongoose"
 import merge from "lodash/merge"
 import isEmpty from "lodash/isEmpty"
 import isInteger from "lodash/isInteger"
+import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
@@ -62,9 +63,15 @@ class Model extends MongooseModel {
       return docs
     }
 
-    return await (
-      isArray(docs) ? Promise.all(docs.map(doc => doc.toJS())) : docs.toJS()
-    )
+    if (!isArray(docs)) {
+      return isFunction(docs.toJS) ? await docs.toJS() : docs
+    }
+
+    for (const [idx, doc] of docs.entries()) {
+      docs[idx] = isFunction(doc.toJS) ? await doc.toJS() : doc
+    }
+
+    return await Promise.all(docs)
   }
 
   /**
