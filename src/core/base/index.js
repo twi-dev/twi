@@ -12,25 +12,25 @@ import Server from "core/base/Server"
 import makeRouter from "core/base/router"
 import log from "core/log"
 
-import cors from "core/middleware/cors"
-import logger from "core/middleware/logger"
-import client from "core/middleware/client"
-import multipart from "core/middleware/multipart"
-import errorHandler from "core/middleware/error-handler"
-import xPoweredBy from "core/middleware/x-powered-by"
+
+// import cors from "core/middleware/cors"
+// import logger from "core/middleware/logger"
+// import client from "core/middleware/client"
+// import multipart from "core/middleware/multipart"
+// import errorHandler from "core/middleware/000-error-handler"
+// import xPoweredBy from "core/middleware/001-x-powered-by"
 
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
 
 import login from "core/auth/login"
 
+import collectMiddlewares from "./middleware"
 import schema from "./graphql"
 
 const ROOT = process.cwd()
 
-const FAVICON_PATH = join(ROOT, "static/assets/img/icns/favicon/twi.ico")
-
-const r = makeRouter(join(ROOT, "route"))()
+const router = makeRouter(join(ROOT, "route"))()
 
 async function main(config) {
   const server = new Server(config)
@@ -40,31 +40,10 @@ async function main(config) {
   passport.use(login)
 
   const middlewares = [
-    [errorHandler],
-    [xPoweredBy],
-    [logger],
-    [client],
-    [
-      cors,
-      {
-        allowMethods: [
-          "GET", "POST"
-        ]
-      }
-    ],
-    [body],
-    [
-      multipart,
-      {
-        ignorePaths: ["/graphql"]
-      }
-    ],
-    [favicon, FAVICON_PATH],
-    [serveStatic, join(ROOT, "static")],
-
+    ...(await collectMiddlewares(config)),
     passport.initialize(),
-    r.allowedMethods(),
-    r.routes()
+    router.allowedMethods(),
+    router.routes()
   ]
 
   server
@@ -76,17 +55,7 @@ async function main(config) {
   const httpServer = await server.listen()
 
   // Experimental!
-  SubscriptionServer.create({
-    execute,
-    schema,
-    subscribe,
-    // async onConnect(...args) {
-    //   console.log(args)
-    // },
-    // onOperation() {
-    //   console.log("some onOperation")
-    // }
-  }, {
+  SubscriptionServer.create({execute, schema, subscribe}, {
     server: httpServer,
     path: "/graphql"
   })

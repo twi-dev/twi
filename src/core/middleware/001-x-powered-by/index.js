@@ -1,6 +1,6 @@
 import {version, codename} from "../../../package.json"
 
-const xPoweredBy = () => async function(ctx, next) {
+const xPoweredBy = () => async function xPoweredByHeader(ctx, next) {
   ctx.set("X-Powered-By", `Twi API v${version} "${codename}"`)
 
   await next()

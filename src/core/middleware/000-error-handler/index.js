@@ -2,7 +2,7 @@ import Stack from "stack-utils"
 
 import log from "core/log"
 
-const errorHandler = () => async function(ctx, next) {
+const errorHandler = () => async function errorHandlerMiddleware(ctx, next) {
   try {
     await next()
   } catch (err) {
