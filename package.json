@@ -64,6 +64,7 @@
     "http2": "3.3.6",
     "jsonwebtoken": "^7.4.3",
     "junk": "2.1.0",
+    "keygrip": "^1.0.1",
     "koa": "2.3.0",
     "koa-bodyparser": "4.2.0",
     "koa-compress": "2.0.0",

@@ -14,6 +14,7 @@ import log from "core/log"
 
 import cors from "core/middleware/cors"
 import logger from "core/middleware/logger"
+import client from "core/middleware/client"
 import multipart from "core/middleware/multipart"
 import errorHandler from "core/middleware/error-handler"
 import xPoweredBy from "core/middleware/x-powered-by"
@@ -42,6 +43,7 @@ async function main(config) {
     [errorHandler],
     [xPoweredBy],
     [logger],
+    [client],
     [
       cors,
       {

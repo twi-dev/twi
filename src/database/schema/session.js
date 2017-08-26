@@ -11,6 +11,10 @@ const getModelFields = ({TString, TDate, TObjectId}) => ({
       type: TString,
       required: true
     },
+    os: {
+      type: TString,
+      required: true
+    },
     ip: {
       type: TString,
       required: true
@@ -26,7 +30,7 @@ const getModelFields = ({TString, TDate, TObjectId}) => ({
       default: moment
     }
   },
-  token: {
+  tokenUUID: {
     type: TString,
     required: true,
     unique: true

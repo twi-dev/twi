@@ -24,6 +24,10 @@ database:
   pass: null
   name: twi
 
+jwt:
+  secret: null
+
+# DEPRECATED
 # Sesstion storage configs
 session:
   # Your secret key for session storage. This is default value.
