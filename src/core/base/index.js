@@ -12,8 +12,6 @@ import log from "core/log"
 import createMailService from "core/mail"
 import createConnection from "core/base/database"
 
-import login from "core/auth/login"
-
 import collectMiddlewares from "./middleware"
 import schema from "./graphql"
 
@@ -25,8 +23,6 @@ async function main(config) {
   const server = new Server(config)
 
   const mail = createMailService(config)
-
-  passport.use(login)
 
   const middlewares = [
     ...(await collectMiddlewares(config)),
