@@ -42,5 +42,10 @@ const multipart = options => async function multipartParser(ctx, next) {
   await next()
 }
 
-export default multipart
+const configureMultipart = () => multipart({
+  ignorePaths: ["/graphql"]
+})
+
+export default configureMultipart
+
 export {multipart} // tmp
