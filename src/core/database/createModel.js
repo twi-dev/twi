@@ -123,7 +123,13 @@ function setMiddlewares(name, schema) {
   )
 
   for (const {kind, type, parallel, handler} of objectIterator(middlewares)) {
-    schema[kind](type, parallel, handler)
+    const args = [type]
+
+    if (kind !== "post") {
+      args.push(parallel)
+    }
+
+    schema[kind](...args, handler)
   }
 
   return schema
