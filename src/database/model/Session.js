@@ -115,9 +115,7 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   static async refresh(refreshToken, {app: {config}}) {
-    const tokenUUID = await verify(refreshToken, config.jwt.secret.refreshToken)
-
-    const session = await this.findOne({tokenUUID})
+    const session = await this.findOneCurrent(refreshToken, config)
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
@@ -135,7 +133,26 @@ class Session extends Model {
     }
   }
 
-  // static async revoke(refreshToken, {app: {config}}) {}
+  static async revoke(refreshToken, {app: {config}}) {
+    const currentSession = await this.findOneCurrent(refreshToken, config)
+
+    const sessions = await this.find({
+      userId: currentSession.userId,
+      $not: {
+        tokenUUID: currentSession.tokenUUID
+      }
+    })
+
+    const removed = await Promise.all(sessions.map(sess => sess.remove()))
+
+    return removed.map(({id}) => id)
+  }
+
+  static async findOneCurrent(refreshToken, config, options = {}) {
+    const tokenUUID = await verify(refreshToken, config.jwt.secret.refreshToken)
+
+    return await this.findOne({tokenUUID}, options)
+  }
 }
 
 export default Session

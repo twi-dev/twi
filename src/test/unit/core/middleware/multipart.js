@@ -1,6 +1,6 @@
 import test from "ava"
 
-import Koa from "Koa"
+import Koa from "koa"
 import req from "supertest"
 import isEmpty from "lodash/isEmpty"
 
