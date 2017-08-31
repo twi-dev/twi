@@ -1,7 +1,7 @@
 import TTokenPayload from "graphql/type/auth/TTokenPayload"
 import TAuthInput from "graphql/input/auth/TAuthInput"
 
-import authenticate from "graphql/resolve/auth/authenticate"
+import authenticate from "graphql/resolve/mutation/auth/authenticate"
 
 const resolve = {
   type: TTokenPayload,

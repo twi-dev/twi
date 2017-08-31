@@ -1,15 +1,11 @@
-import {Readable} from "stream"
-
-import busboy from "then-busboy"
-import pathToRegexp from "path-to-regexp"
+import busboy, {isFile} from "then-busboy"
 import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 
-import recursiveMap from "core/helper/iterator/sync/recursiveMap"
+import map from "core/helper/iterator/async/recursiveObjectMap"
 
 const defaults = {
-  processFiles: false,
-  ignorePaths: []
+  processFile: false
 }
 
 const multipart = options => async function multipartParser(ctx, next) {
@@ -17,35 +13,27 @@ const multipart = options => async function multipartParser(ctx, next) {
     return await next()
   }
 
-  if (!ctx.request.is("multipart/form-data")) {
+  if (!ctx.is("multipart/form-data")) {
     return await next()
   }
 
-  const {processFiles, ignorePaths} = {...defaults, ...options}
-
-  const filterPaths = path => pathToRegexp(path).test(ctx.url)
-
-  if (!isEmpty(ignorePaths.filter(filterPaths))) {
-    return await next()
-  }
+  const {processFile} = {...defaults, ...options}
 
   let body = await busboy(ctx.req)
 
-  if (isFunction(processFiles)) {
-    body = recursiveMap(
-      body, part => part instanceof Readable ? processFiles(part) : part
-    )
+  if (isFunction(processFile)) {
+    body = await map(body, part => isFile(part) ? processFile(part) : part)
   }
 
   ctx.request.body = body
 
   await next()
+
+  if (!isEmpty(body)) {
+    delete ctx.request.body
+  }
 }
 
-const configureMultipart = () => multipart({
-  ignorePaths: ["/graphql"]
-})
+const configureMultipart = () => multipart()
 
 export default configureMultipart
-
-export {multipart} // tmp

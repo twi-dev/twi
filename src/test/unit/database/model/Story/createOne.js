@@ -26,8 +26,8 @@ test.beforeEach(createUser)
 test("Should just create a story with given data", async t => {
   t.plan(7)
 
-  const characters = (await generateCharacters(10)).map(({id}) => id)
-  const genres = (await generateGenres(10)).map(({id}) => id)
+  const characters = (await generateCharacters(10)).map(({id}) => String(id))
+  const genres = (await generateGenres(10)).map(({id}) => String(id))
 
   const title = lorem.word()
   const description = lorem.paragraph()
@@ -44,7 +44,7 @@ test("Should just create a story with given data", async t => {
 
   const expectedChapters = await Chapter.find({_id: {$in: story.chapters.list}})
 
-  t.is(String(story.publisher), t.context.user.id)
+  t.is(String(story.publisher), String(t.context.user.id))
   t.is(story.title, title)
   t.is(story.description, description)
 
@@ -52,7 +52,7 @@ test("Should just create a story with given data", async t => {
   t.deepEqual(story.genres.map(id => String(id)), genres)
   t.deepEqual(
     story.chapters.list.map(id => String(id)),
-    expectedChapters.map(({id}) => id)
+    expectedChapters.map(({id}) => String(id))
   )
 
   t.is(story.chapters.count, 1)
@@ -77,8 +77,8 @@ test("Should create a short slug with Nano ID", async t => {
     }
   }).default
 
-  const characters = (await generateCharacters(10)).map(({id}) => id)
-  const genres = (await generateGenres(10)).map(({id}) => id)
+  const characters = (await generateCharacters(10)).map(({id}) => String(id))
+  const genres = (await generateGenres(10)).map(({id}) => String(id))
 
   const title = lorem.word()
   const description = lorem.paragraph()
@@ -123,8 +123,8 @@ test(
       }
     }).default
 
-    const characters = (await generateCharacters(10)).map(({id}) => id)
-    const genres = (await generateGenres(10)).map(({id}) => id)
+    const characters = (await generateCharacters(10)).map(({id}) => String(id))
+    const genres = (await generateGenres(10)).map(({id}) => String(id))
 
     const title = lorem.word()
     const description = lorem.paragraph()

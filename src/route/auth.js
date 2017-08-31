@@ -1,4 +1,4 @@
-// import passport from "koa-passport"
+// DEPRECATED
 
 import route from "core/helper/decorator/controller"
 

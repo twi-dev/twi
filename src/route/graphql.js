@@ -6,23 +6,7 @@ import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 import noop from "core/middleware/noop"
 
 import checkCtorCall from "core/helper/util/checkCtorCall"
-
-import {multipart} from "core/middleware/008-multipart"
 import schema from "core/base/graphql"
-
-/**
- * A function that transforms a file ReadableStream object
- *   to the TFile input type compatibility format
- *
- * @see: server/graphql/input/file/TInFile
- *
- * @param stream.ReadableStream file
- *
- * @param Object
- */
-const processFiles = ({originalName, path, mime, enc}) => ({
-  originalName, path, mime, enc
-})
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
@@ -49,9 +33,10 @@ const actionGraphQL = graphqlKoa(async context => ({schema, context}))
 
 const r = new Router()
 
+// TODO: Move schema explorer to an external repo
 r.get("/", actionGraphiQL)
 
-r.all("/", multipart({processFiles}), actionGraphQL)
+r.all("/", actionGraphQL)
 
 /**
  * @constructor
@@ -60,7 +45,7 @@ function GraphQLController() {
   checkCtorCall(GraphQLController, this)
 }
 
-// Add GraphQL endpoints to GraphQLController
+// Add GraphQL endpoint to GraphQLController
 GraphQLController.prototype.router = r
 
 export default GraphQLController
