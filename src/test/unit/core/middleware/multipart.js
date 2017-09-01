@@ -1,26 +1,34 @@
+import {basename} from "path"
+
 import test from "ava"
 
 import Koa from "koa"
 import req from "supertest"
 import isEmpty from "lodash/isEmpty"
 
-import multipart from "core/middleware/008-multipart"
+import {readFile} from "promise-fs"
 
-const koa = new Koa()
+import {multipart} from "core/middleware/008-multipart"
 
-koa
-  .use(multipart())
-  .use(ctx => {
-    ctx.type = "application/json"
-    ctx.body = {
-      ...ctx.request.body
-    }
-  })
+function server(processFile, options = {}) {
+  const koa = new Koa()
+
+  koa
+    .use(multipart({...options, processFile}))
+    .use(ctx => {
+      ctx.type = "application/json"
+      ctx.body = {
+        ...ctx.request.body
+      }
+    })
+
+  return koa.listen()
+}
 
 test("Should ignore non-POST requests", async t => {
   t.plan(1)
 
-  const res = await req(koa.listen()).get("/?someKey=some value")
+  const res = await req(server()).get("/?someKey=some value")
 
   t.true(isEmpty(res.body))
 })
@@ -28,7 +36,7 @@ test("Should ignore non-POST requests", async t => {
 test("Should ignore non-multipart requests", async t => {
   t.plan(3)
 
-  const res = await req(koa.listen())
+  const res = await req(server())
     .post("/")
     .send({someKey: "some value"})
     .set("content-type", "application/json")
@@ -43,7 +51,7 @@ test("Should ignore non-multipart requests", async t => {
 test("Should response a flat object", async t => {
   t.plan(1)
 
-  const {body} = await req(koa.listen())
+  const {body} = await req(server())
     .post("/")
     .field("earthPony", "Apple Bloom")
     .field("unicorn", "Sweetie Belle")
@@ -58,4 +66,28 @@ test("Should response a flat object", async t => {
   }
 
   t.deepEqual(body, expected)
+})
+
+test("Should handle files", async t => {
+  t.plan(1)
+
+  const filename = basename(__filename)
+
+  const {body} = await req(server(({filename}) => filename))
+    .post("/")
+    .attach("file", __filename)
+
+  t.is(body.file, filename)
+})
+
+test("Should response files content", async t => {
+  t.plan(1)
+
+  const {body} = await req(server(async ({read}) => String(await read())))
+    .post("/")
+    .attach("file", __filename)
+
+  const expected = String(await readFile(__filename))
+
+  t.is(body.file, expected)
 })

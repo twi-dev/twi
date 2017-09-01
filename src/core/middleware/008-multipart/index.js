@@ -22,7 +22,9 @@ const multipart = options => async function multipartParser(ctx, next) {
   let body = await busboy(ctx.req)
 
   if (isFunction(processFile)) {
-    body = await map(body, part => isFile(part) ? processFile(part) : part)
+    body = await map(
+      body, async value => isFile(value) ? await processFile(value) : value
+    )
   }
 
   ctx.request.body = body
@@ -37,3 +39,5 @@ const multipart = options => async function multipartParser(ctx, next) {
 const configureMultipart = () => multipart()
 
 export default configureMultipart
+
+export {multipart} // tmp
