@@ -115,7 +115,9 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   static async refresh(refreshToken, {app: {config}}) {
-    const session = await this.findOneCurrent(refreshToken, config)
+    const session = await this.findOneCurrent(refreshToken, config, {
+      toJS: false
+    })
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
@@ -127,6 +129,10 @@ class Session extends Model {
     const tokens = await this.__generateTokens(
       pick(user, ["id", "role", "status"]), config.jwt, true
     )
+
+    session.dates.lastLogin = moment()
+
+    await session.save()
 
     return {
       ...tokens.accessToken
