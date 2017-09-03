@@ -74,7 +74,7 @@ const watch = config => new Promise((_, reject) => {
   function unlink(filename) {
     filename = getDestFilename(filename, src, dest)
 
-    console.log("Remore %s", filename)
+    console.log("Remove %s", filename)
 
     rimraf(filename, err => err && reject(err))
   }

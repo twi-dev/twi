@@ -6,7 +6,7 @@ const {ROOT, tryDeps} = require("./helper")
 
 tryDeps() // Check deps before including external packages
 
-const build = require(join(ROOT, "build", "backend"))
+const build = require(join(ROOT, "build"))
 
 const name = process.env.NODE_ENV
 const dev = name !== "production"

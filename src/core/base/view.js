@@ -82,10 +82,9 @@ const getViewRenderer = options => async function renderer(filename, locals) {
 /**
  * Setting up Pug view renderer on Koa context
  *
- * @param {Koa} koa
  * @param {object} options
  */
-const view = options => getViewRenderer(
+const view = options => void getViewRenderer(
   merge({}, defaults, options, {
     pretty: false
   })

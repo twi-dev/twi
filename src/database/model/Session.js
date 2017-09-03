@@ -139,6 +139,11 @@ class Session extends Model {
     }
   }
 
+  /**
+   * Revoke all user session except the current
+   *
+   * @param {string}
+   */
   static async revoke(refreshToken, {app: {config}}) {
     const currentSession = await this.findOneCurrent(refreshToken, config)
 
