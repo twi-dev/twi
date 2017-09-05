@@ -61,22 +61,25 @@ function setArgs(t, args, resolver) {
  * @return parasprite.Type
  */
 function setResolver(t, name, config) {
-  const {resolve, args} = config
+  const args = config.args
+  const resolver = config.resolve || config.handler || config.resolver
 
   invariant(
-    (resolve && !isPlainObject(resolve)), TypeError,
+    (resolver && !isPlainObject(resolver)), TypeError,
     "Resolvers are allowed only as configuration object. " +
-    "Check out the \"%s\" resolve declaration.", name
+    "Check out the \"%s\" resolver declaration.", name
   )
 
-  if (isFunction(resolve.subscribe)) {
-    const handler = resolve.subscribe
+  if (isFunction(resolver.subscribe)) {
+    const subscribe = resolver.subscribe
 
-    t = t.subscribe({...resolve, name, handler})
-  } else if (isFunction(resolve.handler)) {
-    t = t.resolve({...resolve, name})
+    t = t.subscribe({...resolver, name, subscribe})
+  } else if (isFunction(resolver.handler)) {
+    const resolve = resolver.handler || resolver.resolve
+
+    t = t.resolve({...resolver, name, resolve})
   } else {
-    invariant(true, "Resolver handler/subscribe function is required.")
+    invariant(true, "Reolver handler/subscribe function is required.")
   }
 
 
