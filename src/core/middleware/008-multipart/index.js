@@ -4,12 +4,14 @@ import isEmpty from "lodash/isEmpty"
 
 import map from "core/helper/iterator/async/recursiveObjectMap"
 
+const toLowerCase = string => String.prototype.toLowerCase.call(string)
+
 const defaults = {
   processFile: false
 }
 
 const multipart = options => async function multipartParser(ctx, next) {
-  if (ctx.method.toLowerCase() !== "post") {
+  if (["post", "put"].includes(toLowerCase(ctx.method))) {
     return await next()
   }
 

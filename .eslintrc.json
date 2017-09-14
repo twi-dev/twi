@@ -7,7 +7,10 @@
     "plugin:ava/recommended"
   ],
   "rules": {
-    "no-void": 0,
+    "no-shadow": 0,
+    "indent": ["error", 2, {
+      "MemberExpression": "off"
+    }],
     "ava/no-ignored-test-files": ["error", {
       "files": [
         "src/test/unit/**/*.{js,jsx}"

@@ -14,7 +14,7 @@ const isArray = Array.isArray
 
 class Model extends MongooseModel {
   static get subscriptionTypes() {
-    invariant(true, "Should be implemented in a child class.")
+    return invariant(true, "Should be implemented in a child class.")
   }
 
   /**

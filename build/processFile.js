@@ -16,7 +16,7 @@ const assign = Object.assign
  *
  * @param string filename – a path to file
  */
-const isJS = filename => /.jsx?$/.test(filename)
+const isJS = filename => ["js", "jsx", "mjs", "es6"].includes(filename.slice(1))
 
 /**
  * Compile given file via Babel
@@ -35,7 +35,8 @@ function transformFile(file, enc, {env: {test}}, cb) {
   console.log(fmt("Compile %s", [file.path]))
 
   try {
-    const contents = transform(String(file.contents),
+    const contents = transform(
+      String(file.contents),
       assign({}, babelrc, {
         babelrc: false,
         filename: file.path,
@@ -50,7 +51,7 @@ function transformFile(file, enc, {env: {test}}, cb) {
       applySourceMap(file, contents.map)
     }
 
-    file.contents = new Buffer(contents.code)
+    file.contents = Buffer.from(contents.code)
     file.babel = contents.metadata
   } catch (err) {
     return cb(err)

@@ -19,7 +19,7 @@ and isn't ready for production! Stay in touch.**
 | Dependency name                      | Version (semver)          |
 |--------------------------------------|---------------------------|
 | [Node.js](https://nodejs.org/en/)    | >= 7.6                    |
-| [Yarn](https://yarnpkg.com/lang/en/) | >= 0.20.0                 |
+| [Yarn](https://yarnpkg.com/lang/en/) | >= 1.0.2                  |
 | [Redis](https://redis.io/)           | (will be added in future) |
 | [MongoDB](https://www.mongodb.com/)  | >= 3.4                    |
 
