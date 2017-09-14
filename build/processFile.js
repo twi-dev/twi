@@ -1,5 +1,5 @@
 const {readFile} = require("fs")
-const {join} = require("path")
+const {join, extname} = require("path")
 
 const applySourceMap = require("vinyl-sourcemaps-apply")
 const through = require("through2")
@@ -16,7 +16,9 @@ const assign = Object.assign
  *
  * @param string filename – a path to file
  */
-const isJS = filename => ["js", "jsx", "mjs", "es6"].includes(filename.slice(1))
+const isJS = filename => (
+  ["js", "jsx", "mjs", "es6"].includes(extname(filename).slice(1))
+)
 
 /**
  * Compile given file via Babel

@@ -11,7 +11,7 @@ const defaults = {
 }
 
 const multipart = options => async function multipartParser(ctx, next) {
-  if (["post", "put"].includes(toLowerCase(ctx.method))) {
+  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
     return await next()
   }
 
