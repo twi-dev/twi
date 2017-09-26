@@ -102,7 +102,7 @@ function setResolver(t, name, config) {
  */
 function setResolvers(t, obj) {
   for (const [name, resolver] of objectIterator.entries(obj)) {
-    if (!(/\.__ignore__/.test(name) || resolver.ignore === true)) {
+    if (!(resolver.ignore && resolver.ignore === true)) {
       setResolver(t, name, resolver)
     }
   }

@@ -1,7 +1,5 @@
 import {resolve, join} from "path"
 
-// import invariant from "@octetstream/invariant"
-
 import {readdir} from "promise-fs"
 
 async function collectMiddlewares(config) {
@@ -11,7 +9,8 @@ async function collectMiddlewares(config) {
   const middlewares = []
   for (const name of list) {
     if (/^([0-9]+)-/.test(name)) {
-      const middleware = await import(join(dir, name))
+      const middleware = await Promise.resolve()
+        .then(() => require(join(dir, name)))
 
       middlewares.push(middleware.default(config))
     }
