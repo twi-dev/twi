@@ -3,7 +3,7 @@ import test from "ava"
 import isFunction from "lodash/isFunction"
 
 import Forbidden from "core/error/http/Forbidden"
-import checkUser from "core/helper/decorator/checkUser"
+import checkUser from "core/auth/checkUser"
 
 test("Should return a function when message is string", t => {
   t.plan(2)
