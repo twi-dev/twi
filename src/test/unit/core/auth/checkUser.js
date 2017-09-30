@@ -2,7 +2,7 @@ import test from "ava"
 
 import isFunction from "lodash/isFunction"
 
-import Forbidden from "core/error/http/Forbidden"
+import Unauthorized from "core/error/http/Unauthorized"
 import checkUser from "core/auth/checkUser"
 
 test("Should return a function when message is string", t => {
@@ -61,7 +61,7 @@ test("Should throw an error when user is unauthenticated", async t => {
 
   const err = await t.throws(trap())
 
-  t.true(err instanceof Forbidden)
+  t.true(err instanceof Unauthorized)
   t.is(err.message, "Some error message.")
 })
 
@@ -82,8 +82,12 @@ test("Should throw an error with default message", async t => {
 
   const err = await t.throws(trap())
 
-  t.true(err instanceof Forbidden)
-  t.is(err.message, "Access denied.")
+  t.true(err instanceof Unauthorized)
+  t.is(
+    err.message,
+    "Seems like you're have not authorized. " +
+    "Please, check your credentials and try again."
+  )
 })
 
 test("Should throw a TypeError when no arguments passed", t => {
