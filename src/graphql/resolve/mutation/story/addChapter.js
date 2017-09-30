@@ -1,8 +1,10 @@
 import Story from "database/model/Story"
-import checkUser from "core/helper/decorator/checkUser"
+import checkUser from "core/auth/checkUser"
 
-const addChapter = (_, {storyId, chapter}, state) => (
-  Story.addOneChapter(state.user.id, storyId, chapter)
-)
+async function addChapter(_, {storyId, chapter}, ctx) {
+  const viewer = ctx.state.user.id
+
+  return await Story.addOneChapter(viewer, storyId, chapter)
+}
 
 export default checkUser(addChapter)

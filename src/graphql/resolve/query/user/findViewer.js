@@ -1,5 +1,5 @@
 import User from "database/model/User"
-import checkUser from "core/helper/decorator/checkUser"
+import checkUser from "core/auth/checkUser"
 
 const findViewer = (root, args, {state}) => User.findOneById(state.user.id)
 
