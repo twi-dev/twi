@@ -29,22 +29,22 @@ class Model extends MongooseModel {
   /**
    * Get merged options object, based on given ones and defaults.
    *
-   * @param {object|null|undefined} options
+   * @param {object} [optinos = {}]
    *
    * @return {object}
    *
    * @protected
    */
-  static _getOptions(options) {
-    return merge({}, this._defaultOptions, (options || {}))
+  static _getOptions(options = {}) {
+    return merge({}, this._defaultOptions, options)
   }
 
   /**
    * Convert documents to JavaScript plain object using toJS method of
    *   the each document.
    *
-   * @param {mongoose.Document|mongoose.Document[]} docs
-   * @param {object|null|undefined} options
+   * @param {mongoose.Document | mongoose.Document[]} docs
+   * @param {object} [optinos = {}]
    *
    * @return {object}
    *
@@ -78,7 +78,7 @@ class Model extends MongooseModel {
    * Create one document with given params
    *
    * @param {object} doc
-   * @param {object|null|undefined} optinos
+   * @param {object} [optinos = {}]
    *
    * @return {object}
    */
@@ -97,8 +97,8 @@ class Model extends MongooseModel {
   /**
    * Create many documents with given params
    *
-   * @param {array|object} docs
-   * @param {object|null|undefined} optinos
+   * @param {array | object} docs
+   * @param {object} [optinos = {}]
    *
    * @return {object}
    */
@@ -154,6 +154,20 @@ class Model extends MongooseModel {
   }
 
   /**
+   * Find one document in collection by ID
+   *
+   * @param {string | mongoose.Types.ObjectId} id – document identifier in
+   *   collection.
+   *
+   * @param {object} options
+   */
+  static async findOneById(id, options = {}) {
+    return await this.findOne({
+      _id: id
+    }, options)
+  }
+
+  /**
    * Find some docs by IDs
    *
    * @param {array} ids – IDs of documents you are looking for
@@ -171,7 +185,43 @@ class Model extends MongooseModel {
       [filters, cursor] = [cursor, undefined]
     }
 
-    return await this.findMany(cursor, {...filters, _id: {$in: ids}}, options)
+    return await this.findMany(cursor, {
+      ...filters, _id: {$in: ids}
+    }, options)
+  }
+
+  /**
+   * Remove one document by ID
+   *
+   * @param {string | mongoose.Types.ObjectId} id – ID of the document.
+   *
+   * @return {string | mongoose.Types.objectId}
+   */
+  static async removeOneById(id) {
+    let doc = super.findById(id)
+
+    invariant(!doc, "Can't find the document.")
+
+    doc = await doc.remove()
+
+    return doc.id
+  }
+
+  /**
+   * Remove multiple documents from the current collection.
+   *
+   * @param {string[] | mongoose.Types.ObjectId[]} ids – IDs of the documents.
+   *
+   * @return {string[] | mongoose.Types.objectId[]}
+   */
+  static async removeManyById(ids) {
+    await this.remove({
+      _id: {
+        $in: ids
+      }
+    })
+
+    return ids
   }
 
   /**
