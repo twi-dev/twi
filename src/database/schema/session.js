@@ -1,6 +1,6 @@
 import moment from "moment"
 
-const getModelFields = ({TString, TDate, TObjectId}) => ({
+const session = ({TString, TDate, TObjectId}) => ({
   userId: {
     type: TObjectId,
     required: true,
@@ -37,4 +37,4 @@ const getModelFields = ({TString, TDate, TObjectId}) => ({
   }
 })
 
-export default getModelFields
+export default session

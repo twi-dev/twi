@@ -8,7 +8,7 @@ import moment from "moment"
  *
  * @return {object}
  */
-const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
+const user = ({TString, TNumber, TDate}, {roles, statuses}) => ({
   login: {
     type: TString,
     unique: true,
@@ -68,4 +68,4 @@ const getModelFields = ({TString, TNumber, TDate}, {roles, statuses}) => ({
   }
 })
 
-export default getModelFields
+export default user

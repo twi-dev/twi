@@ -1,4 +1,4 @@
-const getModelFields = ({TString}) => ({
+const genre = ({TString}) => ({
   name: {
     type: TString,
     required: true
@@ -19,4 +19,4 @@ const getModelFields = ({TString}) => ({
   }
 })
 
-export default getModelFields
+export default genre

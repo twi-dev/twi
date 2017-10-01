@@ -1,6 +1,6 @@
 import moment from "moment"
 
-const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
+const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
   title: {
     type: TString,
     required: true
@@ -35,7 +35,7 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
       name: TString, // author's nickname
       profile: TString // link to an author profile or site
     },
-    original: TString
+    original: TString // link to original story
   },
   collaborators: [{
     user: {
@@ -48,7 +48,7 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
       required: true
     }
   }],
-  isCompleted: {
+  isFinished: {
     type: TBoolean,
     default: false
   },
@@ -84,7 +84,7 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
     type: TObjectId,
     required: true
   }],
-  rating: {
+  score: {
     votes: [{
       user: {
         ref: "User",
@@ -106,4 +106,4 @@ const getModelFields = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
   }
 })
 
-export default getModelFields
+export default story

@@ -1,4 +1,4 @@
-const getModelFields = ({TString}) => ({
+const character = ({TString}) => ({
   name: {
     type: TString,
     required: true
@@ -14,4 +14,4 @@ const getModelFields = ({TString}) => ({
   }
 })
 
-export default getModelFields
+export default character

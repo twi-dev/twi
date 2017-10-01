@@ -39,11 +39,12 @@ class User extends Model {
   /**
    * Create a new regular user.
    *
-   * @param {object} – user information
+   * @param {object} user – user information
+   * @param {object} [options = {}]
    *
    * @return {object}
    */
-  static async createOne(user, options) {
+  static async createOne(user, options = {}) {
     invariant(
       !isPlainObject(user), TypeError,
       "User data information should be passed as plain JavaScript object."

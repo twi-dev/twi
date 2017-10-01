@@ -8,6 +8,7 @@ import {createModel, Model} from "core/database"
 import Chapter from "database/model/Chapter"
 
 import NotFound from "core/error/http/NotFound"
+import Forbidden from "core/error/http/Forbidden"
 
 import nanoid from "core/helper/util/nanoid"
 
@@ -26,6 +27,10 @@ class Story extends Model {
       writer: 3,
       editor: 4 // Aka grammarly
     }
+  }
+
+  static getRole(name) {
+    return this.roles[name.toLowerCase()]
   }
 
   /**
@@ -104,6 +109,75 @@ class Story extends Model {
   }
 
   /**
+   * Add a new collaborator to the story
+   *
+   * @param {string | mongoose.Types.ObjectId} viewer – the current user ID
+   * @param {string | mongoose.Types.ObjectId} story – story ID
+   * @param {string | mongoose.Types.ObjectId} user – ID of a new collaborator
+   * @param {string} role – role of a new collaborator
+   * @param {object} [options = {}]
+   *
+   * @return {object | mongoose.Document}
+   *
+   * @throws {NotFound} – when no story has found by given ID
+   * @throws {Forbidden} – if the current user is not story publisher
+   */
+  static async addOneCollaborator(viewer, story, user, role, options = {}) {
+    story = await this.findOneById(story, {
+      toJS: false
+    })
+
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    invariant(
+      !this.isPublisher(viewer), Forbidden,
+      "You have not access for this operation. " +
+      "Only the story publisher can update title."
+    )
+
+    role = this.getRole(role)
+
+    story.collaborators.push({user, role})
+
+    story = await story.save()
+
+    return await this._tryConvert(story, options)
+  }
+
+  /**
+   * Update story title
+   *
+   * @param {string | mongoose.Types.ObjectId} viewer – the current user ID
+   * @param {string | mongoose.Types.ObjectId} story – story ID
+   * @param {string} title – the new title for story
+   * @param {object} [options = {}]
+   *
+   * @return {object | mongoose.Document}
+   *
+   * @throws {NotFound} – when no story has found by given ID
+   * @throws {Forbidden} – if the current user is not story publisher
+   */
+  static async updateOneTitle(viewer, story, title, options = {}) {
+    story = await this.findOneById(story, {
+      toJS: false
+    })
+
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    invariant(
+      !this.isPublisher(viewer), Forbidden,
+      "You have not access for this operation. " +
+      "Only the story publisher can update title."
+    )
+
+    story.title = title
+
+    story = await story.save()
+
+    return await this._tryConvert(story, options)
+  }
+
+  /**
    * Find stories created by given author
    *
    * @param {string} author – ID of an author which stories you are looking for
@@ -155,6 +229,9 @@ class Story extends Model {
    */
   __getRoleName = role => this._findKey(Story.roles, role)
 
+  isPublisher(viewer) {
+    return String(viewer) === String(this.publisher)
+  }
   /**
    * @see Model#toJS
    */

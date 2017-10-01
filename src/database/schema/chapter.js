@@ -1,10 +1,12 @@
 import moment from "moment"
 
-const getModelFields = ({TString, TDate}) => ({
+const chapter = ({TString, TDate}) => ({
   title: {
     type: TString,
     required: true
   },
+
+  // TODO: Move contents storage to a file on external static server.
   content: {
     original: {
       type: TString,
@@ -27,4 +29,4 @@ const getModelFields = ({TString, TDate}) => ({
   }
 })
 
-export default getModelFields
+export default chapter
