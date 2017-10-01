@@ -12,7 +12,7 @@
     "twi": "bin/twi"
   },
   "scripts": {
-    "make": "NODE_ENV=production bin/cake make",
+    "make": "NODE_ENV=production node_modules/.bin/babel src -d .",
     "watch": "NODE_ENV=development bin/cake watch",
     "m": "yarn make",
     "w": "yarn watch",

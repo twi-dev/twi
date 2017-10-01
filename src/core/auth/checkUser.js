@@ -2,7 +2,7 @@ import invariant from "@octetstream/invariant"
 import isFunction from "lodash/isFunction"
 import isString from "lodash/isString"
 
-import concatFromArray from "core/helper/util/concatFromArray"
+import concatFromArray from "core/helper/string/concatFromArray"
 
 import Unauthorized from "core/error/http/Unauthorized"
 

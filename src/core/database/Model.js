@@ -13,7 +13,7 @@ import getType from "core/helper/util/getType"
 const isArray = Array.isArray
 
 class Model extends MongooseModel {
-  static get subscriptionTypes() {
+  static get subscriptions() {
     return invariant(true, "Should be implemented in a child class.")
   }
 
@@ -86,7 +86,8 @@ class Model extends MongooseModel {
     options = this._getOptions(options)
 
     invariant(
-      !isPlainObject(doc), TypeError, "Document should be passed as object."
+      !isPlainObject(doc), TypeError,
+      "Expected a plain object. Received %s", getType(doc)
     )
 
     doc = await this(doc).save(options)
@@ -186,7 +187,10 @@ class Model extends MongooseModel {
     }
 
     return await this.findMany(cursor, {
-      ...filters, _id: {$in: ids}
+      ...filters,
+      _id: {
+        $in: ids
+      }
     }, options)
   }
 
@@ -248,11 +252,11 @@ class Model extends MongooseModel {
   /**
    * Converts a mongoose document to JavaScript plain object
    *
-   * @param {object|null|undefined} optinos
+   * @param {object} [optinos = {}]
    *
    * @return {object}
    */
-  async toJS(options) {
+  async toJS(options = {}) {
     const obj = this.toObject({
       ...options, virtuals: true
     })
