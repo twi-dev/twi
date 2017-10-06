@@ -7,13 +7,13 @@ const nano = nanoid.bind(4)
 
 @createModel
 class Character extends Model {
-  static async createOne(character) {
+  static async createOne(character, options = {}) {
     const code = nano()
 
-    return await super.createOne({...character, code})
+    return await super.createOne({...character, code}, options)
   }
 
-  static async createMany(characters) {
+  static async createMany(characters, options = {}) {
     for (const [idx, character] of characters.entries()) {
       const code = nano()
 
@@ -22,7 +22,7 @@ class Character extends Model {
       }
     }
 
-    return await super.createMany(characters)
+    return await super.createMany(characters, options)
   }
 }
 

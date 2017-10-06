@@ -6,6 +6,8 @@ import invariant from "@octetstream/invariant"
 import {createModel, Model} from "core/database"
 
 import Chapter from "database/model/Chapter"
+// import Character from "database/model/Character"
+// import Genre from "database/model/Genre"
 
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
@@ -25,7 +27,7 @@ class Story extends Model {
       painter: 1,
       translator: 2,
       writer: 3,
-      editor: 4 // Aka grammarly
+      editor: 4
     }
   }
 
@@ -94,7 +96,9 @@ class Story extends Model {
   }
 
   static async addOneChapter(creator, story, chapter, options = {}) {
-    story = await this.findById(story)
+    story = await this.findOneById(story, {
+      toJS: false
+    })
 
     invariant(!story, NotFound, "Can't find requested story.")
 
@@ -105,7 +109,7 @@ class Story extends Model {
 
     await story.save()
 
-    return chapter
+    return await this._tryConvert(chapter, options)
   }
 
   /**
@@ -144,6 +148,8 @@ class Story extends Model {
     return await this._tryConvert(story, options)
   }
 
+  // static async addOneVote(user, story, vote, options = {}) {}
+
   /**
    * Update story title
    *
@@ -177,17 +183,62 @@ class Story extends Model {
     return await this._tryConvert(story, options)
   }
 
+  static async updateOneDescription(viewer, story, description, options = {}) {
+    story = await this.findOneById(story, {
+      toJS: false
+    })
+
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    invariant(
+      !this.isPublisher(viewer), Forbidden,
+      "You have not access for this operation. " +
+      "Only the story publisher can update description."
+    )
+
+    story.description = description
+
+    story = await story.save()
+
+    return await this._tryConvert(story, options)
+  }
+
+  static async updateOneStatus(viewer, story, isFinished, options = {}) {
+    isFinished || (isFinished = false)
+
+    story = await this.findOneById(story, {
+      toJS: false
+    })
+
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    invariant(
+      !this.isPublisher(viewer), Forbidden,
+      "You have not access for this operation. " +
+      "Only the story publisher can update status."
+    )
+
+    story.isFinished = isFinished
+
+    await story.save()
+
+    return await this._tryConvert(story, options)
+  }
+
+  // static async updateOneType(viewer, story, translation, options = {}) {}
+
   /**
-   * Find stories created by given author
+   * Find stories created by given publisher
    *
-   * @param {string} author – ID of an author which stories you are looking for
+   * @param {string} publisher – ID of an publisher
+   *   which stories you are looking for
    *
    * @return {object}
    *
    * @throws {NotFound} – if no stories created by this user founded
    */
-  static async findManyByAuthor(author, cursor, options = {}) {
-    return await super.findMany(cursor, {author}, undefined, options)
+  static async findManyByPublisher(publisher, cursor, options = {}) {
+    return await super.findMany(cursor, {publisher}, undefined, options)
   }
 
   /**
@@ -199,24 +250,34 @@ class Story extends Model {
    *
    * @throws {NotFound}
    */
-  static async findOneBySlug(slug) {
-    const story = await this.findOne()
-      .where({
-        $or: [
-          {
-            "slug.short": slug
-          },
-          {
-            "slug.full": slug
-          }
-        ]
-      })
-      .exec()
+  static async findOneBySlug(slug, options = {}) {
+    const story = await this.findOne({
+      $or: [
+        {
+          "slug.short": slug
+        },
+        {
+          "slug.full": slug
+        }
+      ]
+    })
 
     invariant(!story, NotFound, "Can't find the story with slug: %s", slug)
 
-    return await story.toJS()
+    return await this._tryConvert(story, options)
   }
+
+  // static async removeOne(viewer, story) {}
+
+  // static async removeMany(viewer, stories) {}
+
+  // static async removeOneChapter(viewer, chapter) {}
+
+  // static async removeOneCollaborator(viewer, story, user, options = {}) {}
+
+  // static async removeOneCharacter(viewer, story, character, options = {}) {}
+
+  // static async removeOneGenre(viewer, story, genre, options = {}) {}
 
   /**
    * Get role name by the code.

@@ -7,13 +7,13 @@ const nano = nanoid.bind(4)
 
 @createModel
 class Genre extends Model {
-  static async createOne(genre) {
+  static async createOne(genre, options = {}) {
     const code = nano()
 
-    return await super.createOne({...genre, code})
+    return await super.createOne({...genre, code}, options)
   }
 
-  static async createMany(genres) {
+  static async createMany(genres, options = {}) {
     for (const [idx, genre] of genres.entries()) {
       const code = nano()
 
@@ -22,7 +22,7 @@ class Genre extends Model {
       }
     }
 
-    return await super.createMany(genres)
+    return await super.createMany(genres, options)
   }
 }
 

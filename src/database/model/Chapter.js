@@ -37,6 +37,7 @@ class Chapter extends Model {
       "Chapter text should be a string. Received %", getType(chapter.text)
     )
 
+    // TODO: Move content storage to a static server
     const content = {
       original: chapter.text,
       rendered: md.render(chapter.text)
