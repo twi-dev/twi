@@ -267,9 +267,24 @@ class Story extends Model {
     return await this._tryConvert(story, options)
   }
 
-  // static async removeOne(viewer, story) {}
+  static async removeOne(viewer, story) {
+    story = await this.findOneById(story, {
+      toJS: false
+    })
 
-  // static async removeMany(viewer, stories) {}
+    invariant(!story, NotFound, "Can't find requested story.")
+
+    invariant(
+      !story.isPublisher(viewer), Forbidden,
+      "Only the story publisher have an access to remove it."
+    )
+
+    story = await story.remove()
+
+    return story.id
+  }
+
+  // static async removeManyById(viewer, stories) {}
 
   // static async removeOneChapter(viewer, chapter) {}
 
