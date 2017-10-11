@@ -308,6 +308,7 @@ class Story extends Model {
   isPublisher(viewer) {
     return String(viewer) === String(this.publisher)
   }
+
   /**
    * @see Model#toJS
    */

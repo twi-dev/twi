@@ -7,7 +7,8 @@ import {createModel, Model} from "core/database"
 
 import getType from "core/helper/util/getType"
 
-// TODO: Setting up this one
+const isArray = Array.isArray
+
 const md = new Markdown({
   breaks: true
 })
@@ -44,6 +45,25 @@ class Chapter extends Model {
     }
 
     return await super.createOne({...chapter, content}, options)
+  }
+
+  static async createMany(chapters, options = {}) {
+    if (!isArray(chapters)) {
+      return await this.createOne(chapters, options)
+    }
+
+    if (chapters.length === 1) {
+      return await this.createOne(chapters, options)
+    }
+
+    for (const [idx, chapter] of chapters.entries()) {
+      chapters[idx].content = {
+        original: chapter.text,
+        rendered: await md.render(chapter.text)
+      }
+    }
+
+    return await super.createMany(chapters, options)
   }
 }
 

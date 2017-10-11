@@ -204,22 +204,22 @@ anymatch@^1.3.0:
     arrify "^1.0.0"
     micromatch "^2.1.5"
 
-apollo-server-core@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-1.1.3.tgz#1c1f223ab96097e095969a3494e6408cefdc9689"
+apollo-server-core@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-1.1.6.tgz#be45833e15a6fa28e52bc7e853cd77dfb2558da7"
   dependencies:
     apollo-tracing "^0.0.7"
 
-apollo-server-koa@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/apollo-server-koa/-/apollo-server-koa-1.1.3.tgz#c3e96081065bb59f9e942ab14df1135ef9d0fc4c"
+apollo-server-koa@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/apollo-server-koa/-/apollo-server-koa-1.1.6.tgz#2462b43e75d057c6dd1870f0f11103dfe9a6e809"
   dependencies:
-    apollo-server-core "^1.1.3"
-    apollo-server-module-graphiql "^1.1.3"
+    apollo-server-core "^1.1.6"
+    apollo-server-module-graphiql "^1.1.6"
 
-apollo-server-module-graphiql@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/apollo-server-module-graphiql/-/apollo-server-module-graphiql-1.1.3.tgz#cf59be3320fda301ef369660697486f172457abb"
+apollo-server-module-graphiql@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/apollo-server-module-graphiql/-/apollo-server-module-graphiql-1.1.6.tgz#9a0c8ff7ed7c4fff313065db388f08b1e7b6f9b9"
 
 apollo-tracing@^0.0.7:
   version "0.0.7"
@@ -1617,6 +1617,12 @@ debug@^2.6.9:
   dependencies:
     ms "2.0.0"
 
+debug@^3.0.1:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
+
 decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -1903,19 +1909,19 @@ eslint-scope@^3.7.1:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint@4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.6.0.tgz#98ced4a706a87abbe63207895d0023a38e250bbe"
+eslint@4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.8.0.tgz#229ef0e354e0e61d837c7a80fdfba825e199815e"
   dependencies:
     ajv "^5.2.0"
     babel-code-frame "^6.22.0"
     chalk "^2.1.0"
     concat-stream "^1.6.0"
     cross-spawn "^5.1.0"
-    debug "^2.6.8"
+    debug "^3.0.1"
     doctrine "^2.0.0"
     eslint-scope "^3.7.1"
-    espree "^3.5.0"
+    espree "^3.5.1"
     esquery "^1.0.0"
     estraverse "^4.2.0"
     esutils "^2.0.2"
@@ -1936,7 +1942,7 @@ eslint@4.6.0:
     natural-compare "^1.4.0"
     optionator "^0.8.2"
     path-is-inside "^1.0.2"
-    pluralize "^4.0.0"
+    pluralize "^7.0.0"
     progress "^2.0.0"
     require-uncached "^1.0.3"
     semver "^5.3.0"
@@ -1961,9 +1967,9 @@ espree@^3.1.3:
     acorn "^5.0.1"
     acorn-jsx "^3.0.0"
 
-espree@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/espree/-/espree-3.5.0.tgz#98358625bdd055861ea27e2867ea729faf463d8d"
+espree@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-3.5.1.tgz#0c988b8ab46db53100a1954ae4ba995ddd27d87e"
   dependencies:
     acorn "^5.1.1"
     acorn-jsx "^3.0.0"
@@ -2445,11 +2451,11 @@ graphql-iso-date@3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.3.0.tgz#cbe434b41e035e806338121b1b2b509a0f72bb80"
 
-graphql-server-koa@1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/graphql-server-koa/-/graphql-server-koa-1.1.3.tgz#47734b1ad30629935ab872eab2fe7f06afbc9191"
+graphql-server-koa@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/graphql-server-koa/-/graphql-server-koa-1.1.6.tgz#c531e345470512d28e8b435fb244b3f6f7af3ce5"
   dependencies:
-    apollo-server-koa "^1.1.3"
+    apollo-server-koa "^1.1.6"
 
 graphql-subscriptions@0.5.4:
   version "0.5.4"
@@ -3164,9 +3170,9 @@ jsonwebtoken@7.4.1:
     ms "^2.0.0"
     xtend "^4.0.1"
 
-jsonwebtoken@8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.0.1.tgz#50daef8d0a8c7de2cd06bc1013b75b04ccf3f0cf"
+jsonwebtoken@8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.1.0.tgz#c6397cd2e5fd583d65c007a83dc7bb78e6982b83"
   dependencies:
     jws "^3.1.4"
     lodash.includes "^4.3.0"
@@ -3808,7 +3814,11 @@ module-not-found-error@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/module-not-found-error/-/module-not-found-error-1.0.1.tgz#cf8b4ff4f29640674d6cdd02b0e3bc523c2bbdc0"
 
-moment@2.18.1, moment@2.x.x:
+moment@2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.0.tgz#44f675ef6b944942762581b1c179fb679e599d67"
+
+moment@2.x.x:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
 
@@ -3827,9 +3837,9 @@ mongodb@2.2.31:
     mongodb-core "2.1.15"
     readable-stream "2.2.7"
 
-mongoose@4.12.0:
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.12.0.tgz#ba5dcf3b1338c84982f9774c10ca0493102cd830"
+mongoose@4.12.1:
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.12.1.tgz#fb27c108f940252e448bb1b80b5f8a404108ee28"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
@@ -3907,6 +3917,10 @@ nan@~2.3.0:
 nanoid@0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-0.2.1.tgz#0bc1446ddf73011893cb09103e65783272028ff9"
+
+nanoid@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-0.2.2.tgz#e2ebc6ad3db5e0454fd8124d30ca39b06555fe56"
 
 native-promise-only@^0.8.1:
   version "0.8.1"
@@ -4397,9 +4411,9 @@ plur@^2.0.0:
   dependencies:
     irregular-plurals "^1.0.0"
 
-pluralize@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-4.0.0.tgz#59b708c1c0190a2f692f1c7618c446b052fd1762"
+pluralize@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
 prelude-ls@~1.1.2:
   version "1.1.2"
@@ -5208,9 +5222,9 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-subscriptions-transport-ws@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.0.tgz#3dedd96a8fd01e63bdaf855c2ca0dcc68a87102e"
+subscriptions-transport-ws@0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.9.1.tgz#66488bd5997b6081277a25d6a3015a5aceffed63"
   dependencies:
     backo2 "^1.0.2"
     eventemitter3 "^2.0.3"
