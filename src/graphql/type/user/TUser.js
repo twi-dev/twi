@@ -10,7 +10,7 @@ import findUserStories from "graphql/resolve/query/story/findUserStories"
 import TUserDates from "./TUserDates"
 import TUserContacts from "./TUserContacts"
 
-import TStory from "../story/TStory"
+import TStoryMinimal from "../story/TStoryMinimal"
 import TLogin from "../../scalar/user/TLogin"
 
 import INode, {isTypeOf} from "../../interface/common/INode"
@@ -25,7 +25,8 @@ const TUser = Type(
   .field("status", TString, "User accoutn status", true)
   .field("contacts", TUserContacts, "User contact information.")
   .resolve(
-    "stories", [TStory], "The stories, written by this user", findUserStories
+    "stories", [TStoryMinimal, true],
+    "The stories, written by this user", findUserStories
   )
     .arg("cursor", TInt)
   .end()

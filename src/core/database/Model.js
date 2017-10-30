@@ -138,7 +138,7 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findMany(cursor = 0, filters = {}, limit = 10, options = {}) {
+  static async findMany(cursor = 1, filters = {}, limit = 10, options = {}) {
     options = this._getOptions(options)
 
     if (isInteger(filters)) {
@@ -149,7 +149,9 @@ class Model extends MongooseModel {
       [options, limit] = [limit, 10]
     }
 
-    const docs = await this.find({...filters}).skip(cursor * limit).limit(limit)
+    const skip = limit * (cursor - 1)
+
+    const docs = await this.find({...filters}).skip(skip).limit(limit)
 
     return await this._tryConvert(docs, options)
   }

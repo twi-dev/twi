@@ -7,11 +7,12 @@ import {
 import Type from "parasprite/Type"
 
 import TChapter from "./TChapter"
-import TStoryDates from "./TStoryDates"
+import TStoryCollaborator from "./TStoryCollaborator"
+
+import TDates from "../common/TDates"
+import TPublisher from "../user/TPublisher"
 
 import INode, {isTypeOf} from "../../interface/common/INode"
-
-import TAuthor from "../user/TAuthor"
 
 import findChaptersById from "../../resolve/query/story/findChaptersById"
 
@@ -22,9 +23,10 @@ const TStory = Type(
   .field("id", TID, true)
   .field("title", TString, true)
   .field("description", TString, true)
-  .field("author", TAuthor, true)
+  .field("publisher", TPublisher, true)
+  .field("collaborators", [TStoryCollaborator, true])
   .field("slug", TString, true)
-  .field("dates", TStoryDates, true)
+  .field("dates", TDates, true)
   .resolve("chapters", [TChapter, true], true, findChaptersById)
     .arg("cursor", TInt)
   .end()

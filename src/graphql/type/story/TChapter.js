@@ -1,8 +1,5 @@
-import {
-  GraphQLID as TID,
-  // GraphQLInt as TInt,
-  GraphQLString as TString
-} from "graphql"
+import {GraphQLID as TID, GraphQLString as TString} from "graphql"
+
 import Type from "parasprite/Type"
 
 import TChapterContent from "./TChapterContent"
@@ -13,7 +10,6 @@ const TChapter = Type(
   "Chapter", "Represends information about chapter", [INode], isTypeOf
 )
   .field("id", TID, true)
-  // .field("number", TInt, true)
   .field("title", TString, true)
   .field("content", TChapterContent, true)
 .end()

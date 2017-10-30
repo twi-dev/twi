@@ -11,11 +11,14 @@
     "indent": ["error", 2, {
       "MemberExpression": "off"
     }],
+
     "ava/no-ignored-test-files": ["error", {
       "files": [
         "src/test/unit/**/*.{js,jsx}"
       ]
-    }]
+    }],
+
+    "import/no-unresolved": 0
   },
   "settings": {
     "import/resolver": {
