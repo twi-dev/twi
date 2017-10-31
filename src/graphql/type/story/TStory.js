@@ -20,14 +20,46 @@ const TStory = Type(
   "Story", "Represends available information about the stories",
   [INode], isTypeOf
 )
-  .field("id", TID, true)
-  .field("title", TString, true)
-  .field("description", TString, true)
-  .field("publisher", TPublisher, true)
-  .field("collaborators", [TStoryCollaborator, true])
-  .field("slug", TString, true)
-  .field("dates", TDates, true)
-  .resolve("chapters", [TChapter, true], true, findChaptersById)
+  .field({
+    name: "id",
+    type: TID,
+    required: true
+  })
+  .field({
+    name: "title",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "description",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "publisher",
+    type: TPublisher,
+    required: true
+  })
+  .field({
+    name: "collaborators",
+    type: [TStoryCollaborator, true]
+  })
+  .field({
+    name: "slug",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "dates",
+    type: TDates,
+    required: true
+  })
+  .resolve({
+    name: "chapters",
+    type: [TChapter, true],
+    required: true,
+    handler: findChaptersById
+  })
     .arg("cursor", TInt)
   .end()
 .end()

@@ -17,7 +17,7 @@ const typeDescription = concat([
 ])
 
 const TStoryMinimal = Type("StoryMinimal", typeDescription, [INode], isTypeOf)
-  .field("id", TID, true)
+  .field({name: "id", type: TID, required: true})
   .field({
     name: "title",
     type: TString,

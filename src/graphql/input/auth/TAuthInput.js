@@ -6,8 +6,8 @@ import Input from "parasprite/Input"
 const TAuthInput = Input(
   "AuthInput", "User credentials for local authentication"
 )
-  .field("email", TEmail, true)
-  .field("password", TString, true)
+  .field({name: "email", type: TEmail, required: true})
+  .field({name: "password", type: TString, required: true})
 .end()
 
 export default TAuthInput

@@ -52,23 +52,11 @@
     eslint-config-airbnb-base "12.0.0"
     eslint-plugin-import "^2.7.0"
 
-"@octetstream/invariant@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@octetstream/invariant/-/invariant-1.0.2.tgz#d45ed5f0d532cf46cee2fd10d520584678b15fe1"
-  dependencies:
-    lodash.isfunction "3.0.8"
-    lodash.isstring "4.0.1"
-    sprintf-js "1.1.1"
-
 "@octetstream/invariant@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@octetstream/invariant/-/invariant-1.1.0.tgz#652d73b6cb9a5f0cc6acb758843c4203d3104e84"
   dependencies:
     sprintf-js "1.1.1"
-
-"@octetstream/promisify@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@octetstream/promisify/-/promisify-1.0.3.tgz#79b885cff3b2cd20ee6f9470a1cb3ec7bd12dc84"
 
 "@octetstream/promisify@1.1.0":
   version "1.1.0"
@@ -2840,9 +2828,9 @@ home-or-tmp@^2.0.0:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.1"
 
-hooks-fixed@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-2.0.0.tgz#a01d894d52ac7f6599bbb1f63dfc9c411df70cba"
+hooks-fixed@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/hooks-fixed/-/hooks-fixed-2.0.2.tgz#20076daa07e77d8a6106883ce3f1722e051140b0"
 
 hosted-git-info@^2.1.4:
   version "2.4.2"
@@ -4107,10 +4095,6 @@ lodash.isequal@^4.0.0, lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
-lodash.isfunction@3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.isfunction/-/lodash.isfunction-3.0.8.tgz#4db709fc81bc4a8fd7127a458a5346c5cdce2c6b"
-
 lodash.isinteger@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz#619c0af3d03f8b04c31f5882840b77b11cd68343"
@@ -4127,7 +4111,7 @@ lodash.isplainobject@4.0.6, lodash.isplainobject@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
 
-lodash.isstring@4.0.1, lodash.isstring@^4.0.1:
+lodash.isstring@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.isstring/-/lodash.isstring-4.0.1.tgz#d527dfb5456eca7cc9bb95d5daeaf88ba54a5451"
 
@@ -4420,13 +4404,13 @@ mongodb@2.2.33:
     mongodb-core "2.1.17"
     readable-stream "2.2.7"
 
-mongoose@4.12.4:
-  version "4.12.4"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.12.4.tgz#502a2c037376a6c6356eee89128e75653612127c"
+mongoose@4.12.5:
+  version "4.12.5"
+  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-4.12.5.tgz#c5fecc40a48402120e9a2cf5bd27a674da9ce331"
   dependencies:
     async "2.1.4"
     bson "~1.0.4"
-    hooks-fixed "2.0.0"
+    hooks-fixed "2.0.2"
     kareem "1.5.0"
     mongodb "2.2.33"
     mpath "0.3.0"
@@ -4504,6 +4488,10 @@ nanoid@0.2.2:
 nanoid@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.0.0.tgz#fd6c3d8c576ed6f7e6a45152c996ae3f5e7dfe36"
+
+nanoid@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.0.1.tgz#58a8e0577d9db07ae4f231a3afa59af94e4fc439"
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -4832,12 +4820,12 @@ package-json@^4.0.0:
     registry-url "^3.0.3"
     semver "^5.1.0"
 
-parasprite@0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-0.6.1.tgz#7f88f0545e50686331539916d88380dc2655d0d3"
+parasprite@1.0.0-beta.2:
+  version "1.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/parasprite/-/parasprite-1.0.0-beta.2.tgz#297d8296edaa0c33d6a24d95d51063c3ebb7dda0"
   dependencies:
-    "@octetstream/invariant" "1.0.2"
-    "@octetstream/promisify" "1.0.3"
+    "@octetstream/invariant" "1.1.0"
+    "@octetstream/promisify" "1.3.2"
     lodash.isplainobject "4.0.6"
 
 parse-glob@^3.0.4:

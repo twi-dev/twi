@@ -4,11 +4,30 @@ import Input from "parasprite/Input"
 import TChapterInput from "./TChapterInput"
 
 const TStoryInput = Input("StoryInput")
-  .field("title", TString, true)
-  .field("description", TString, true)
-  .field("characters", [TID, true], true)
-  .field("genres", [TID, true], true)
-  .field("chapter", TChapterInput)
+  .field({
+    name: "title",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "description",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "characters",
+    type: [TID, true],
+    required: true
+  })
+  .field({
+    name: "genres",
+    type: [TID, true],
+    required: true
+  })
+  .field({
+    name: "chapter",
+    type: TChapterInput
+  })
 .end()
 
 export default TStoryInput

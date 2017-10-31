@@ -4,10 +4,26 @@ import Input from "parasprite/Input"
 const TFileInput = Input(
   "FileInput", "Represends a file type for multipart resolvers."
 )
-  .field("filrname", TString, true)
-  .field("path", TString, true)
-  .field("mime", TString, true)
-  .field("enc", TString, true)
+  .field({
+    name: "filrname",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "path",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "mime",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "enc",
+    type: TString,
+    required: true
+  })
 .end()
 
 export default TFileInput

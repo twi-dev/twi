@@ -8,11 +8,34 @@ import TFileInput from "../file/TFileInput"
 import TContactsInput from "./TContactsInput"
 
 const TUserInput = Input("UserInput", "Basic user information.")
-  .field("login", TLogin, "An unique human-readable user identifier.", true)
-  .field("email", TEmail, "An email address.", true)
-  .field("password", TString, "User secured (or not :D) password.", true)
-  .field("avatar", TFileInput, "User profile picture.")
-  .field("contacts", TContactsInput, "User contact information.")
+  .field({
+    name: "login",
+    type: TLogin,
+    description: "An unique human-readable user identifier.",
+    required: true
+  })
+  .field({
+    name: "email",
+    type: TEmail,
+    description: "An email address.",
+    required: true
+  })
+  .field({
+    name: "password",
+    type: TString,
+    description: "User secured (or not :D) password.",
+    required: true
+  })
+  .field({
+    name: "avatar",
+    type: TFileInput,
+    description: "User profile picture."
+  })
+  .field({
+    name: "contacts",
+    type: TContactsInput,
+    description: "User contact information."
+  })
 .end()
 
 export default TUserInput

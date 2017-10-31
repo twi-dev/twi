@@ -18,16 +18,47 @@ import INode, {isTypeOf} from "../../interface/common/INode"
 const TUser = Type(
   "User", "Represends a full user information", [INode], isTypeOf
 )
-  .field("id", TID, "User unique identifer at the system", true)
-  .field("login", TLogin, "User login that represends his/her address", true)
-  .field("dates", TUserDates, "User registration dates", true)
-  .field("role", TString, "User role name", true)
-  .field("status", TString, "User accoutn status", true)
-  .field("contacts", TUserContacts, "User contact information.")
-  .resolve(
-    "stories", [TStoryMinimal, true],
-    "The stories, written by this user", findUserStories
-  )
+  .field({
+    name: "id",
+    type: TID,
+    description: "User unique identifer at the system",
+    required: true
+  })
+  .field({
+    name: "login",
+    type: TLogin,
+    description: "User login that represends his/her address",
+    required: true
+  })
+  .field({
+    name: "dates",
+    type: TUserDates,
+    description: "User registration dates",
+    required: true
+  })
+  .field({
+    name: "role",
+    type: TString,
+    description: "User role name",
+    required: true
+  })
+  .field({
+    name: "status",
+    type: TString,
+    description: "User accoutn status",
+    required: true
+  })
+  .field({
+    name: "contacts",
+    type: TUserContacts,
+    description: "User contact information."
+  })
+  .resolve({
+    name: "stories",
+    type: [TStoryMinimal, true],
+    description: "The stories, written by this user",
+    handler: findUserStories
+  })
     .arg("cursor", TInt)
   .end()
 .end()

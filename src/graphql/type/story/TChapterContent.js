@@ -4,7 +4,7 @@ import Type from "parasprite/Type"
 
 import concat from "core/helper/string/concatFromArray"
 
-const deprecationReason = concat([
+const deprecate = concat([
   "Deprecated because of migration ",
   "to the microservices architecture."
 ])
@@ -15,13 +15,13 @@ const TChapterContent = Type("ChapterContent")
     name: "original",
     type: TString,
     required: true,
-    deprecationReason
+    deprecate
   })
   .field({
     name: "rendered",
     type: TString,
     required: true,
-    deprecationReason
+    deprecate
   })
 .end()
 

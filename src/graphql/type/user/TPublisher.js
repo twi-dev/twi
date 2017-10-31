@@ -10,8 +10,16 @@ const TPublisher = Type(
   "Publisher", "The actual publisher of the story",
   [INode], isTypeOf
 )
-  .field("id", TID, true)
-  .field("login", TLogin, true)
+  .field({
+    name: "id",
+    type: TID,
+    required: true
+  })
+  .field({
+    name: "login",
+    type: TLogin,
+    required: true
+  })
 .end()
 
 export default TPublisher

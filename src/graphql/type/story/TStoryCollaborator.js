@@ -12,8 +12,8 @@ const TStoryCollaborator = Type("StoryCollaborator", concat([
   "Is that the user who helped a publisher with the story translation ",
   "or something else."
 ]))
-  .field("role", TString, true)
-  .field("user", TUser, true)
+  .field({name: "role", type: TString, required: true})
+  .field({name: "user", type: TUser, required: true})
 .end()
 
 export default TStoryCollaborator

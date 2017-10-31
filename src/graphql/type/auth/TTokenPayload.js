@@ -6,9 +6,21 @@ import Type from "parasprite/Type"
 const TTokenPayload = Type(
   "TokenPayload", "Resolves accessToken and refreshToken"
 )
-  .field("expiresIn", TDateTime, true)
-  .field("accessToken", TString, true)
-  .field("refreshToken", TString, true)
+  .field({
+    name: "expiresIn",
+    type: TDateTime,
+    required: true
+  })
+  .field({
+    name: "accessToken",
+    type: TString,
+    required: true
+  })
+  .field({
+    name: "refreshToken",
+    type: TString,
+    required: true
+  })
 .end()
 
 export default TTokenPayload

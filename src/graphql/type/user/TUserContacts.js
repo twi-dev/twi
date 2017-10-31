@@ -3,10 +3,22 @@ import {GraphQLEmail as TEmail} from "graphql-custom-types"
 import Type from "parasprite/Type"
 
 const TUserContacts = Type("UserContacts", "Information about user contacts")
-  .field("vk", TString)
-  .field("fb", TString)
-  .field("twitter", TString)
-  .field("email", TEmail)
+  .field({
+    name: "vk",
+    type: TString
+  })
+  .field({
+    name: "fb",
+    type: TString
+  })
+  .field({
+    name: "twitter",
+    type: TString
+  })
+  .field({
+    name: "email",
+    type: TEmail
+  })
 .end()
 
 export default TUserContacts
