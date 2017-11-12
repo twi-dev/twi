@@ -13,7 +13,7 @@ import getType from "core/helper/util/getType"
 const isArray = Array.isArray
 
 class Model extends MongooseModel {
-  static get subscriptions() {
+  static get pubsub() {
     return invariant(true, "Should be implemented in a child class.")
   }
 
@@ -35,7 +35,7 @@ class Model extends MongooseModel {
    *
    * @protected
    */
-  static _getOptions(options = {}) {
+  static _getOptions(options) {
     return merge({}, this._defaultOptions, options)
   }
 
@@ -51,7 +51,7 @@ class Model extends MongooseModel {
    * @protected
    */
   static async _tryConvert(docs, options = {}) {
-    if (!docs) {
+    if (isEmpty(docs)) {
       return null
     }
 
@@ -250,6 +250,8 @@ class Model extends MongooseModel {
   get id() {
     return this._id
   }
+
+  tryConvert = (docs, options = {}) => this._tryConvert(docs, options)
 
   /**
    * Converts a mongoose document to JavaScript plain object

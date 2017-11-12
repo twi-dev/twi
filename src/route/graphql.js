@@ -1,6 +1,7 @@
 import {basename, extname} from "path"
 
 import Router from "koa-router"
+
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
 import noop from "core/middleware/noop"

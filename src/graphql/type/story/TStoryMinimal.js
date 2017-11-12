@@ -6,9 +6,9 @@ import concat from "core/helper/string/concatFromArray"
 
 import TDates from "../common/TDates"
 
-import INode, {isTypeOf} from "../../interface/common/INode"
+import TUserMinimal from "../user/TUserMinimal"
 
-import TPublisher from "../user/TPublisher"
+import TStoryCollaborator from "./TStoryCollaborator"
 
 const typeDescription = concat([
   "Minimal information about the story. ",
@@ -16,8 +16,12 @@ const typeDescription = concat([
   "No chapters information would be received from this type."
 ])
 
-const TStoryMinimal = Type("StoryMinimal", typeDescription, [INode], isTypeOf)
-  .field({name: "id", type: TID, required: true})
+const TStoryMinimal = Type("StoryMinimal", typeDescription)
+  .field({
+    name: "id",
+    type: TID,
+    required: true
+  })
   .field({
     name: "title",
     type: TString,
@@ -30,8 +34,12 @@ const TStoryMinimal = Type("StoryMinimal", typeDescription, [INode], isTypeOf)
   })
   .field({
     name: "publisher",
-    type: TPublisher,
+    type: TUserMinimal,
     required: true
+  })
+  .field({
+    name: "collaborators",
+    type: [TStoryCollaborator, true]
   })
   .field({
     name: "slug",
