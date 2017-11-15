@@ -31,7 +31,6 @@
     "prepush": "yarn report"
   },
   "ava": {
-    "babel": "inherit",
     "files": [
       "test/**/*.js",
       "!test/**/__hook__/**",

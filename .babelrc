@@ -8,7 +8,7 @@
       }
     }],
 
-    "@babel/plugin-transform-runtime",
+    "@babel/transform-runtime",
     "@babel/proposal-decorators",
     "@babel/proposal-class-properties",
     "@babel/proposal-async-generator-functions",
