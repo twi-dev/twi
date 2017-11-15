@@ -7,13 +7,19 @@
         "package.json": "./package.json"
       }
     }],
-    "transform-es2015-modules-commonjs",
-    "transform-decorators-legacy",
-    "transform-class-properties",
-    "transform-async-generator-functions",
-    "transform-exponentiation-operator",
-    "transform-export-extensions",
-    "transform-object-rest-spread",
-    "dynamic-import-node"
+
+    "@babel/transform-runtime",
+    "@babel/proposal-decorators",
+    "@babel/proposal-class-properties",
+    "@babel/proposal-async-generator-functions",
+    "@babel/proposal-nullish-coalescing-operator",
+    "@babel/proposal-optional-catch-binding",
+    "@babel/proposal-optional-chaining",
+    "@babel/proposal-export-namespace",
+    "@babel/proposal-export-default",
+    "@babel/transform-modules-commonjs",
+    ["@babel/proposal-object-rest-spread", {
+      "useBuiltIns": true
+    }],
   ]
 }

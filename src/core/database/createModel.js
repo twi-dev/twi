@@ -2,7 +2,7 @@ import {resolve, join, dirname} from "path"
 
 import camelCase from "camelcase"
 
-import mongoose, {Schema, Model} from "mongoose"
+import mongoose from "mongoose"
 
 import isEmpty from "lodash/isEmpty"
 import isFunction from "lodash/isFunction"
@@ -14,6 +14,9 @@ import proxy from "core/helper/decorator/proxy"
 import apply from "core/helper/proxy/selfInvokingClass"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
+
+const Schema = mongoose.Schema
+const Model = mongoose.Model
 
 const Types = (() => {
   const res = {}
