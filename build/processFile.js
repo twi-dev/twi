@@ -3,7 +3,7 @@ const {join, extname} = require("path")
 
 const applySourceMap = require("vinyl-sourcemaps-apply")
 const through = require("through2")
-const {transform} = require("babel-core")
+const {transform} = require("@babel/core")
 
 const fmt = require("sprintf-js").vsprintf
 
