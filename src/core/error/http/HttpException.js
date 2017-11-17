@@ -1,12 +1,10 @@
 import Exception from "../base/Exception"
 
 class HttpException extends Exception {
-  constructor(message) {
-    super(message, "E_HTTP")
+  constructor(message, code = "HTTP_EXCEPTION") {
+    super(message, code)
 
-    this.name = "HttpException"
     this.status = 500
-    this.message = message
   }
 }
 

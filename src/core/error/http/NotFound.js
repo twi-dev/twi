@@ -2,11 +2,9 @@ import HttpException from "./HttpException"
 
 class NotFoundException extends HttpException {
   constructor(message) {
-    super(message)
+    super(message, "HTTP_NOT_FOUND_EXCEPTION")
 
-    this.name = "NotFoundException"
     this.status = 404
-    this.message = message
   }
 }
 

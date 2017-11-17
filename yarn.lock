@@ -250,13 +250,13 @@
     "@babel/helper-module-transforms" "7.0.0-beta.32"
     "@babel/helper-simple-access" "7.0.0-beta.32"
 
-"@babel/plugin-transform-runtime@^7.0.0-beta.32":
+"@babel/plugin-transform-runtime@7.0.0-beta.32 <= 7.0.0":
   version "7.0.0-beta.32"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.0.0-beta.32.tgz#32b666278034e0c92ed2cbd3889cd6e7452de39c"
   dependencies:
     "@babel/helper-module-imports" "7.0.0-beta.32"
 
-"@babel/runtime@^7.0.0-beta.32":
+"@babel/runtime@7.0.0-beta.32 <= 7.0.0":
   version "7.0.0-beta.32"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.32.tgz#b8d5717ea0b271eef787cecac35a7db45fa385b9"
   dependencies:
@@ -931,7 +931,7 @@ babel-plugin-check-es2015-constants@^6.8.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-dynamic-import-node@^1.2.0:
+babel-plugin-dynamic-import-node@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-dynamic-import-node/-/babel-plugin-dynamic-import-node-1.2.0.tgz#f91631e703e0595e47d4beafbb088576c87fbeee"
   dependencies:

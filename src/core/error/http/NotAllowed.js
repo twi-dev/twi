@@ -2,11 +2,9 @@ import HttpException from "./HttpException"
 
 class NotAllowedException extends HttpException {
   constructor(message) {
-    super(message)
+    super(message, "HTTP_NOT_ALLOWED_EXCEPTION")
 
-    this.name = "NotAllowedException"
-    this.status = 404
-    this.message = message
+    this.status = 405
   }
 }
 

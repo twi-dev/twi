@@ -2,11 +2,9 @@ import HttpException from "./HttpException"
 
 class UnauthorizedException extends HttpException {
   constructor(message) {
-    super(message)
+    super(message, "UNAUTHORIZED_EXCEPTION")
 
-    this.name = "UnauthorizedException"
     this.status = 401
-    this.message = message
   }
 }
 

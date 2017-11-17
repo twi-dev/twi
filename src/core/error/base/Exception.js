@@ -1,9 +1,9 @@
 class Exception extends Error {
-  constructor(message, code) {
+  constructor(message, code = "EXCEPTION") {
     super(message)
 
-    this.code = code || "E_EXCEPTION"
-    this.name = "Exception"
+    this.code = code
+    this.name = this.constructor.name
 
     Error.captureStackTrace(this, Exception)
   }

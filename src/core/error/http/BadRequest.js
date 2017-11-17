@@ -2,11 +2,9 @@ import HttpException from "./HttpException"
 
 class BadRequestException extends HttpException {
   constructor(message) {
-    super(message)
+    super(message, "HTTP_BAD_REQUEST_EXCEPTION")
 
-    this.name = "BadRequestException"
     this.status = 400
-    this.message = message
   }
 }
 
