@@ -10,6 +10,7 @@ node_js:
   - stable
   - 7
   - 8
+  - 9
 install:
   - yarn
 before_script:
