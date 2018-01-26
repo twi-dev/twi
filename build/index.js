@@ -141,7 +141,7 @@ const watch = config => new Promise((_, reject) => {
       : fs.stat(filename, onStat)
   }
 
-  const ignoreInitial = config.ignoreInitial || true
+  const ignoreInitial = config.ignoreInitial || false
 
   // Create chokidar.FSWatcher instance that watches for "src" path
   const watcher = chokidar.watch(src, {

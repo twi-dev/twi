@@ -1,11 +1,11 @@
 import {GraphQLString as TString} from "graphql"
 
-import TAccessToken from "graphql/type/auth/TAccessToken"
+import TAuthAccessToken from "graphql/type/auth/TAuthAccessToken"
 
 import refresh from "graphql/resolve/mutation/auth/refreshAccessToken"
 
 const resolve = {
-  type: TAccessToken,
+  type: TAuthAccessToken,
   required: true,
   handler: refresh
 }

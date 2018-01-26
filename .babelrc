@@ -20,6 +20,6 @@
     "@babel/transform-modules-commonjs",
     ["@babel/proposal-object-rest-spread", {
       "useBuiltIns": true
-    }],
+    }]
   ]
 }
