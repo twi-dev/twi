@@ -1,10 +1,11 @@
 import {createConnection} from "./"
 
 async function clear() {
-  const connection = await createConnection()
+  const mongoose = await createConnection()
 
   console.log("Clearing database...")
-  await connection.db.dropDatabase()
+
+  await mongoose.connections[0].db.dropDatabase()
 }
 
 const onFulfilled = () => process.exit(0)
