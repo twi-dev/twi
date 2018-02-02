@@ -6,6 +6,7 @@ import deepFreeze from "deep-freeze"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
+// eslint-disable-next-line import/no-unresolved
 import {version, codename} from "../../package.json"
 
 const CONFIGS_ROOT = join(process.cwd(), "config", "system")

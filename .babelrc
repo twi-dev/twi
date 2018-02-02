@@ -1,11 +1,7 @@
 {
   "plugins": [
     ["module-resolver", {
-      "cwd": ".",
-      "root": ["./src"],
-      "alias": {
-        "package.json": "./package.json"
-      }
+      "root": ["src"]
     }],
 
     "@babel/transform-runtime",
