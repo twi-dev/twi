@@ -1,5 +1,6 @@
 import {compare} from "bcryptjs"
 
+import ms from "ms"
 import uuid from "uuid"
 import pick from "lodash/pick"
 import moment from "moment"
@@ -15,6 +16,10 @@ import NotFound from "core/error/http/NotFound"
 
 @createModel
 class Session extends Model {
+  static get defaultType() {
+    return "Bearer"
+  }
+
   static async createOne() {
     invariant(true, "Method not available on this model.")
   }
@@ -37,8 +42,11 @@ class Session extends Model {
   static async __generateTokens(payload, config, noRefreshToken = false) {
     const expiresIn = config.expiresIn || "15m"
 
+    const type = Session.defaultType
+
     const accessToken = {
-      expiresIn: new Date(moment().add(expiresIn)),
+      type,
+      expiresIn: new Date(moment().add(ms(expiresIn))),
       payload: await sign(payload, config.secret.accessToken, {
         expiresIn
       })
@@ -49,6 +57,7 @@ class Session extends Model {
       const tokenUUID = uuid()
 
       refreshToken = {
+        type,
         tokenUUID,
         payload: await sign(tokenUUID, config.secret.refreshToken)
       }
@@ -96,15 +105,7 @@ class Session extends Model {
       }
     }, options)
 
-    const expiresIn = tokens.accessToken.expiresIn
-    const accessToken = tokens.accessToken.payload
-    const refreshToken = tokens.refreshToken.payload
-
-    return {
-      expiresIn,
-      accessToken,
-      refreshToken
-    }
+    return tokens
   }
 
   /**
@@ -134,9 +135,7 @@ class Session extends Model {
 
     await session.save()
 
-    return {
-      ...tokens.accessToken
-    }
+    return tokens.accessToken
   }
 
   /**

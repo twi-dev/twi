@@ -31,7 +31,6 @@ async function createConnection(config = {}) {
   const connectionString = getConnectionString(config)
 
   return await mongoose.connect(connectionString, {
-    useMongoClient: true,
     promiseLibrary: Promise
   })
 }
