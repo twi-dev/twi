@@ -5,7 +5,6 @@ async function createConnection() {
 
   // Don't forget to add a user for this connection
   const connection = await mongoose.connect("mongodb://localhost/twi-test", {
-    useMongoClient: true,
     promiseLibrary: Promise
   })
 
