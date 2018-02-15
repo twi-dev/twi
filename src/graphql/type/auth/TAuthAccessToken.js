@@ -10,7 +10,7 @@ const TAuthAccessToken = Type({
   extends: TAuthTokenMinimal
 })
   .field({
-    name: "expiresIn",
+    name: "expires",
     type: TDateTime,
     required: true
   })

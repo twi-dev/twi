@@ -1,11 +1,11 @@
 import TUserInput from "graphql/input/user/TUserInput"
 
-import TUser from "graphql/type/user/TUser"
+import TAuthTokenPayload from "graphql/type/auth/TAuthTokenPayload"
 
 import createUser from "graphql/resolve/mutation/user/createUser"
 
 const resolve = {
-  type: TUser,
+  type: TAuthTokenPayload,
   required: true,
   handler: createUser,
   description: (

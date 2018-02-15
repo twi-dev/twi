@@ -46,7 +46,7 @@ class Session extends Model {
 
     const accessToken = {
       type,
-      expiresIn: new Date(moment().add(ms(expiresIn))),
+      expires: new Date(moment().add(ms(expiresIn))),
       payload: await sign(payload, config.secret.accessToken, {
         expiresIn
       })
