@@ -72,17 +72,19 @@ class Session extends Model {
   /**
    * Generate tokens for user and create a new session
    *
-   * @param {object} credentials – an object with user email and password
+   * @param {object} credentials – an object with user login and password
    * @oaram {koa.Context} ctx – Koa.js Context instance
    *
    * @return {object} – an object with generated accessToken and refreshToken
    *   Note that accessToken expires in about 15 minutes.
    *
-   * @throws {NotFound} when requested user not found by his email
+   * @throws {NotFound} when requested user not found by his login
    * @throws {Error} when wrong password given
    */
-  static async sign({email, password}, {ip, client, app: {config}}, options) {
-    const user = await User.findOne({email})
+  static async sign({login, password}, {ip, client, app: {config}}, options) {
+    login = new RegExp(`^${login}$`, "i")
+
+    const user = await User.findOne({login})
 
     invariant(
       !user, NotFound,
