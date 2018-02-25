@@ -14,8 +14,10 @@ if (process.env.NODE_ENV === "production") {
   excludes.push("stack")
 }
 
-const formatError = err => omit({
-  ...defaults, ...err, ...err.originalError, stack: err.stack
-}, excludes)
+const formatError = err => (
+  omit({
+    ...defaults, ...err, ...err.originalError, stack: err.stack
+  }, excludes)
+)
 
 export default formatError

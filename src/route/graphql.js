@@ -7,6 +7,7 @@ import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 import noop from "core/middleware/noop"
 
 import checkCtorCall from "core/helper/util/checkCtorCall"
+import formatError from "core/graphql/formatError"
 import schema from "core/base/graphql"
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
@@ -30,7 +31,9 @@ const actionGraphiQL = async function(ctx, next) {
 }
 
 // GraphQL queries/mutations/subscriptions handler
-const actionGraphQL = graphqlKoa(async context => ({schema, context}))
+const actionGraphQL = graphqlKoa(async context => ({
+  schema, context, formatError
+}))
 
 const r = new Router()
 
