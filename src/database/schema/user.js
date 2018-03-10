@@ -1,4 +1,4 @@
-import moment from "moment"
+import now from "core/helper/util/now"
 
 /**
  * Get schema of this model
@@ -41,7 +41,7 @@ const user = ({TString, TNumber, TDate}, {roles, statuses}) => ({
   dates: {
     registeredAt: {
       type: TDate,
-      default: moment
+      default: now
     },
     lastVisit: {
       type: TDate,

@@ -1,4 +1,4 @@
-import moment from "moment"
+import now from "core/helper/util/now"
 
 const chapter = ({TString, TDate}) => ({
   title: {
@@ -20,11 +20,11 @@ const chapter = ({TString, TDate}) => ({
   dates: {
     createdAt: {
       type: TDate,
-      default: moment
+      default: now
     },
     updatedAt: {
       type: TDate,
-      default: moment
+      default: now
     }
   }
 })

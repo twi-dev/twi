@@ -30,9 +30,9 @@ const getDestFilename = (filename, src, dest) => (
  * @param object handlers
  */
 function mapHandlers(watcher, handlers) {
-  const keys = Object.keys(handlers)
+  const names = Object.keys(handlers)
 
-  for (let name of keys) {
+  for (let name of names) {
     const handler = handlers[name]
 
     // Cut and decapitalize handler name

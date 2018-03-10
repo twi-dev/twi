@@ -1,4 +1,4 @@
-import moment from "moment"
+import now from "core/helper/util/now"
 
 const session = ({TString, TDate, TObjectId}) => ({
   userId: {
@@ -23,11 +23,11 @@ const session = ({TString, TDate, TObjectId}) => ({
   dates: {
     firstLogin: {
       type: TDate,
-      default: moment
+      default: now
     },
     lastLogin: {
       type: TDate,
-      default: moment
+      default: now
     }
   },
   tokenUUID: {

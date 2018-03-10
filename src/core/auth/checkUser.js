@@ -18,7 +18,7 @@ const checkUserDecorator = message => resolver => async function(
 
   invariant((!ctx.state.user || !ctx.isAuthenticated()), Unauthorized, message)
 
-  return await resolver(parent, args, ctx, ...others)
+  return resolver(parent, args, ctx, ...others)
 }
 
 /**

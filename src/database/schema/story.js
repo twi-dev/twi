@@ -1,4 +1,4 @@
-import moment from "moment"
+import now from "core/helper/util/now"
 
 const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
   title: {
@@ -55,7 +55,7 @@ const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
   dates: {
     createdAt: {
       type: TDate,
-      default: moment
+      default: now
     },
     updatedAt: {
       type: TDate,
