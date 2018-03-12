@@ -11,13 +11,15 @@ let babelrc = null
 
 const assign = Object.assign
 
+const EXTENSIONS = ["js", "jsx", "mjs", "es6"]
+
 /**
  * Check if given file is JS
  *
  * @param string filename – a path to file
  */
 const isJS = filename => (
-  ["js", "jsx", "mjs", "es6"].includes(extname(filename).slice(1))
+  EXTENSIONS.includes(extname(filename).slice(1))
 )
 
 /**
