@@ -4258,6 +4258,10 @@ joi@^6.10.1:
     moment "2.x.x"
     topo "1.x.x"
 
+js-flock@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/js-flock/-/js-flock-3.1.6.tgz#97e3d4356e396e50817dcb41e0f04ff61cc23bdb"
+
 js-string-escape@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/js-string-escape/-/js-string-escape-1.0.1.tgz#e2625badbc0d67c7533e9edc1068c587ae4137ef"
@@ -7590,7 +7594,7 @@ vinyl@^0.5.0:
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
 
-vinyl@^2.0.0:
+vinyl@^2.0.0, vinyl@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/vinyl/-/vinyl-2.1.0.tgz#021f9c2cf951d6b939943c89eb5ee5add4fd924c"
   dependencies:

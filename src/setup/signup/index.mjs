@@ -3,7 +3,7 @@ import {hash} from "bcryptjs"
 import prompt from "setup/helper/prompt"
 
 import log from "core/log"
-import getConfig from "core/base/getConfig"
+import config from "core/config"
 
 import createConnection from "core/base/database"
 import User from "database/model/User"
@@ -37,8 +37,8 @@ async function getPassword() {
   return hash(res.password, 15)
 }
 
-async function createSU(env) {
-  const {database} = await getConfig(env)
+async function createSU() {
+  const {database} = config
 
   const connection = await createConnection(database)
 

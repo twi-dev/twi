@@ -11,7 +11,9 @@ let babelrc = null
 
 const assign = Object.assign
 
-const EXTENSIONS = ["js", "jsx", "mjs", "es6"]
+const EXTENSIONS = ["js", "mjs"]
+
+const EXTENSIONS_REGEXPR = new RegExp(`.(${EXTENSIONS.join("|")})$`, "i")
 
 /**
  * Check if given file is JS
@@ -38,16 +40,19 @@ function transformFile(file, enc, {env: {test}}, cb) {
 
   console.log(fmt("Compile %s", [file.path]))
 
+  const [path, relative] = [file.path, file.relative]
+    .map(p => p.replace(EXTENSIONS_REGEXPR, ".js"))
+
   try {
     const contents = transform(
       String(file.contents),
       assign({}, babelrc, {
         babelrc: false,
-        filename: file.path,
-        filenameRelative: file.relative,
+        filename: path,
+        filenameRelative: relative,
         sourceMap: Boolean(file.sourceMap),
-        sourceFileName: file.relative,
-        sourceMapTarget: file.relative
+        sourceFileName: relative,
+        sourceMapTarget: relative
       })
     )
 
@@ -57,6 +62,7 @@ function transformFile(file, enc, {env: {test}}, cb) {
 
     file.contents = Buffer.from(contents.code)
     file.babel = contents.metadata
+    file.path = path
   } catch (err) {
     return cb(err)
   }
