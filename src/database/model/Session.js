@@ -3,7 +3,6 @@ import {compare} from "bcryptjs"
 import ms from "ms"
 import uuid from "uuid"
 import pick from "lodash/pick"
-import moment from "moment"
 import invariant from "@octetstream/invariant"
 
 import {sign, verify} from "core/helper/wrapper/jwt"
@@ -46,7 +45,7 @@ class Session extends Model {
 
     const accessToken = {
       type,
-      expires: new Date(moment().add(ms(expiresIn))),
+      expires: new Date(Date.now() + ms(expiresIn)),
       payload: await sign(payload, config.secret.accessToken, {
         expiresIn
       })
@@ -133,7 +132,7 @@ class Session extends Model {
       pick(user, ["id", "role", "status"]), config.jwt, true
     )
 
-    session.dates.lastLogin = moment()
+    session.dates.lastLogin = new Date()
 
     await session.save()
 
@@ -163,7 +162,7 @@ class Session extends Model {
   static async findOneCurrent(refreshToken, config, options = {}) {
     const tokenUUID = await verify(refreshToken, config.jwt.secret.refreshToken)
 
-    return await this.findOne({tokenUUID}, options)
+    return this.findOne({tokenUUID}, options)
   }
 }
 

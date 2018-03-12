@@ -10,7 +10,7 @@ class Genre extends Model {
   static async createOne(genre, options = {}) {
     const code = nano()
 
-    return await super.createOne({...genre, code}, options)
+    return super.createOne({...genre, code}, options)
   }
 
   static async createMany(genres, options = {}) {
@@ -22,7 +22,7 @@ class Genre extends Model {
       }
     }
 
-    return await super.createMany(genres, options)
+    return super.createMany(genres, options)
   }
 }
 

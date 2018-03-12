@@ -83,7 +83,7 @@ class Story extends Model {
       }
     }
 
-    return await super.createOne({...story, publisher, slug, chapters}, options)
+    return super.createOne({...story, publisher, slug, chapters}, options)
   }
 
   // NOTE: Just an unallowed method
@@ -109,7 +109,7 @@ class Story extends Model {
 
     await story.save()
 
-    return await this._tryConvert(chapter, options)
+    return this._tryConvert(chapter, options)
   }
 
   /**
@@ -145,7 +145,7 @@ class Story extends Model {
 
     story = await story.save()
 
-    return await this._tryConvert(story, options)
+    return this._tryConvert(story, options)
   }
 
   // static async addOneVote(user, story, vote, options = {}) {}
@@ -180,7 +180,7 @@ class Story extends Model {
 
     story = await story.save()
 
-    return await this._tryConvert(story, options)
+    return this._tryConvert(story, options)
   }
 
   static async updateOneDescription(viewer, story, description, options = {}) {
@@ -200,7 +200,7 @@ class Story extends Model {
 
     story = await story.save()
 
-    return await this._tryConvert(story, options)
+    return this._tryConvert(story, options)
   }
 
   static async updateOneStatus(viewer, story, isFinished, options = {}) {
@@ -222,7 +222,7 @@ class Story extends Model {
 
     await story.save()
 
-    return await this._tryConvert(story, options)
+    return this._tryConvert(story, options)
   }
 
   // static async updateOneType(viewer, story, translation, options = {}) {}
@@ -238,7 +238,7 @@ class Story extends Model {
    * @throws {NotFound} – if no stories created by this user founded
    */
   static async findManyByPublisher(publisher, cursor, options = {}) {
-    return await super.findMany(cursor, {publisher}, undefined, options)
+    return super.findMany(cursor, {publisher}, undefined, options)
   }
 
   /**
@@ -264,7 +264,7 @@ class Story extends Model {
 
     invariant(!story, NotFound, "Can't find the story with slug: %s", slug)
 
-    return await this._tryConvert(story, options)
+    return this._tryConvert(story, options)
   }
 
   static async removeOne(viewer, story) {

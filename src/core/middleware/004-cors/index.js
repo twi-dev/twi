@@ -57,7 +57,7 @@ function cors(options) {
     ctx.vary("Origin")
 
     if (!requestOrigin) {
-      return await next()
+      return next()
     }
 
     let origin
@@ -66,7 +66,7 @@ function cors(options) {
       const origin = await options.origin(ctx)
 
       if (!origin) {
-        return await next()
+        return next()
       }
     } else {
       origin = options.origin || requestOrigin
@@ -92,7 +92,7 @@ function cors(options) {
       }
 
       if (!options.keepHeadersOnError) {
-        return await next()
+        return next()
       }
 
       try {
@@ -113,7 +113,7 @@ function cors(options) {
       // The request is outside the scope of this specification.
       if (!ctx.get("Access-Control-Request-Method")) {
         // this not preflight request, ignore it
-        return await next()
+        return next()
       }
 
       ctx.set("Access-Control-Allow-Origin", origin)

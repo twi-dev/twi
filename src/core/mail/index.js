@@ -16,12 +16,12 @@ const sendPlain = async (to, subject, content, options) => {
 
   const type = options.html === true ? "text" : "html"
 
-  return await transporter.sendMail({
+  return transporter.sendMail({
     ...message, [type]: content
   })
 }
 
-const send = async (to, subject, filename, locals, options) => await sendPlain(
+const send = async (to, subject, filename, locals, options) => sendPlain(
   to, subject, await render(join(MAIL_VIEWS, filename), locals), {
     ...options, html: true
   }

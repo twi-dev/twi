@@ -47,6 +47,7 @@
   "dependencies": {
     "@octetstream/invariant": "1.1.0",
     "@octetstream/promisify": "1.3.2",
+    "awaity": "^0.0.30",
     "bcryptjs": "2.4.3",
     "camelcase": "4.1.0",
     "chalk": "2.3.2",

@@ -12,11 +12,11 @@ const defaults = {
 
 const multipart = options => async function multipartParser(ctx, next) {
   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
-    return await next()
+    return next()
   }
 
   if (!ctx.is("multipart/form-data")) {
-    return await next()
+    return next()
   }
 
   const {processFile} = {...defaults, ...options}

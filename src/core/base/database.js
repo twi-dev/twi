@@ -30,9 +30,7 @@ function getConnectionString({host, port, name}) {
 async function createConnection(config = {}) {
   const connectionString = getConnectionString(config)
 
-  return await mongoose.connect(connectionString, {
-    promiseLibrary: Promise
-  })
+  return mongoose.connect(connectionString, {promiseLibrary: Promise})
 }
 
 export default createConnection

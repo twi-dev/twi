@@ -44,16 +44,16 @@ class Chapter extends Model {
       rendered: md.render(chapter.text)
     }
 
-    return await super.createOne({...chapter, content}, options)
+    return super.createOne({...chapter, content}, options)
   }
 
   static async createMany(chapters, options = {}) {
     if (!isArray(chapters)) {
-      return await this.createOne(chapters, options)
+      return this.createOne(chapters, options)
     }
 
     if (chapters.length === 1) {
-      return await this.createOne(chapters, options)
+      return this.createOne(chapters, options)
     }
 
     for (const [idx, chapter] of chapters.entries()) {
@@ -63,7 +63,7 @@ class Chapter extends Model {
       }
     }
 
-    return await super.createMany(chapters, options)
+    return super.createMany(chapters, options)
   }
 }
 

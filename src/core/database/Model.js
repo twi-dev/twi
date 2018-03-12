@@ -71,7 +71,7 @@ class Model extends MongooseModel {
       docs[idx] = isFunction(doc.toJS) ? await doc.toJS() : doc
     }
 
-    return await Promise.all(docs)
+    return Promise.all(docs)
   }
 
   /**
@@ -92,7 +92,7 @@ class Model extends MongooseModel {
 
     doc = await this(doc).save(options)
 
-    return await this._tryConvert(doc, options)
+    return this._tryConvert(doc, options)
   }
 
   /**
@@ -107,16 +107,16 @@ class Model extends MongooseModel {
     options = this._getOptions(options)
 
     if (!isArray(docs)) {
-      return await this.createOne(docs, options)
+      return this.createOne(docs, options)
     }
 
     if (docs.length === 1) {
-      return await this.createOne(docs.shift(), options)
+      return this.createOne(docs.shift(), options)
     }
 
     docs = await this.insertMany(docs, options)
 
-    return await this._tryConvert(docs, options)
+    return this._tryConvert(docs, options)
   }
 
   static async findOne(filters, options = {}) {
@@ -127,7 +127,7 @@ class Model extends MongooseModel {
 
     const doc = await super.findOne().where({...filters}).exec()
 
-    return await this._tryConvert(doc, options)
+    return this._tryConvert(doc, options)
   }
 
   /**
@@ -153,7 +153,7 @@ class Model extends MongooseModel {
 
     const docs = await this.find({...filters}).skip(skip).limit(limit)
 
-    return await this._tryConvert(docs, options)
+    return this._tryConvert(docs, options)
   }
 
   /**
@@ -165,7 +165,7 @@ class Model extends MongooseModel {
    * @param {object} options
    */
   static async findOneById(id, options = {}) {
-    return await this.findOne({
+    return this.findOne({
       _id: id
     }, options)
   }
@@ -188,7 +188,7 @@ class Model extends MongooseModel {
       [filters, cursor] = [cursor, undefined]
     }
 
-    return await this.findMany(cursor, {
+    return this.findMany(cursor, {
       ...filters,
       _id: {
         $in: ids

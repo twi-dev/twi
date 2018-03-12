@@ -34,7 +34,7 @@ async function getPassword() {
     log.warn("Too bad. Password confirmation failed.")
   }
 
-  return await hash(res.password, 15)
+  return hash(res.password, 15)
 }
 
 async function createSU(env) {

@@ -62,7 +62,7 @@ class User extends Model {
       user.status = User.statuses.user
     }
 
-    return await super.createOne({...user, password}, options)
+    return super.createOne({...user, password}, options)
   }
 
   // NOTE: Just an unallowed method
@@ -122,7 +122,7 @@ class User extends Model {
 
     invariant(!user, NotFound, "Can't find requested user.")
 
-    return await this._tryConvert(user, options)
+    return this._tryConvert(user, options)
   }
 
   /**

@@ -42,7 +42,7 @@ function favicon(path = DEFAULT_PATH, options = {}) {
   let icon = null
   return async function faviconMiddleware(ctx, next) {
     if (ctx.path !== "/favicon.ico") {
-      return await next()
+      return next()
     }
 
     if (ctx.method !== "GET" && ctx.method !== "HEAD") {

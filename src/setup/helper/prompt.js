@@ -27,7 +27,7 @@ const normalizeQuestions = obj => mapObject(obj, question => {
 async function tryPrompt(question) {
   while (true) {
     try {
-      return await inquirer.prompt(isArray(question) ? question : [question])
+      return inquirer.prompt(isArray(question) ? question : [question])
     } catch (err) {
       if (!isString(err)) {
         throw err
@@ -44,6 +44,7 @@ async function processQuestions(questions) {
   for (const [key, question] of objectIterator.entries(questions)) {
     if (isPlainObject(question)) {
       res[key] = await processQuestions(question)
+
       continue
     }
 

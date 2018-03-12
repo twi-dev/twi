@@ -64,7 +64,7 @@ class Client extends GraphQLClient {
   async request(path, variables = {}) {
     const query = await this.__readRequestFile(path)
 
-    return await super.request(query, variables)
+    return super.request(query, variables)
   }
 }
 
