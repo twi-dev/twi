@@ -1,13 +1,11 @@
 import server from "core/base"
-import getConfig from "core/base/getConfig"
+import config from "core/config"
 
 const description = "run Twi server"
 
-async function run(env) {
-  const config = await getConfig(env)
-
-  await server(config)
-}
+// FIXME: Config passing is deprecated.
+// FIXME: Remove all references from the application.
+const run = () => server(config)
 
 export default run
 export {
