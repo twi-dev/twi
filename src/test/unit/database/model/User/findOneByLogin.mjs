@@ -14,7 +14,9 @@ test.beforeEach(async t => {
   const email = internet.email()
   const password = internet.password()
 
-  await User.createOne({login, email, password})
+  const args = {user: {login, email, password}}
+
+  await User.createOne({args})
 
   t.context.login = login
 })

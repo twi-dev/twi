@@ -11,7 +11,9 @@ async function createUser(t) {
   const email = `${nanoid()}${internet.email()}`
   const password = internet.password()
 
-  const user = await User.createOne({login, email, password})
+  const args = {user: {login, email, password}}
+
+  const user = await User.createOne({args})
 
   t.context.user = user
 }

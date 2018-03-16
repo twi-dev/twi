@@ -5,6 +5,7 @@ import uuid from "uuid"
 import pick from "lodash/pick"
 import invariant from "@octetstream/invariant"
 
+import config from "core/config"
 import {sign, verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/database"
 
@@ -12,6 +13,8 @@ import User from "database/model/User"
 
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
+
+const {jwt} = config
 
 @createModel
 class Session extends Model {
@@ -38,15 +41,15 @@ class Session extends Model {
    *
    * @private
    */
-  static async __generateTokens(payload, config, noRefreshToken = false) {
-    const expiresIn = config.expiresIn || "15m"
+  static async __generateTokens(payload, noRefreshToken = false) {
+    const expiresIn = jwt.expiresIn || "15m"
 
     const type = Session.defaultType
 
     const accessToken = {
       type,
       expires: new Date(Date.now() + ms(expiresIn)),
-      payload: await sign(payload, config.secret.accessToken, {
+      payload: await sign(payload, jwt.secret.accessToken, {
         expiresIn
       })
     }
@@ -58,7 +61,7 @@ class Session extends Model {
       refreshToken = {
         type,
         tokenUUID,
-        payload: await sign(tokenUUID, config.secret.refreshToken)
+        payload: await sign(tokenUUID, jwt.secret.refreshToken)
       }
     }
 
@@ -80,8 +83,11 @@ class Session extends Model {
    * @throws {NotFound} when requested user not found by his login
    * @throws {Error} when wrong password given
    */
-  static async sign({login, password}, {ip, client, app: {config}}, options) {
-    login = new RegExp(`^${login}$`, "i")
+  static async sign({args, ctx, options}) {
+    const {password} = args.user
+    const {client, ip} = ctx
+
+    const login = new RegExp(`^${args.user.login}$`, "i")
 
     const user = await User.findOne({login})
 
@@ -93,7 +99,7 @@ class Session extends Model {
     invariant(!(await compare(password, user.password)), "Wrong password.")
 
     const tokens = await this.__generateTokens(
-      pick(user, ["id", "role", "status"]), config.jwt
+      pick(user, ["id", "role", "status"])
     )
 
     await super.createOne({
@@ -116,8 +122,8 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  static async refresh(refreshToken, {app: {config}}) {
-    const session = await this.findOneCurrent(refreshToken, config, {
+  static async refresh(refreshToken) {
+    const session = await this.findOneCurrent(refreshToken, {
       toJS: false
     })
 
@@ -129,7 +135,7 @@ class Session extends Model {
     invariant(!user, NotFound, "Can't find user for this session.")
 
     const tokens = await this.__generateTokens(
-      pick(user, ["id", "role", "status"]), config.jwt, true
+      pick(user, ["id", "role", "status"]), true
     )
 
     session.dates.lastLogin = new Date()
@@ -144,8 +150,8 @@ class Session extends Model {
    *
    * @param {string}
    */
-  static async revoke(refreshToken, {app: {config}}) {
-    const currentSession = await this.findOneCurrent(refreshToken, config)
+  static async revoke(refreshToken) {
+    const currentSession = await this.findOneCurrent(refreshToken)
 
     const sessions = await this.find({
       userId: currentSession.userId,
@@ -159,8 +165,8 @@ class Session extends Model {
     return removed.map(({id}) => id)
   }
 
-  static async findOneCurrent(refreshToken, config, options = {}) {
-    const tokenUUID = await verify(refreshToken, config.jwt.secret.refreshToken)
+  static async findOneCurrent(refreshToken, options = {}) {
+    const tokenUUID = await verify(refreshToken, jwt.secret.refreshToken)
 
     return this.findOne({tokenUUID}, options)
   }

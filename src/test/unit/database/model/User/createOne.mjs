@@ -25,7 +25,9 @@ test("Should create user with given params.", async t => {
   const email = t.context.email
   const password = t.context.password
 
-  const user = await User.createOne({login, email, password})
+  const args = {user: {login, email, password}}
+
+  const user = await User.createOne({args})
 
   t.is(user.login, login)
   t.is(user.email, email)
@@ -41,7 +43,9 @@ test("Should always create a USER even if \"role\" passed", async t => {
 
   const role = User.roles.su
 
-  const user = await User.createOne({login, email, password, role})
+  const args = {user: {login, email, password, role}}
+
+  const user = await User.createOne({args})
 
   t.false(user.isSu)
   t.not(user.role, "SU")
@@ -61,7 +65,9 @@ test(
 
     const status = User.statuses.activated
 
-    const user = await User.createOne({login, email, password, status})
+    const args = {user: {login, email, password, status}}
+
+    const user = await User.createOne({args})
 
     t.false(user.isActivated)
     t.not(user.status, "ACTIVATED")
@@ -78,7 +84,9 @@ test("Created user should be returned as plain object by default", async t => {
   const email = t.context.email
   const password = t.context.password
 
-  const user = await User.createOne({login, email, password})
+  const args = {user: {login, email, password}}
+
+  const user = await User.createOne({args})
 
   t.true(isPlainObject(user))
 })
@@ -92,9 +100,11 @@ test(
     const email = t.context.email
     const password = t.context.password
 
-    const user = await User.createOne({login, email, password}, {
-      toJS: false
-    })
+    const args = {user: {login, email, password}}
+
+    const options = {toJS: false}
+
+    const user = await User.createOne({args, options})
 
     t.true(user instanceof Document)
   }
@@ -115,7 +125,7 @@ test("Should throw a TypeError on invocation witout any arguments", async t => {
 test("Should throw a TypeError when user data object is empty", async t => {
   t.plan(3)
 
-  const err = await t.throws(User.createOne({}))
+  const err = await t.throws(User.createOne({args: {user: {}}}))
 
   t.true(err instanceof TypeError)
   t.is(err.message, "User information cannot be empty.")

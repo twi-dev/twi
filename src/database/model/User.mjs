@@ -44,7 +44,9 @@ class User extends Model {
    *
    * @return {object}
    */
-  static async createOne(user, options = {}) {
+  static async createOne({args, options} = {}) {
+    const {user} = args || {}
+
     invariant(
       !isPlainObject(user), TypeError,
       "User data information should be passed as plain JavaScript object."
@@ -65,7 +67,6 @@ class User extends Model {
     return super.createOne({...user, password}, options)
   }
 
-  // NOTE: Just an unallowed method
   static async createMany() {
     invariant(
       true,

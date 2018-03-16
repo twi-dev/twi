@@ -20,7 +20,7 @@
 
     "ava/no-ignored-test-files": ["error", {
       "files": [
-        "src/test/unit/**/*.{js,jsx}"
+        "src/test/unit/**/*.mjs"
       ]
     }]
   }

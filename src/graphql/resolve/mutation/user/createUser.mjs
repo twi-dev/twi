@@ -1,11 +1,10 @@
 import User from "database/model/User"
 import Session from "database/model/Session"
 
-async function createUser(_, {user}, ctx) {
-  // TODO: Add an email verification using redis and an email service.
-  await User.createOne(user)
+async function createUser(params) {
+  await User.createOne(params)
 
-  return Session.sign(user, ctx)
+  return Session.sign(params)
 }
 
 export default createUser
