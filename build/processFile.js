@@ -1,15 +1,9 @@
-const {readFile} = require("fs")
-const {join, extname} = require("path")
+const {extname} = require("path")
 
-const applySourceMap = require("vinyl-sourcemaps-apply")
 const through = require("through2")
 const {transform} = require("@babel/core")
 
 const fmt = require("sprintf-js").vsprintf
-
-let babelrc = null
-
-const assign = Object.assign
 
 const EXTENSIONS = ["js", "mjs"]
 
@@ -20,7 +14,7 @@ const EXTENSIONS_REGEXPR = new RegExp(`.(${EXTENSIONS.join("|")})$`, "i")
  *
  * @param string filename – a path to file
  */
-const isJS = filename => (
+const isJSFile = filename => (
   EXTENSIONS.includes(extname(filename).slice(1))
 )
 
@@ -32,9 +26,10 @@ const isJS = filename => (
  * @param object config
  * @param function cb
  */
-function transformFile(file, enc, {env: {test}}, cb) {
-  if (!isJS(file.path)) {
+function transformFile(file, enc, cb) {
+  if (!isJSFile(file.path)) {
     console.log(fmt("Copy %s", [file.path]))
+
     return cb(null, file)
   }
 
@@ -45,20 +40,14 @@ function transformFile(file, enc, {env: {test}}, cb) {
 
   try {
     const contents = transform(
-      String(file.contents),
-      assign({}, babelrc, {
-        babelrc: false,
+      String(file.contents), {
+        babelrc: true,
         filename: path,
         filenameRelative: relative,
         sourceMap: Boolean(file.sourceMap),
-        sourceFileName: relative,
-        sourceMapTarget: relative
-      })
+        sourceFileName: relative
+      }
     )
-
-    if (contents.map && test) {
-      applySourceMap(file, contents.map)
-    }
 
     file.contents = Buffer.from(contents.code)
     file.babel = contents.metadata
@@ -70,33 +59,8 @@ function transformFile(file, enc, {env: {test}}, cb) {
   return cb(null, file)
 }
 
-const processFile = config => through.obj((file, enc, cb) => {
-  function fulfill(err, content) {
-    if (err != null) {
-      return cb(err)
-    }
-
-    if (!content) {
-      return cb(new Error("Babelrc required."))
-    }
-
-    try {
-      babelrc = JSON.parse(content)
-
-      // Add node-specific dynamic import polyfill
-      babelrc.plugins.push("dynamic-import-node")
-    } catch (err) {
-      return cb(err)
-    }
-
-    transformFile(file, enc, config, cb)
-  }
-
-  if (!babelrc) {
-    return readFile(join(config.root, ".babelrc"), fulfill)
-  }
-
-  transformFile(file, enc, config, cb)
-})
+const processFile = () => through.obj((file, enc, cb) => (
+  void transformFile(file, enc, cb)
+))
 
 module.exports = processFile

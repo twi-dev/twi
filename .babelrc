@@ -13,6 +13,7 @@
     "@babel/proposal-optional-chaining",
     "@babel/proposal-export-namespace",
     "@babel/proposal-export-default",
+    "@babel/proposal-do-expressions",
     "@babel/transform-modules-commonjs",
     ["@babel/proposal-object-rest-spread", {
       "useBuiltIns": true
