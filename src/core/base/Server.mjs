@@ -4,7 +4,7 @@ import Koa from "koa"
 import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
-import deepFreeze from "deep-freeze"
+import deepFreeze from "js-flock/deepFreeze"
 import invariant from "@octetstream/invariant"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
@@ -20,17 +20,7 @@ class Server extends Koa {
 
     invariant(!isInteger(config.port), TypeError, "Port should be an integer.")
 
-    invariant(
-      !isArray(config.session.secret), TypeError,
-      "Session secret keys should be an array. Received %s",
-      getType(config.session.secret)
-    )
-
     super()
-
-    this.keys = [
-      ...config.session.secret
-    ]
 
     // Private member
     this.__config = deepFreeze({
