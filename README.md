@@ -2,10 +2,10 @@
 
 Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Magic** community.
 
-[![dependencies Status](https://david-dm.org/twi-project/twi-server/status.svg)](https://david-dm.org/twi-project/twi-server)
-[![devDependencies Status](https://david-dm.org/twi-project/twi-server/dev-status.svg)](https://david-dm.org/twi-project/twi-server?type=dev)
-[![Build Status](https://travis-ci.org/twi-project/twi-server.svg?branch=master)](https://travis-ci.org/twi-project/twi-server)
-[![Code Coverage](https://codecov.io/github/twi-project/twi-server/coverage.svg?branch=master)](https://codecov.io/github/twi-project/twi-server?branch=master)
+[![dependencies Status](https://david-dm.org/twi-project/twi-server/status.svg)](https://david-dm.org/twi-project/api-service)
+[![devDependencies Status](https://david-dm.org/twi-project/api-service/dev-status.svg)](https://david-dm.org/twi-project/api-service?type=dev)
+[![Build Status](https://travis-ci.org/twi-project/api-service.svg?branch=master)](https://travis-ci.org/twi-project/api-service)
+[![Code Coverage](https://codecov.io/github/twi-project/api-service/coverage.svg?branch=master)](https://codecov.io/github/twi-project/api-service?branch=master)
 
 🚧 **IMPORTANT NOTE: Project is still in development
 and isn't ready for production! Stay in touch.**
