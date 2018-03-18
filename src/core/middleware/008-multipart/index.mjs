@@ -4,8 +4,6 @@ import isEmpty from "lodash/isEmpty"
 
 import map from "core/helper/iterator/async/recursiveObjectMap"
 
-console.log(isFile)
-
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
 const defaults = {
