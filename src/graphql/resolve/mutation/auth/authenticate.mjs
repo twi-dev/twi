@@ -1,7 +1,7 @@
+import bind from "core/graphql/bindResolver"
+
 import Session from "database/model/Session"
 
-const authenticate = (_, {credentials}, ctx) => (
-  Session.sign(credentials, ctx)
-)
+const authenticate = params => Session.sign(params)
 
-export default authenticate
+export default bind(authenticate)

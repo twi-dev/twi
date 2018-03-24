@@ -18,13 +18,13 @@ import NotFound from "core/error/http/NotFound"
 const {jwt} = config
 
 async function generateToken(payload, options = {}) {
-  const expiresIn = options.expires
-    ? time(Date.now(), ms(options.expires))
-    : null
+  let {expires} = options
 
-  payload = await sign(payload, options.secret, {expiresIn})
+  expires = expires ? time(Date.now(), ms(expires)) : null
 
-  return {payload, expires: expiresIn}
+  payload = await sign(payload, options.secret, {expiresIn: options.expires})
+
+  return {payload, expires}
 }
 
 @createModel
@@ -39,47 +39,6 @@ class Session extends Model {
 
   static async createMany() {
     invariant(true, "Method not available on this model.")
-  }
-
-  /**
-   * Generate an access token and refreshToken
-   *
-   * @param {object} payload - payload for an accessToken
-   * @param {object} config – JWT configuration
-   * @param {boolean} noRefreshToken – generate only accessToken
-   *
-   * @return {object}
-   *
-   * @private
-   */
-  static async generateTokens(payload, noRefreshToken = false) {
-    const expiresIn = jwt.expiresIn || "15m"
-
-    const type = Session.defaultType
-
-    const accessToken = {
-      type,
-      expires: new Date(Date.now() + ms(expiresIn)),
-      payload: await sign(payload, jwt.accessToken, {
-        expiresIn
-      })
-    }
-
-    let refreshToken = {}
-    if (noRefreshToken === false) {
-      const tokenUUID = uuid()
-
-      refreshToken = {
-        type,
-        tokenUUID,
-        payload: await sign(tokenUUID, jwt.refreshToken)
-      }
-    }
-
-    return {
-      accessToken,
-      refreshToken
-    }
   }
 
   /**
@@ -139,8 +98,13 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  static async refresh(refreshToken) {
-    const session = await this.findOneCurrent(refreshToken, {toJS: false})
+  static async refresh(params) {
+    const session = await this.findOneCurrent({
+      ...params,
+      options: {
+        ...params.options, toJS: false
+      }
+    })
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
@@ -149,15 +113,19 @@ class Session extends Model {
     // FIXME: Should I remove the session if user not exists? Hm...
     invariant(!user, NotFound, "Can't find user for this session.")
 
-    const tokens = await this.generateTokens(
-      pick(user, ["id", "role", "status"]), true
+    const accessToken = await generateToken(
+      pick(user, ["id", "role", "status"]), jwt.accessToken
     )
 
     session.dates.lastLogin = new Date()
 
     await session.save()
 
-    return tokens.accessToken
+    const type = Session.defaultType
+
+    return {
+      ...accessToken, type
+    }
   }
 
   /**
@@ -183,9 +151,9 @@ class Session extends Model {
   static async findOneCurrent({args, options}) {
     const {refreshToken} = args
 
-    const payload = await verify(refreshToken, jwt.refreshToken)
+    const payload = await verify(refreshToken, jwt.refreshToken.secret)
 
-    return this.findOne({tokenUUID: payload.uuid}, options)
+    return this.findOne({tokenUUID: payload.uuid || payload}, options)
   }
 }
 
