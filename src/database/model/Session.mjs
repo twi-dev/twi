@@ -4,7 +4,7 @@ import ms from "ms"
 import uuid from "uuid"
 import pick from "lodash/pick"
 import invariant from "@octetstream/invariant"
-import time from "date-fns/add_milliseconds"
+import time from "date-fns/addMilliseconds"
 
 import config from "core/config"
 import {sign, verify} from "core/helper/wrapper/jwt"
