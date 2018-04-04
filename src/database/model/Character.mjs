@@ -1,19 +1,32 @@
 import {createModel, Model} from "core/database"
 
 import nanoid from "core/helper/util/nanoid"
+import getFieldSelectionsList from "core/graphql/getFieldSelectionsList"
 
 // Set code length to 4
 const nano = nanoid.bind(4)
 
 @createModel
 class Character extends Model {
-  static async createOne(character, options = {}) {
-    const code = nano()
+  static async findMany({args, options, node}) {
+    const selections = getFieldSelectionsList(node)
 
-    return await super.createOne({...character, code}, options)
+    const users = await super.findMany(args).select(selections)
+
+    return this._tryConvert(users, options)
   }
 
-  static async createMany(characters, options = {}) {
+  static async createOne({args, options = {}}) {
+    const {character} = args
+
+    const code = nano()
+
+    return super.createOne({...character, code}, options)
+  }
+
+  static async createMany({args, options = {}}) {
+    const {characters} = args
+
     for (const [idx, character] of characters.entries()) {
       const code = nano()
 
@@ -22,7 +35,7 @@ class Character extends Model {
       }
     }
 
-    return await super.createMany(characters, options)
+    return super.createMany(characters, options)
   }
 }
 

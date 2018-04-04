@@ -5,16 +5,21 @@ import isString from "lodash/isString"
 
 import {createModel, Model} from "core/database"
 
+import fromFields from "core/database/decorator/selectFromGraphQLFields"
+import toObject from "core/database/decorator/toObject"
+
 import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
-const md = new Markdown({
-  breaks: true
-})
+const md = new Markdown({breaks: true})
 
 @createModel
 class Chapter extends Model {
+  @toObject @fromFields static findMany({args}) {
+    return super.findMany(args)
+  }
+
   /**
    * Create a new chapter at exiting story
    *
@@ -23,7 +28,9 @@ class Chapter extends Model {
    *
    * @return {object}
    */
-  static async createOne(chapter, options = {}) {
+  static async createOne({args, options = {}}) {
+    const {chapter} = args
+
     invariant(
       !chapter, TypeError, "Chapter is required. Received %s", getType(chapter)
     )
@@ -47,7 +54,9 @@ class Chapter extends Model {
     return super.createOne({...chapter, content}, options)
   }
 
-  static async createMany(chapters, options = {}) {
+  static async createMany({args, options = {}}) {
+    const {chapters} = args
+
     if (!isArray(chapters)) {
       return this.createOne(chapters, options)
     }

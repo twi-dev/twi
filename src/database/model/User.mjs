@@ -1,3 +1,5 @@
+import {deprecate} from "core-decorators"
+
 import {hash} from "bcryptjs"
 
 import invariant from "@octetstream/invariant"
@@ -5,6 +7,9 @@ import isPlainObject from "lodash/isPlainObject"
 import isEmpty from "lodash/isEmpty"
 
 import {createModel, Model} from "core/database"
+
+import fromFields from "core/database/decorator/selectFromGraphQLFields"
+import toObject from "core/database/decorator/toObject"
 
 import NotFound from "core/error/http/NotFound"
 
@@ -75,6 +80,24 @@ class User extends Model {
     )
   }
 
+  @toObject @fromFields static findMany({args}) {
+    return super.findMany(args)
+  }
+
+  @fromFields static _findByLogin({args}) {
+    const login = new RegExp(`^${args.login}$`, "i")
+
+    return super.findOne({login})
+  }
+
+  @deprecate(
+    "Deprecated because of naming policy changes. " +
+    "Use User.findByLogin instead."
+  )
+  static findOneByLogin(params) {
+    return this.findByLogin(params)
+  }
+
   /**
    * Get user by his login
    *
@@ -84,46 +107,29 @@ class User extends Model {
    *
    * @throws {NotFound} – when user is not found
    */
-  static async findOneByLogin(login, options = {}) {
-    const ref = login
+  @toObject static async findByLogin(params) {
+    const {args} = params
 
-    login = new RegExp(`^${login}$`, "i")
+    const user = await this._findByLogin(params)
 
-    const user = await this.findOne({login}, options)
-
-    invariant(!user, NotFound, "Can't find user with login %s.", String(ref))
-
-    return user
-  }
-
-  static async findOneByUsername(username, options = {}) {
-    const ref = username
-
-    // TODO: don't forget to validate format
-    username = new RegExp(`^${username}$`, "i")
-
-    const user = await this.findOne({
-      $or: [
-        {
-          login: username
-        },
-        {
-          email: username
-        }
-      ]
-    }, options)
-
-    invariant(!user, NotFound, "Can't find user with username %s.", String(ref))
+    invariant(
+      !user, NotFound,
+      "Can't find user with login %s.", String(args.login)
+    )
 
     return user
   }
 
-  static async findOneById(user, options = {}) {
-    user = await this.findById(user)
+  @fromFields static _findById({args}) {
+    return super.findById(args.id)
+  }
+
+  @toObject static async findById(params) {
+    const user = await this._findById(params)
 
     invariant(!user, NotFound, "Can't find requested user.")
 
-    return this._tryConvert(user, options)
+    return user
   }
 
   /**
@@ -222,12 +228,15 @@ class User extends Model {
   async toJS(options) {
     const user = await super.toJS(options)
 
-    const role = this.__role.toUpperCase()
-    const status = this.__status.toUpperCase()
-
-    return {
-      ...user, role, status
+    if (user.role != null) {
+      user.role = this.__role.toUpperCase()
     }
+
+    if (user.status != null) {
+      user.status = this.__status.toUpperCase()
+    }
+
+    return user
   }
 }
 

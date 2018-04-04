@@ -119,17 +119,6 @@ class Model extends MongooseModel {
     return this._tryConvert(docs, options)
   }
 
-  static async findOne(filters, options = {}) {
-    invariant(
-      !isPlainObject(filters), TypeError,
-      "Search rules object is requested. Received %s", getType(filters)
-    )
-
-    const doc = await super.findOne().where({...filters}).exec()
-
-    return this._tryConvert(doc, options)
-  }
-
   /**
    * Find whatever documents. (10 per page)
    *
@@ -138,22 +127,10 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findMany(cursor = 1, filters = {}, limit = 10, options = {}) {
-    options = this._getOptions(options)
-
-    if (isInteger(filters)) {
-      [limit, filters] = [filters, {}]
-    }
-
-    if (isPlainObject(limit)) {
-      [options, limit] = [limit, 10]
-    }
-
+  static findMany(filters = {}, cursor = 1, limit = 10) {
     const skip = limit * (cursor - 1)
 
-    const docs = await this.find({...filters}).skip(skip).limit(limit)
-
-    return this._tryConvert(docs, options)
+    return this.find().where(filters).skip(skip).limit(limit)
   }
 
   /**
@@ -164,10 +141,13 @@ class Model extends MongooseModel {
    *
    * @param {object} options
    */
-  static async findOneById(id, options = {}) {
-    return this.findOne({
-      _id: id
-    }, options)
+  static findOneById(id) {
+    return this.findById(id)
+  }
+
+  // DEPRECATED
+  static findManyById(...args) {
+    return this.findManyByIds(...args)
   }
 
   /**
@@ -177,23 +157,13 @@ class Model extends MongooseModel {
    *
    * @return {array}
    */
-  static async findManyById(ids, cursor, filters, options = {}) {
-    options = this._getOptions(options)
-
+  static findManyByIds(ids, cursor, limit) {
     invariant(
-      !isArray(ids), TypeError, "Documents IDs should be passed as array."
+      !isArray(ids), TypeError,
+      "Documents IDs should be passed as array."
     )
 
-    if (isPlainObject(cursor)) {
-      [filters, cursor] = [cursor, undefined]
-    }
-
-    return this.findMany(cursor, {
-      ...filters,
-      _id: {
-        $in: ids
-      }
-    }, options)
+    return this.findMany({_id: {$in: ids}}, cursor, limit)
   }
 
   /**

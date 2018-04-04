@@ -131,6 +131,10 @@
   version "7.0.0-beta.42"
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.0.0-beta.42.tgz#9aa8b3e5dc72abea6b4f686712a7363cb29ea057"
 
+"@babel/helper-plugin-utils@7.0.0-beta.44":
+  version "7.0.0-beta.44"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.0.0-beta.44.tgz#9f590bc3ae6daa8a10b853233baa3e25d263751d"
+
 "@babel/helper-remap-async-to-generator@7.0.0-beta.42":
   version "7.0.0-beta.42"
   resolved "https://registry.yarnpkg.com/@babel/helper-remap-async-to-generator/-/helper-remap-async-to-generator-7.0.0-beta.42.tgz#c27dd7789f3a9973493a67a7914ac9253e879071"
@@ -203,12 +207,12 @@
     "@babel/helper-plugin-utils" "7.0.0-beta.42"
     "@babel/plugin-syntax-decorators" "7.0.0-beta.42"
 
-"@babel/plugin-proposal-do-expressions@7.0.0-beta.42":
-  version "7.0.0-beta.42"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-do-expressions/-/plugin-proposal-do-expressions-7.0.0-beta.42.tgz#cb89db5cfd1c54944a1a1315c0bee92457790303"
+"@babel/plugin-proposal-do-expressions@^7.0.0-beta.44":
+  version "7.0.0-beta.44"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-do-expressions/-/plugin-proposal-do-expressions-7.0.0-beta.44.tgz#c88f2ef16388b27e039a941cbb0fd7e6dc8d85a3"
   dependencies:
-    "@babel/helper-plugin-utils" "7.0.0-beta.42"
-    "@babel/plugin-syntax-do-expressions" "7.0.0-beta.42"
+    "@babel/helper-plugin-utils" "7.0.0-beta.44"
+    "@babel/plugin-syntax-do-expressions" "7.0.0-beta.44"
 
 "@babel/plugin-proposal-export-default@7.0.0-beta.32":
   version "7.0.0-beta.32"
@@ -268,11 +272,11 @@
   dependencies:
     "@babel/helper-plugin-utils" "7.0.0-beta.42"
 
-"@babel/plugin-syntax-do-expressions@7.0.0-beta.42":
-  version "7.0.0-beta.42"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-do-expressions/-/plugin-syntax-do-expressions-7.0.0-beta.42.tgz#68b837adc9f611bcb0c9bb4fac20fcca08fa57b5"
+"@babel/plugin-syntax-do-expressions@7.0.0-beta.44":
+  version "7.0.0-beta.44"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-do-expressions/-/plugin-syntax-do-expressions-7.0.0-beta.44.tgz#3a0a5cd812edb2fed1e2b9c8d91670864b46f1f3"
   dependencies:
-    "@babel/helper-plugin-utils" "7.0.0-beta.42"
+    "@babel/helper-plugin-utils" "7.0.0-beta.44"
 
 "@babel/plugin-syntax-export-extensions@7.0.0-beta.32":
   version "7.0.0-beta.32"
@@ -1875,6 +1879,10 @@ core-assert@^0.2.0:
   dependencies:
     buf-compare "^1.0.0"
     is-error "^2.2.0"
+
+core-decorators@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/core-decorators/-/core-decorators-0.20.0.tgz#605896624053af8c28efbe735c25a301a61c65c5"
 
 core-js@^2.0.0, core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.3:
   version "2.5.3"
@@ -4574,7 +4582,7 @@ lodash.merge@4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
 
-lodash.merge@^4.6.0:
+lodash.merge@4.6.1, lodash.merge@^4.6.0:
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
 
@@ -4959,10 +4967,6 @@ nan@~2.3.0:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.3.5.tgz#822a0dc266290ce4cd3a12282ca3e7e364668a08"
 
-nanoid@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.0.1.tgz#58a8e0577d9db07ae4f231a3afa59af94e4fc439"
-
 nanoid@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-1.0.2.tgz#15d2b5e76b6dbfb15cac1000cb457d4bfc845bdb"
@@ -5165,6 +5169,10 @@ object-copy@^0.1.0:
     copy-descriptor "^0.1.0"
     define-property "^0.2.5"
     kind-of "^3.0.3"
+
+object-deep-from-entries@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/object-deep-from-entries/-/object-deep-from-entries-0.3.0.tgz#b15f9035daa2dfe22f91763873eba820a06c3211"
 
 object-keys@^1.0.11, object-keys@^1.0.8:
   version "1.0.11"
@@ -6737,14 +6745,15 @@ text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-then-busboy@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/then-busboy/-/then-busboy-2.1.4.tgz#cff14090146572eec71a610d5396b0d8caf23a6f"
+then-busboy@2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/then-busboy/-/then-busboy-2.3.3.tgz#eaad4c916b8662d11c7042ab418a0b39bee0ef9e"
   dependencies:
     "@octetstream/invariant" "1.1.0"
     busboy "0.2.14"
-    lodash.merge "4.6.0"
-    nanoid "1.0.1"
+    lodash.merge "4.6.1"
+    nanoid "1.0.2"
+    object-deep-from-entries "0.3.0"
 
 thenify-all@^1.0.0:
   version "1.6.0"

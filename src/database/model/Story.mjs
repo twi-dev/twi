@@ -5,9 +5,14 @@ import invariant from "@octetstream/invariant"
 
 import {createModel, Model} from "core/database"
 
+import fromFields from "core/database/decorator/selectFromGraphQLFields"
+import toObject from "core/database/decorator/toObject"
+
 import Chapter from "database/model/Chapter"
 // import Character from "database/model/Character"
 // import Genre from "database/model/Genre"
+
+import getFieldSelectionsList from "core/graphql/getFieldSelectionsList"
 
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
@@ -35,6 +40,10 @@ class Story extends Model {
     return this.roles[name.toLowerCase()]
   }
 
+  @toObject @fromFields static findMany({args}) {
+    return super.findMany(args)
+  }
+
   /**
    * Create one story
    *
@@ -45,7 +54,10 @@ class Story extends Model {
    *
    * @return {object} – created story
    */
-  static async createOne(publisher, story, options) {
+  static async createOne({args, ctx, options}) {
+    const {story} = args
+    const publisher = ctx.state.user.id
+
     invariant(
       !publisher, TypeError, "Can't create a story: No publisher's ID given."
     )
@@ -95,21 +107,21 @@ class Story extends Model {
     )
   }
 
-  static async addOneChapter(creator, story, chapter, options = {}) {
-    story = await this.findOneById(story, {
-      toJS: false
-    })
+  @toObject static async addOneChapter({args, options, ...params}) {
+    let {story} = args
+
+    story = await this.findOneById(story, {toJS: false})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
-    chapter = await Chapter.createOne(chapter, options)
+    const chapter = await Chapter.createOne({...params, args, options})
 
     story.chapters.list.push(chapter.id)
     story.chapters.count = story.chapters.list.length
 
     await story.save()
 
-    return this._tryConvert(chapter, options)
+    return chapter
   }
 
   /**
@@ -126,10 +138,13 @@ class Story extends Model {
    * @throws {NotFound} – when no story has found by given ID
    * @throws {Forbidden} – if the current user is not story publisher
    */
-  static async addOneCollaborator(viewer, story, user, role, options = {}) {
-    story = await this.findOneById(story, {
-      toJS: false
-    })
+  @toObject static async addOneCollaborator({viewer, args, node}) {
+    const selections = getFieldSelectionsList(node)
+
+    const {id} = args
+    const {collaborator} = args
+
+    const story = await this.findById(id)
 
     invariant(!story, NotFound, "Can't find requested story.")
 
@@ -139,13 +154,11 @@ class Story extends Model {
       "Only the story publisher can update title."
     )
 
-    role = this.getRole(role)
+    collaborator.role = this.getRole(collaborator.role)
 
-    story.collaborators.push({user, role})
+    await story.update({collaborators: {$push: collaborator}})
 
-    story = await story.save()
-
-    return this._tryConvert(story, options)
+    return this.findById(id).select(selections)
   }
 
   // static async addOneVote(user, story, vote, options = {}) {}
@@ -163,22 +176,30 @@ class Story extends Model {
    * @throws {NotFound} – when no story has found by given ID
    * @throws {Forbidden} – if the current user is not story publisher
    */
-  static async updateOneTitle(viewer, story, title, options = {}) {
-    story = await this.findOneById(story, {
-      toJS: false
-    })
+  static async updateOneTitle({args, ctx, node, options}) {
+    const selections = getFieldSelectionsList(node)
+
+    const {id, title} = args
+    const viewer = ctx.state.user.id
+
+    let story = await this.findById(id).select("publisher")
 
     invariant(!story, NotFound, "Can't find requested story.")
 
     invariant(
       !this.isPublisher(viewer), Forbidden,
+
       "You have not access for this operation. " +
       "Only the story publisher can update title."
     )
 
-    story.title = title
+    // story.title = title
 
-    story = await story.save()
+    // story = await story.save()
+
+    await story.update({title})
+
+    story = story.findById(id).select(selections)
 
     return this._tryConvert(story, options)
   }

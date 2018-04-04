@@ -1,3 +1,5 @@
+import bind from "core/graphql/bindResolver"
+
 import User from "database/model/User"
 import Session from "database/model/Session"
 
@@ -7,4 +9,4 @@ async function createUser(params) {
   return Session.sign(params)
 }
 
-export default createUser
+export default bind(createUser)
