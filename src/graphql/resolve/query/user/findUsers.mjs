@@ -1,5 +1,7 @@
+import bind from "core/graphql/bindResolver"
+
 import User from "database/model/User"
 
-const findUsers = (_, {cursor}) => User.findMany(cursor)
+const findUsers = params => User.findMany(params)
 
-export default findUsers
+export default bind(findUsers)

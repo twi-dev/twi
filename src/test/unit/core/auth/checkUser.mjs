@@ -6,12 +6,11 @@ import Unauthorized from "core/error/http/Unauthorized"
 import checkUser from "core/auth/checkUser"
 
 test("Should return a function when message is string", t => {
-  t.plan(2)
+  t.plan(1)
 
   const res = checkUser("Some random error message.")
 
   t.true(isFunction(res))
-  t.is(res.constructor.name, "Function")
 })
 
 test(
@@ -31,13 +30,14 @@ test("Should not throw an error when user is authenticated", async t => {
 
   const fakeResolver = checkUser(() => {})
 
-  const trap = () => fakeResolver(null, null, {
-    state: {
-      user: {}
-    },
+  const trap = () => fakeResolver({
+    ctx: {
+      state: {
+        user: {}
+      },
 
-    isAuthenticated() {
-      return true
+      isAuthenticated: () => true,
+      isUnauthenticated: () => false
     }
   })
 
@@ -49,13 +49,14 @@ test("Should throw an error when user is unauthenticated", async t => {
 
   const fakeResolver = checkUser("Some error message.")(() => {})
 
-  const trap = () => fakeResolver(null, null, {
-    state: {
-      user: undefined
-    },
+  const trap = () => fakeResolver({
+    ctx: {
+      state: {
+        user: undefined
+      },
 
-    isAuthenticated() {
-      return false
+      isAuthenticated: () => false,
+      isUnauthenticated: () => true
     }
   })
 
@@ -70,13 +71,14 @@ test("Should throw an error with default message", async t => {
 
   const fakeResolver = checkUser(() => {})
 
-  const trap = () => fakeResolver(null, null, {
-    state: {
-      user: {}
-    },
+  const trap = () => fakeResolver({
+    ctx: {
+      state: {
+        user: {}
+      },
 
-    isAuthenticated() {
-      return false
+      isAuthenticated: () => false,
+      isUnauthenticated: () => true
     }
   })
 

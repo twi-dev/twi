@@ -11,14 +11,14 @@ const DEFAULT_MESSAGE = concatFromArray([
   "Please, check your credentials and try again."
 ], " ")
 
-const checkUserDecorator = message => resolver => async function(
-  parent, args, ctx, ...others
-) {
+const checkUserDecorator = message => resolver => async function(params) {
   message || (message = DEFAULT_MESSAGE)
 
-  invariant((!ctx.state.user || !ctx.isAuthenticated()), Unauthorized, message)
+  const {isUnauthenticated} = params.ctx
 
-  return resolver(parent, args, ctx, ...others)
+  invariant(isUnauthenticated(), Unauthorized, message)
+
+  return resolver(params)
 }
 
 /**

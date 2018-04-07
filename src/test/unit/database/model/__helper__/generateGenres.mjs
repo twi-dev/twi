@@ -15,7 +15,9 @@ async function generateGenres(max = 6) {
     })
   }
 
-  return await Genre.createMany(genres)
+  const args = {genres}
+
+  return await Genre.createMany({args})
 }
 
 export default generateGenres

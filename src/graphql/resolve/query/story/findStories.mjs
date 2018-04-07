@@ -1,6 +1,8 @@
+import bind from "core/graphql/bindResolver"
+
 import Story from "database/model/Story"
 
 // TODO: Add a "filter" argument
-const findStories = (_, {cursor}) => Story.findMany(cursor)
+const findStories = params => Story.findMany(params)
 
-export default findStories
+export default bind(findStories)

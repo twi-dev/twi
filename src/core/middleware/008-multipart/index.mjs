@@ -1,4 +1,5 @@
 import busboy, {isFile} from "then-busboy"
+import {unlink} from "promise-fs"
 import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 
@@ -21,21 +22,19 @@ const multipart = options => async function multipartParser(ctx, next) {
 
   const {processFile} = {...defaults, ...options}
 
-  let body = await busboy(ctx.req)
+  const body = await busboy(ctx.req)
 
-  if (isFunction(processFile)) {
-    body = await map(
-      body, async value => isFile(value) ? await processFile(value) : value
-    )
-  }
-
-  ctx.request.body = body
+  ctx.request.body = isFunction(processFile)
+    ? await map(body, value => isFile(value) ? processFile(value) : value)
+    : body
 
   await next()
 
   if (!isEmpty(body)) {
     delete ctx.request.body
   }
+
+  await map(body, field => isFile(field) ? unlink(field.path) : field)
 }
 
 const configureMultipart = () => multipart()

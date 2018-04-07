@@ -11,8 +11,8 @@
     "@babel/proposal-nullish-coalescing-operator",
     "@babel/proposal-optional-catch-binding",
     "@babel/proposal-optional-chaining",
-    "@babel/proposal-export-namespace",
-    "@babel/proposal-export-default",
+    "@babel/proposal-export-namespace-from",
+    "@babel/proposal-export-default-from",
     "@babel/proposal-do-expressions",
     ["@babel/transform-modules-commonjs", {
       "mjsStrictNamespace": false

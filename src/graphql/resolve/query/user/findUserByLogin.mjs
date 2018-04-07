@@ -1,9 +1,7 @@
+import bind from "core/graphql/bindResolver"
+
 import User from "database/model/User"
 
-async function findUserByLogin(_, {login}) {
-  const user = await User.findOneByLogin(login)
+const findUserByLogin = params => User.findOneByLogin(params)
 
-  return user
-}
-
-export default findUserByLogin
+export default bind(findUserByLogin)
