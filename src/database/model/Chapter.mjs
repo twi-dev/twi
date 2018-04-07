@@ -28,7 +28,7 @@ class Chapter extends Model {
    *
    * @return {object}
    */
-  static async createOne({args, options = {}}) {
+  static async createOne({args, options}) {
     const {chapter} = args
 
     invariant(
@@ -54,7 +54,7 @@ class Chapter extends Model {
     return super.createOne({...chapter, content}, options)
   }
 
-  static async createMany({args, options = {}}) {
+  static async createMany({args, options}) {
     const {chapters} = args
 
     if (!isArray(chapters)) {

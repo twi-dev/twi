@@ -40,6 +40,10 @@ class Story extends Model {
     return this.roles[name.toLowerCase()]
   }
 
+  @fromFields static _findById({args}) {
+    return super.findById(args.id)
+  }
+
   @toObject @fromFields static findMany({args}) {
     return super.findMany(args)
   }
@@ -54,7 +58,7 @@ class Story extends Model {
    *
    * @return {object} – created story
    */
-  static async createOne({args, ctx, options}) {
+  static async createOne({args, ctx, options, ...params}) {
     const {story} = args
     const publisher = ctx.state.user.id
 
@@ -71,7 +75,9 @@ class Story extends Model {
 
     invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
-    const chapter = await Chapter.createOne(story.chapter)
+    const chapter = await Chapter.createOne({
+      ...params, options, ctx, args: {chapter: story.chapter}
+    })
 
     const chapters = {
       list: [chapter.id],
@@ -81,10 +87,7 @@ class Story extends Model {
     const short = nanoid()
     const full = `${limax(story.title)}.${short}`
 
-    const slug = {
-      short,
-      full
-    }
+    const slug = {short, full}
 
     if (isArray(story.collaborators)) {
       // Get role codename for each collaborator
@@ -138,18 +141,19 @@ class Story extends Model {
    * @throws {NotFound} – when no story has found by given ID
    * @throws {Forbidden} – if the current user is not story publisher
    */
-  @toObject static async addOneCollaborator({viewer, args, node}) {
-    const selections = getFieldSelectionsList(node)
-
-    const {id} = args
+  @toObject static async addOneCollaborator(params) {
+    const {args, ctx} = params
     const {collaborator} = args
 
-    const story = await this.findById(id)
+    const viewer = ctx.state.user.id
+
+    const story = await this._findById(params)
 
     invariant(!story, NotFound, "Can't find requested story.")
 
     invariant(
       !this.isPublisher(viewer), Forbidden,
+
       "You have not access for this operation. " +
       "Only the story publisher can update title."
     )
@@ -158,7 +162,7 @@ class Story extends Model {
 
     await story.update({collaborators: {$push: collaborator}})
 
-    return this.findById(id).select(selections)
+    return this._findById(params)
   }
 
   // static async addOneVote(user, story, vote, options = {}) {}
@@ -204,10 +208,12 @@ class Story extends Model {
     return this._tryConvert(story, options)
   }
 
-  static async updateOneDescription(viewer, story, description, options = {}) {
-    story = await this.findOneById(story, {
-      toJS: false
-    })
+  static async updateOneDescription({args, options, ctx, ...params}) {
+    const viewer = ctx.state.user.id
+
+    const {id, description} = args.story
+
+    let story = await this.findById(id)
 
     invariant(!story, NotFound, "Can't find requested story.")
 
@@ -221,7 +227,7 @@ class Story extends Model {
 
     story = await story.save()
 
-    return this._tryConvert(story, options)
+    return this.findById({...params, options, args: {id}})
   }
 
   static async updateOneStatus(viewer, story, isFinished, options = {}) {

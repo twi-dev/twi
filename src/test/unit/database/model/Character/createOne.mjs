@@ -25,7 +25,7 @@ test("Should just create a character with given params", async t => {
   const name = faker.name.findName()
   const pic = system.fileName()
 
-  const character = await Character.createOne({name, pic})
+  const character = await Character.createOne({args: {character: {name, pic}}})
 
   t.is(character.name, name)
   t.is(character.pic, pic)
@@ -37,7 +37,7 @@ test("Should also generate a code for character with Nano ID", async t => {
   const name = faker.name.findName()
   const pic = system.fileName()
 
-  const character = await Character.createOne({name, pic})
+  const character = await Character.createOne({args: {character: {name, pic}}})
 
   t.true(nanoid.returned(character.code))
 })

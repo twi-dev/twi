@@ -24,7 +24,9 @@ test.beforeEach(async t => {
 test("Should just return requested user", async t => {
   t.plan(1)
 
-  const user = await User.findOneByLogin(t.context.login)
+  const args = {login: t.context.login}
+
+  const user = await User.findByLogin({args})
 
   t.is(user.login, t.context.login)
 })
@@ -32,7 +34,9 @@ test("Should just return requested user", async t => {
 test("Should throw a NotFound error when user is not found", async t => {
   t.plan(4)
 
-  const err = await t.throws(User.findOneByLogin("OctetStream"))
+  const args = {login: "OctetStream"}
+
+  const err = await t.throws(User.findByLogin({args}))
 
   t.true(err instanceof NotFound)
   t.is(err.message, "Can't find user with login OctetStream.")

@@ -29,7 +29,7 @@ test("Should just create a genre with given params", async t => {
   const name = faker.name.findName()
   const color = "#353535"
 
-  const genre = await Genre.createOne({name, color})
+  const genre = await Genre.createOne({args: {genre: {name, color}}})
 
   t.is(genre.name, name)
   t.is(genre.color, color)
@@ -41,7 +41,7 @@ test("Should also generate a code for genre with Nano ID", async t => {
   const name = faker.name.findName()
   const color = "#368e3a"
 
-  const genre = await Genre.createOne({name, color})
+  const genre = await Genre.createOne({args: {genre: {name, color}}})
 
   t.true(nanoid.returned(genre.code))
 })

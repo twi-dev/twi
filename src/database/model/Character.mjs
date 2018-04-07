@@ -1,27 +1,24 @@
 import {createModel, Model} from "core/database"
 
 import nanoid from "core/helper/util/nanoid"
-import getFieldSelectionsList from "core/graphql/getFieldSelectionsList"
+import fromFields from "core/database/decorator/selectFromGraphQLFields"
+import toObject from "core/database/decorator/toObject"
 
 // Set code length to 4
 const nano = nanoid.bind(4)
 
 @createModel
 class Character extends Model {
-  static async findMany({args, options, node}) {
-    const selections = getFieldSelectionsList(node)
-
-    const users = await super.findMany(args).select(selections)
-
-    return this._tryConvert(users, options)
+  @toObject @fromFields static findMany({args}) {
+    return super.findMany(args)
   }
 
-  static async createOne({args, options = {}}) {
+  static createOne({args, options = {}}) {
     const {character} = args
 
-    const code = nano()
+    character.code = nano()
 
-    return super.createOne({...character, code}, options)
+    return super.createOne(character, options)
   }
 
   static async createMany({args, options = {}}) {

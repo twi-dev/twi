@@ -34,13 +34,27 @@ test("Should just create a story with given data", async t => {
 
   const text = lorem.paragraphs()
 
-  const chapter = {
-    title, text
+  const chapter = {title, text}
+
+  const args = {
+    story: {
+      title,
+      description,
+      characters,
+      genres,
+      chapter
+    }
   }
 
-  const story = await Story.createOne(t.context.user.id, {
-    title, description, characters, genres, chapter
-  })
+  const ctx = {
+    state: {
+      user: {
+        id: t.context.user.id
+      }
+    }
+  }
+
+  const story = await Story.createOne({args, ctx})
 
   const expectedChapters = await Chapter.find({_id: {$in: story.chapters.list}})
 
@@ -85,13 +99,27 @@ test("Should create a short slug with Nano ID", async t => {
 
   const text = lorem.paragraphs()
 
-  const chapter = {
-    title, text
+  const chapter = {title, text}
+
+  const args = {
+    story: {
+      title,
+      description,
+      characters,
+      genres,
+      chapter
+    }
   }
 
-  const story = await Story.createOne(t.context.user.id, {
-    title, description, characters, genres, chapter
-  })
+  const ctx = {
+    state: {
+      user: {
+        id: t.context.user.id
+      }
+    }
+  }
+
+  const story = await Story.createOne({args, ctx})
 
   t.true(spyoid.returned(story.slug.short))
 
@@ -131,13 +159,27 @@ test(
 
     const text = lorem.paragraphs()
 
-    const chapter = {
-      title, text
+    const chapter = {title, text}
+
+    const args = {
+      story: {
+        title,
+        description,
+        characters,
+        genres,
+        chapter
+      }
     }
 
-    const story = await Story.createOne(t.context.user.id, {
-      title, description, characters, genres, chapter
-    })
+    const ctx = {
+      state: {
+        user: {
+          id: t.context.user.id
+        }
+      }
+    }
+
+    const story = await Story.createOne({args, ctx})
 
     const short = spyoid.lastCall.returnValue
     const full = `${spyax.lastCall.returnValue}.${short}`
@@ -164,7 +206,13 @@ test("Should throw an error on Story.createMany invocation", async t => {
 test("Should throw an error when no publisher's ID given", async t => {
   t.plan(3)
 
-  const err = await t.throws(Story.createOne())
+  const ctx = {
+    state: {
+      user: {}
+    }
+  }
+
+  const err = await t.throws(Story.createOne({ctx, args: {}}))
 
   t.true(err instanceof TypeError)
   t.is(err.message, "Can't create a story: No publisher's ID given.")
@@ -173,7 +221,15 @@ test("Should throw an error when no publisher's ID given", async t => {
 test("Should throw a TypeError when no story information given", async t => {
   t.plan(3)
 
-  const err = await t.throws(Story.createOne(t.context.user.id))
+  const ctx = {
+    state: {
+      user: {
+        id: t.context.user.id
+      }
+    }
+  }
+
+  const err = await t.throws(Story.createOne({ctx, args: {}}))
 
   t.true(err instanceof TypeError)
   t.is(err.message, "Story data should be passed as plain JavaScript object.")
@@ -182,7 +238,19 @@ test("Should throw a TypeError when no story information given", async t => {
 test("Should throw a TypeError when no story information is empty", async t => {
   t.plan(3)
 
-  const err = await t.throws(Story.createOne(t.context.user.id, {}))
+  const args = {
+    story: {}
+  }
+
+  const ctx = {
+    state: {
+      user: {
+        id: t.context.user.id
+      }
+    }
+  }
+
+  const err = await t.throws(Story.createOne({args, ctx}))
 
   t.true(err instanceof TypeError)
   t.is(err.message, "Story information is required.")

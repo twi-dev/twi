@@ -18,7 +18,9 @@ async function generateCharacters(max = 6) {
     })
   }
 
-  return await Character.createMany(characters)
+  const args = {characters}
+
+  return await Character.createMany({args})
 }
 
 export default generateCharacters
