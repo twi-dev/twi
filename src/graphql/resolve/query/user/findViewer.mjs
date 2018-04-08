@@ -5,6 +5,6 @@ import bind from "core/graphql/bindResolver"
 
 import User from "database/model/User"
 
-const findViewer = ({ctx: {state}}) => User.findOneById(state.user.id)
+const findViewer = params => User.findViewer(params)
 
 export default compose([bind, checkUser])(findViewer)

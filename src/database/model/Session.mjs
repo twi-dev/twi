@@ -108,7 +108,7 @@ class Session extends Model {
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
-    const user = await User.findOneById(session.userId)
+    const user = await User.findById({...params, args: {id: session.userId}})
 
     // FIXME: Should I remove the session if user not exists? Hm...
     invariant(!user, NotFound, "Can't find user for this session.")

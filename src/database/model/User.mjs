@@ -132,6 +132,10 @@ class User extends Model {
     return user
   }
 
+  static findViewer(params) {
+    return this.findById({...params, args: {id: params.ctx.state.user.id}})
+  }
+
   /**
    * Get user role name
    *

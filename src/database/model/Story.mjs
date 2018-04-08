@@ -113,16 +113,25 @@ class Story extends Model {
   @toObject static async addOneChapter({args, options, ...params}) {
     let {story} = args
 
-    story = await this.findOneById(story, {toJS: false})
+    story = await this.findById({args: story.id})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
     const chapter = await Chapter.createOne({...params, args, options})
 
-    story.chapters.list.push(chapter.id)
-    story.chapters.count = story.chapters.list.length
+    // story.chapters.list.push(chapter.id)
+    // story.chapters.count = story.chapters.list.length
 
-    await story.save()
+    // await story.save()
+
+    await story.update({
+      $inc: {
+        "chapters.count": 1
+      },
+      $push: {
+        "chapters.list": chapter.id
+      }
+    })
 
     return chapter
   }
@@ -186,7 +195,7 @@ class Story extends Model {
     const {id, title} = args
     const viewer = ctx.state.user.id
 
-    let story = await this.findById(id).select("publisher")
+    let story = await this.findById({node, args: {id}})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
@@ -196,10 +205,6 @@ class Story extends Model {
       "You have not access for this operation. " +
       "Only the story publisher can update title."
     )
-
-    // story.title = title
-
-    // story = await story.save()
 
     await story.update({title})
 
@@ -213,7 +218,7 @@ class Story extends Model {
 
     const {id, description} = args.story
 
-    let story = await this.findById(id)
+    const story = await this.findById({...params, args: {id}})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
@@ -223,33 +228,32 @@ class Story extends Model {
       "Only the story publisher can update description."
     )
 
-    story.description = description
-
-    story = await story.save()
+    await story.update({description})
 
     return this.findById({...params, options, args: {id}})
   }
 
-  static async updateOneStatus(viewer, story, isFinished, options = {}) {
+  @toObject static async updateOneStatus({args, options, ...params}) {
+    const viewer = args.state.user.id
+
+    let isFinished = args.story.isFinished
+
     isFinished || (isFinished = false)
 
-    story = await this.findOneById(story, {
-      toJS: false
-    })
+    const story = await this._findById({...params, args: args.story})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
     invariant(
       !this.isPublisher(viewer), Forbidden,
+
       "You have not access for this operation. " +
       "Only the story publisher can update status."
     )
 
-    story.isFinished = isFinished
+    await story.update({isFinished})
 
-    await story.save()
-
-    return this._tryConvert(story, options)
+    return this._findById({...params, args: args.story})
   }
 
   // static async updateOneType(viewer, story, translation, options = {}) {}
