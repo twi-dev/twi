@@ -1,6 +1,6 @@
 import {deprecate} from "core-decorators"
 
-import {hash} from "bcryptjs"
+import {hash, compare} from "bcryptjs"
 
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash/isPlainObject"
@@ -134,6 +134,20 @@ class User extends Model {
 
   static findViewer(params) {
     return this.findById({...params, args: {id: params.ctx.state.user.id}})
+  }
+
+  comparePassword = async string => {
+    if (!string) {
+      return false
+    }
+
+    if (!this.password) {
+      const user = await User.findById({args: {id: this._id}})
+
+      return compare(string, user.password)
+    }
+
+    return compare(string, this.password)
   }
 
   /**
