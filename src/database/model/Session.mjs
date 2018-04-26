@@ -4,7 +4,7 @@ import ms from "ms"
 import uuid from "uuid"
 import pick from "lodash/pick"
 import invariant from "@octetstream/invariant"
-import time from "date-fns/addMilliseconds"
+import addMilliseconds from "date-fns/addMilliseconds"
 
 import config from "core/config"
 import {sign, verify} from "core/helper/wrapper/jwt"
@@ -15,14 +15,18 @@ import User from "database/model/User"
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
 
+import map from "core/helper/iterator/sync/mapObject"
+
 const {jwt} = config
 
 async function generateToken(payload, options = {}) {
   let {expires} = options
 
-  expires = expires ? time(Date.now(), ms(expires)) : null
+  expires = expires ? addMilliseconds(Date.now(), ms(expires)) : null
 
-  payload = await sign(payload, options.secret, {expiresIn: options.expires})
+  payload = await sign(payload, options.secret, {
+    expiresIn: Number(expires)
+  })
 
   return {payload, expires}
 }
@@ -54,10 +58,10 @@ class Session extends Model {
    * @throws {Error} when wrong password given
    */
   static async sign({args, ctx, options}) {
-    const {password} = args.user
+    const {password} = args.credentials
     const {client, ip} = ctx
 
-    const login = new RegExp(`^${args.user.login}$`, "i")
+    const login = new RegExp(`^${args.credentials.login}$`, "i")
 
     const user = await User.findOne({login})
 
@@ -72,14 +76,16 @@ class Session extends Model {
       pick(user, ["id", "role", "status"]), jwt.accessToken
     )
 
-    const refreshToken = await generateToken({
-      uuid: uuid()
-    }, jwt.refreshToken)
+    const tokenUUID = uuid()
 
-    const tokens = {accessToken, refreshToken}
+    const refreshToken = await generateToken({tokenUUID}, jwt.refreshToken)
+
+    const tokens = map({accessToken, refreshToken}, obj => ({
+      ...obj, type: Session.defaultType
+    }))
 
     await super.createOne({
-      tokenUUID: tokens.refreshToken.tokenUUID,
+      tokenUUID,
       userId: user.id,
       client: {
         ip,
