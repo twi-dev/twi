@@ -24,9 +24,13 @@ async function generateToken(payload, options = {}) {
 
   expires = expires ? addMilliseconds(Date.now(), ms(expires)) : null
 
-  payload = await sign(payload, options.secret, {
-    expiresIn: Number(expires)
-  })
+  const opts = {}
+
+  if (expires) {
+    opts.expiresIn = Number(expires)
+  }
+
+  payload = await sign(payload, options.secret, opts)
 
   return {payload, expires}
 }
@@ -157,9 +161,9 @@ class Session extends Model {
   static async findOneCurrent({args, options}) {
     const {refreshToken} = args
 
-    const payload = await verify(refreshToken, jwt.refreshToken.secret)
+    const {tokenUUID} = await verify(refreshToken, jwt.refreshToken.secret)
 
-    return this.findOne({tokenUUID: payload.uuid || payload}, options)
+    return this.findOne({tokenUUID}, options)
   }
 }
 
