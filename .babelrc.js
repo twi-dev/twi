@@ -1,12 +1,16 @@
-{
-  "plugins": [
+module.exports = {
+  plugins: [
     ["module-resolver", {
-      "root": ["src"]
+      cwd: __dirname,
+      root: ["src"]
     }],
-
     "@babel/transform-runtime",
-    "@babel/proposal-decorators",
-    "@babel/proposal-class-properties",
+    ["@babel/proposal-decorators", {
+      legacy: true
+    }],
+    ["@babel/proposal-class-properties", {
+      loose: true
+    }],
     "@babel/proposal-async-generator-functions",
     "@babel/proposal-nullish-coalescing-operator",
     "@babel/proposal-optional-catch-binding",
@@ -16,10 +20,10 @@
     "@babel/proposal-do-expressions",
     "@babel/proposal-pipeline-operator",
     ["@babel/transform-modules-commonjs", {
-      "mjsStrictNamespace": false
+      mjsStrictNamespace: false
     }],
     ["@babel/proposal-object-rest-spread", {
-      "useBuiltIns": true
+      useBuiltIns: true
     }]
   ]
 }

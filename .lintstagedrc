@@ -1,4 +1,9 @@
 {
+  "bin/helper.js": "node_modules/.bin/eslint --fix",
+  "bin/cake": "node_modules/.bin/eslint --fix",
+  "bin/twi": "node_modules/.bin/eslint --fix",
   "src/**/*.mjs": "node_modules/.bin/eslint --fix",
-  "build/**/*.js": "node_modules/.bin/eslint --fix"
+  "build/**/*.js": "node_modules/.bin/eslint --fix",
+  ".babelrc.js": "node_modules/.bin/eslint --fix",
+  ".eslintrc.js": "node_modules/.bin/eslint --fix"
 }

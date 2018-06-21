@@ -1,4 +1,4 @@
-{
+module.exports = {
   "parser": "babel-eslint",
   "plugins": [
     "ava"
@@ -9,7 +9,10 @@
   ],
   "settings": {
     "import/resolver": {
-      "babel-module": {}
+      "babel-module": {
+        cwd: __dirname,
+        root: ["src"]
+      }
     }
   },
   "rules": {
