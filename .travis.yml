@@ -7,10 +7,11 @@ services:
   - mongodb
 language: node_js
 node_js:
-  - stable
+  - node
   - 7
   - 8
   - 9
+  - 10
 install:
   - yarn
 before_script:
