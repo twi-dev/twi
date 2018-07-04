@@ -6,6 +6,8 @@ import merge from "lodash/merge"
 import freeze from "js-flock/deepFreeze"
 import invariant from "@octetstream/invariant"
 
+process.env.NODE_ENV || (process.env.NODE_ENV = "development")
+
 const {version, codename} = require(join("..", "..", "package.json"))
 
 const CONFIGS_ROOT = join(__dirname, "..", "..", "config/system")
@@ -19,7 +21,8 @@ function configure() {
 
   invariant(
     ["production", "development", "test", "debug"].includes(name) === false,
-    "Unknown environment name is set: %s", name
+
+    RangeError, "Unknown environment name is set: %s", name
   )
 
   const env = {name, dev, test, debug}

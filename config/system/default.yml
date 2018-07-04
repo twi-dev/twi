@@ -13,9 +13,15 @@ clientApp: null
 # Can be only "true" or "false"
 enableSignup: true
 
+# DEPRECATED
 host: localhost
 port: 2319
 secure: false
+
+server:
+  host: localhost
+  port: 2319
+  secure: false # Should I remove this options too?
 
 database:
   host: localhost
