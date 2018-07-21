@@ -4,9 +4,13 @@ async function createConnection() {
   mongoose.Promise = Promise
 
   // Don't forget to add a user for this connection
-  const connection = await mongoose.connect("mongodb://localhost/twi-test", {
-    promiseLibrary: Promise
-  })
+  const connection = await mongoose.connect(
+    "mongodb://localhost:27017/twi-test",
+    {
+      promiseLibrary: Promise,
+      useNewUrlParser: true
+    }
+  )
 
   return connection
 }

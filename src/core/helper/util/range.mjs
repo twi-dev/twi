@@ -1,11 +1,15 @@
-function* range(min, max) {
+function range(min, max) {
   if (!max) {
     [max, min] = [min, 0]
   }
 
-  for (let value = min; value <= max; value += 1) {
-    yield value
+  const arr = []
+
+  for (let i = min; i <= max; i += 1) {
+    arr.push(i)
   }
+
+  return arr
 }
 
 export default range
