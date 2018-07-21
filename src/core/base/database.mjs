@@ -33,16 +33,12 @@ function getConnectionString() {
   return connectionString
 }
 
-const closeConnection = () => instance.connections.map(conn => conn.close())
+const closeConnection = () => mongoose.disconnect()
 
-async function createConnection() {
-  instance = await mongoose.connect(getConnectionString(), {
-    promiseLibrary: Promise,
-    useNewUrlParser: true
-  })
-
-  return instance
-}
+const createConnection = () => mongoose.connect(getConnectionString(), {
+  promiseLibrary: Promise,
+  useNewUrlParser: true
+})
 
 export default createConnection
 

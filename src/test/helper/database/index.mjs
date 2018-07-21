@@ -16,7 +16,7 @@ async function createConnection() {
 }
 
 async function closeConnection() {
-  return await mongoose.disconnect()
+  return mongoose.disconnect()
 }
 
 export {
