@@ -3,9 +3,13 @@ import isString from "lodash/isString"
 
 import invariant from "@octetstream/invariant"
 
+import config from "core/config"
+
+const {host, port, name} = config.database
+
 mongoose.Promise = Promise
 
-function getConnectionString({host, port, name}) {
+function getConnectionString() {
   invariant(host == null, "Host is required for a connection.")
 
   invariant(!isString(host), TypeError, "Host should be passed as a string.")
@@ -27,10 +31,13 @@ function getConnectionString({host, port, name}) {
   return connectionString
 }
 
-async function createConnection(config = {}) {
-  const connectionString = getConnectionString(config)
+const closeConnection = () => mongoose.disconnect()
 
-  return mongoose.connect(connectionString, {promiseLibrary: Promise})
-}
+const createConnection = () => mongoose.connect(getConnectionString(), {
+  promiseLibrary: Promise,
+  useNewUrlParser: true
+})
 
 export default createConnection
+
+export {createConnection, closeConnection}

@@ -24,6 +24,7 @@ process
   .on("error", onError)
   .on("SIGINT", () => process.exit(0))
 
+// DEPRECATED: CLI will be removed from an application
 init(cli)
   .version(version)
   .parse(process.argv)

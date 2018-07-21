@@ -14,5 +14,5 @@
     "migration"
   ],
   "ext": "js jsx json yml yaml key cert",
-  "exec": "NODE_ENV=development ./bin/twi run"
+  "exec": "NODE_ENV=development node ."
 }

@@ -4,30 +4,23 @@ import Router from "koa-router"
 
 import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
 
-import noop from "core/middleware/noop"
-
 import checkCtorCall from "core/helper/util/checkCtorCall"
 import formatError from "core/graphql/formatError"
-import schema from "core/base/graphql"
+import schema from "core/graphql/schema"
+import noop from "core/middleware/noop"
+import config from "core/config"
+import log from "core/log"
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
 // GraphiQL IDE handler. Will rendered only in "development" env
 const actionGraphiQL = async function(ctx, next) {
-  const {dev, debug, test} = ctx.app.config.env
+  const {dev, test} = config.env
 
-  // Dirty hack -_-
-  // Need to be improved
-  const subscriptionsEndpoint = (
-    `ws://${ctx.app.addr.replace(/^.*:\/\//, "")}${endpointURL}`
-  )
+  const middleware = dev && !test ? graphiqlKoa({endpointURL}) : noop()
 
-  const middleware = (dev || debug || test)
-    ? graphiqlKoa({endpointURL, subscriptionsEndpoint})
-    : noop()
-
-  await middleware(ctx, next)
+  return middleware(ctx, next)
 }
 
 // GraphQL queries/mutations/subscriptions handler
@@ -51,5 +44,14 @@ function GraphQLController() {
 
 // Add GraphQL endpoint to GraphQLController
 GraphQLController.prototype.router = r
+
+const {server} = config
+
+if (config.env.dev) {
+  log.info(
+    "GraphiQL IDE will be mounted on http://%s:%s%s",
+    server.host, server.port, endpointURL
+  )
+}
 
 export default GraphQLController
