@@ -1,8 +1,12 @@
 import {createServer} from "http"
+import {join} from "path"
 
 import Koa from "koa"
 
 import config from "core/config"
+import createRouter from "core/base/router"
+
+let server = null
 
 const {port, host} = config.server
 
@@ -12,15 +16,20 @@ const onServerClosed = () => console.log("server has been closed")
 
 const onServerStarted = () => console.log("Server have been started")
 
+const router = createRouter(join(__dirname, "..", "..", "route"))
+
 /**
  * Initializes HTTP server and returns its instance to further usage
  *
  * @return {http.Server}
  */
-async function initServer() {
-  const koa = new Koa()
+async function startServer() {
+  const koa = new Koa();
 
-  const server = createServer(koa.callback())
+  [router.allowedMethods(), router.routes()]
+    .forEach(middleware => koa.use(middleware))
+
+  server = createServer(koa.callback())
 
   server
     .on("error", onServerError)
@@ -31,4 +40,8 @@ async function initServer() {
   return server
 }
 
-export default initServer
+const stopServer = () => server.close()
+
+export default startServer
+
+export {startServer, stopServer}

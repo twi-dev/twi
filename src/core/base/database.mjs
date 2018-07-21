@@ -9,6 +9,8 @@ const {host, port, name} = config.database
 
 mongoose.Promise = Promise
 
+let instance = null
+
 function getConnectionString() {
   invariant(host == null, "Host is required for a connection.")
 
@@ -31,18 +33,19 @@ function getConnectionString() {
   return connectionString
 }
 
-const closeConnection = connection => connection.close()
+const closeConnection = () => instance.connections.map(conn => conn.close())
 
 async function createConnection() {
-  const connectionString = getConnectionString()
-
-  const instance = await mongoose.connect(connectionString, {
-    promiseLibrary: Promise
+  instance = await mongoose.connect(getConnectionString(), {
+    promiseLibrary: Promise,
+    useNewUrlParser: true
   })
 
-  process.on("SIGINT", () => instance.connections.map(closeConnection))
+  process.on("SIGINT", closeConnection)
 
   return instance
 }
 
 export default createConnection
+
+export {createConnection, closeConnection}

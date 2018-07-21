@@ -25,7 +25,7 @@ server:
 
 database:
   host: localhost
-  port: null
+  port: 27017 # Default MongoDB port
   user: root
   pass: null
   name: twi

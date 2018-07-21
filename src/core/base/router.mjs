@@ -1,3 +1,4 @@
+import invariant from "@octetstream/invariant"
 import Router from "koa-router"
 import rd from "require-dir"
 
@@ -87,7 +88,7 @@ function mountNonMatchedHandlers(router, handlers) {
  *
  *   - @return {Router}
  */
-const buildRoutes = routes => function(options = {}) {
+const buildRoutes = (routes, options = {}) => {
   if (!isPlainObject(options)) {
     throw new TypeError(
       "Options for controller should be passed as plain JavaScript object, " +
@@ -121,18 +122,16 @@ const buildRoutes = routes => function(options = {}) {
  *
  * @return function|Router
  */
-function makeRouter(path, options) {
-  if (!isString(path)) {
-    throw new TypeError(
-      `Path parameter should be a string, but given type is ${getType(path)}`
-    )
-  }
+function createRouter(path, options = {}) {
+  invariant(
+    isString(path) === false, TypeError,
+
+    "Path parameter should be a string, but given type is %s", getType(path)
+  )
 
   const routes = rd(path)
 
-  const routesCreator = buildRoutes(routes)
-
-  return options ? routesCreator(options) : routesCreator
+  return buildRoutes(routes, options)
 }
 
-export default makeRouter
+export default createRouter

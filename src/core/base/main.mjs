@@ -1,6 +1,7 @@
-import createConnection from "core/base/database"
-import initServer from "core/base/server"
 import series from "core/helper/promise/runSeries"
+
+import {createConnection} from "core/base/database"
+import {startServer} from "core/base/server"
 
 function onError(err) {
   process.exitCode = 1
@@ -18,5 +19,5 @@ function onExit() {
 
 process.on("exit", onExit)
 
-series([createConnection, initServer])
+series([createConnection, startServer])
   .catch(onError)
