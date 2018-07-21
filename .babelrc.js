@@ -18,7 +18,9 @@ module.exports = {
     "@babel/proposal-export-namespace-from",
     "@babel/proposal-export-default-from",
     "@babel/proposal-do-expressions",
-    "@babel/proposal-pipeline-operator",
+    ["@babel/proposal-pipeline-operator", {
+      proposal: "minimal"
+    }],
     ["@babel/transform-modules-commonjs", {
       mjsStrictNamespace: false
     }],
