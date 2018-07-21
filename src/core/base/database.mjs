@@ -9,8 +9,6 @@ const {host, port, name} = config.database
 
 mongoose.Promise = Promise
 
-let instance = null
-
 function getConnectionString() {
   invariant(host == null, "Host is required for a connection.")
 

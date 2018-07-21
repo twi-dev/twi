@@ -16,22 +16,11 @@ const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
 // GraphiQL IDE handler. Will rendered only in "development" env
 const actionGraphiQL = async function(ctx, next) {
-  const {dev, debug, test} = config.env
+  const {dev, test} = config.env
 
-  // Dirty hack -_-
-  // Need to be improved
-  // const subscriptionsEndpoint = (
-  //   `ws://${ctx.app.addr.replace(/^.*:\/\//, "")}${endpointURL}`
-  // )
+  const middleware = dev && !test ? graphiqlKoa({endpointURL}) : noop()
 
-  const middleware = (dev || debug || test)
-    ? graphiqlKoa({
-      endpointURL,
-      // subscriptionsEndpoint
-    })
-    : noop()
-
-  await middleware(ctx, next)
+  return middleware(ctx, next)
 }
 
 // GraphQL queries/mutations/subscriptions handler
@@ -58,7 +47,7 @@ GraphQLController.prototype.router = r
 
 const {server} = config
 
-if (true) {
+if (config.env.dev) {
   log.info(
     "GraphiQL IDE will be mounted on http://%s:%s%s",
     server.host, server.port, endpointURL
