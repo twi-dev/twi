@@ -1,8 +1,7 @@
 import {resolve, join} from "path"
-
 import {readdirSync} from "fs"
 
-function collectMiddlewares(config) {
+function readMiddlewares(config) {
   const dir = resolve(__dirname, "..", "middleware")
   const list = readdirSync(dir)
 
@@ -18,4 +17,4 @@ function collectMiddlewares(config) {
   return middlewares
 }
 
-export default collectMiddlewares
+export default readMiddlewares

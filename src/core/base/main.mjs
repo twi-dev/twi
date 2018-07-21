@@ -1,23 +1,29 @@
 import series from "core/helper/promise/runSeries"
 
-import {createConnection} from "core/base/database"
-import {startServer} from "core/base/server"
+import {createConnection, closeConnection} from "core/base/database"
+import {startServer, stopServer} from "core/base/server"
+import log from "core/log"
 
 function onError(err) {
   process.exitCode = 1
 
-  console.error(err)
+  log.error(err)
 }
 
-function onExit() {
+const exit = () => series([stopServer, closeConnection]).catch(onError)
+
+function beforeExit() {
   if (process.exitCode == null) {
     process.exitCode = 0
   }
 
-  console.log("Good bye.")
+  log.normal("Good bye.")
 }
 
-process.on("exit", onExit)
+["SIGINT", "SIGTERM"].forEach(signal => process.on(signal, exit))
 
+process.on("exit", beforeExit)
+
+// Run Twi's HTTP server
 series([createConnection, startServer])
   .catch(onError)

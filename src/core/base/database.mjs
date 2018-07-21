@@ -41,8 +41,6 @@ async function createConnection() {
     useNewUrlParser: true
   })
 
-  process.on("SIGINT", closeConnection)
-
   return instance
 }
 

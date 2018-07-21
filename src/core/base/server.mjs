@@ -5,6 +5,9 @@ import Koa from "koa"
 
 import config from "core/config"
 import createRouter from "core/base/router"
+import readMiddlewares from "core/base/middleware"
+
+import log from "core/log"
 
 let server = null
 
@@ -12,11 +15,11 @@ const {port, host} = config.server
 
 const onServerError = err => process.emit("error", err)
 
-const onServerClosed = () => console.log("server has been closed")
-
-const onServerStarted = () => console.log("Server have been started")
+const onServerStarted = () => log.ok("Server have been started")
 
 const router = createRouter(join(__dirname, "..", "..", "route"))
+
+const middlewares = readMiddlewares()
 
 /**
  * Initializes HTTP server and returns its instance to further usage
@@ -24,9 +27,9 @@ const router = createRouter(join(__dirname, "..", "..", "route"))
  * @return {http.Server}
  */
 async function startServer() {
-  const koa = new Koa();
+  const koa = new Koa()
 
-  [router.allowedMethods(), router.routes()]
+  Array.of(...middlewares, router.allowedMethods(), router.routes())
     .forEach(middleware => koa.use(middleware))
 
   server = createServer(koa.callback())
@@ -34,8 +37,6 @@ async function startServer() {
   server
     .on("error", onServerError)
     .listen({port, host}, onServerStarted)
-
-  process.on("SIGINT", () => server.close(onServerClosed))
 
   return server
 }
