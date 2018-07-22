@@ -22,7 +22,7 @@ const router = createRouter(join(__dirname, "..", "..", "route"))
 const middlewares = readMiddlewares()
 
 /**
- * Initializes HTTP server and returns its instance to further usage
+ * Initializes HTTP server and returns its instance for the further usage.
  *
  * @return {http.Server}
  */
@@ -41,8 +41,9 @@ async function startServer() {
   return server
 }
 
+/**
+ * Closes HTTPS server.
+ */
 const stopServer = () => server.close()
-
-export default startServer
 
 export {startServer, stopServer}

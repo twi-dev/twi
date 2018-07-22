@@ -25,5 +25,4 @@ function beforeExit() {
 process.on("exit", beforeExit)
 
 // Run Twi's HTTP server
-series([createConnection, startServer])
-  .catch(onError)
+series([createConnection, startServer]).catch(onError)

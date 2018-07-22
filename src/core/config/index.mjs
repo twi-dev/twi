@@ -6,12 +6,15 @@ import merge from "lodash/merge"
 import freeze from "js-flock/deepFreeze"
 import invariant from "@octetstream/invariant"
 
+import concat from "core/helper/string/concat"
+
 process.env.NODE_ENV || (process.env.NODE_ENV = "development")
 
 const {version, codename} = require(join("..", "..", "package.json"))
 
 const CONFIGS_ROOT = join(__dirname, "..", "..", "config/system")
 
+// TODO: Add JSON schema support and its validation
 function configure() {
   const name = process.env.NODE_ENV || "name"
 
@@ -44,7 +47,15 @@ function configure() {
     )
   }
 
-  return freeze(merge({version, codename}, defaultConfig, envConfig, {env}))
+  const config = merge({version, codename}, defaultConfig, envConfig, {env})
+
+  config.server.address = concat(
+    config.server.secure ? "https://" : "http://",
+    config.server.host,
+    config.server.port ? concat(":", config.server.port) : undefined
+  )
+
+  return freeze(config)
 }
 
 export default configure()

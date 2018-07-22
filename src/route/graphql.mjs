@@ -1,4 +1,4 @@
-import {basename, extname} from "path"
+import {basename, extname, join} from "path"
 
 import Router from "koa-router"
 
@@ -11,12 +11,16 @@ import noop from "core/middleware/noop"
 import config from "core/config"
 import log from "core/log"
 
+const {server, env} = config
+
 // GraphQL endpoint name for GraphiQL (based on current module name)
 const endpointURL = `/${basename(module.filename, extname(module.filename))}`
 
+// const subscriptionsURL = join(endpointURL, "subscribe")
+
 // GraphiQL IDE handler. Will rendered only in "development" env
 const actionGraphiQL = async function(ctx, next) {
-  const {dev, test} = config.env
+  const {dev, test} = env
 
   const middleware = dev && !test ? graphiqlKoa({endpointURL}) : noop()
 
@@ -45,13 +49,8 @@ function GraphQLController() {
 // Add GraphQL endpoint to GraphQLController
 GraphQLController.prototype.router = r
 
-const {server} = config
-
-if (config.env.dev) {
-  log.info(
-    "GraphiQL IDE will be mounted on http://%s:%s%s",
-    server.host, server.port, endpointURL
-  )
+if (env.dev) {
+  log.info("GraphiQL IDE will be mounted on %s%s", server.address, endpointURL)
 }
 
 export default GraphQLController
