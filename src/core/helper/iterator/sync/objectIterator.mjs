@@ -1,7 +1,16 @@
+import isObject from "lodash/isObject"
+import invariant from "@octetstream/invariant"
+
 import deprecate from "core/helper/decorator/deprecate"
 
 class ObjectIterator {
   constructor(iterable) {
+    invariant(
+      iterable && isObject(iterable) === false, TypeError,
+
+      "Iterable must be an object."
+    )
+
     this.__iterable = iterable
 
     // I'm using this method because of fucking semicolon -_-
