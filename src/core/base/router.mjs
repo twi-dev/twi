@@ -57,7 +57,7 @@ const defaults = {
  * @api private
  */
 function mountNonMatchedHandlers(router, handlers) {
-  for (const [key, handler] of objectIterator.entries(handlers)) {
+  for (const [key, handler] of objectIterator(handlers).entries()) {
     const method = key.toLowerCase()
 
     if (!allowedMethods.includes(method)) {
@@ -98,7 +98,7 @@ const buildRoutes = (routes, options = {}) => {
 
   options = merge({}, defaults, options)
 
-  for (const [name, route] of objectIterator.entries(routes)) {
+  for (const [name, route] of objectIterator(routes).entries()) {
     if (!isFunction(route.default)) {
       warn(`Controller "${name}" is not a function.`)
       continue

@@ -29,7 +29,7 @@ test("objectIterator.entries should also return an object entries", t => {
 
   const expected = ["someKey", "some value"]
 
-  const actual = iterator.entries({someKey: "some value"}).next().value
+  const actual = iterator({someKey: "some value"}).entries().next().value
 
   t.deepEqual(actual, expected)
 })

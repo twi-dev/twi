@@ -1,29 +1,71 @@
-import invariant from "@octetstream/invariant"
-import isObject from "lodash/isObject"
+import deprecate from "core/helper/decorator/deprecate"
 
-/**
- * Simplest object iterator which I can imagine :D
- *
- * @param {object} obj
- * @param {boolean} entries
- *
- * @yields {any|array}
- */
-function* objectIterator(obj, entries = false) {
-  if (!obj) {
-    return
+class ObjectIterator {
+  constructor(iterable) {
+    this.__iterable = iterable
+
+    // I'm using this method because of fucking semicolon -_-
+    Array.from([Symbol.iterator, "keys", "values", "entries"])
+      .forEach(name => this[name] = this[name].bind(this))
   }
 
-  invariant(!isObject(obj), TypeError, "Allowed only objects as iterable.")
+  keys() {
+    if (!this.__iterable) {
+      return []
+    }
 
-  for (const [key, value] of Object.entries(obj)) {
-    yield entries ? [key, value] : value
+    return Object.keys(this.__iterable)
+  }
+
+  * values() {
+    for (const [, value] of this.entries()) {
+      yield value
+    }
+  }
+
+  * entries() {
+    for (const key of this.keys()) {
+      const value = this.__iterable[key]
+
+      yield [key, value]
+    }
+  }
+
+  [Symbol.iterator]() {
+    return this.values()
   }
 }
 
-const entries = obj => objectIterator(obj, true)
+const objectIterator = (iterable, entries = false) => {
+  if (entries) {
+    console.warn(
+      "The \"entries\" flag is deprecated. " +
+      "Use objectIterator(iterable).entries() instead."
+    )
 
-objectIterator.entries = entries
+    return new ObjectIterator(iterable).entries()
+  }
 
-export {entries}
+  return new ObjectIterator(iterable)
+}
+
+const keys = iterable => new ObjectIterator(iterable).keys()
+
+const values = iterable => new ObjectIterator(iterable).values()
+
+const entries = iterable => new ObjectIterator(iterable).entries()
+
+objectIterator.keys = keys |> deprecate(
+  "Use objectIterator(iterable).keys() instead."
+)
+
+objectIterator.values = values |> deprecate(
+  "Use objectIterator(iterable).values() instead."
+)
+
+objectIterator.entries = entries |> deprecate(
+  "Use objectIterator(iterable).entries() instead"
+)
+
 export default objectIterator
+export {keys, values, entries}

@@ -15,17 +15,22 @@ import apply from "core/helper/proxy/selfInvokingClass"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
 
+const assign = Object.assign
+
 const Schema = mongoose.Schema
 const Model = mongoose.Model
 
 const Types = (() => {
   const res = {}
 
-  for (const [name, type] of objectIterator.entries(Schema.Types)) {
+  for (const [name, type] of objectIterator(Schema.Types).entries()) {
     res[`T${name}`] = type
   }
 
-  return res
+  return assign({}, res, Schema.Types, {
+    TObjectID: Schema.Types.ObjectId,
+    ObjectID: Schema.Types.ObjectId
+  })
 })()
 
 const isPrototypeOf = (parent, child) => (
@@ -122,6 +127,7 @@ function setMiddlewares(name, schema) {
 
   invariant(
     !isPlainObject(middlewares), TypeError,
+
     "Middlewares module should export a plain object."
   )
 

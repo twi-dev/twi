@@ -1,4 +1,4 @@
-import {basename, extname, join} from "path"
+import {basename, extname} from "path"
 
 import Router from "koa-router"
 
