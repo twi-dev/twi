@@ -57,13 +57,15 @@ const user = ({TString, TNumber, TDate}, {roles, statuses}) => ({
       vk: TString,
       fb: TString,
       twitter: TString,
-      email: TString // Public email address
+      email: TString, // Public email address
+      telegram: TString
     },
     default: {
       vk: null,
       fb: null,
       twitter: null,
-      email: null
+      email: null,
+      telegram: null
     }
   }
 })
