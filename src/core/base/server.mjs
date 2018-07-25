@@ -2,6 +2,7 @@ import {createServer} from "http"
 import {join} from "path"
 
 import Koa from "koa"
+import passport from "koa-passport"
 
 import config from "core/config"
 import createRouter from "core/base/router"
@@ -19,7 +20,12 @@ const onServerStarted = () => log.ok("Server have been started")
 
 const router = createRouter(join(__dirname, "..", "..", "route"))
 
-const middlewares = readMiddlewares()
+const middlewares = Array.from([
+  ...readMiddlewares(),
+  passport.initialize(),
+  router.allowedMethods(),
+  router.routes()
+])
 
 /**
  * Initializes HTTP server and returns its instance for the further usage.
@@ -29,8 +35,7 @@ const middlewares = readMiddlewares()
 async function startServer() {
   const koa = new Koa()
 
-  Array.of(...middlewares, router.allowedMethods(), router.routes())
-    .forEach(middleware => koa.use(middleware))
+  middlewares.forEach(middleware => koa.use(middleware))
 
   server = createServer(koa.callback())
 

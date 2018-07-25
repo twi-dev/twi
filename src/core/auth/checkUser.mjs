@@ -2,14 +2,14 @@ import invariant from "@octetstream/invariant"
 import isFunction from "lodash/isFunction"
 import isString from "lodash/isString"
 
-import concatFromArray from "core/helper/string/concatFromArray"
+import concat from "core/helper/string/concatWords"
 
 import Unauthorized from "core/error/http/Unauthorized"
 
-const DEFAULT_MESSAGE = concatFromArray([
+const DEFAULT_MESSAGE = concat(
   "Seems like you're have not authorized.",
   "Please, check your credentials and try again."
-], " ")
+)
 
 const checkUserDecorator = message => resolver => async function(params) {
   message || (message = DEFAULT_MESSAGE)
