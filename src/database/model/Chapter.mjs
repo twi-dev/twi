@@ -69,6 +69,7 @@ class Chapter extends Model {
       return [await this.createOne({...props, args: {chapter}, options})]
     }
 
+    // TODO: Move chapters serving to files.
     for (const [idx, chapter] of chapters.entries()) {
       chapters[idx].content = {
         original: chapter.text,
