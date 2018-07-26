@@ -54,15 +54,17 @@ class Chapter extends Model {
     return super.createOne({...chapter, content}, options)
   }
 
-  static async createMany({args, options}) {
+  static async createMany({args, options, ...props}) {
     const {chapters} = args
 
     if (!isArray(chapters)) {
-      return this.createOne(chapters, options)
+      return this.createOne({...props, args: {chapter: chapters}, options})
     }
 
     if (chapters.length === 1) {
-      return this.createOne(chapters, options)
+      const [chapter] = chapters
+
+      return this.createOne({...props, args: {chapter}, options})
     }
 
     for (const [idx, chapter] of chapters.entries()) {
