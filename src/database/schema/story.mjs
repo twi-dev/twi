@@ -35,7 +35,10 @@ const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
       name: TString, // author's nickname
       profile: TString // link to an author profile or site
     },
-    original: TString // link to original story
+    original: {
+      name: TString,
+      link: TString, // link to original story
+    }
   },
   collaborators: [{
     user: {
@@ -49,6 +52,10 @@ const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
     }
   }],
   isFinished: {
+    type: TBoolean,
+    default: false
+  },
+  isDraft: {
     type: TBoolean,
     default: false
   },

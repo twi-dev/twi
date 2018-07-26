@@ -2,21 +2,21 @@ import {GraphQLString as TString, GraphQLID as TID} from "graphql"
 
 import Type from "parasprite/Type"
 
-import concat from "core/helper/string/concatFromArray"
+import concat from "core/helper/string/concatWords"
 
 import TDates from "../common/TDates"
-
 import TUserMinimal from "../user/TUserMinimal"
 
 import TStoryCollaborator from "./TStoryCollaborator"
+import TStorySlug from "./TStorySlug"
 
-const typeDescription = concat([
-  "Minimal information about the story. ",
-  "Such as the story name and authors. ",
+const description = concat([
+  "Minimal information about the story.",
+  "Such as its name and authors.",
   "No chapters information would be received from this type."
 ])
 
-const TStoryMinimal = Type("StoryMinimal", typeDescription)
+const TStoryMinimal = Type("StoryMinimal", description)
   .field({
     name: "id",
     type: TID,
@@ -25,12 +25,18 @@ const TStoryMinimal = Type("StoryMinimal", typeDescription)
   .field({
     name: "title",
     type: TString,
-    required: true
+    required: true,
+    description: "A story main title."
   })
   .field({
     name: "description",
     type: TString,
-    required: true
+    required: true,
+    description: concat([
+      "A minimal story description.",
+      "May basically explain what's this about",
+      "or give any other information."
+    ])
   })
   .field({
     name: "publisher",
@@ -43,7 +49,7 @@ const TStoryMinimal = Type("StoryMinimal", typeDescription)
   })
   .field({
     name: "slug",
-    type: TString,
+    type: TStorySlug,
     required: true
   })
   .field({

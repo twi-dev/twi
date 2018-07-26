@@ -1,4 +1,5 @@
 import {GraphQLID as TID, GraphQLString as TString} from "graphql"
+
 import Input from "parasprite/Input"
 
 import TChapterInput from "./TChapterInput"
@@ -25,8 +26,8 @@ const TStoryInput = Input("StoryInput")
     required: true
   })
   .field({
-    name: "chapter",
-    type: TChapterInput
+    name: "chapters",
+    type: [TChapterInput, true]
   })
 .end()
 

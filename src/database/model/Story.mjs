@@ -58,8 +58,9 @@ class Story extends Model {
    *
    * @return {object} – created story
    */
-  static async createOne({args, ctx, options, ...params}) {
+  @toObject static async createOne({args, ctx, options, ...params}) {
     const {story} = args
+
     const publisher = ctx.state.user.id
 
     invariant(
@@ -75,13 +76,17 @@ class Story extends Model {
 
     invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
 
-    const chapter = await Chapter.createOne({
-      ...params, options, ctx, args: {chapter: story.chapter}
-    })
+    // Add chapters when they're given
+    let chapters = null
+    if (story.chapter) {
+      const list = await Chapter.createMany({
+        ...params, options, ctx, args: {chapter: story.chapter}
+      })
 
-    const chapters = {
-      list: [chapter.id],
-      count: 1
+      chapters = {
+        list: list.map(({id}) => id),
+        count: list.length
+      }
     }
 
     const short = nanoid()
@@ -98,10 +103,14 @@ class Story extends Model {
       }
     }
 
-    return super.createOne({...story, publisher, slug, chapters}, options)
+    // Mark story as draft when there are no chapters created.
+    const isDraft = isEmpty(chapters)
+
+    return super.createOne({
+      ...story, publisher, slug, chapters, isDraft
+    }, options)
   }
 
-  // NOTE: Just an unallowed method
   static async createMany() {
     invariant(
       true,
