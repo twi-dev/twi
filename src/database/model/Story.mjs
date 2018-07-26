@@ -74,13 +74,11 @@ class Story extends Model {
 
     invariant(isEmpty(story), TypeError, "Story information is required.")
 
-    invariant(isEmpty(story.chapter), TypeError, "Story chapter is required.")
-
     // Add chapters when they're given
     let chapters = null
-    if (story.chapter) {
+    if (story.chapters) {
       const list = await Chapter.createMany({
-        ...params, options, ctx, args: {chapter: story.chapter}
+        ...params, options, ctx, args: {chapters: story.chapters}
       })
 
       chapters = {

@@ -34,7 +34,7 @@ test("Should just create a story with given data", async t => {
 
   const text = lorem.paragraphs()
 
-  const chapter = {title, text}
+  const chapters = [{title, text}]
 
   const args = {
     story: {
@@ -42,7 +42,7 @@ test("Should just create a story with given data", async t => {
       description,
       characters,
       genres,
-      chapter
+      chapters
     }
   }
 
@@ -99,7 +99,7 @@ test("Should create a short slug with Nano ID", async t => {
 
   const text = lorem.paragraphs()
 
-  const chapter = {title, text}
+  const chapters = [{title, text}]
 
   const args = {
     story: {
@@ -107,7 +107,7 @@ test("Should create a short slug with Nano ID", async t => {
       description,
       characters,
       genres,
-      chapter
+      chapters
     }
   }
 
@@ -159,7 +159,7 @@ test(
 
     const text = lorem.paragraphs()
 
-    const chapter = {title, text}
+    const chapters = [{title, text}]
 
     const args = {
       story: {
@@ -167,7 +167,7 @@ test(
         description,
         characters,
         genres,
-        chapter
+        chapters
       }
     }
 

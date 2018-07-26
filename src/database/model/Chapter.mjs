@@ -58,13 +58,15 @@ class Chapter extends Model {
     const {chapters} = args
 
     if (!isArray(chapters)) {
-      return this.createOne({...props, args: {chapter: chapters}, options})
+      const chapter = chapters
+
+      return [await this.createOne({...props, args: {chapter}, options})]
     }
 
     if (chapters.length === 1) {
       const [chapter] = chapters
 
-      return this.createOne({...props, args: {chapter}, options})
+      return [await this.createOne({...props, args: {chapter}, options})]
     }
 
     for (const [idx, chapter] of chapters.entries()) {
