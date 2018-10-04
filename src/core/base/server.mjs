@@ -34,7 +34,7 @@ const server = createServer(koa.callback())
 /**
  * Start HTTP server to listen to configured port on localhost.
  *
- * @return {void}
+ * @return {Promise<void>}
  */
 const start = () => new Promise((resolve, reject) => {
   function onStarted() {
@@ -48,7 +48,7 @@ const start = () => new Promise((resolve, reject) => {
 /**
  * Closes HTTPS server.
  *
- * @return {void}
+ * @return {Promise<void>}
  */
 const close = () => new Promise((resolve, reject) => {
   function onClosed(error) {

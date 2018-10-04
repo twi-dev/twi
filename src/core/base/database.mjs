@@ -4,12 +4,11 @@ import isString from "lodash/isString"
 import invariant from "@octetstream/invariant"
 
 import config from "core/config"
-
-const {host, port, name} = config.database
+import log from "core/log"
 
 mongoose.Promise = Promise
 
-function getConnectionString() {
+function getConnectionString({host, port, name}) {
   invariant(host == null, "Host is required for a connection.")
 
   invariant(!isString(host), TypeError, "Host should be passed as a string.")
@@ -31,11 +30,19 @@ function getConnectionString() {
   return connectionString
 }
 
-const disconnect = () => mongoose.disconnect()
+const address = getConnectionString(config.database)
 
-const connect = () => mongoose.connect(getConnectionString(), {
-  promiseLibrary: Promise,
-  useNewUrlParser: true
-})
+const onConnected = () => (
+  log.ok("MongoDB: Database connection established on %s", address)
+)
+
+const onDisconnected = () => log.ok("MongoDB: Disconnected from %s", address)
+
+const connect = () => (
+  mongoose.connect(address, {promiseLibrary: Promise, useNewUrlParser: true})
+    .then(onConnected)
+)
+
+const disconnect = () => mongoose.disconnect().then(onDisconnected)
 
 export default {connect, disconnect}
