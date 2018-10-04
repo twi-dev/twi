@@ -1,8 +1,8 @@
 import series from "core/helper/promise/runSeries"
-
-import {createConnection, closeConnection} from "core/base/database"
-import {startServer, stopServer} from "core/base/server"
 import log from "core/log"
+
+import db from "core/base/database"
+import server from "core/base/server"
 
 function onError(err) {
   process.exitCode = 1
@@ -10,7 +10,7 @@ function onError(err) {
   log.error(err)
 }
 
-const exit = () => series([stopServer, closeConnection]).catch(onError)
+const exit = () => series([server.close, db.disconnect]).catch(onError)
 
 function beforeExit() {
   if (process.exitCode == null) {
@@ -25,4 +25,4 @@ function beforeExit() {
 process.on("exit", beforeExit)
 
 // Run Twi's HTTP server
-series([createConnection, startServer]).catch(onError)
+series([db.connect, server.start]).catch(onError)

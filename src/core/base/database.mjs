@@ -31,13 +31,11 @@ function getConnectionString() {
   return connectionString
 }
 
-const closeConnection = () => mongoose.disconnect()
+const disconnect = () => mongoose.disconnect()
 
-const createConnection = () => mongoose.connect(getConnectionString(), {
+const connect = () => mongoose.connect(getConnectionString(), {
   promiseLibrary: Promise,
   useNewUrlParser: true
 })
 
-export default createConnection
-
-export {createConnection, closeConnection}
+export default {connect, disconnect}
