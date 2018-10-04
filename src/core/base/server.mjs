@@ -28,7 +28,7 @@ const koa = new Koa()
 // Assign middlewares to Koa.js instance
 middlewares.forEach(middleware => koa.use(middleware))
 
-// create HTTP server instance and Koa.js assign listener
+// create HTTP server instance and assign Koa.js listener
 const server = createServer(koa.callback())
 
 /**
