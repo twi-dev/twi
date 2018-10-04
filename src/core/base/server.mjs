@@ -10,10 +10,11 @@ import readMiddlewares from "core/base/middleware"
 
 import log from "core/log"
 
-const {port, host} = config.server
+const {port} = config.server
 
 const router = createRouter(join(__dirname, "..", "..", "route"))
 
+// Configure middlewares
 const middlewares = Array.from([
   ...readMiddlewares(),
 
@@ -24,12 +25,14 @@ const middlewares = Array.from([
 
 const koa = new Koa()
 
+// Assign middlewares to Koa.js instance
 middlewares.forEach(middleware => koa.use(middleware))
 
+// create HTTP server instance and Koa.js assign listener
 const server = createServer(koa.callback())
 
 /**
- * Initializes HTTP server and returns its instance for the further usage.
+ * Start HTTP server to listen to configured port on localhost.
  *
  * @return {void}
  */
@@ -39,11 +42,13 @@ const start = () => new Promise((resolve, reject) => {
     resolve()
   }
 
-  server.on("error", reject).listen({port, host}, onStarted)
+  server.on("error", reject).listen(port, onStarted)
 })
 
 /**
  * Closes HTTPS server.
+ *
+ * @return {void}
  */
 const close = () => new Promise((resolve, reject) => {
   function onClosed(error) {
