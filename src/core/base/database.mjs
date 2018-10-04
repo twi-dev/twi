@@ -36,6 +36,11 @@ const onConnected = () => (
   log.ok("MongoDB: Database connection established on %s", address)
 )
 
+/**
+ * Establishes connection with configured MongoDB server
+ *
+ * @return {Promise<void>}
+ */
 const onDisconnected = () => log.ok("MongoDB: Disconnected from %s", address)
 
 const connect = () => (
@@ -43,6 +48,11 @@ const connect = () => (
     .then(onConnected)
 )
 
+/**
+ * Closes connection with MongoDB
+ *
+ * @return {Promise<void>}
+ */
 const disconnect = () => mongoose.disconnect().then(onDisconnected)
 
 export default {connect, disconnect}

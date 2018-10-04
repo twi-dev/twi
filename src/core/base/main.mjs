@@ -5,9 +5,18 @@ import db from "core/base/database"
 import server from "core/base/server"
 
 function onError(err) {
-  process.exitCode = 1
-
   log.error(err)
+
+  if (
+    (err instanceof Error && err.constructor.name === "Error")
+    || err instanceof RangeError
+    || err instanceof ReferenceError
+    || err instanceof TypeError
+  ) {
+    return process.exit(1)
+  }
+
+  process.exitCode = 1
 }
 
 const exit = () => series([server.close, db.disconnect]).catch(onError)
