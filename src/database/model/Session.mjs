@@ -171,7 +171,7 @@ class Session extends Model {
     return this.findOne({tokenUUID}, options)
   }
 
-  updateLastLogin = () => this.update({"dates.lastLogin": new Date()})
+  updateLastLogin = () => this.update({"dates.lastLogin": new Date()}).exec()
 }
 
 export default Session

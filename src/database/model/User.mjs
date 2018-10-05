@@ -1,9 +1,14 @@
+import {join} from "path"
+
 import {deprecate} from "core-decorators"
 import {hash, compare} from "bcryptjs"
+import {copyFile, unlink} from "promise-fs"
 
 import invariant from "@octetstream/invariant"
 import isPlainObject from "lodash/isPlainObject"
 import isEmpty from "lodash/isEmpty"
+import partial from "lodash/partial"
+import nanoid from "nanoid/async"
 
 import {createModel, Model} from "core/database"
 
@@ -11,6 +16,12 @@ import fromFields from "core/database/decorator/selectFromGraphQLFields"
 import toObject from "core/database/decorator/toObject"
 
 import NotFound from "core/error/http/NotFound"
+import serial from "core/helper/array/runSerial"
+import mkdirp from "core/helper/util/mkdirp"
+
+const AVATAR_SAVE_ROOT = join(
+  __dirname, "..", "..", "static", "assets", "files", "avatars"
+)
 
 @createModel
 class User extends Model {
@@ -131,8 +142,51 @@ class User extends Model {
     return user
   }
 
+  /**
+   * Finds the current user
+   */
   static findViewer(params) {
     return this.findById({...params, args: {id: params.ctx.state.user.id}})
+  }
+
+  /**
+   * Updates viewer's avatar
+   */
+  static async updateAvatar({args, ...params}) {
+    const user = await this.findViewer({...params, args})
+
+    const {path} = args.avatar
+
+    const dir = join(AVATAR_SAVE_ROOT, user.id)
+    const dest = join(dir, await nanoid())
+
+    await serial([partial(mkdirp, [dir]), partial(copyFile, [path, dest])])
+    await user.updateAvatar(dest)
+
+    return this.findViewer({...params, args})
+  }
+
+  /**
+   * Removes viewer's avatar
+   */
+  static async removeAvatar(params) {
+    const user = await this.findViewer({
+      ...params,
+
+      options: {
+        ...params.options, toJS: false
+      }
+    })
+
+    try {
+      await unlink(user.avatar)
+    } catch (err) {
+      if (err.code !== "ENOENT") {
+        throw err
+      }
+    }
+
+    return this.findViewer(params)
   }
 
   comparePassword = async string => {
@@ -148,6 +202,8 @@ class User extends Model {
 
     return compare(string, this.password)
   }
+
+  updateAvatar = avatar => this.update({avatar}).exec()
 
   updateLastVisit = () => this.update({"dates.lastVisit": new Date()}).exec()
 
