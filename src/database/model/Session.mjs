@@ -6,15 +6,14 @@ import pick from "lodash/pick"
 import invariant from "@octetstream/invariant"
 import addMilliseconds from "date-fns/addMilliseconds"
 
-import config from "core/config"
 import {sign, verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/database"
 
+import config from "core/config"
 import User from "database/model/User"
-
-import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
-
+import Forbidden from "core/error/http/Forbidden"
+import parallel from "core/helper/array/runParallel"
 import map from "core/helper/iterator/sync/mapObject"
 
 const {jwt} = config
@@ -111,6 +110,7 @@ class Session extends Model {
   static async refresh(params) {
     const session = await this.findOneCurrent({
       ...params,
+
       options: {
         ...params.options, toJS: false
       }
@@ -118,7 +118,14 @@ class Session extends Model {
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
-    const user = await User.findById({...params, args: {id: session.userId}})
+    const user = await User.findById({
+      ...params,
+
+      args: {id: session.userId},
+      options: {
+        ...params.options, toJS: false
+      }
+    })
 
     // FIXME: Should I remove the session if user not exists? Hm...
     invariant(!user, NotFound, "Can't find user for this session.")
@@ -127,9 +134,7 @@ class Session extends Model {
       pick(user, ["id", "role", "status"]), jwt.accessToken
     )
 
-    session.dates.lastLogin = new Date()
-
-    await session.save()
+    await parallel([user.updateLastVisit, session.updateLastLogin])
 
     const type = Session.defaultType
 
@@ -165,6 +170,8 @@ class Session extends Model {
 
     return this.findOne({tokenUUID}, options)
   }
+
+  updateLastLogin = () => this.update({"dates.lastLogin": new Date()})
 }
 
 export default Session

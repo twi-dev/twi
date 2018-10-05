@@ -4,7 +4,6 @@ import Type from "parasprite/Type"
 
 import TUserDates from "./TUserDates"
 import TUserContacts from "./TUserContacts"
-
 import TLogin from "../../scalar/user/TLogin"
 
 const TUserMinimal = Type("UserMinimal", "The minimal User information.")
@@ -37,6 +36,10 @@ const TUserMinimal = Type("UserMinimal", "The minimal User information.")
     type: TString,
     description: "User accoutn status",
     required: true
+  })
+  .field({
+    name: "avatar",
+    type: TString
   })
   .field({
     name: "contacts",

@@ -1,5 +1,4 @@
 import {deprecate} from "core-decorators"
-
 import {hash, compare} from "bcryptjs"
 
 import invariant from "@octetstream/invariant"
@@ -149,6 +148,8 @@ class User extends Model {
 
     return compare(string, this.password)
   }
+
+  updateLastVisit = () => this.update({"dates.lastVisit": new Date()}).exec()
 
   /**
    * Get user role name

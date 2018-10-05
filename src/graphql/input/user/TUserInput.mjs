@@ -4,7 +4,7 @@ import Input from "parasprite/Input"
 
 import TLogin from "graphql/scalar/user/TLogin"
 
-import TFileInput from "../file/TFileInput"
+import TFileInput from "../media/TFileInput"
 import TContactsInput from "./TContactsInput"
 
 const TUserInput = Input("UserInput", "Basic user information.")

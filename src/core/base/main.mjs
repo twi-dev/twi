@@ -1,4 +1,4 @@
-import series from "core/helper/promise/runSeries"
+import serial from "core/helper/array/runSerial"
 import log from "core/log"
 
 import db from "core/base/database"
@@ -7,6 +7,7 @@ import server from "core/base/server"
 function onError(err) {
   log.error(err)
 
+  // Force exiting app when error is some sort of following:
   if (
     (err instanceof Error && err.constructor.name === "Error")
     || err instanceof RangeError
@@ -19,7 +20,7 @@ function onError(err) {
   process.exitCode = 1
 }
 
-const exit = () => series([server.close, db.disconnect]).catch(onError)
+const exit = () => serial([server.close, db.disconnect]).catch(onError)
 
 function beforeExit() {
   if (process.exitCode == null) {
@@ -34,4 +35,4 @@ function beforeExit() {
 process.on("exit", beforeExit)
 
 // Run Twi's HTTP server
-series([db.connect, server.start]).catch(onError)
+serial([db.connect, server.start]).catch(onError)

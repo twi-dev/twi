@@ -4,8 +4,7 @@
  * @param {Array<Promise<any>>} iterable
  * @param {any[]} ...args
  */
-// DEPRECATED
-function runSeries(iterable, ...args) {
+function runSerial(iterable, ...args) {
   const step = (prev, next) => Promise.resolve(prev).then(() => next(...args))
 
   if (iterable.length <= 1) {
@@ -15,4 +14,4 @@ function runSeries(iterable, ...args) {
   return iterable.reduce(step, null)
 }
 
-export default runSeries
+export default runSerial

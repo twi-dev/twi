@@ -5,7 +5,6 @@ import Type from "parasprite/Type"
 import findUserStories from "graphql/resolve/query/story/findUserStories"
 
 import TStoryMinimal from "../story/TStoryMinimal"
-
 import TUserMinimal from "./TUserMinimal"
 
 const TUser = Type({

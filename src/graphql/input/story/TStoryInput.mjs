@@ -2,6 +2,7 @@ import {GraphQLID as TID, GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
 
+import TFileInput from "../media/TFileInput"
 import TChapterInput from "./TChapterInput"
 
 const TStoryInput = Input("StoryInput")
@@ -14,6 +15,10 @@ const TStoryInput = Input("StoryInput")
     name: "description",
     type: TString,
     required: true
+  })
+  .field({
+    name: "cover",
+    type: TFileInput
   })
   .field({
     name: "characters",

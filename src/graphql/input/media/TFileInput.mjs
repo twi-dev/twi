@@ -1,9 +1,10 @@
 import {GraphQLString as TString} from "graphql"
 import Input from "parasprite/Input"
 
-const TFileInput = Input(
-  "FileInput", "Represends a file type for multipart resolvers."
-)
+const TFileInput = Input({
+  name: "FileInput",
+  description: "Represends a file type for multipart resolvers."
+})
   .field({
     name: "filrname",
     type: TString,
