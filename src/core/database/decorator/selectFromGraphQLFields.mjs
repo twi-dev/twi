@@ -1,12 +1,13 @@
 import listOf from "core/graphql/getFieldSelectionsList"
 
 function selectFromGraphQLFields(target, name, descriptor) {
-  const fn = descriptor.value
+  const method = descriptor.value
 
   descriptor.value = function select(params = {}) {
+    const query = method.call(this, params)
     const fields = params.node
 
-    return fn.call(this, params).select(listOf(fields))
+    return fields ? query.select(listOf(fields)) : query
   }
 }
 

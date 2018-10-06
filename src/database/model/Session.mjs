@@ -60,16 +60,19 @@ class Session extends Model {
    * @throws {NotFound} when requested user not found by his login
    * @throws {Error} when wrong password given
    */
-  static async sign({args, ctx, options}) {
-    const {password} = args.credentials
+  static async sign({args, ctx, options, ...params}) {
+    const {password, ...credentials} = args.credentials
     const {client, ip} = ctx
 
-    const login = new RegExp(`^${args.credentials.login}$`, "i")
+    const login = new RegExp(`^${credentials.login}$`, "i")
 
-    const user = await User.findOne({login})
+    const user = await User.findByLogin({
+      ...params, ctx, options: {...options, toJS: false}, args: {login}
+    })
 
     invariant(
       !user, NotFound,
+
       "Requested user not found. Check your credentials and try again."
     )
 
