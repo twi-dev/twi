@@ -1,10 +1,10 @@
 /**
- * Run Promise sequence in series
+ * Run given tasks sequentially
  *
  * @param {Array<Promise<any>>} iterable
- * @param {any[]} ...args
+ * @param {any[]} args
  */
-function runSerial(iterable, ...args) {
+function runSerial(iterable, args = []) {
   const step = (prev, next) => Promise.resolve(prev).then(() => next(...args))
 
   if (iterable.length <= 1) {
