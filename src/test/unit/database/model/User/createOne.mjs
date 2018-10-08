@@ -86,13 +86,13 @@ test("Created user should be returned as plain object by default", async t => {
 
   const args = {user: {login, email, password}}
 
-  const user = await User.createOne({args})
+  const user = await User.createOne({args, toJS: true})
 
   t.true(isPlainObject(user))
 })
 
 test(
-  "Created user should be returned as a Document when option toJS is false",
+  "Created user should be returned as a Document by default",
   async t => {
     t.plan(1)
 
@@ -102,9 +102,7 @@ test(
 
     const args = {user: {login, email, password}}
 
-    const options = {toJS: false}
-
-    const user = await User.createOne({args, options})
+    const user = await User.createOne({args})
 
     t.true(user instanceof Document)
   }

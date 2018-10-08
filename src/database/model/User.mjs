@@ -155,10 +155,10 @@ class User extends Model {
   static async updateAvatar({args, ...params}) {
     const user = await this.findViewer({...params, args})
 
-    const {path} = args.avatar
+    const {path, extname} = args.avatar
 
     const dir = join(AVATAR_SAVE_ROOT, user.id)
-    const dest = join(dir, await nanoid())
+    const dest = join(dir, await nanoid(), extname)
 
     await serial([partial(mkdirp, [dir]), partial(copyFile, [path, dest])])
     await user.updateAvatar(dest)

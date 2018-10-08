@@ -2,7 +2,6 @@ import {Model as MongooseModel} from "mongoose"
 
 import merge from "lodash/merge"
 import isEmpty from "lodash/isEmpty"
-import isInteger from "lodash/isInteger"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
@@ -22,7 +21,7 @@ class Model extends MongooseModel {
    */
   static get _defaultOptions() {
     return {
-      toJS: true
+      toJS: false
     }
   }
 

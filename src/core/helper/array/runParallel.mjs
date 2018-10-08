@@ -1,6 +1,6 @@
 /**
  * Run given tasks in parallel
- *)
+ *
  * @param {Array<Function>} tasks
  * @param {any[]} args - a list of arguments to execute function with
  *
