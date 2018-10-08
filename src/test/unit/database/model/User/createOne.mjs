@@ -44,8 +44,9 @@ test("Should always create a USER even if \"role\" passed", async t => {
   const role = User.roles.su
 
   const args = {user: {login, email, password, role}}
+  const options = {toJS: true}
 
-  const user = await User.createOne({args})
+  const user = await User.createOne({args, options})
 
   t.false(user.isSu)
   t.not(user.role, "SU")
@@ -66,8 +67,9 @@ test(
     const status = User.statuses.activated
 
     const args = {user: {login, email, password, status}}
+    const options = {toJS: true}
 
-    const user = await User.createOne({args})
+    const user = await User.createOne({args, options})
 
     t.false(user.isActivated)
     t.not(user.status, "ACTIVATED")
@@ -85,8 +87,9 @@ test("Created user should be returned as plain object by default", async t => {
   const password = t.context.password
 
   const args = {user: {login, email, password}}
+  const options = {toJS: true}
 
-  const user = await User.createOne({args, toJS: true})
+  const user = await User.createOne({args, options})
 
   t.true(isPlainObject(user))
 })
