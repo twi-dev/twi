@@ -155,6 +155,8 @@ class User extends Model {
   static async updateAvatar({args, ...params}) {
     const user = await this.findViewer({...params, args})
 
+    invariant(!user, NotFound, "Can't find requested user.")
+
     const {path, extname} = args.avatar
 
     const dir = join(AVATAR_SAVE_ROOT, user.id)
