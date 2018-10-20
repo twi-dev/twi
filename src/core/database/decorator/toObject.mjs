@@ -8,9 +8,7 @@ function toObject(target, name, descriptor) {
   descriptor.value = async function tryConvert(params = {}) {
     const docs = await method.call(this, params)
 
-    return this._tryConvert(docs, {
-      ...params.options, toJS: true
-    })
+    return this._tryConvert(docs, params.options)
   }
 }
 

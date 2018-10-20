@@ -5,6 +5,9 @@ import isString from "lodash/isString"
 import isObject from "lodash/isObject"
 
 import getType from "core/helper/util/getType"
+import waterfall from "core/helper/array/runWaterfall"
+
+import toJS from "./toJS"
 
 /**
  * Bind given resolver with improved parameters API.
@@ -37,7 +40,9 @@ function bindResolver(resolver, ctx = null) {
     context || (context = {})
     node || (node = {})
 
-    return resolver.call(ctx, {parent, args, context, ctx: context, node})
+    const params = {parent, args, context, ctx: context, node}
+
+    return waterfall([resolver.bind(ctx, params), toJS])
   }
 }
 

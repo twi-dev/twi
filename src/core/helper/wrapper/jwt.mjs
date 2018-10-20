@@ -7,6 +7,10 @@ const jwt = promisify.except(
   jsonwebtoken
 )
 
-module.exports = {
-  ...jsonwebtoken, ...jwt,
-}
+export const decode = jwt.decode
+export const verify = jwt.verify
+export const sign = jwt.sign
+export const JsonWebTokenError = jwt.JsonWebTokenError
+export const NotBeforeError = jwt.NotBeforeError
+export const TokenExpiredError = jwt.TokenExpiredError
+export default jwt

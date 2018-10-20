@@ -93,6 +93,7 @@ function getSchema(name, values) {
 
   invariant(
     !isFunction(getModelFields), TypeError,
+
     "Schema module should export a function as default." +
     "Check out the %s.js module exports.", path
   )
@@ -101,6 +102,7 @@ function getSchema(name, values) {
 
   invariant(
     !isPlainObject(schemaFields), TypeError,
+
     "Schema function should return a plain object." +
     "Check out the function %s in %s module.",
     getModelFields.name, path
@@ -156,19 +158,15 @@ function setMiddlewares(name, schema) {
 function createModel(Target) {
   invariant(
     !isPrototypeOf(Model, Target), TypeError,
+
     "Target model should extend a class Model."
   )
 
   const name = Target.name
-
   const values = getStaticValues(Target)
-
   const schema = setMiddlewares(name, getSchema(name, values))
 
-  // Also, make each models self-invocing.
-  const model = proxy({apply})(mongoose.model(Target, schema))
-
-  return model
+  return mongoose.model(Target, schema) |> proxy({apply})
 }
 
 export default createModel

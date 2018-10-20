@@ -1,6 +1,6 @@
 import isFunction from "lodash/isFunction"
 
-const deprecate = message => (target, key, descriptor) => {
+const deprecate = message => function decorate(target, key, descriptor) {
   let called = false
 
   const decorator = fn => (...args) => {

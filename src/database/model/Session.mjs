@@ -3,6 +3,7 @@ import {compare} from "bcryptjs"
 import ms from "ms"
 import uuid from "uuid"
 import pick from "lodash/pick"
+import omit from "lodash/omit"
 import invariant from "@octetstream/invariant"
 import addMilliseconds from "date-fns/addMilliseconds"
 
@@ -67,7 +68,11 @@ class Session extends Model {
     const login = new RegExp(`^${credentials.login}$`, "i")
 
     const user = await User.findByLogin({
-      ...params, ctx, options: {...options, toJS: false}, args: {login}
+      ...omit(params, "node"),
+
+      ctx,
+      options: {...options, toJS: false},
+      args: {login}
     })
 
     invariant(
@@ -111,27 +116,13 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   static async refresh(params) {
-    const session = await this.findOneCurrent({
-      ...params,
-
-      options: {
-        ...params.options, toJS: false
-      }
-    })
+    const session = await this.findOneCurrent(params)
 
     invariant(!session, Forbidden, "You have no access for this operation.")
 
     const user = await User.findById({
-      ...params,
-
-      args: {id: session.userId},
-      options: {
-        ...params.options, toJS: false
-      }
+      ...omit(params, "node"), args: {id: session.userId}
     })
-
-    // FIXME: Should I remove the session if user not exists? Hm...
-    invariant(!user, NotFound, "Can't find user for this session.")
 
     const accessToken = await generateToken(
       pick(user, ["id", "role", "status"]), jwt.accessToken
@@ -141,9 +132,7 @@ class Session extends Model {
 
     const type = Session.defaultType
 
-    return {
-      ...accessToken, type
-    }
+    return {...accessToken, type}
   }
 
   /**

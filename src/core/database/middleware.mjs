@@ -1,6 +1,9 @@
 import isFunction from "lodash/isFunction"
 import isString from "lodash/isString"
 
+// Notes about 5.x release:
+// 1. Parallel "pre" middlewares were removed
+
 const types = [
   // Document middlewares
   "init",
@@ -23,25 +26,25 @@ const types = [
 const fulfillPost = handler => function middlewareDecoratorPost(doc, next) {
   const onFulfilled = res => next(null, res)
 
-  handler(doc).then(onFulfilled, err => next(err))
+  Promise(handler(doc)).then(onFulfilled, next)
 }
 
 const fulfillSerial = handler => function middlewareDecoratorPre(next) {
   const onFulfilled = res => next(null, res)
 
-  handler.call(this, this).then(onFulfilled, err => next(err))
+  Promise.resolve(handler.call(this, this)).then(onFulfilled, next)
 }
 
-const fulfillParallel = handler => function(next, cb) {
+const fulfillParallel = handler => function middleware(next, cb) {
   next() // Exec the next middleware from queue, huh?
 
   const onFulfilled = res => cb(null, res)
 
-  handler.call(this, this).then(onFulfilled, cb)
+  Promise.resolve(handler.call(this, this)).then(onFulfilled, cb)
 }
 
 const wrapMiddleware = (kind, parallel) => handler => {
-  if (kind.toLowerCase() === "post") {
+  if (String(kind).toLowerCase() === "post") {
     return fulfillPost(handler)
   }
 
@@ -57,6 +60,11 @@ const defineMiddleware = (kind, type, parallel) => handler => {
 
   if (!isFunction(handler)) {
     throw new TypeError("Middleware handler should be a function.")
+  }
+
+  // Return middleware as-is for init type because it's always synchronous
+  if (type === "init") {
+    return {kind, type, handler}
   }
 
   handler = wrapMiddleware(kind, parallel)(handler)
@@ -90,7 +98,4 @@ types.forEach(type => before[type] = parallel => {
  */
 types.forEach(type => after[type] = handler => after(type)(handler))
 
-export {
-  before,
-  after
-}
+export {before, after}

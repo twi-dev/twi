@@ -1,5 +1,6 @@
 import {Model as MongooseModel} from "mongoose"
 
+import omit from "lodash/omit"
 import merge from "lodash/merge"
 import isEmpty from "lodash/isEmpty"
 import isFunction from "lodash/isFunction"
@@ -49,6 +50,7 @@ class Model extends MongooseModel {
    *
    * @protected
    */
+  // DEPRECATED
   static async _tryConvert(docs, options = {}) {
     if (isEmpty(docs)) {
       return null
@@ -63,14 +65,14 @@ class Model extends MongooseModel {
     }
 
     if (!isArray(docs)) {
-      return isFunction(docs.toJS) ? await docs.toJS() : docs
+      return isFunction(docs.toJS) ? docs.toJS() : docs
     }
 
-    for (const [idx, doc] of docs.entries()) {
-      docs[idx] = isFunction(doc.toJS) ? await doc.toJS() : doc
-    }
+    // for (const [idx, doc] of docs.entries()) {
+    //   docs[idx] = isFunction(doc.toJS) ? doc.toJS() : doc
+    // }
 
-    return Promise.all(docs)
+    return Promise.all(docs.map(doc => isFunction(doc.toJS) ? doc.toJS() : doc))
   }
 
   /**
@@ -140,8 +142,8 @@ class Model extends MongooseModel {
    *
    * @param {object} options
    */
-  static findOneById(id) {
-    return this.findById(id)
+  static findOneById(id, options = {}) {
+    return this.findById(id, options)
   }
 
   // DEPRECATED
@@ -230,15 +232,9 @@ class Model extends MongooseModel {
    * @return {object}
    */
   async toJS(options = {}) {
-    const obj = this.toObject({
-      ...options, virtuals: true
-    })
+    const object = this.toObject({...options, virtuals: true})
 
-    const id = this.id
-
-    return {
-      ...obj, id
-    }
+    return {...omit(object, ["_id", "__v"]), id: String(this.id)}
   }
 }
 

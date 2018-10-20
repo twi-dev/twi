@@ -23,8 +23,7 @@ const AVATAR_SAVE_ROOT = join(
   __dirname, "..", "..", "static", "assets", "files", "avatars"
 )
 
-@createModel
-class User extends Model {
+@createModel class User extends Model {
   /**
    * User account status
    */
@@ -130,8 +129,8 @@ class User extends Model {
     return user
   }
 
-  @fromFields static _findById({args}) {
-    return super.findById(args.id)
+  @fromFields static _findById({args, options}) {
+    return super.findById(args.id, options)
   }
 
   @toObject static async findById(params) {
@@ -163,7 +162,7 @@ class User extends Model {
     const dest = join(dir, await nanoid(), extname)
 
     await serial([partial(mkdirp, [dir]), partial(copyFile, [path, dest])])
-    await user.updateAvatar(dest)
+    await user.updateAvatar({args: {avatar: dest}})
 
     return this.findViewer({...params, args})
   }
@@ -205,7 +204,7 @@ class User extends Model {
     return compare(string, this.password)
   }
 
-  updateAvatar = avatar => this.update({avatar}).exec()
+  updateAvatar = ({args}) => this.update({avatar: args.avatar}).exec()
 
   updateLastVisit = () => this.update({"dates.lastVisit": new Date()}).exec()
 
