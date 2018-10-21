@@ -1,6 +1,8 @@
-# Twi
+# Twi API
 
 Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Magic** community.
+
+The current project contains codebase related to Twilight's Library API getaway service needs.
 
 [![dependencies Status](https://david-dm.org/twi-project/twi-server/status.svg)](https://david-dm.org/twi-project/api-service)
 [![devDependencies Status](https://david-dm.org/twi-project/api-service/dev-status.svg)](https://david-dm.org/twi-project/api-service?type=dev)
@@ -10,9 +12,9 @@ Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Mag
 🚧 **IMPORTANT NOTE: Project is still in development
 and isn't ready for production! Stay in touch.**
 
-**I'm also doesn't accept pull requests (but feel free to ask me about this project),**
+**I'm also do not accept pull requests (but feel free to ask me about this project),**
 **because Twi have no stable API, docs and contributing policy.**
-**All that things will be added soon.**
+**All these things will be added soon.**
 
 ## Requirements:
 
@@ -21,7 +23,7 @@ and isn't ready for production! Stay in touch.**
 | [Node.js](https://nodejs.org/en/)    | >= 8.5                    |
 | [Yarn](https://yarnpkg.com/lang/en/) | >= 1.1.0                  |
 | [Redis](https://redis.io/)           | (will be added in future) |
-| [MongoDB](https://www.mongodb.com/)  | >= 3.4                    |
+| [MongoDB](https://www.mongodb.com/)  | >= 4.x                    |
 
 You also need:
 
