@@ -13,7 +13,6 @@ import nanoid from "nanoid/async"
 import {createModel, Model} from "core/database"
 
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
-import toObject from "core/database/decorator/toObject"
 
 import NotFound from "core/error/http/NotFound"
 import serial from "core/helper/array/runSerial"
@@ -89,7 +88,7 @@ const AVATAR_SAVE_ROOT = join(
     )
   }
 
-  @toObject @fromFields static findMany({args}) {
+  @fromFields static findMany({args}) {
     return super.findMany(args)
   }
 
@@ -116,7 +115,7 @@ const AVATAR_SAVE_ROOT = join(
    *
    * @throws {NotFound} – when user is not found
    */
-  @toObject static async findByLogin(params) {
+  static async findByLogin(params) {
     const {args} = params
 
     const user = await this._findByLogin(params)
@@ -133,7 +132,7 @@ const AVATAR_SAVE_ROOT = join(
     return super.findById(args.id, options)
   }
 
-  @toObject static async findById(params) {
+  static async findById(params) {
     const user = await this._findById(params)
 
     invariant(!user, NotFound, "Can't find requested user.")

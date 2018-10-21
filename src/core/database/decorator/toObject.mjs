@@ -1,3 +1,5 @@
+import deprecate from "core/helper/decorator/deprecate"
+
 /**
  * Creates a decorator methods to automatically call
  * an internal _tryConvert method
@@ -12,4 +14,6 @@ function toObject(target, name, descriptor) {
   }
 }
 
-export default toObject
+export default toObject |> deprecate(
+  "Will be removed in favor of toJS helper."
+)

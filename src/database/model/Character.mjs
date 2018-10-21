@@ -2,14 +2,13 @@ import {createModel, Model} from "core/database"
 
 import nanoid from "core/helper/util/nanoid"
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
-import toObject from "core/database/decorator/toObject"
 
 // Set code length to 4
 const nano = nanoid.bind(4)
 
 @createModel
 class Character extends Model {
-  @toObject @fromFields static findMany({args}) {
+  @fromFields static findMany({args}) {
     return super.findMany(args)
   }
 
@@ -27,9 +26,7 @@ class Character extends Model {
     for (const [idx, character] of characters.entries()) {
       const code = nano()
 
-      characters[idx] = {
-        ...character, code
-      }
+      characters[idx] = {...character, code}
     }
 
     return super.createMany(characters, options)

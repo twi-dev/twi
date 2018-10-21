@@ -2,22 +2,21 @@ import {createModel, Model} from "core/database"
 
 import nanoid from "core/helper/util/nanoid"
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
-import toObject from "core/database/decorator/toObject"
 
 // Set code length to 4
 const nano = nanoid.bind(4)
 
 @createModel
 class Genre extends Model {
-  @toObject @fromFields static findMany({args}) {
+  @fromFields static findMany({args}) {
     return super.findMany(args)
   }
 
-  @toObject @fromFields static findOne({args}) {
+  @fromFields static findOne({args}) {
     return super.findOne(args)
   }
 
-  @toObject @fromFields static findById({args}) {
+  @fromFields static findById({args}) {
     return super.findById(args.id)
   }
 
@@ -35,9 +34,7 @@ class Genre extends Model {
     for (const [idx, genre] of genres.entries()) {
       const code = nano()
 
-      genres[idx] = {
-        ...genre, code
-      }
+      genres[idx] = {...genre, code}
     }
 
     return super.createMany(genres, options)

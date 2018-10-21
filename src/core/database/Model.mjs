@@ -2,12 +2,11 @@ import {Model as MongooseModel} from "mongoose"
 
 import omit from "lodash/omit"
 import merge from "lodash/merge"
-import isEmpty from "lodash/isEmpty"
-import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
+import deprecate from "core/helper/decorator/deprecate"
 import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
@@ -21,9 +20,7 @@ class Model extends MongooseModel {
    * @protected
    */
   static get _defaultOptions() {
-    return {
-      toJS: false
-    }
+    return {}
   }
 
   /**
@@ -40,42 +37,6 @@ class Model extends MongooseModel {
   }
 
   /**
-   * Convert documents to JavaScript plain object using toJS method of
-   *   the each document.
-   *
-   * @param {mongoose.Document | mongoose.Document[]} docs
-   * @param {object} [optinos = {}]
-   *
-   * @return {object}
-   *
-   * @protected
-   */
-  // DEPRECATED
-  static async _tryConvert(docs, options = {}) {
-    if (isEmpty(docs)) {
-      return null
-    }
-
-    if (isEmpty(options)) {
-      options = this._getOptions(options)
-    }
-
-    if (Boolean(options.toJS) === false) {
-      return docs
-    }
-
-    if (!isArray(docs)) {
-      return isFunction(docs.toJS) ? docs.toJS() : docs
-    }
-
-    // for (const [idx, doc] of docs.entries()) {
-    //   docs[idx] = isFunction(doc.toJS) ? doc.toJS() : doc
-    // }
-
-    return Promise.all(docs.map(doc => isFunction(doc.toJS) ? doc.toJS() : doc))
-  }
-
-  /**
    * Create one document with given params
    *
    * @param {object} doc
@@ -83,7 +44,7 @@ class Model extends MongooseModel {
    *
    * @return {object}
    */
-  static async createOne(doc, options = {}) {
+  static async createOne(doc, options) {
     options = this._getOptions(options)
 
     invariant(
@@ -91,9 +52,7 @@ class Model extends MongooseModel {
       "Expected a plain object. Received %s", getType(doc)
     )
 
-    doc = await this(doc).save(options)
-
-    return this._tryConvert(doc, options)
+    return super.create(doc, this._getOptions(options))
   }
 
   /**
@@ -115,23 +74,21 @@ class Model extends MongooseModel {
       return this.createOne(docs.shift(), options)
     }
 
-    docs = await this.insertMany(docs, options)
-
-    return this._tryConvert(docs, options)
+    return this.insertMany(docs, options)
   }
 
   /**
    * Find whatever documents. (10 per page)
    *
+   * @param {object} search – advanced search parameters
    * @param {number} cursor – page number
-   * @param {object} filters – advanced search parameters
    *
    * @return {array}
    */
-  static findMany(filters = {}, cursor = 1, limit = 10) {
+  static findMany(search = {}, cursor = 1, limit = 10) {
     const skip = limit * (cursor - 1)
 
-    return this.find().where(filters).skip(skip).limit(limit)
+    return this.find().where(search).skip(skip).limit(limit)
   }
 
   /**
@@ -142,11 +99,12 @@ class Model extends MongooseModel {
    *
    * @param {object} options
    */
-  static findOneById(id, options = {}) {
-    return this.findById(id, options)
+  static findOneById(id, options) {
+    return this.findById(id, this._getOptions(options))
   }
 
   // DEPRECATED
+  @deprecate("Use findManyByIds instead")
   static findManyById(...args) {
     return this.findManyByIds(...args)
   }
@@ -161,6 +119,7 @@ class Model extends MongooseModel {
   static findManyByIds(ids, cursor, limit) {
     invariant(
       !isArray(ids), TypeError,
+
       "Documents IDs should be passed as array."
     )
 
@@ -191,12 +150,8 @@ class Model extends MongooseModel {
    *
    * @return {string[] | mongoose.Types.objectId[]}
    */
-  static async removeManyById(ids) {
-    await this.remove({
-      _id: {
-        $in: ids
-      }
-    })
+  static async removeManyByIds(ids) {
+    await super.remove({_id: {$in: ids}})
 
     return ids
   }
@@ -222,8 +177,6 @@ class Model extends MongooseModel {
     return this._id
   }
 
-  tryConvert = (docs, options = {}) => this._tryConvert(docs, options)
-
   /**
    * Converts a mongoose document to JavaScript plain object
    *
@@ -232,7 +185,7 @@ class Model extends MongooseModel {
    * @return {object}
    */
   async toJS(options = {}) {
-    const object = this.toObject({...options, virtuals: true})
+    const object = super.toObject({...options, virtuals: true})
 
     return {...omit(object, ["_id", "__v"]), id: String(this.id)}
   }

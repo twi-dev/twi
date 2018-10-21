@@ -6,7 +6,6 @@ import invariant from "@octetstream/invariant"
 import {createModel, Model} from "core/database"
 
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
-import toObject from "core/database/decorator/toObject"
 
 import Chapter from "database/model/Chapter"
 // import Character from "database/model/Character"
@@ -44,7 +43,7 @@ class Story extends Model {
     return super.findById(args.id)
   }
 
-  @toObject @fromFields static findMany({args}) {
+  @fromFields static findMany({args}) {
     return super.findMany(args)
   }
 
@@ -58,7 +57,7 @@ class Story extends Model {
    *
    * @return {object} – created story
    */
-  @toObject static async createOne({args, ctx, options, ...params}) {
+  static async createOne({args, ctx, options, ...params}) {
     const {story} = args
 
     const publisher = ctx.state.user.id
@@ -117,7 +116,7 @@ class Story extends Model {
     )
   }
 
-  @toObject static async addOneChapter({args, options, ...params}) {
+  static async addOneChapter({args, options, ...params}) {
     let {story} = args
 
     story = await this.findById({args: story.id})
@@ -157,7 +156,7 @@ class Story extends Model {
    * @throws {NotFound} – when no story has found by given ID
    * @throws {Forbidden} – if the current user is not story publisher
    */
-  @toObject static async addOneCollaborator(params) {
+  static async addOneCollaborator(params) {
     const {args, ctx} = params
     const {collaborator} = args
 
@@ -240,7 +239,7 @@ class Story extends Model {
     return this.findById({...params, options, args: {id}})
   }
 
-  @toObject static async updateOneStatus({args, options, ...params}) {
+  static async updateOneStatus({args, options, ...params}) {
     const viewer = args.state.user.id
 
     let isFinished = args.story.isFinished

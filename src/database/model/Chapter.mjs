@@ -6,7 +6,6 @@ import isString from "lodash/isString"
 import {createModel, Model} from "core/database"
 
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
-import toObject from "core/database/decorator/toObject"
 
 import getType from "core/helper/util/getType"
 
@@ -16,7 +15,7 @@ const md = new Markdown({breaks: true})
 
 @createModel
 class Chapter extends Model {
-  @toObject @fromFields static findMany({args}) {
+  @fromFields static findMany({args}) {
     return super.findMany(args)
   }
 

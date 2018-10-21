@@ -1,8 +1,6 @@
 import invariant from "@octetstream/invariant"
 
 import isFunction from "lodash/isFunction"
-import isString from "lodash/isString"
-import isObject from "lodash/isObject"
 
 import getType from "core/helper/util/getType"
 import waterfall from "core/helper/array/runWaterfall"
@@ -18,22 +16,19 @@ import toJS from "./toJS"
  * @return {function}
  */
 function bindResolver(resolver, ctx = null) {
-  if (isString(resolver)) {
-    invariant(
-      !(isFunction(ctx) || isObject(ctx)), TypeError,
-      "Expected an object or function as " +
-      "the second argument is resolver name passed." +
-      "Received %s", getType(ctx)
-    )
-
-    resolver = ctx[resolver]
-  }
-
   invariant(
     !isFunction(resolver), TypeError,
     "Expected a resolver function. Received %s", getType(resolver)
   )
 
+  /**
+   * @param {object | array} [parent = undefined]
+   * @param {object} args
+   * @param {Koa.Context} context
+   * @param {object} node
+   *
+   * @return {Promise<any>}
+   */
   return function resolverDecorator(parent, args, context, node) {
     parent || (parent = null)
     args || (args = {})
@@ -42,7 +37,7 @@ function bindResolver(resolver, ctx = null) {
 
     const params = {parent, args, context, ctx: context, node}
 
-    return waterfall([resolver.bind(ctx, params), toJS])
+    return waterfall([resolver.bind(ctx || this, params), toJS])
   }
 }
 
