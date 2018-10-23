@@ -6,14 +6,18 @@ import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
-import deprecate from "core/helper/decorator/deprecate"
 import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
 class Model extends MongooseModel {
+  /**
+   * Returns keys of PubSub event types
+   *
+   * @return {object}
+   */
   static get pubsub() {
-    return invariant(true, "Should be implemented in a child class.")
+    return invariant(true, "Must be implemented in a child class.")
   }
 
   /**
@@ -103,12 +107,6 @@ class Model extends MongooseModel {
     return this.findById(id, this._getOptions(options))
   }
 
-  // DEPRECATED
-  @deprecate("Use findManyByIds instead")
-  static findManyById(...args) {
-    return this.findManyByIds(...args)
-  }
-
   /**
    * Find some docs by IDs
    *
@@ -134,7 +132,7 @@ class Model extends MongooseModel {
    * @return {string | mongoose.Types.objectId}
    */
   static async removeOneById(id) {
-    let doc = super.findById(id)
+    let doc = await super.findById(id)
 
     invariant(!doc, "Can't find the document.")
 
