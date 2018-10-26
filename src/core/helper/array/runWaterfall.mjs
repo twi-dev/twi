@@ -1,3 +1,6 @@
+/**
+ * @return {Promise<Array<any>>}
+ */
 function runWaterfall(tasks, initial) {
   const step = (prev, next) => Promise.resolve(prev).then(res => next(res))
 
