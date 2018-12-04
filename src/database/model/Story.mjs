@@ -3,6 +3,8 @@ import isEmpty from "lodash/isEmpty"
 import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
+import {fieldsList} from "graphql-fields-list"
+
 import {createModel, Model} from "core/database"
 
 import fromFields from "core/database/decorator/selectFromGraphQLFields"
@@ -11,7 +13,6 @@ import Chapter from "database/model/Chapter"
 // import Character from "database/model/Character"
 // import Genre from "database/model/Genre"
 
-import getFieldSelectionsList from "core/graphql/getFieldSelectionsList"
 
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
@@ -196,7 +197,7 @@ class Story extends Model {
    * @throws {Forbidden} – if the current user is not story publisher
    */
   static async updateOneTitle({args, ctx, node, options}) {
-    const selections = getFieldSelectionsList(node)
+    const selections = fieldsList(node)
 
     const {id, title} = args
     const viewer = ctx.state.user.id
