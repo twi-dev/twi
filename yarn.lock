@@ -3579,6 +3579,11 @@ graphql-extensions@^0.0.x, graphql-extensions@~0.0.9:
     core-js "^2.5.3"
     source-map-support "^0.5.1"
 
+graphql-fields-list@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/graphql-fields-list/-/graphql-fields-list-1.1.1.tgz#fc9a55614a7ef63c1c98debdd2c27c63eb9b8259"
+  integrity sha512-AlLbZPBXPgD/rgHh/AgvW+4ePYtuBFtv+1sUeZbi8geb+EgFwjx/CMdY/Ijx2ENEpiPSRs6vMAJCnRIojw+pgw==
+
 graphql-iso-date@3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/graphql-iso-date/-/graphql-iso-date-3.6.1.tgz#bd2d0dc886e0f954cbbbc496bbf1d480b57ffa96"

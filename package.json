@@ -61,6 +61,7 @@
     "formdata-node": "1.2.0",
     "graphql": "14.0.2",
     "graphql-custom-types": "1.4.0",
+    "graphql-fields-list": "^1.1.1",
     "graphql-iso-date": "3.6.1",
     "graphql-request": "1.8.2",
     "graphql-server-koa": "1.4.0",

@@ -1,6 +1,6 @@
-import isEmpty from "lodash/isEmpty"
+import {fieldsList} from "graphql-fields-list"
 
-import fromFieldsOf from "core/graphql/getFieldSelectionsList"
+import isEmpty from "lodash/isEmpty"
 
 function selectFromGraphQLFields(target, name, descriptor) {
   const method = descriptor.value
@@ -9,7 +9,7 @@ function selectFromGraphQLFields(target, name, descriptor) {
     const query = method.call(this, params)
     const node = params?.node
 
-    return isEmpty(node) ? query : query.select(fromFieldsOf(node))
+    return isEmpty(node) ? query : query.select(fieldsList(node))
   }
 }
 
