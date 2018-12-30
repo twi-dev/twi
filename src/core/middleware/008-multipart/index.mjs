@@ -4,7 +4,6 @@ import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 
 import map from "core/helper/iterator/async/recursiveObjectMap"
-import waterfall from "core/helper/array/runWaterfall"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
