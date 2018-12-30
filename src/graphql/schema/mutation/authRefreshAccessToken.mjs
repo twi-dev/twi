@@ -10,8 +10,8 @@ const resolve = {
   handler: refresh
 }
 
-const refreshToken = [TString, true]
-
-const args = {refreshToken}
+const args = {
+  refreshToken: [TString, true]
+}
 
 export {resolve, args}

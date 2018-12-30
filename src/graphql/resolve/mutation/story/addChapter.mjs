@@ -1,10 +1,7 @@
 import Story from "database/model/Story"
-import checkUser from "core/auth/checkUser"
+import check from "core/auth/checkUser"
+import bind from "core/graphql/bindResolver"
 
-async function addChapter(_, {storyId, chapter}, ctx) {
-  const viewer = ctx.state.user.id
+const addChapter = params => Story.addChapter(params)
 
-  return await Story.addOneChapter(viewer, storyId, chapter)
-}
-
-export default checkUser(addChapter)
+export default addChapter |> bind |> check

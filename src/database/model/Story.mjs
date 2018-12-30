@@ -13,7 +13,6 @@ import Chapter from "database/model/Chapter"
 // import Character from "database/model/Character"
 // import Genre from "database/model/Genre"
 
-
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
 
@@ -117,19 +116,16 @@ class Story extends Model {
     )
   }
 
-  static async addOneChapter({args, options, ...params}) {
-    let {story} = args
+  static async addChapter({args, options, ...params}) {
+    const {id, ...fields} = args
 
-    story = await this.findById({args: story.id})
+    const story = await this.findById({args: id})
 
     invariant(!story, NotFound, "Can't find requested story.")
 
-    const chapter = await Chapter.createOne({...params, args, options})
-
-    // story.chapters.list.push(chapter.id)
-    // story.chapters.count = story.chapters.list.length
-
-    // await story.save()
+    const chapter = await Chapter.createOne({
+      ...params, args: {chapter: fields}, options
+    })
 
     await story.update({
       $inc: {

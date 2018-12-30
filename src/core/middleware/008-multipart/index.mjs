@@ -1,9 +1,10 @@
-import busboy, {isFile} from "then-busboy"
+import busboy, {isFile, Body} from "then-busboy"
 import {unlink} from "promise-fs"
 import isFunction from "lodash/isFunction"
 import isEmpty from "lodash/isEmpty"
 
 import map from "core/helper/iterator/async/recursiveObjectMap"
+import waterfall from "core/helper/array/runWaterfall"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
@@ -22,11 +23,13 @@ const multipart = options => async function multipartParser(ctx, next) {
 
   const {processFile} = {...defaults, ...options}
 
-  const body = await busboy(ctx.req)
+  let body = await busboy(ctx.req).then(Body.from)
 
-  ctx.request.body = isFunction(processFile)
-    ? await map(body, value => isFile(value) ? processFile(value) : value)
-    : body
+  if (isFunction(processFile)) {
+    body = await map(body, value => isFile(value) ? processFile(value) : value)
+  }
+
+  ctx.request.body = body
 
   await next()
 

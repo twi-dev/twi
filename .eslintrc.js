@@ -17,10 +17,17 @@ module.exports = {
   },
   "rules": {
     "no-shadow": 0,
-    "operator-linebreak": ["error", "after"],
 
     "indent": ["error", 2, {
       "MemberExpression": "off"
+    }],
+
+    "operator-linebreak": ["error", "after", {
+      overrides: {
+        "+": "ignore",
+        "?": "before",
+        ":": "before"
+      }
     }],
 
     "ava/no-ignored-test-files": ["error", {
