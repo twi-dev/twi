@@ -4,12 +4,12 @@ import Input from "parasprite/Input"
 
 import TLogin from "../../scalar/user/TLogin"
 
-const TAuthSignInInput = Input({
-  name: "AuthSignInInput",
+const TAuthLogInInput = Input({
+  name: "AuthLogInInput",
   description: "User credentials for local authentication"
 })
   .field({name: "login", type: TLogin, required: true})
   .field({name: "password", type: TString, required: true})
 .end()
 
-export default TAuthSignInInput
+export default TAuthLogInInput

@@ -3,8 +3,8 @@ import Type from "parasprite/Type"
 import TAuthAccessToken from "./TAuthAccessToken"
 import TAuthRefreshToken from "./TAuthRefreshToken"
 
-const TAuthTokenPayload = Type({
-  name: "AuthTokenPayload",
+const TAuthTokens = Type({
+  name: "AuthTokens",
   description: "Resolves accessToken and refreshToken"
 })
   .field({
@@ -19,4 +19,4 @@ const TAuthTokenPayload = Type({
   })
 .end()
 
-export default TAuthTokenPayload
+export default TAuthTokens
