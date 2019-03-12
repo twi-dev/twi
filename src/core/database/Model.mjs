@@ -1,4 +1,4 @@
-import {Model as MongooseModel} from "mongoose"
+import {Model as Base} from "mongoose"
 
 import omit from "lodash/omit"
 import merge from "lodash/merge"
@@ -10,7 +10,7 @@ import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
-class Model extends MongooseModel {
+class Model extends Base {
   /**
    * Returns keys of PubSub event types
    *
@@ -51,12 +51,13 @@ class Model extends MongooseModel {
   static async createOne(doc, options) {
     options = this._getOptions(options)
 
-    invariant(
-      !isPlainObject(doc), TypeError,
-      "Expected a plain object. Received %s", getType(doc)
-    )
+    if (!isPlainObject(doc)) {
+      return invariant.reject(
+        true, TypeError, "Expected plain object. Received %s", getType(doc)
+      )
+    }
 
-    return super.create(doc, this._getOptions(options))
+    return super.create(doc, options)
   }
 
   /**
@@ -71,11 +72,11 @@ class Model extends MongooseModel {
     options = this._getOptions(options)
 
     if (!isArray(docs)) {
-      return this.createOne(docs, options)
+      return Model.createOne.call(this, docs, options).then(Array.of)
     }
 
     if (docs.length === 1) {
-      return this.createOne(docs.shift(), options)
+      return Model.createOne.call(this, docs[0], options).then(Array.of)
     }
 
     return this.insertMany(docs, options)
@@ -87,9 +88,13 @@ class Model extends MongooseModel {
    * @param {object} search – advanced search parameters
    * @param {number} cursor – page number
    *
-   * @return {array}
+   * @return {mongoose.Query}
    */
   static findMany(search = {}, cursor = 1, limit = 10) {
+    if (typeof search === "number") {
+      [cursor, limit, search] = [search, cursor, {}]
+    }
+
     const skip = limit * (cursor - 1)
 
     return this.find().where(search).skip(skip).limit(limit)
@@ -101,7 +106,7 @@ class Model extends MongooseModel {
    * @param {string | mongoose.Types.ObjectId} id – document identifier in
    *   collection.
    *
-   * @param {object} options
+   * @param {mongoose.Query} options
    */
   static findOneById(id, options) {
     return this.findById(id, this._getOptions(options))
@@ -112,16 +117,10 @@ class Model extends MongooseModel {
    *
    * @param {array} ids – IDs of documents you are looking for
    *
-   * @return {array}
+   * @return {mongoose.Query}
    */
   static findManyByIds(ids, cursor, limit) {
-    invariant(
-      !isArray(ids), TypeError,
-
-      "Documents IDs should be passed as array."
-    )
-
-    return this.findMany({_id: {$in: ids}}, cursor, limit)
+    return this.findMany(cursor, limit).where({_id: {$in: ids}})
   }
 
   /**
@@ -134,7 +133,9 @@ class Model extends MongooseModel {
   static async removeOneById(id) {
     let doc = await super.findById(id)
 
-    invariant(!doc, "Can't find the document.")
+    if (!doc) {
+      return invariant.reject(true, "Can't find the document.")
+    }
 
     doc = await doc.remove()
 
