@@ -1,31 +1,20 @@
+import util from "util"
+
 import isFunction from "lodash/isFunction"
 
-const deprecate = message => function decorate(target, key, descriptor) {
-  let called = false
+const decorator = (fn, message, code) => util.deprecate(fn, message, code)
 
-  const decorator = fn => (...args) => {
-    if (!called) {
-      console.warn("Deprecation warning: %s", String(message))
-      called = true
-    }
-
-    return fn(...args)
-  }
-
-  if (isFunction(target) || arguments.length <= 1) {
-    return decorator(target)
-  }
-
+const deprecate = (message, code) => (target, key, descriptor) => {
   if (isFunction(descriptor.initializer)) {
     const init = descriptor.initializer
 
     descriptor.initializer = function initializer() {
-      return decorator(init.call(this))
+      return decorator(init.call(this), message, code)
     }
   } else {
-    const handler = descriptor.value
+    const fn = descriptor.value
 
-    descriptor.value = decorator(handler)
+    descriptor.value = decorator(fn, message, code)
   }
 
   return descriptor

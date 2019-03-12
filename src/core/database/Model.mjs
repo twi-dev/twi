@@ -63,10 +63,10 @@ class Model extends Base {
   /**
    * Create many documents with given params
    *
-   * @param {array | object} docs
+   * @param {object[] | object} docs
    * @param {object} [optinos = {}]
    *
-   * @return {object}
+   * @return {mongoose.Document}
    */
   static async createMany(docs, options = {}) {
     options = this._getOptions(options)
