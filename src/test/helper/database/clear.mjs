@@ -1,4 +1,4 @@
-import {createConnection} from "./"
+import {createConnection} from "."
 
 async function clear() {
   const mongoose = await createConnection()
