@@ -4,7 +4,11 @@ import isFunction from "lodash/isFunction"
 
 const decorator = (fn, message, code) => util.deprecate(fn, message, code)
 
-const deprecate = (message, code) => (target, key, descriptor) => {
+const deprecate = (message, code) => function wrap(target, key, descriptor) {
+  if (isFunction(target) && arguments.length === 1) {
+    return decorator(target, message, code)
+  }
+
   if (isFunction(descriptor.initializer)) {
     const init = descriptor.initializer
 
