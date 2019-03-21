@@ -11,7 +11,7 @@ const DEFAULT_MESSAGE = concat(
   "Please, check your credentials and try again."
 )
 
-const checkUserDecorator = message => resolver => async function(params) {
+const checkUserDecorator = message => resolver => async params => {
   message || (message = DEFAULT_MESSAGE)
 
   const {isUnauthenticated} = params.ctx
