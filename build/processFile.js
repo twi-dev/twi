@@ -7,7 +7,6 @@ const {transform} = require("@babel/core")
 const fmt = require("sprintf-js").vsprintf
 
 const EXTENSIONS = ["js", "mjs"]
-
 const EXTENSIONS_REGEXPR = new RegExp(`.(${EXTENSIONS.join("|")})$`, "i")
 
 /**
@@ -40,15 +39,13 @@ function transformFile(file, enc, cb) {
     .map(p => p.replace(EXTENSIONS_REGEXPR, ".js"))
 
   try {
-    const contents = transform(
-      String(file.contents), {
-        babelrc: true,
-        filename: path,
-        filenameRelative: relative,
-        sourceMap: Boolean(file.sourceMap),
-        sourceFileName: relative
-      }
-    )
+    const contents = transform(String(file.contents), {
+      babelrc: true,
+      filename: path,
+      filenameRelative: relative,
+      sourceMap: Boolean(file.sourceMap),
+      sourceFileName: relative
+    })
 
     file.contents = Buffer.from(contents.code)
     file.babel = contents.metadata

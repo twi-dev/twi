@@ -1,14 +1,13 @@
-const dirname = require("path").dirname
+const {dirname, basename} = require("path")
+
+const {stat} = require("promise-fs")
 
 const vfs = require("vinyl-fs")
 const junk = require("junk")
 const plumber = require("gulp-plumber")
-const stat = require("promise-fs").stat
 const isEmpty = require("lodash/isEmpty")
 
 const processFile = require("./processFile")
-
-const getDestPath = (src, dest) => ({path}) => dirname(path.replace(src, dest))
 
 const compilationErrorHandler = err => {
   // TODO: Improve errors
@@ -18,16 +17,11 @@ const compilationErrorHandler = err => {
 async function filterFiles(files, src) {
   const res = []
 
-  let stats = []
   for (const file of files) {
-    stats.push(stat(file))
-  }
+    const fstat = await stat(file)
 
-  stats = await Promise.all(stats)
-
-  for (const [key, val] of stats.entries()) {
-    if (!val.isDirectory() && junk.not(val) && val !== src) {
-      res.push(files[key])
+    if (!fstat.isDirectory() && junk.not(basename(file)) && file !== src) {
+      res.push(file)
     }
   }
 
@@ -39,15 +33,16 @@ const run = (files, config) => new Promise((resolve, reject) => {
     return resolve()
   }
 
-  const {src, dest} = config
   const dev = config.env.dev
 
   const errorHandler = dev ? compilationErrorHandler : reject
 
+  // TODO: Improve files compilation process because chokidar
+  // emits "add" event for each file separately
   const stream = vfs.src(files)
     .pipe(plumber({errorHandler}))
     .pipe(processFile(config))
-    .pipe(vfs.dest(getDestPath(src, dest)))
+    .pipe(vfs.dest(dirname(config.dest)))
 
   if (!dev) {
     stream.on("end", resolve)
