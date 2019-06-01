@@ -44,8 +44,11 @@ const onConnected = () => (
 const onDisconnected = () => log.ok("MongoDB: Disconnected from %s", address)
 
 const connect = () => (
-  mongoose.connect(address, {promiseLibrary: Promise, useNewUrlParser: true})
-    .then(onConnected)
+  mongoose.connect(address, {
+    promiseLibrary: Promise,
+    useNewUrlParser: true,
+    useCreateIndex: true
+  }).then(onConnected)
 )
 
 /**
