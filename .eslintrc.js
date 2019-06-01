@@ -1,3 +1,5 @@
+const {join} = require("path")
+
 module.exports = {
   "parser": "babel-eslint",
   "plugins": [
@@ -11,7 +13,10 @@ module.exports = {
     "import/resolver": {
       "babel-module": {
         cwd: __dirname,
-        root: ["src"]
+        root: ["src"],
+        alias: {
+          "packag.json": join(__dirname, "package.json")
+        }
       }
     }
   },

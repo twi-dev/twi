@@ -6,8 +6,7 @@ import {readFile} from "promise-fs"
 import merge from "lodash/merge"
 import isFunction from "lodash/isFunction"
 
-// eslint-disable-next-line import/no-unresolved
-import {version, codename} from "../../package.json"
+import {version, codename} from "package.json"
 
 const VIEWS = join(process.cwd(), "view")
 
@@ -91,5 +90,4 @@ const view = options => void getViewRenderer(
   })
 )
 
-export {render}
-export default view
+export {render, view as default}

@@ -1,8 +1,13 @@
+const {join} = require("path")
+
 module.exports = {
   plugins: [
     ["module-resolver", {
       cwd: __dirname,
-      root: ["src"]
+      root: ["src"],
+      alias: {
+        "package.json": join(__dirname, "package.json")
+      }
     }],
     "@babel/transform-runtime",
     ["@babel/proposal-decorators", {
