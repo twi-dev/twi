@@ -1,116 +1,119 @@
-import now from "core/helper/util/now"
+import mongoose from "mongoose"
 
-const story = ({TObjectId, TString, TNumber, TBoolean, TDate}) => ({
+const {Schema} = mongoose
+const {Types: t} = Schema
+
+const schema = new Schema({
   title: {
-    type: TString,
+    type: t.String,
     required: true
   },
   description: {
-    type: TString,
+    type: t.String,
     required: true
   },
   slug: {
     full: {
-      type: TString,
+      type: t.String,
       required: true,
       unique: true
     },
     short: {
-      type: TString,
+      type: t.String,
       required: true,
       unique: true
     }
   },
   publisher: {
     ref: "User",
-    type: TObjectId,
+    type: t.ObjectId,
     required: true
   },
   translation: {
     flag: {
-      type: TBoolean,
+      type: t.Boolean,
       default: false
     },
     author: {
-      name: TString, // author's nickname
-      profile: TString // link to an author profile or site
+      name: t.String, // author's nickname
+      profile: t.String // link to an author profile or site
     },
     original: {
-      name: TString,
-      link: TString, // link to original story
+      name: t.String,
+      link: t.String, // link to original story
     }
   },
   collaborators: [{
     user: {
       ref: "User",
-      type: TObjectId,
+      type: t.ObjectId,
       required: true
     },
     role: {
-      type: TNumber,
+      type: t.Number,
       required: true
     }
   }],
   isFinished: {
-    type: TBoolean,
+    type: t.Boolean,
     default: false
   },
   isDraft: {
-    type: TBoolean,
+    type: t.Boolean,
     default: false
   },
   dates: {
     createdAt: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      default: Date.now
     },
     updatedAt: {
-      type: TDate,
+      type: t.Date,
       default: null
     }
   },
   chapters: {
     list: [{
       ref: "Chapter",
-      type: TObjectId,
+      type: t.ObjectId,
       required: true
     }],
     count: {
-      type: TNumber,
+      type: t.Number,
       default: 0,
       min: 0
     }
   },
   characters: [{
     ref: "Character",
-    type: TObjectId,
+    type: t.ObjectId,
     required: true
   }],
   genres: [{
     ref: "Genre",
-    type: TObjectId,
+    type: t.ObjectId,
     required: true
   }],
   score: {
     votes: [{
       user: {
         ref: "User",
-        type: TObjectId,
+        type: t.ObjectId,
         required: true
       },
       vote: {
-        type: TNumber,
+        type: t.Number,
         require: true,
         min: 1,
         max: 5
       }
     }],
     avg: {
-      type: TNumber,
+      type: t.Number,
       default: 0,
       min: 0
     }
   }
 })
 
-export default story
+export default schema

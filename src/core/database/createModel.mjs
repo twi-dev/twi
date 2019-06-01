@@ -7,7 +7,6 @@ import mongoose from "mongoose"
 import isEmpty from "lodash/isEmpty"
 import isFunction from "lodash/isFunction"
 import isPlainObject from "lodash/isPlainObject"
-
 import invariant from "@octetstream/invariant"
 
 import proxy from "core/helper/decorator/proxy"
@@ -15,22 +14,16 @@ import apply from "core/helper/proxy/selfInvokingClass"
 
 import objectIterator from "core/helper/iterator/sync/objectIterator"
 
-const assign = Object.assign
-
-const Schema = mongoose.Schema
-const Model = mongoose.Model
+const {Schema, Model} = mongoose
 
 const Types = (() => {
   const res = {}
 
-  for (const [name, type] of objectIterator(Schema.Types).entries()) {
+  for (const [name, type] of objectIterator.entries(Schema.Types)) {
     res[`T${name}`] = type
   }
 
-  return assign({}, res, Schema.Types, {
-    TObjectID: Schema.Types.ObjectId,
-    ObjectID: Schema.Types.ObjectId
-  })
+  return res
 })()
 
 const isPrototypeOf = (parent, child) => (
@@ -91,18 +84,24 @@ function getSchema(name, values) {
 
   const getModelFields = module.default
 
+  if (getModelFields instanceof Schema) {
+    return getModelFields
+  }
+
   invariant(
     !isFunction(getModelFields), TypeError,
-
     "Schema module should export a function as default." +
     "Check out the %s.js module exports.", path
   )
 
   const schemaFields = getModelFields(Types, values)
 
+  if (schemaFields instanceof Schema) {
+    return schemaFields
+  }
+
   invariant(
     !isPlainObject(schemaFields), TypeError,
-
     "Schema function should return a plain object." +
     "Check out the function %s in %s module.",
     getModelFields.name, path
@@ -129,7 +128,6 @@ function setMiddlewares(name, schema) {
 
   invariant(
     !isPlainObject(middlewares), TypeError,
-
     "Middlewares module should export a plain object."
   )
 
@@ -158,15 +156,19 @@ function setMiddlewares(name, schema) {
 function createModel(Target) {
   invariant(
     !isPrototypeOf(Model, Target), TypeError,
-
     "Target model should extend a class Model."
   )
 
   const name = Target.name
+
   const values = getStaticValues(Target)
+
   const schema = setMiddlewares(name, getSchema(name, values))
 
-  return mongoose.model(Target, schema) |> proxy({apply})
+  // Also, make each models self-invocing.
+  const model = proxy({apply})(mongoose.model(Target, schema))
+
+  return model
 }
 
 export default createModel

@@ -1,4 +1,7 @@
-import now from "core/helper/util/now"
+import mongoose from "mongoose"
+
+const {Schema} = mongoose
+const {Types: t} = Schema
 
 /**
  * Get schema of this model
@@ -8,9 +11,9 @@ import now from "core/helper/util/now"
  *
  * @return {object}
  */
-const user = ({TString, TNumber, TDate}, {roles, statuses}) => ({
+const user = (_, {roles, statuses}) => new Schema({
   login: {
-    type: TString,
+    type: t.String,
     unique: true,
     required: [true, "Login is required for user."],
     validate: {
@@ -22,43 +25,48 @@ const user = ({TString, TNumber, TDate}, {roles, statuses}) => ({
     }
   },
   email: { // Private email address
-    type: TString,
+    type: t.String,
     unique: true,
     required: [true, "Required an email for user"]
   },
   password: {
-    type: TString,
+    type: t.String,
     required: [true, "Password required for user"]
   },
   status: {
-    type: TNumber,
+    type: t.Number,
     default: statuses.unactivated
   },
   role: {
-    type: TNumber,
+    type: t.Number,
     default: roles.user
   },
   dates: {
     registeredAt: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      required: true,
+      default: Date.now
+    },
+    updatedAt: {
+      type: t.Date,
+      default: null
     },
     lastVisit: {
-      type: TDate,
+      type: t.Date,
       default: null
     }
   },
   avatar: {
-    type: TString,
+    type: t.String,
     default: null
   },
   contacts: {
     type: {
-      vk: TString,
-      fb: TString,
-      twitter: TString,
-      email: TString, // Public email address
-      telegram: TString
+      vk: t.String,
+      fb: t.String,
+      twitter: t.String,
+      email: t.String, // Public email address
+      telegram: t.String
     },
     default: {
       vk: null,

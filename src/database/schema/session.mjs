@@ -1,40 +1,48 @@
-import now from "core/helper/util/now"
+import mongoose from "mongoose"
 
-const session = ({TString, TDate, TObjectId}) => ({
+const {Schema} = mongoose
+const {Types: t} = Schema
+
+const schema = new Schema({
   userId: {
-    type: TObjectId,
+    type: t.ObjectId,
     required: true,
     ref: "User"
   },
   client: {
     name: {
-      type: TString,
+      type: t.String,
       required: true
     },
     os: {
-      type: TString,
+      type: t.String,
       required: true
     },
     ip: {
-      type: TString,
+      type: t.String,
       required: true
     }
   },
   dates: {
     firstLogin: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      required: true,
+      default: Date.now,
     },
     lastLogin: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      required: true,
+      default: Date.now,
+      index: {
+        expired: "1 year"
+      }
     }
   },
   tokenUUID: {
-    type: TString,
+    type: t.String,
     required: true,
     unique: true
   }
 })
 
-export default session
+export default schema

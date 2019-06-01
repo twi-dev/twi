@@ -1,32 +1,35 @@
-import now from "core/helper/util/now"
+import mongoose from "mongoose"
 
-const chapter = ({TString, TDate}) => ({
+const {Schema} = mongoose
+const {Types: t} = Schema
+
+const schema = new Schema({
   title: {
-    type: TString,
+    type: t.String,
     required: true
   },
 
   // TODO: Move contents storage to a file on external static server.
   content: {
     original: {
-      type: TString,
+      type: t.String,
       required: true
     },
     rendered: {
-      type: TString,
+      type: t.String,
       required: true
     }
   },
   dates: {
     createdAt: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      default: Date.now
     },
     updatedAt: {
-      type: TDate,
-      default: now
+      type: t.Date,
+      default: Date.now
     }
   }
 })
 
-export default chapter
+export default schema

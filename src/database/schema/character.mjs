@@ -1,17 +1,22 @@
-const character = ({TString}) => ({
+import mongoose from "mongoose"
+
+const {Schema} = mongoose
+const {Types: t} = Schema
+
+const schema = new Schema({
   name: {
-    type: TString,
+    type: t.String,
     required: true
   },
   code: {
-    type: TString,
+    type: t.String,
     required: true,
     unique: true
   },
   pic: {
-    type: TString,
+    type: t.String,
     required: true
   }
 })
 
-export default character
+export default schema
