@@ -4,7 +4,7 @@ import {join} from "path"
 import Koa from "koa"
 import passport from "koa-passport"
 
-import config from "core/config"
+import config from "core/base/config"
 import createRouter from "core/base/router"
 import readMiddlewares from "core/base/middleware"
 

@@ -3,7 +3,7 @@ import isString from "lodash/isString"
 
 import invariant from "@octetstream/invariant"
 
-import config from "core/config"
+import config from "core/base/config"
 import log from "core/log"
 
 mongoose.Promise = Promise

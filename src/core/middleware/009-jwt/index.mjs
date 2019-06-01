@@ -1,6 +1,6 @@
 import authorize from "koa-jwt"
 
-import config from "core/config"
+import config from "core/base/config"
 
 const configureKoaJwt = () => authorize({
   secret: config.jwt.accessToken.secret,

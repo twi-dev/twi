@@ -11,7 +11,7 @@ const {Types: t} = Schema
  *
  * @return {object}
  */
-const user = (_, {roles, statuses}) => new Schema({
+const user = ({roles, statuses}) => new Schema({
   login: {
     type: t.String,
     unique: true,

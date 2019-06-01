@@ -11,6 +11,7 @@ import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
+// TODO: Replace with remark
 const md = new Markdown({breaks: true})
 
 @createModel

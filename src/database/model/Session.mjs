@@ -10,7 +10,7 @@ import addMilliseconds from "date-fns/addMilliseconds"
 import {sign, verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/database"
 
-import config from "core/config"
+import config from "core/base/config"
 import User from "database/model/User"
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"

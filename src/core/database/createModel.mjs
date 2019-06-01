@@ -16,16 +16,6 @@ import objectIterator from "core/helper/iterator/sync/objectIterator"
 
 const {Schema, Model} = mongoose
 
-const Types = (() => {
-  const res = {}
-
-  for (const [name, type] of objectIterator.entries(Schema.Types)) {
-    res[`T${name}`] = type
-  }
-
-  return res
-})()
-
 const isPrototypeOf = (parent, child) => (
   Object.prototype.isPrototypeOf.call(parent, child)
 )
@@ -94,7 +84,7 @@ function getSchema(name, values) {
     "Check out the %s.js module exports.", path
   )
 
-  const schemaFields = getModelFields(Types, values)
+  const schemaFields = getModelFields(values)
 
   if (schemaFields instanceof Schema) {
     return schemaFields

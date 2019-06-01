@@ -8,7 +8,7 @@ import checkCtorCall from "core/helper/util/checkCtorCall"
 import formatError from "core/graphql/formatError"
 import schema from "core/graphql/schema"
 import noop from "core/middleware/noop"
-import config from "core/config"
+import config from "core/base/config"
 import log from "core/log"
 
 const {server, env} = config
