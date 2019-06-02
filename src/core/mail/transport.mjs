@@ -1,7 +1,5 @@
-import {createTransport} from "nodemailer"
-
 import config from "core/base/config"
 
-const transport = createTransport(config.mail)
+import Transport from "./MailTransport"
 
-export default transport
+export default new Transport(config.mail)
