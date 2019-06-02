@@ -1,10 +1,13 @@
 import {createTransport} from "nodemailer"
+import {sprintf as fmt} from "sprintf-js"
 
 import config from "core/base/config"
 
 import {render} from "core/base/view"
 
 const {mail} = config
+
+const sender = fmt("%s <%s>", mail.from, mail.user)
 
 // Just a small workaround to bring pre-configured "from" option and templates
 // into the nodemailer transport which is does not seems to available for any
@@ -14,11 +17,17 @@ class Mail {
     this.__transport = createTransport(options)
   }
 
-  send = params => this.__transport.sendMail({...params, from: mail.from})
+  send = async ({template, locals, ...params}) => {
+    if (template) {
+      params.html = await render(template, locals)
+    }
 
-  sendHtml = ({path, locals = {}, ...params}, options = {}) => (
-    render(path, locals, options).then(html => this.send({...params, html}))
-  )
+    params.from = sender
+
+    return this.__transport.sendMail(params)
+  }
+
+  sendMail = params => this.send(params)
 }
 
 export default Mail
