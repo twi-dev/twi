@@ -11,8 +11,8 @@ class EmailConfirmationToken extends Model {
   }
 
   static async createOne({email, id}) {
-    const payload = `${email}::${Date.now()}`
-    const hash = createHash("sha256").update(payload).digest("hex")
+    const payload = JSON.stringify({id, email, now: Date.now()})
+    const hash = createHash("sha512").update(payload).digest("hex")
 
     return super.createOne({userId: id, email, hash})
   }

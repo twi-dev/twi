@@ -4,6 +4,11 @@ const {Schema} = mongoose
 const {Types: t} = Schema
 
 const schema = new Schema({
+  hash: {
+    type: t.String,
+    required: true,
+    unique: true
+  },
   userId: {
     type: t.ObjectId,
     required: true,
@@ -37,11 +42,6 @@ const schema = new Schema({
         expired: "1 year"
       }
     }
-  },
-  tokenUUID: {
-    type: t.String,
-    required: true,
-    unique: true
   }
 })
 
