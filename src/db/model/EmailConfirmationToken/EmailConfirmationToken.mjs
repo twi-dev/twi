@@ -10,11 +10,11 @@ class EmailConfirmationToken extends Model {
     return this.findOne({hash})
   }
 
-  static async createOne({email, id}) {
-    const payload = JSON.stringify({id, email, now: Date.now()})
+  static async createOne({email, userId}) {
+    const payload = JSON.stringify({userId, email, now: Date.now()})
     const hash = createHash("sha512").update(payload).digest("hex")
 
-    return super.createOne({userId: id, email, hash})
+    return super.createOne({userId, email, hash})
   }
 }
 
