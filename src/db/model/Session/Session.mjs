@@ -54,6 +54,17 @@ class Session extends Model {
     return {accessToken, refreshToken}
   }
 
+  static async refresh({token}) {
+    const payload = await verify(token, jwt.refreshToken.secret)
+    const session = await this.findOne({hash: payload.hash})
+
+    if (!session) {
+      throw new BadRequest("Can't find a session for given token.")
+    }
+
+    return session.refresh()
+  }
+
   static async revoke({token}) {
     const payload = await verify(token, jwt.refreshToken.secret)
     const session = await this.find({hash: payload.hash})
@@ -75,7 +86,7 @@ class Session extends Model {
   }
 
   /**
-   * Refresh user access token
+   * Refresh user's access token
    *
    * @param {string} refreshToken
    *
