@@ -21,9 +21,7 @@
     "codecov": "node_modules/.bin/codecov",
     "report": "yarn make:spec && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
     "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
-    "ci": "yarn make:spec && yarn coverage && yarn report:ci && yarn codecov",
-    "precommit": "yarn staged",
-    "prepush": "yarn report"
+    "ci": "yarn make:spec && yarn coverage && yarn report:ci && yarn codecov"
   },
   "ava": {
     "files": [
