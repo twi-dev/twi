@@ -13,3 +13,4 @@ Object.defineProperty(exports, "default", {
 });
 
 var _Character = _interopRequireDefault(require("./Character"));
+//# sourceMappingURL=index.js.map

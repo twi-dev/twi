@@ -37,3 +37,4 @@ const schema = new Schema({
 });
 var _default = schema;
 exports.default = _default;
+//# sourceMappingURL=schema.js.map

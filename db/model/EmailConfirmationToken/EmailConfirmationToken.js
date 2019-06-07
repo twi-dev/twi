@@ -38,3 +38,4 @@ let EmailConfirmationToken = (_dec = (0, _db.createModel)(_schema.default), _dec
 }) || _class);
 var _default = EmailConfirmationToken;
 exports.default = _default;
+//# sourceMappingURL=EmailConfirmationToken.js.map

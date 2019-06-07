@@ -46,3 +46,4 @@ let Character = (_dec = (0, _db.createModel)(_schema.default), _dec(_class = cla
 }) || _class);
 var _default = Character;
 exports.default = _default;
+//# sourceMappingURL=Character.js.map

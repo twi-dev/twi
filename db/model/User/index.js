@@ -13,3 +13,4 @@ Object.defineProperty(exports, "default", {
 });
 
 var _User = _interopRequireDefault(require("./User"));
+//# sourceMappingURL=index.js.map

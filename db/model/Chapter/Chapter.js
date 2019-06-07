@@ -72,3 +72,4 @@ let Chapter = (_dec = (0, _db.createModel)(_schema.default), _dec(_class = class
 }) || _class);
 var _default = Chapter;
 exports.default = _default;
+//# sourceMappingURL=Chapter.js.map

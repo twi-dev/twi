@@ -13,3 +13,4 @@ Object.defineProperty(exports, "default", {
 });
 
 var _EmailConfirmationToken = _interopRequireDefault(require("./EmailConfirmationToken"));
+//# sourceMappingURL=index.js.map

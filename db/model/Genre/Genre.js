@@ -46,3 +46,4 @@ let Genre = (0, _db.createModel)(_class = class Genre extends _db.Model {
 
 var _default = Genre;
 exports.default = _default;
+//# sourceMappingURL=Genre.js.map

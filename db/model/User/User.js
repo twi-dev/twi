@@ -286,3 +286,4 @@ let User = (0, _db.createModel)(_class = (_temp = class User extends _db.Model {
 
 var _default = User;
 exports.default = _default;
+//# sourceMappingURL=User.js.map

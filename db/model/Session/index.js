@@ -13,3 +13,4 @@ Object.defineProperty(exports, "default", {
 });
 
 var _Session = _interopRequireDefault(require("./Session"));
+//# sourceMappingURL=index.js.map

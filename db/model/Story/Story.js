@@ -394,3 +394,4 @@ let Story = (0, _db.createModel)(_class = (_class2 = (_temp = class Story extend
 
 var _default = Story;
 exports.default = _default;
+//# sourceMappingURL=Story.js.map

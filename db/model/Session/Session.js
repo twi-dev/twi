@@ -214,3 +214,4 @@ let Session = (_dec = (0, _db.createModel)(_schema.default), _dec(_class = (_tem
 }, _temp)) || _class);
 var _default = Session;
 exports.default = _default;
+//# sourceMappingURL=Session.js.map
