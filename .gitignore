@@ -17,16 +17,16 @@ yarn-error.log
 node_modules
 deploy
 
-database/**/*.js
-database/**/*.md
+/db/**/*.js
+/db/**/*.md
 
-graphql/**/*.js
-core/**/*.js
-route/**/*.js
-setup/**/*.js
+/graphql/**/*.js
+/core/**/*.js
+/route/**/*.js
+/setup/**/*.js
 
-!src/database/**/*.js
-!src/core/database/**/*.js
+!src/db/**/*.js
+!src/core/db/**/*.js
 
 # graphql
 # deploy
@@ -35,24 +35,24 @@ setup/**/*.js
 # setup
 
 # Static content (styles, images, script etc)
-static/assets/img/**/*.svg
-static/assets/js
-static/assets/css
+/static/assets/img/**/*.svg
+/static/assets/js
+/static/assets/css
 
 # Tests runtime stuff and code coverage
 coverage
 
-test/**/*.js
-test/**/*.jsx
-test/**/*.map
+/test/**/*.js
+/test/**/*.jsx
+/test/**/*.map
 
 !src/test/**/*.js
 !src/test/**/*.jsx
 
 # Configs rules
-config/cert/**
-config/service/**/*.yml
-config/system/**/*.yml
+/config/cert/**
+/config/service/**/*.yml
+/config/system/**/*.yml
 
 !config/system/default.yml
 !config/service/**/default.yml
