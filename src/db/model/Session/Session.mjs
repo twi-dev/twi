@@ -2,12 +2,17 @@ import {createHash} from "crypto"
 
 import invariant from "@octetstream/invariant"
 
-// import {verify} from "core/helper/wrapper/jwt"
+import {verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/db"
+
+import config from "core/base/config"
+import BadRequest from "core/error/http/BadRequest"
 
 import schema from "./schema"
 
 import {signAccessToken, signRefreshToken} from "./signToken"
+
+const {jwt} = config
 
 @createModel(schema)
 class Session extends Model {
@@ -49,6 +54,26 @@ class Session extends Model {
     return {accessToken, refreshToken}
   }
 
+  static async revoke({token}) {
+    const payload = await verify(token, jwt.refreshToken.secret)
+    const session = await this.find({hash: payload.hash})
+
+    if (!session) {
+      throw new BadRequest(
+        "Unable to revoke session since there is no matched token for it."
+      )
+    }
+
+    return session.remove().then(() => token)
+  }
+
+  static async revokeAllButCurrent({token, userId}) {
+    const payload = await verify(token, jwt.refreshToken.secret)
+
+    return this.find({userId, hash: {$not: payload.hash}}).remove()
+      .then(({ok}) => ok === 1)
+  }
+
   /**
    * Refresh user access token
    *
@@ -56,24 +81,10 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  // static async refresh(token) {}
-
-  /**
-   * Revoke all user session except the current
-   *
-   * @param {string}
-   */
-  // static async revoke(params) {
-  //   const currentSession = await this.findOneCurrent(params)
-  //   const sessions = await this.find({
-  //     userId: currentSession.userId,
-  //     $not: {
-  //       tokenUUID: currentSession.tokenUUID
-  //     }
-  //   })
-  //   const removed = await Promise.all(sessions.map(sess => sess.remove()))
-  //   return removed.map(({id}) => id)
-  // }
+  async refresh() {
+    return signAccessToken({userId: this.userId})
+      .then(accessToken => ({accessToken}))
+  }
 }
 
 export default Session
