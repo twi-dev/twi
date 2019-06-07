@@ -125,19 +125,7 @@ const AVATAR_SAVE_ROOT = join(
     return this.findById(id)
   }
 
-  verifyPassword = async string => {
-    if (!string) {
-      return false
-    }
-
-    if (!this.password) {
-      const user = await User.findById({args: {id: this._id}})
-
-      return compare(string, user.password)
-    }
-
-    return compare(string, this.password)
-  }
+  verifyPassword = async string => compare(string, this.password)
 
   /**
    * Get user role name

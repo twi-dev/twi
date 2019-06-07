@@ -39,22 +39,7 @@ let User = (0, _db.createModel)(_class = (_temp = class User extends _db.Model {
   constructor(...args) {
     super(...args);
 
-    this.verifyPassword = async string => {
-      if (!string) {
-        return false;
-      }
-
-      if (!this.password) {
-        const user = await User.findById({
-          args: {
-            id: this._id
-          }
-        });
-        return (0, _bcryptjs.compare)(string, user.password);
-      }
-
-      return (0, _bcryptjs.compare)(string, this.password);
-    };
+    this.verifyPassword = async string => (0, _bcryptjs.compare)(string, this.password);
   }
 
   /**
@@ -286,4 +271,3 @@ let User = (0, _db.createModel)(_class = (_temp = class User extends _db.Model {
 
 var _default = User;
 exports.default = _default;
-//# sourceMappingURL=User.js.map
