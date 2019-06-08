@@ -2,6 +2,8 @@ import bind from "core/graphql/bindResolver"
 
 import Session from "db/model/Session"
 
-const refreshAccessToken = params => Session.refresh(params)
+const refreshAccessToken = ({args}) => Session.refresh({
+  token: args.refreshToken
+})
 
 export default bind(refreshAccessToken)
