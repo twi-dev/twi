@@ -1,4 +1,4 @@
-import Story from "database/model/Story"
+import Story from "db/model/Story"
 
 import checkUser from "core/auth/checkUser"
 

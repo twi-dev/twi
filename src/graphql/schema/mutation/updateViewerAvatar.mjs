@@ -1,6 +1,6 @@
-import updateAvatar from "../../resolve/mutation/user/updateAvatar"
-import TFileInput from "../../input/media/TFileInput"
-import TUser from "../../type/user/TUser"
+import updateAvatar from "graphql/resolve/mutation/user/updateAvatar"
+import TFileInput from "graphql/input/media/TFileInput"
+import TUser from "graphql/type/user/TUser"
 
 const resolve = {
   type: TUser,

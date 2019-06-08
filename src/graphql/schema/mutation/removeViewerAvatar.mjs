@@ -1,5 +1,5 @@
-import removeAvatar from "../../resolve/mutation/user/removeAvatar"
-import TUser from "../../type/user/TUser"
+import removeAvatar from "graphql/resolve/mutation/user/removeAvatar"
+import TUser from "graphql/type/user/TUser"
 
 const resolve = {
   type: TUser,
