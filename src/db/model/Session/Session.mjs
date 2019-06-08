@@ -65,6 +65,9 @@ class Session extends Model {
     return session.refresh()
   }
 
+  /**
+   * Revoke session by given token
+   */
   static async revoke({token}) {
     const payload = await verify(token, jwt.refreshToken.secret)
     const session = await this.find({hash: payload.hash})
