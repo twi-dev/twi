@@ -3,9 +3,6 @@ import {join} from "path"
 import {hash, compare} from "bcryptjs"
 import {copyFile, unlink} from "promise-fs"
 
-import invariant from "@octetstream/invariant"
-import isPlainObject from "lodash/isPlainObject"
-import isEmpty from "lodash/isEmpty"
 import partial from "lodash/partial"
 import nanoid from "nanoid/async"
 
@@ -54,13 +51,6 @@ const AVATAR_SAVE_ROOT = join(
    * @return {object}
    */
   static async createOne(user, options) {
-    invariant(
-      !isPlainObject(user), TypeError,
-      "User data information should be passed as plain JavaScript object."
-    )
-
-    invariant(isEmpty(user), TypeError, "User information cannot be empty.")
-
     const password = await hash(user.password, 15)
 
     if (user.role != null) {
@@ -111,18 +101,16 @@ const AVATAR_SAVE_ROOT = join(
   /**
    * Removes viewer's avatar
    */
-  static async removeAvatar(id) {
-    const user = await this.findViewer(id)
-
+  async removeAvatar() {
     try {
-      await unlink(user.avatar)
+      await unlink(this.avatar)
     } catch (err) {
       if (err.code !== "ENOENT") {
         throw err
       }
     }
 
-    return this.findById(id)
+    return this.findById(this.id)
   }
 
   verifyPassword = async string => compare(string, this.password)
