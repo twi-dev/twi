@@ -7,17 +7,22 @@ import {sign} from "core/helper/wrapper/jwt"
 
 const {accessToken, refreshToken} = config.jwt
 
-async function signToken(payload, expires, {secret, ...options}) {
+async function signToken(payload, {secret, expires, ...options}) {
   const signed = Date.now()
 
-  expires = addMilliseconds(signed, ms(expires)).getTime()
+  if (expires) {
+    expires = addMilliseconds(signed, ms(expires)).getTime()
+    options.expiresIn = expires
+  }
 
   return sign({...payload, expires, signed}, secret, options)
     .then(token => ({type: "Bearer", payload: token, signed, expires}))
 }
 
-const signAccessToken = payload => signToken(payload, "15 minutes", accessToken)
+const signAccessToken = payload => signToken(payload, {
+  ...accessToken, expires: "15 minutes"
+})
 
-const signRefreshToken = payload => signToken(payload, "1 year", refreshToken)
+const signRefreshToken = payload => signToken(payload, refreshToken)
 
 export {signAccessToken, signRefreshToken}

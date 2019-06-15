@@ -1,5 +1,6 @@
-import {GraphQLString as TString} from "graphql"
 import {GraphQLURL as TURL} from "graphql-custom-types"
+import {GraphQLString as TString} from "graphql"
+
 import Input from "parasprite/Input"
 
 const TContactsInput = Input("ContactsInput", "User contacts")
