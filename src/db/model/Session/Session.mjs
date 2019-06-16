@@ -54,7 +54,7 @@ class Session extends Model {
     return {accessToken, refreshToken}
   }
 
-  static async refresh({token}) {
+  static async findByToken(token) {
     const payload = await verify(token, jwt.refreshToken.secret)
     const session = await this.findOne({hash: payload.hash})
 
@@ -62,13 +62,13 @@ class Session extends Model {
       throw new BadRequest("Can't find a session for given token.")
     }
 
-    return session.refresh()
+    return session
   }
 
   /**
    * Revoke session by given token
    */
-  static async revoke({token}) {
+  static async revoke(token) {
     const payload = await verify(token, jwt.refreshToken.secret)
     const session = await this.find({hash: payload.hash})
 
@@ -96,8 +96,10 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   async refresh() {
-    return signAccessToken({userId: this.userId})
-      .then(accessToken => ({accessToken}))
+    const accessToken = await signAccessToken({userId: this.userId})
+
+    return this.update({$set: {"dates.updatedAt": accessToken.signed}})
+      .then(() => ({accessToken}))
   }
 }
 
