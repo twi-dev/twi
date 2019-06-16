@@ -2,7 +2,10 @@ import {basename, extname} from "path"
 
 import Router from "koa-router"
 
-import {graphqlKoa, graphiqlKoa} from "graphql-server-koa"
+import {graphiqlKoa} from "graphql-server-koa"
+
+// TOOD: Replace with direct import when they bring the middleware back
+import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
 
 import checkCtorCall from "core/helper/util/checkCtorCall"
 import formatError from "core/graphql/formatError"

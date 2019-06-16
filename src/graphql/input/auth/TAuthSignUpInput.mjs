@@ -4,7 +4,7 @@ import {GraphQLEmail as TEmail} from "graphql-custom-types"
 import Input from "parasprite/Input"
 
 import TLogin from "graphql/scalar/user/TLogin"
-import TFileInput from "graphql/input/media/TFileInput"
+import TFileInput from "graphql/input/common/TFileInput"
 import TContactsInput from "graphql/input/user/TContactsInput"
 
 const TAuthSignUpInput = Input("AuthSignUpInput", "Basic user information.")

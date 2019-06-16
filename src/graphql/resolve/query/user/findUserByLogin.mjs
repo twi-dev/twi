@@ -1,7 +1,6 @@
 import bind from "core/graphql/bindResolver"
+import User from "db/model/User"
 
-import User from "database/model/User"
-
-const findUserByLogin = params => User.findByLogin(params)
+const findUserByLogin = ({args}) => User.findOne({login: args.login})
 
 export default bind(findUserByLogin)

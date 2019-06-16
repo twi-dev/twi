@@ -31,7 +31,8 @@ module.exports = {
       overrides: {
         "+": "ignore",
         "?": "before",
-        ":": "before"
+        ":": "before",
+        "||": "before"
       }
     }],
 

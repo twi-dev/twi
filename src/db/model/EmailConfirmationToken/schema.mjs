@@ -5,7 +5,7 @@ const {Types: t} = Schema
 
 const schema = new Schema({
   hash: {
-    payload: t.String,
+    type: t.String,
     required: true,
     unique: true
   },

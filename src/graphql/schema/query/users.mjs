@@ -17,7 +17,4 @@ const cursor = {
 
 const args = {cursor}
 
-export {
-  resolve,
-  args
-}
+export {resolve, args}
