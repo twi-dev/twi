@@ -20,8 +20,10 @@ function actionNotAllowed({method, url}) {
 
 const routers = rd(join(__dirname, "..", "..", "route"))
 
-for (const [name, router] of iterator(routers).entries()) {
-  r.use(`/${name}`, router.default.routes(), router.default.allowedMethods())
+for (const [name, value] of iterator(routers).entries()) {
+  const router = value.default ?? value
+
+  r.use(`/${name}`, router.routes(), router.allowedMethods())
 }
 
 r.get("*", actionNotFound)
