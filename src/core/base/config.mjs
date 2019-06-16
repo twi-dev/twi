@@ -6,11 +6,11 @@ import merge from "lodash/merge"
 import freeze from "js-flock/deepFreeze"
 import invariant from "@octetstream/invariant"
 
+import {version, codename} from "package.json"
+
 import concat from "core/helper/string/concat"
 
 process.env.NODE_ENV || (process.env.NODE_ENV = "development")
-
-const {version, codename} = require(join("..", "..", "package.json"))
 
 const CONFIGS_ROOT = join(__dirname, "..", "..", "config/system")
 

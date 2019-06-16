@@ -17,9 +17,12 @@ enableSignup: true
 server:
   host: localhost
   port: 2319
-  secure: false # Should I remove this options too?
+  secure: false
 
-client: null
+client:
+  host: null
+  port: null
+  secure: false
 
 database:
   host: localhost
@@ -34,17 +37,6 @@ jwt:
     expires: 15m # Supported format of zeit/ms
   refreshToken:
     secret: null
-    expires: null
-
-# Static server configuration
-# Status: not implemented
-static:
-  adapter: null
-  auth:
-    user: null
-    pass: null
-  options: null
-
 
 # Email client configuration
 mail:
