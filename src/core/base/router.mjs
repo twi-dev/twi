@@ -8,21 +8,7 @@ import iterator from "core/helper/iterator/sync/objectIterator"
 import NotAllowed from "core/error/http/NotAllowed"
 import NotFound from "core/error/http/NotFound"
 
-import {warn} from "core/log"
-
 const r = new Router()
-
-const allowedMethods = [
-  "get",
-  "post",
-  "patch",
-  "put",
-  "delete",
-  "del",
-  "options",
-  "head",
-  "all"
-]
 
 function actionNotFound({url}) {
   throw new NotFound(`Page not found on route ${url}`)
