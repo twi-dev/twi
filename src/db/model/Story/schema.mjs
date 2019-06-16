@@ -30,10 +30,6 @@ const schema = new Schema({
     required: true
   },
   translation: {
-    flag: {
-      type: t.Boolean,
-      default: false
-    },
     author: {
       name: t.String, // author's nickname
       profile: t.String // link to an author profile or site
@@ -44,15 +40,9 @@ const schema = new Schema({
     }
   },
   collaborators: [{
-    user: {
-      ref: "User",
-      type: t.ObjectId,
-      required: true
-    },
-    role: {
-      type: t.Number,
-      required: true
-    }
+    type: t.ObjectId,
+    required: true,
+    ref: "Collaborator"
   }],
   isFinished: {
     type: t.Boolean,
@@ -108,7 +98,7 @@ const schema = new Schema({
         max: 5
       }
     }],
-    avg: {
+    current: {
       type: t.Number,
       default: 0,
       min: 0
