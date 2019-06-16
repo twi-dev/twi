@@ -13,7 +13,7 @@
     "m": "yarn make",
     "w": "yarn watch",
     "make:spec": "node_modules/.bin/babel src -s -d .",
-    "cleanup": "node_modules/.bin/rimraf cli core database graphql route setup test",
+    "cleanup": "node_modules/.bin/rimraf cli core model graphql route setup test",
     "cleanup:all": "yarn cleanup && node_modules/.bin/rimraf .nyc_output coverage",
     "lint": "node_modules/.bin/eslint bin build src migration",
     "staged": "node_modules/.bin/lint-staged",

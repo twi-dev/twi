@@ -17,22 +17,11 @@ yarn-error.log
 node_modules
 deploy
 
-/db/**/*.js
-/db/**/*.md
-
-/graphql/**/*.js
-/core/**/*.js
-/route/**/*.js
-/setup/**/*.js
-
-!src/db/**/*.js
-!src/core/db/**/*.js
-
-# graphql
-# deploy
-# core
-# route
-# setup
+/db
+/graphql
+/core
+/route
+/setup
 
 # Static content (styles, images, script etc)
 /static/assets/img/**/*.svg
