@@ -1,18 +1,14 @@
-import invariant from "@octetstream/invariant"
-import Router from "koa-router"
+import {join} from "path"
+
+import Router from "@koa/router"
 import rd from "require-dir"
 
-import isPlainObject from "lodash/isPlainObject"
-import isFunction from "lodash/isFunction"
-import isString from "lodash/isString"
-import merge from "lodash/merge"
+import iterator from "core/helper/iterator/sync/objectIterator"
 
-import getType from "core/helper/util/getType"
-import objectIterator from "core/helper/iterator/sync/objectIterator"
+import NotAllowed from "core/error/http/NotAllowed"
+import NotFound from "core/error/http/NotFound"
+
 import {warn} from "core/log"
-
-import NotFoundException from "core/error/http/NotFound"
-import NotAllowedException from "core/error/http/NotAllowed"
 
 const r = new Router()
 
@@ -29,109 +25,20 @@ const allowedMethods = [
 ]
 
 function actionNotFound({url}) {
-  throw new NotFoundException(`Page not found on route ${url}`)
+  throw new NotFound(`Page not found on route ${url}`)
 }
 
 function actionNotAllowed({method, url}) {
-  throw new NotAllowedException(`Method ${method} not allowed on route ${url}`)
+  throw new NotAllowed(`Method ${method} not allowed on route ${url}`)
 }
 
-// Default options for controller
-const defaults = {
-  // Name of the home page controller
-  indexRoute: "home",
+const routers = rd(join(__dirname, "..", "..", "route"))
 
-  // Handlers for non-matched routes
-  nonMatched: {
-    get: actionNotFound,
-    all: actionNotAllowed
-  }
+for (const [name, router] of iterator(routers).entries()) {
+  r.use(`/${name}`, router.default.routes(), router.default.allowedMethods())
 }
 
-/**
- * @param {Router} router
- * @param object handlers
- *
- * @return {Router}
- *
- * @api private
- */
-function mountNonMatchedHandlers(router, handlers) {
-  for (const [key, handler] of objectIterator(handlers).entries()) {
-    const method = key.toLowerCase()
+r.get("*", actionNotFound)
+r.all("*", actionNotAllowed)
 
-    if (!allowedMethods.includes(method)) {
-      continue
-    }
-
-    if (!isFunction(handler)) {
-      throw new TypeError(
-        "Handler for non-matched route should be a function. " +
-        `But given value for ${key} method hanlder ` +
-        `is type of ${getType(handler)}.`
-      )
-    }
-
-    router[method]("*", handler)
-  }
-
-  return router
-}
-
-/**
- * Build given routes
- *
- * @param {object} routes
- *
- * @return {function} that takes the following params:
- *   - @param {object} options
- *
- *   - @return {Router}
- */
-const buildRoutes = (routes, options = {}) => {
-  if (!isPlainObject(options)) {
-    throw new TypeError(
-      "Options for controller should be passed as plain JavaScript object, " +
-      `but given value has type of ${getType(options)}.`
-    )
-  }
-
-  options = merge({}, defaults, options)
-
-  for (const [name, route] of objectIterator(routes).entries()) {
-    if (!isFunction(route.default)) {
-      warn(`Controller "${name}" is not a function.`)
-      continue
-    }
-
-    const prefix = name !== options.indexRoute ? `/${name}` : ""
-
-    const Ctor = route.default
-
-    r.use(prefix, new Ctor())
-  }
-
-  return mountNonMatchedHandlers(r, options.nonMatched)
-}
-
-/**
- * Make controller function that will build routes from given directory
- *
- * @param {string} path
- * @param {object} options – is set, the Router will be returned immediately
- *
- * @return function|Router
- */
-function createRouter(path, options = {}) {
-  invariant(
-    isString(path) === false, TypeError,
-
-    "Path parameter should be a string, but given type is %s", getType(path)
-  )
-
-  const routes = rd(path)
-
-  return buildRoutes(routes, options)
-}
-
-export default createRouter
+export default r

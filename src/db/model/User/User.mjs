@@ -11,11 +11,14 @@ import {createModel, Model} from "core/db"
 import mkdirp from "core/helper/util/mkdirp"
 import serial from "core/helper/array/runSerial"
 
+import schema from "./schema"
+
 const AVATAR_SAVE_ROOT = join(
   __dirname, "..", "..", "static", "assets", "files", "avatars"
 )
 
-@createModel class User extends Model {
+@createModel(schema)
+class User extends Model {
   /**
    * User account status
    */

@@ -1,18 +1,15 @@
 import {createServer} from "http"
-import {join} from "path"
 
 import Koa from "koa"
 import passport from "koa-passport"
 
 import config from "core/base/config"
-import createRouter from "core/base/router"
+import router from "core/base/router"
 import readMiddlewares from "core/base/middleware"
 
 import log from "core/log"
 
 const {port} = config.server
-
-const router = createRouter(join(__dirname, "..", "..", "route"))
 
 // Configure middlewares
 const middlewares = Array.from([

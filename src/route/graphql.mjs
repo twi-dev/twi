@@ -1,13 +1,12 @@
 import {basename, extname} from "path"
 
-import Router from "koa-router"
+import Router from "@koa/router"
 
 import {graphiqlKoa} from "graphql-server-koa"
 
 // TOOD: Replace with direct import when they bring the middleware back
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
 
-import checkCtorCall from "core/helper/util/checkCtorCall"
 import formatError from "core/graphql/formatError"
 import schema from "core/graphql/schema"
 import noop from "core/middleware/noop"
@@ -17,7 +16,7 @@ import log from "core/log"
 const {server, env} = config
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
-const endpointURL = `/${basename(module.filename, extname(module.filename))}`
+const endpointURL = `/${basename(__filename, extname(__filename))}`
 
 // const subscriptionsURL = join(endpointURL, "subscribe")
 
@@ -37,23 +36,13 @@ const actionGraphQL = graphqlKoa(async context => ({
 
 const r = new Router()
 
-// TODO: Move schema explorer to an external repo
-r.get("/", actionGraphiQL)
-
-r.all("/", actionGraphQL)
-
-/**
- * @constructor
- */
-function GraphQLController() {
-  checkCtorCall(GraphQLController, this)
-}
-
-// Add GraphQL endpoint to GraphQLController
-GraphQLController.prototype.router = r
-
+// Mount IDE for dev environment
 if (env.dev) {
+  r.get("/", actionGraphiQL)
+
   log.info("GraphiQL IDE will be mounted on %s%s", server.address, endpointURL)
 }
 
-export default GraphQLController
+r.post("/", actionGraphQL)
+
+export default r

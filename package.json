@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@apollographql/graphql-playground-html": "1.6.20",
+    "@koa/router": "^8.0.0",
     "@octetstream/invariant": "1.2.0",
     "@octetstream/promisify": "2.0.2",
     "apollo-server-koa": "2.6.3",
