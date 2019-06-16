@@ -1,5 +1,8 @@
 import atomicOperation from "core/helper/db/atomic"
 
+/**
+ * Applies atomic operation helper to given resolver
+ */
 const atomic = resolver => (...params) => atomicOperation(session => {
   if (params.length === 1) {
     // The session will be set to its own property
