@@ -1,7 +1,5 @@
 import {createHash} from "crypto"
 
-import invariant from "@octetstream/invariant"
-
 import {verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/db"
 
@@ -21,11 +19,11 @@ class Session extends Model {
   }
 
   static async createOne() {
-    invariant(true, "Method is not available on this model.")
+    throw new Error("Method is not available on this model.")
   }
 
   static async createMany() {
-    invariant(true, "Method is not available on this model.")
+    throw new Error("Method is not available on this model.")
   }
 
   /**
