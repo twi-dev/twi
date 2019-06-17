@@ -116,7 +116,7 @@ class User extends Model {
     return this.findById(this.id)
   }
 
-  verifyPassword = async string => compare(string, this.password)
+  comparePassword = async string => compare(string, this.password)
 
   /**
    * Get user role name

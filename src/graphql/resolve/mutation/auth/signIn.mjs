@@ -6,15 +6,17 @@ import Session from "db/model/Session"
 import User from "db/model/User"
 
 async function authSignIn({args, ctx}) {
-  const user = await User.findOne({email: args.user.email})
+  const {email, password} = args.user
 
-  if (!user) {
+  const user = await User.findOne({email})
+
+  if (!user || (user && await user.comparePassword(password) === false)) {
     throw new Unauthorized(
       "Can't authorize user. Check your credentials and try again."
     )
   }
 
-  return Session.sign({userId: user.id, client: ctx.client})
+  return Session.sign({userId: user.id, client: ctx.state.client})
 }
 
 export default bind(authSignIn)
