@@ -65,22 +65,6 @@ class Session extends Model {
     return session
   }
 
-  /**
-   * Revoke session by given token
-   */
-  static async revoke(token) {
-    const payload = await verify(token, jwt.refreshToken.secret)
-    const session = await this.find({hash: payload.hash})
-
-    if (!session) {
-      throw new BadRequest(
-        "Unable to revoke session since there is no matched token for it."
-      )
-    }
-
-    return session.remove().then(() => token)
-  }
-
   static async revokeAllButCurrent({token, userId}) {
     const payload = await verify(token, jwt.refreshToken.secret)
 
@@ -99,7 +83,7 @@ class Session extends Model {
     const accessToken = await signAccessToken({userId: this.userId})
 
     return this.update({$set: {"dates.updatedAt": accessToken.signed}})
-      .then(() => ({accessToken}))
+      .then(() => accessToken)
   }
 }
 

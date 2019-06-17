@@ -5,7 +5,7 @@ import Unauthorized from "core/error/http/Unauthorized"
 import Session from "db/model/Session"
 import User from "db/model/User"
 
-async function authSignIn({args, ctx}) {
+async function logIn({args, ctx}) {
   const {email, password} = args.user
 
   const user = await User.findOne({email})
@@ -19,4 +19,4 @@ async function authSignIn({args, ctx}) {
   return Session.sign({userId: user.id, client: ctx.state.client})
 }
 
-export default bind(authSignIn)
+export default bind(logIn)

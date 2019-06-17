@@ -1,16 +1,16 @@
 import TAuthTokens from "graphql/type/auth/TAuthTokens"
 import TAuthLogInInput from "graphql/input/auth/TAuthLogInInput"
 
-import signIn from "graphql/resolve/mutation/auth/signIn"
+import logIn from "graphql/resolve/mutation/auth/logIn"
 
 const resolve = {
   type: TAuthTokens,
   required: true,
-  handler: signIn
+  handler: logIn
 }
 
-const credentials = [TAuthLogInInput, true]
+const user = [TAuthLogInInput, true]
 
-const args = {credentials}
+const args = {user}
 
 export {resolve, args}

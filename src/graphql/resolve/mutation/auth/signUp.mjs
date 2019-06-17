@@ -5,11 +5,11 @@ import User from "db/model/User"
 import Session from "db/model/Session"
 import Token from "db/model/EmailConfirmationToken"
 
-async function authSignUp({args, ctx}) {
+async function signUp({args, ctx}) {
   const user = await User.createOne(args.user)
 
   const token = await Token.createOne({userId: user.id, email: user.email})
-  const link = `https://lib.octetstream.me/auth/confirm/${token.hash}`
+  const link = `https://stories.octetstream.me/auth/confirm/${token.hash}`
 
   await mail.send({
     to: user.email,
@@ -22,4 +22,4 @@ async function authSignUp({args, ctx}) {
   return Session.sign({userId: user.id, client: ctx.client})
 }
 
-export default bind(authSignUp)
+export default bind(signUp)
