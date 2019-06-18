@@ -44,7 +44,7 @@ class Session extends Model {
       .digest("hex")
 
     const [accessToken, refreshToken] = await Promise.all([
-      signAccessToken({userId}), signRefreshToken({hash})
+      signAccessToken({id: userId}), signRefreshToken({hash})
     ])
 
     await super.createOne({userId, client, hash}, options)
@@ -78,7 +78,7 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   async refresh() {
-    const accessToken = await signAccessToken({userId: this.userId})
+    const accessToken = await signAccessToken({id: this.userId})
 
     return this.update({$set: {"dates.updatedAt": accessToken.signed}})
       .then(() => accessToken)

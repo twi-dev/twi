@@ -2,7 +2,7 @@ import {createReadStream} from "fs"
 import {createHash} from "crypto"
 
 /**
- * Calculate sha512 has based of the on a file content.
+ * Calculate sha512 hash based of the on a file content.
  * The file will be read from given path.
  *
  * @param {string} path

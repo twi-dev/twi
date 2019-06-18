@@ -9,7 +9,7 @@ async function logOut({args, ctx}) {
   const session = await Session.findByToken(args.refreshToken)
   const user = await User.findById(session.userId)
 
-  if (!user || ctx.state.user.id !== session.userId) {
+  if (!user || ctx.state.user.id !== String(session.userId)) {
     throw new BadRequest("Can't find a user associated with given token.")
   }
 
