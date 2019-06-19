@@ -13,7 +13,7 @@ async function logOut({args, ctx}) {
     throw new BadRequest("Can't find a user associated with given token.")
   }
 
-  return session.revoke().then(() => args.refreshToken)
+  return session.remove().then(() => args.refreshToken)
 }
 
 export default logOut |> bind |> auth
