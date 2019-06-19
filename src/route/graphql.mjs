@@ -24,7 +24,7 @@ const endpointURL = `/${basename(__filename, extname(__filename))}`
 const actionGraphiQL = async function(ctx, next) {
   const {dev, test} = env
 
-  const middleware = dev && !test ? graphiqlKoa({endpointURL}) : noop()
+  const middleware = dev && !test ? graphiqlKoa({endpointURL}) : noop
 
   return middleware(ctx, next)
 }

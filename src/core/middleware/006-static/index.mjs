@@ -1,8 +1,7 @@
 import {join} from "path"
 
-import serve from "koa-static"
+import kserve from "koa-static"
 
-// TODO: Make configurable
-const confugureStatic = () => serve(join(process.cwd(), "static"))
+const serve = kserve(join(__dirname, "..", "..", "..", "static"))
 
-export default confugureStatic
+export default serve

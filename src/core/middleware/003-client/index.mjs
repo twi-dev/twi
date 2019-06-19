@@ -1,11 +1,11 @@
 import parser from "ua-parser-js"
 
-const client = () => async function clientMetadata(ctx, next) {
+function client(ctx, next) {
   const client = parser(ctx.get("user-agent"))
 
   ctx.state.client = client
 
-  await next()
+  return next()
 }
 
 export default client

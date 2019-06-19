@@ -1,3 +1,3 @@
-const noop = () => async (ctx, next) => await next()
+const noop = (ctx, next) => next()
 
 export default noop

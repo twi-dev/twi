@@ -1,17 +1,11 @@
-import busboy, {isFile, Body} from "then-busboy"
+import {parse, Body} from "then-busboy"
 import {unlink} from "promise-fs"
-import isFunction from "lodash/isFunction"
-import isEmpty from "lodash/isEmpty"
 
-import map from "core/helper/iterator/async/recursiveObjectMap"
+import isEmpty from "lodash/isEmpty"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
-const defaults = {
-  processFile: false
-}
-
-const multipart = options => async function multipartParser(ctx, next) {
+async function multipart(ctx, next) {
   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
     return next()
   }
@@ -20,27 +14,20 @@ const multipart = options => async function multipartParser(ctx, next) {
     return next()
   }
 
-  const {processFile} = {...defaults, ...options}
-
-  let body = await busboy(ctx.req).then(Body.from)
-
-  if (isFunction(processFile)) {
-    body = await map(body, value => isFile(value) ? processFile(value) : value)
-  }
+  const body = await parse(ctx.req).then(Body.from)
 
   ctx.request.body = body
 
   await next()
 
+  // Cleanup
   if (!isEmpty(body)) {
     delete ctx.request.body
   }
 
-  await map(body, field => isFile(field) ? unlink(field.path) : field)
+  return Promise.all(
+    Array.from(body.files().values()).map(({path}) => unlink(path))
+  ).catch(err => err.code !== "ENOENT" && Promise.reject(err))
 }
 
-const configureMultipart = () => multipart()
-
-export default configureMultipart
-
-export {multipart} // tmp
+export default multipart
