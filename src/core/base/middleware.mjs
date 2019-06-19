@@ -1,20 +1,16 @@
 import {resolve, join} from "path"
 import {readdirSync} from "fs"
 
-function readMiddlewares(config) {
-  const dir = resolve(__dirname, "..", "middleware")
-  const list = readdirSync(dir)
+const dir = resolve(__dirname, "..", "middleware")
+const list = readdirSync(dir)
 
-  const middlewares = []
-  for (const name of list) {
-    if (/^([0-9]+)-/.test(name)) {
-      const middleware = require(join(dir, name))
+const middlewares = []
+for (const name of list) {
+  if (/^([0-9]+)-/.test(name)) {
+    const middleware = require(join(dir, name))
 
-      middlewares.push(middleware.default(config))
-    }
+    middlewares.push(middleware.default || middleware)
   }
-
-  return middlewares
 }
 
-export default readMiddlewares
+export default middlewares

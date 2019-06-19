@@ -1,6 +1,2 @@
-import Model from "./Model"
-import createModel from "./createModel"
-
-export {
-  Model, createModel
-}
+export {default as createModel} from "./createModel"
+export {default as Model} from "./Model"

@@ -5,22 +5,21 @@ import passport from "koa-passport"
 
 import config from "core/base/config"
 import router from "core/base/router"
-import readMiddlewares from "core/base/middleware"
+import middlewares from "core/base/middleware"
 
 import log from "core/log"
 
 const {port} = config.server
 
-// Configure middlewares
-const middlewares = Array.from([
-  ...readMiddlewares(),
+// Initialize Koa application
+const koa = new Koa()
 
+// Add authorization and routes
+middlewares.push(
   passport.initialize(),
   router.allowedMethods(),
   router.routes()
-])
-
-const koa = new Koa()
+)
 
 // Assign middlewares to Koa.js instance
 middlewares.forEach(middleware => koa.use(middleware))
