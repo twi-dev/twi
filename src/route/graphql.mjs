@@ -1,4 +1,4 @@
-import {basename, extname} from "path"
+import {basename, extname, join} from "path"
 
 // TOOD: Replace with direct import when they bring the middleware back
 import {graphiqlKoa} from "graphql-server-koa"
@@ -39,7 +39,9 @@ const r = new Router()
 if (env.dev) {
   r.get("/", graphiqlKoa({endpointURL}))
 
-  log.info("GraphiQL IDE will be mounted on %s%s", server.address, endpointURL)
+  log.info(
+    "GraphiQL IDE will be mounted on %s", join(server.address, endpointURL)
+  )
 }
 
 r.post("/", processFiles, actionGraphQL)
