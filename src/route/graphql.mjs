@@ -1,6 +1,7 @@
 import {basename, extname} from "path"
 
 // TOOD: Replace with direct import when they bring the middleware back
+import {Body} from "then-busboy"
 import {graphiqlKoa} from "graphql-server-koa"
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
 
@@ -23,6 +24,16 @@ const actionGraphQL = graphqlKoa(async context => ({
   schema, context, formatError
 }))
 
+function processFiles(ctx, next) {
+  let {body} = ctx.request
+
+  body = [...body.fields(), ...body.files().map(file => ({...file}))]
+
+  ctx.request.body = body
+
+  return next()
+}
+
 const r = new Router()
 
 // Mount IDE for dev environment
@@ -32,6 +43,6 @@ if (env.dev) {
   log.info("GraphiQL IDE will be mounted on %s%s", server.address, endpointURL)
 }
 
-r.post("/", actionGraphQL)
+r.post("/", processFiles, actionGraphQL)
 
 export default r
