@@ -1,4 +1,5 @@
-# Use this file to keep expected middlewares order.
+# This file is used require() middlewares and keep expected order
+# Not that the files which are not listed here will be ignored
 
 error-handler
 x-powered-by
