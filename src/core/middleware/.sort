@@ -1,4 +1,4 @@
-// Foo
+# Use this file to keep expected middlewares order.
 
 error-handler
 x-powered-by
