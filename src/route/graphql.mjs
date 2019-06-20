@@ -1,7 +1,6 @@
 import {basename, extname} from "path"
 
 // TOOD: Replace with direct import when they bring the middleware back
-import {Body} from "then-busboy"
 import {graphiqlKoa} from "graphql-server-koa"
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
 
