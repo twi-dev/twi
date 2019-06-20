@@ -1,5 +1,5 @@
 # This file is used require() middlewares and keep expected order
-# Not that the files which are not listed here will be ignored
+# Note that the files which are not listed here will be ignored
 
 error-handler
 x-powered-by
