@@ -12,6 +12,7 @@ name: Twilight's Library
 
 # Is sign up ebable on your site?
 # Can be only "true" or "false"
+# DEPRECATED
 enableSignup: true
 
 server:

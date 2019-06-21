@@ -1,4 +1,4 @@
-import {basename, extname, join} from "path"
+import {basename, extname} from "path"
 import {format} from "url"
 
 import {Body} from "then-busboy"
@@ -47,7 +47,7 @@ if (env.dev) {
 
   log.info(
     "GraphiQL IDE will be mounted on %s",
-    format({host: server.address, pathname: endpointURL})
+    format({host: server.url, pathname: endpointURL})
   )
 }
 

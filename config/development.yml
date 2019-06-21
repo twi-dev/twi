@@ -1,0 +1,12 @@
+jwt:
+    accessToken:
+      secret: d3epn3Vje-oK1yzV_uFfe_vcc3c$TGlicmFyeSBTZWNyZXQK
+    refreshToken:
+      secret: VFYXkCpYMb8axir5fbda0b~tKGooB__cSs5XgXoP1A9KtZJRkVA7vyx
+
+mail:
+  service: yandex
+  secure: true
+  auth:
+    user: noreply@octetstream.ru
+    pass: kUj3yHuwibkAKH9bKpBwZlSkTaJLxpITcaT

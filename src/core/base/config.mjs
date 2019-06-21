@@ -1,30 +1,26 @@
+import {format} from "url"
 import {join} from "path"
 
 import {readSync} from "node-yaml"
 
 import merge from "lodash/merge"
 import freeze from "js-flock/deepFreeze"
-import invariant from "@octetstream/invariant"
 
 import {version, codename} from "package.json"
 
-import concat from "core/helper/string/concat"
-
 process.env.NODE_ENV || (process.env.NODE_ENV = "development")
 
-const CONFIGS_ROOT = join(__dirname, "..", "..", "config/system")
+const CONFIGS_ROOT = join(__dirname, "..", "..", "config")
+
+const setUrl = ({secure, host: hostname, ...url}) => format({
+  ...url, hostname, protocol: secure ? "https" : "http"
+})
 
 const name = process.env.NODE_ENV || "name"
 
 const dev = name !== "production"
 const test = name === "test"
 const debug = name === "debug"
-
-invariant(
-  ["production", "development", "test", "debug"].includes(name) === false,
-
-  RangeError, "Unknown environment name is set: %s", name
-)
 
 const env = {name, dev, test, debug}
 
@@ -38,19 +34,14 @@ try {
     throw err
   }
 
-  invariant(
-    env === "production",
-    "Production config required for current (%s) environment.",
-    name
-  )
+  if (env === "production") {
+    throw new Error("Production config required in production environment.")
+  }
 }
 
 const config = merge({version, codename}, defaultConfig, envConfig, {env})
 
-config.server.address = concat(
-  config.server.secure ? "https://" : "http://",
-  config.server.host,
-  config.server.port ? concat(":", config.server.port) : undefined
-)
+config.server.url = setUrl(config.server)
+config.client.url = setUrl(config.client)
 
 export default freeze(config)
