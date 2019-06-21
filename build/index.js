@@ -1,4 +1,5 @@
 const {join} = require("path")
+const {stat} = require("fs")
 
 const rimraf = require("rimraf")
 const chokidar = require("chokidar")
@@ -37,7 +38,19 @@ const onAdd = filename => processFiles([filename], {
   src, dest: getDest(filename), env: {dev: true}
 }).catch(onError)
 
-const onChange = (path, stat) => stat.isDirectory() === false && onAdd(path)
+function onChange(path) {
+  function fulfill(err, stats) {
+    if (err) {
+      return onError(err)
+    }
+
+    if (!stats.isDirectory()) {
+      onAdd(path)
+    }
+  }
+
+  stat(path, fulfill)
+}
 
 const onUnlink = path => rimraf(getDest(path), err => err && onError(err))
 

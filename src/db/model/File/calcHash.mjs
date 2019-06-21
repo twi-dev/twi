@@ -9,8 +9,8 @@ import {createHash} from "crypto"
  *
  * @return {string}
  */
-async function calcHash(path) {
-  const hash = createHash("sha512")
+async function calcHash(algorithm, path) {
+  const hash = createHash(algorithm)
 
   for await (const chunk of createReadStream(path)) {
     hash.update(chunk)

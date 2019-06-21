@@ -23,6 +23,10 @@ const schema = new Schema({
     type: t.String,
     required: true
   },
+  size: {
+    type: t.Number,
+    required: true
+  },
   dates: {
     createdAt: {
       type: t.Date,
