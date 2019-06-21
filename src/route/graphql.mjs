@@ -28,7 +28,9 @@ function extractFiles(ctx, next) {
   const {body} = ctx.request.body
 
   if (body instanceof Body) {
-    ctx.request.body = [...body.fields(), ...body.files().map(extractFile)]
+    ctx.request.body = Body.json([
+      ...body.fields(), ...body.files().map(extractFile)
+    ])
   }
 
   return next()
