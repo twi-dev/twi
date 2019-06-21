@@ -3,10 +3,11 @@ import {format} from "url"
 
 import {Body} from "then-busboy"
 // TOOD: Replace with direct import when they bring the middleware back
-import {graphiqlKoa} from "graphql-server-koa"
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
+import {renderPlaygroundPage} from "graphql-playground-html"
 
 import Router from "@koa/router"
+import ms from "ms"
 
 import log from "core/log"
 import config from "core/base/config"
@@ -16,9 +17,9 @@ import formatError from "core/graphql/formatError"
 const {server, env} = config
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
-const endpointURL = `/${basename(__filename, extname(__filename))}`
+const endpoint = `/${basename(__filename, extname(__filename))}`
 
-// const subscriptionsURL = join(endpointURL, "subscribe")
+// const subscriptionsURL = join(endpoint, "subscribe")
 
 const extractFile = ({path, basename, extname, filename, mime, enc}) => ({
   path, basename, extname, filename, mime, enc
@@ -45,11 +46,18 @@ const r = new Router()
 
 // Mount IDE for dev environment
 if (env.dev) {
-  r.get("/", graphiqlKoa({endpointURL}))
+  r.get("/", ctx => {
+    ctx.body = renderPlaygroundPage({
+      endpoint,
+      settings: {
+        "schema.polling.interval": ms("1 minute")
+      }
+    })
+  })
 
   log.info(
     "GraphiQL IDE will be mounted on %s",
-    format({host: server.url, pathname: endpointURL})
+    format({host: server.url, pathname: endpoint})
   )
 }
 
