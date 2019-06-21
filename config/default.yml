@@ -15,6 +15,9 @@ name: Twilight's Library
 # DEPRECATED
 enableSignup: true
 
+cors:
+  origin: "*"
+
 server:
   host: localhost
   port: 2319

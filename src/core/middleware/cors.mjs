@@ -1,7 +1,9 @@
 import cors from "@koa/cors"
 
+import config from "core/base/config"
+
 export default cors({
-  origin: "*", // TODO: Add an origin to config
+  origin: config.cors.origin,
   allowedMethods: [
     "GET",
     "POST"
