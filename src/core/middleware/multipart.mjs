@@ -5,6 +5,8 @@ import isEmpty from "lodash/isEmpty"
 
 const toLowerCase = string => String.prototype.toLowerCase.call(string)
 
+const unlinkFile = ({path}) => unlink(path)
+
 async function multipart(ctx, next) {
   if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
     return next()
@@ -21,13 +23,12 @@ async function multipart(ctx, next) {
   await next()
 
   // Cleanup
-  if (!isEmpty(body)) {
+  if (!isEmpty(body) && ctx.is("multipart/form-data")) {
     delete ctx.request.body
-  }
 
-  return Promise.all(
-    Array.from(body.files().values()).map(({path}) => unlink(path))
-  ).catch(err => err.code !== "ENOENT" && Promise.reject(err))
+    return Promise.all(Array.from(body.files().values()).map(unlinkFile))
+      .catch(err => err.code !== "ENOENT" && Promise.reject(err))
+  }
 }
 
 export default multipart

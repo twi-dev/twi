@@ -1,5 +1,7 @@
 import {basename, extname, join} from "path"
+import {format} from "url"
 
+import {Body} from "then-busboy"
 // TOOD: Replace with direct import when they bring the middleware back
 import {graphiqlKoa} from "graphql-server-koa"
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
@@ -18,20 +20,24 @@ const endpointURL = `/${basename(__filename, extname(__filename))}`
 
 // const subscriptionsURL = join(endpointURL, "subscribe")
 
+const extractFile = ({path, basename, extname, filename, mime, enc}) => ({
+  path, basename, extname, filename, mime, enc
+})
+
+function extractFiles(ctx, next) {
+  const {body} = ctx.request.body
+
+  if (body instanceof Body) {
+    ctx.request.body = [...body.fields(), ...body.files().map(extractFile)]
+  }
+
+  return next()
+}
+
 // GraphQL queries/mutations/subscriptions handler
 const actionGraphQL = graphqlKoa(async context => ({
   schema, context, formatError
 }))
-
-function processFiles(ctx, next) {
-  let {body} = ctx.request
-
-  body = [...body.fields(), ...body.files().map(file => ({...file}))]
-
-  ctx.request.body = body
-
-  return next()
-}
 
 const r = new Router()
 
@@ -40,10 +46,11 @@ if (env.dev) {
   r.get("/", graphiqlKoa({endpointURL}))
 
   log.info(
-    "GraphiQL IDE will be mounted on %s", join(server.address, endpointURL)
+    "GraphiQL IDE will be mounted on %s",
+    format({host: server.address, pathname: endpointURL})
   )
 }
 
-r.post("/", processFiles, actionGraphQL)
+r.post("/", extractFiles, actionGraphQL)
 
 export default r
