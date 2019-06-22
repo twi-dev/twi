@@ -48,7 +48,7 @@ class BaseModel extends mongoose.Model {
    *
    * @return {object}
    */
-  static async createOne(doc, options) {
+  static async create(doc, options) {
     options = this._getOptions(options)
 
     if (!isPlainObject(doc)) {
@@ -72,11 +72,11 @@ class BaseModel extends mongoose.Model {
     options = this._getOptions(options)
 
     if (!isArray(docs)) {
-      return BaseModel.createOne.call(this, docs, options).then(Array.of)
+      return BaseModel.create.call(this, docs, options).then(Array.of)
     }
 
     if (docs.length === 1) {
-      return BaseModel.createOne.call(this, docs[0], options).then(Array.of)
+      return BaseModel.create.call(this, docs[0], options).then(Array.of)
     }
 
     return this.insertMany(docs, options)
@@ -90,14 +90,14 @@ class BaseModel extends mongoose.Model {
    *
    * @return {mongoose.Query}
    */
-  static findMany(search = {}, cursor = 1, limit = 10) {
+  static find(search = {}, cursor = 1, limit = 10) {
     if (typeof search === "number") {
       [cursor, limit, search] = [search, cursor, {}]
     }
 
     const skip = limit * (cursor - 1)
 
-    return this.find().where(search).skip(skip).limit(limit)
+    return super.find().where(search).skip(skip).limit(limit)
   }
 
   /**

@@ -12,10 +12,10 @@ const generateCode = partial(nanoid, 4)
 
 @createModel(schema)
 class Character extends Model {
-  static createOne(character, options) {
+  static create(character, options) {
     character.code = generateCode()
 
-    return super.createOne(character, options)
+    return super.create(character, options)
   }
 
   static async createMany(characters, options) {

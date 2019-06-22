@@ -47,7 +47,7 @@ class Session extends Model {
       signAccessToken({id: userId}), signRefreshToken({hash})
     ])
 
-    await super.createOne({userId, client, hash}, options)
+    await super.create({userId, client, hash}, options)
 
     return {accessToken, refreshToken}
   }

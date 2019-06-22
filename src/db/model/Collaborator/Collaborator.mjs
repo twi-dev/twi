@@ -13,10 +13,10 @@ class Collaborator extends Model {
     }
   }
 
-  static async createOne(collaborator, options = {}) {
+  static async create(collaborator, options = {}) {
     collaborator.role = Collaborator.roles[collaborator.role]
 
-    return super.createOne(collaborator, options)
+    return super.create(collaborator, options)
   }
 
   async updateRole(role, options) {

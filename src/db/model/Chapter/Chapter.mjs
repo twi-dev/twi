@@ -24,7 +24,7 @@ class Chapter extends Model {
    *
    * @return {object}
    */
-  static async createOne(chapter, options) {
+  static async create(chapter, options) {
     invariant(
       !chapter, TypeError, "Chapter is required. Received %s", getType(chapter)
     )
@@ -45,7 +45,7 @@ class Chapter extends Model {
       rendered: md.render(chapter.text)
     }
 
-    return super.createOne({...chapter, content}, options)
+    return super.create({...chapter, content}, options)
   }
 
   static async createMany(chapters, options = {}) {

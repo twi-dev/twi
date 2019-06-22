@@ -10,10 +10,10 @@ const generateCode = partial(nanoid, 4)
 
 @createModel
 class Genre extends Model {
-  static createOne(genre, options) {
+  static create(genre, options) {
     genre.code = generateCode()
 
-    return super.createOne(genre, options)
+    return super.create(genre, options)
   }
 
   static createMany(genres, options) {

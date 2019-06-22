@@ -56,7 +56,7 @@ if (env.dev) {
   })
 
   log.info(
-    "GraphiQL IDE will be mounted on %s",
+    "GraphQL Playground IDE will be mounted on %s",
     format({host: server.url, pathname: endpoint})
   )
 }

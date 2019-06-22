@@ -53,7 +53,7 @@ class User extends Model {
    *
    * @return {object}
    */
-  static async createOne(user, options) {
+  static async create(user, options) {
     const password = await hash(user.password, 15)
 
     if (user.role != null) {
@@ -64,7 +64,7 @@ class User extends Model {
       user.status = User.statuses.user
     }
 
-    return super.createOne({...user, password}, options)
+    return super.create({...user, password}, options)
   }
 
   static async createMany() {
