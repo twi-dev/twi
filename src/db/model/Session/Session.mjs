@@ -14,10 +14,6 @@ const {jwt} = config
 
 @createModel(schema)
 class Session extends Model {
-  static get defaultType() {
-    return "Bearer"
-  }
-
   static async createOne() {
     throw new Error("Method is not available on this model.")
   }
