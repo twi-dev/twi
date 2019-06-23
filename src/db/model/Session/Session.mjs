@@ -47,6 +47,12 @@ class Session extends Model {
       signAccessToken({id: userId}), signRefreshToken({hash})
     ])
 
+    client = {
+      name: client.browser.name,
+      os: client.os.name,
+      ip: client.ip
+    }
+
     await super.create({userId, client, hash}, options)
 
     return {accessToken, refreshToken}
@@ -77,10 +83,16 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  async refresh() {
+  async refresh({client}) {
     const accessToken = await signAccessToken({id: this.userId})
 
-    return this.update({$set: {"dates.updatedAt": accessToken.signed}})
+    client = {
+      name: client.browser.name,
+      os: client.os.name,
+      ip: client.ip
+    }
+
+    return this.update({$set: {"dates.updatedAt": accessToken.signed, client}})
       .then(() => accessToken)
   }
 }
