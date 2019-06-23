@@ -83,7 +83,7 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  async refresh({client}) {
+  async refresh({client}, options) {
     const accessToken = await signAccessToken({id: this.userId})
 
     client = {
@@ -92,7 +92,9 @@ class Session extends Model {
       ip: client.ip
     }
 
-    return this.update({$set: {"dates.updatedAt": accessToken.signed, client}})
+    return this.update({
+      $set: {"dates.updatedAt": accessToken.signed, client}
+    }, options)
       .then(() => accessToken)
   }
 }
