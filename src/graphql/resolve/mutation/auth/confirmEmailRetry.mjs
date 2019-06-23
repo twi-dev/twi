@@ -8,7 +8,7 @@ import Token from "db/model/EmailConfirmationToken"
 async function confirmEmailRetry({ctx}) {
   const user = await User.findById(ctx.state.user.id)
 
-  const token = await Token.createOne({userId: user.id, email: user.email})
+  const token = await Token.create({userId: user.id, email: user.email})
   const link = `https://lib.octetstream.me/auth/confirm/${token.hash}`
 
   await mail.send({

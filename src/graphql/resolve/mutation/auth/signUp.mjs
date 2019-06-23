@@ -6,9 +6,9 @@ import Session from "db/model/Session"
 import Token from "db/model/EmailConfirmationToken"
 
 async function signUp({args, ctx}) {
-  const user = await User.createOne(args.user)
+  const user = await User.create(args.user)
 
-  const token = await Token.createOne({userId: user.id, email: user.email})
+  const token = await Token.create({userId: user.id, email: user.email})
   const link = `https://stories.octetstream.me/auth/confirm/${token.hash}`
 
   await mail.send({

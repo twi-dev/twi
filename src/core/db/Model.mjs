@@ -2,11 +2,9 @@ import mongoose from "mongoose"
 
 import omit from "lodash/omit"
 import merge from "lodash/merge"
-import isPlainObject from "lodash/isPlainObject"
 import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
-import getType from "core/helper/util/getType"
 
 const isArray = Array.isArray
 
@@ -38,26 +36,6 @@ class BaseModel extends mongoose.Model {
    */
   static _getOptions(options) {
     return merge({}, this._defaultOptions, options)
-  }
-
-  /**
-   * Create one document with given params
-   *
-   * @param {object} doc
-   * @param {object} [optinos = {}]
-   *
-   * @return {object}
-   */
-  static async create(doc, options) {
-    options = this._getOptions(options)
-
-    if (!isPlainObject(doc)) {
-      return invariant.reject(
-        true, TypeError, "Expected plain object. Received %s", getType(doc)
-      )
-    }
-
-    return super.create(doc, options)
   }
 
   /**

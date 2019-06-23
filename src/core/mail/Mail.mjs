@@ -7,7 +7,7 @@ import {render} from "core/base/view"
 
 const {mail} = config
 
-const sender = fmt("%s <%s>", mail.from, mail.user)
+const sender = fmt("%s <%s>", mail.from, mail.auth.user)
 
 // Just a small workaround to bring pre-configured "from" option and templates
 // into the nodemailer transport which is does not seems to available for any
