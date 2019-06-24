@@ -23,6 +23,8 @@ const signAccessToken = payload => signToken(payload, {
   ...accessToken, expires: "15 minutes"
 })
 
-const signRefreshToken = payload => signToken(payload, refreshToken)
+const signRefreshToken = payload => signToken(payload, {
+  ...refreshToken, expires: "1 year"
+})
 
 export {signAccessToken, signRefreshToken}

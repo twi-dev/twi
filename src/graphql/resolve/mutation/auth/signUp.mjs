@@ -19,7 +19,7 @@ async function signUp({args, ctx}) {
     `
   })
 
-  return Session.sign({userId: user.id, client: ctx.client})
+  return Session.sign({userId: user.id, client: ctx.state.client})
 }
 
 export default bind(signUp)

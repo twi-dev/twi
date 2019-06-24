@@ -1,10 +1,10 @@
 import compose from "lodash/fp/compose"
 
-import checkUser from "core/auth/checkUser"
+import auth from "core/auth/checkUser"
 import bind from "core/graphql/bindResolver"
 
 import User from "db/model/User"
 
-const findViewer = params => User.findViewer(params)
+const findViewer = ({ctx}) => User.findById(ctx.state.user.id)
 
-export default compose([bind, checkUser])(findViewer)
+export default compose([bind, auth])(findViewer)

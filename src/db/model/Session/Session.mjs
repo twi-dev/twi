@@ -1,10 +1,10 @@
 import {createHash} from "crypto"
 
-import {verify} from "core/helper/wrapper/jwt"
 import {createModel, Model} from "core/db"
+import {verify} from "core/helper/wrapper/jwt"
 
-import config from "core/base/config"
 import BadRequest from "core/error/http/BadRequest"
+import config from "core/base/config"
 
 import schema from "./schema"
 
@@ -35,23 +35,22 @@ class Session extends Model {
    * @throws {Error} when wrong password given
    */
   static async sign({userId, client}, options) {
-    const hash = createHash("sha512")
-      .update(JSON.stringify({userId, client, now: Date.now()}))
-      .digest("hex")
-
-    const [accessToken, refreshToken] = await Promise.all([
-      signAccessToken({id: userId}), signRefreshToken({hash})
-    ])
-
     client = {
       name: client.browser.name,
       os: client.os.name,
       ip: client.ip
     }
 
-    await super.create({userId, client, hash}, options)
+    const hash = createHash("sha512")
+      .update(JSON.stringify({id: userId, client, now: Date.now()}))
+      .digest("hex")
 
-    return {accessToken, refreshToken}
+    const [accessToken, refreshToken] = await Promise.all([
+      signAccessToken({id: userId}), signRefreshToken({hash})
+    ])
+
+    return super.create({userId, client, hash}, options)
+      .then(() => ({accessToken, refreshToken}))
   }
 
   static async findByToken(token) {
@@ -80,18 +79,24 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   async refresh({client}, options) {
-    const accessToken = await signAccessToken({id: this.userId})
-
     client = {
       name: client.browser.name,
       os: client.os.name,
       ip: client.ip
     }
 
-    return this.update({
-      $set: {"dates.updatedAt": accessToken.signed, client}
-    }, options)
-      .then(() => accessToken)
+    const hash = createHash("sha512")
+      .update(JSON.stringify({id: this.userId, client, now: Date.now()}))
+      .digest("hex")
+
+    const [accessToken, refreshToken] = await Promise.all([
+      signAccessToken({id: this.userId}), signRefreshToken({hash})
+    ])
+
+    const params = {$set: {"dates.updatedAt": accessToken.signed, client, hash}}
+
+    return this.update(params, options)
+      .then(() => ({accessToken, refreshToken}))
   }
 }
 
