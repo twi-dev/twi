@@ -1,12 +1,12 @@
 import {GraphQLInt as TInt} from "graphql"
 
 import TUser from "graphql/type/user/TUser"
-import findUsers from "graphql/resolve/query/user/findUsers"
+import list from "graphql/resolve/query/user/list"
 
 const resolve = {
   type: [TUser],
   required: true,
-  handler: findUsers,
+  handler: list,
   description: "Get all available users (only 10 per page)."
 }
 

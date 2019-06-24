@@ -5,6 +5,6 @@ import bind from "core/graphql/bindResolver"
 
 import User from "db/model/User"
 
-const findViewer = ({ctx}) => User.findById(ctx.state.user.id)
+const viewer = ({ctx}) => User.findById(ctx.state.user.id)
 
-export default compose([bind, auth])(findViewer)
+export default compose([bind, auth])(viewer)

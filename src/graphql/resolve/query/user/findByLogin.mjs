@@ -3,7 +3,7 @@ import User from "db/model/User"
 
 import NotFound from "core/error/http/NotFound"
 
-async function findUserByLogin({args}) {
+async function findByLogin({args}) {
   const user = await User.findOne({login: args.login})
 
   if (!user) {
@@ -13,4 +13,4 @@ async function findUserByLogin({args}) {
   return user
 }
 
-export default bind(findUserByLogin)
+export default bind(findByLogin)

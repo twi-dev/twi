@@ -1,10 +1,10 @@
 import TViewer from "graphql/type/user/TViewer"
-import findViewer from "graphql/resolve/query/user/findViewer"
+import viewer from "graphql/resolve/query/user/viewer"
 
 const resolve = {
   type: TViewer,
   required: true,
-  handler: findViewer,
+  handler: viewer,
   description: "Show information about logged in user."
 }
 
