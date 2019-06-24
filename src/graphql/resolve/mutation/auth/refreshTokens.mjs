@@ -3,7 +3,7 @@ import bind from "core/graphql/bindResolver"
 import Session from "db/model/Session"
 import User from "db/model/User"
 
-async function refreshAccessToken({args, ctx}) {
+async function refreshTokens({args, ctx}) {
   const session = await Session.findByToken(args.refreshToken)
   const tokens = await session.refresh({client: ctx.state.client})
 
@@ -12,4 +12,4 @@ async function refreshAccessToken({args, ctx}) {
     .then(() => tokens)
 }
 
-export default bind(refreshAccessToken)
+export default bind(refreshTokens)
