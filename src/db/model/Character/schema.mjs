@@ -8,11 +8,6 @@ const schema = new Schema({
     type: t.String,
     required: true
   },
-  code: {
-    type: t.String,
-    required: true,
-    unique: true
-  },
   pic: {
     type: t.String,
     required: true
