@@ -4,7 +4,7 @@ const {Schema} = mongoose
 const {Types: t} = Schema
 
 const schema = new Schema({
-  creator: {
+  userId: {
     type: t.ObjectId,
     required: true,
     ref: "User"
