@@ -9,10 +9,10 @@ import schema from "./schema"
 @createModel(schema)
 class Collaborator extends Model {
   @readOnly static roles = freeze({
-    writer: 0,
-    editor: 1,
-    translator: 2,
-    painter: 3
+    write: 0,
+    edit: 1,
+    translate: 2,
+    art: 3
   })
 
   static async create(collaborator, options = {}) {
