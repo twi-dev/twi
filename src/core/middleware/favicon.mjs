@@ -4,7 +4,7 @@ import ms from "ms"
 import favicon from "koa-favicon"
 
 const path = join(
-  __dirname, "..", "..", "..", "static/assets/img/icns/favicon/twi.ico"
+  __dirname, "..", "..", "..", "static/asset/img/icns/favicon/twi.ico"
 )
 
 export default favicon(path, {maxAge: ms("1d")})

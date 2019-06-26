@@ -1,5 +1,7 @@
 import mongoose from "mongoose"
 
+import validateLogin from "./validateLogin"
+
 const {Schema} = mongoose
 const {Types: t} = Schema
 
@@ -17,7 +19,7 @@ const user = ({roles, statuses}) => new Schema({
     unique: true,
     required: [true, "Login is required for user."],
     validate: {
-      validator: val => /^[a-z0-9-_.]+$/i.test(val),
+      validator: validateLogin,
 
       message: (
         "User login have unnesessary format: Allowed only " +
@@ -58,7 +60,8 @@ const user = ({roles, statuses}) => new Schema({
     }
   },
   avatar: {
-    type: t.String,
+    type: t.ObjectId,
+    req: "User",
     default: null
   },
   contacts: {

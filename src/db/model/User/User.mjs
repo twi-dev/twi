@@ -13,10 +13,6 @@ import serial from "core/helper/array/runSerial"
 
 import schema from "./schema"
 
-const AVATAR_SAVE_ROOT = join(
-  __dirname, "..", "..", "static", "assets", "files", "avatars"
-)
-
 @createModel(schema)
 class User extends Model {
   /**
@@ -89,31 +85,17 @@ class User extends Model {
   /**
    * Updates viewer's avatar
    */
-  // Rewrite this from scratch
-  async updateAvatar(file) {
-    const {path, extname} = file
-
-    const dir = join(AVATAR_SAVE_ROOT, this.id)
-    const dest = join(dir, await nanoid(), extname)
-
-    await serial([partial(mkdirp, [dir]), partial(copyFile, [path, dest])])
-
-    return User.findById(this.id)
+  async updateAvatar(avatar, options) {
+    return this.update({$set: {avatar}}, options)
+      .then(() => User.findById(this.id))
   }
 
   /**
    * Removes viewer's avatar
    */
   async removeAvatar() {
-    try {
-      await unlink(this.avatar)
-    } catch (err) {
-      if (err.code !== "ENOENT") {
-        throw err
-      }
-    }
-
-    return this.findById(this.id)
+    return this.update({$set: {avatar: null}})
+      .then(() => User.findById(this.id))
   }
 
   comparePassword = async string => compare(string, this.password)

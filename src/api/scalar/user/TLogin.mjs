@@ -1,10 +1,10 @@
-import {GraphQLScalarType} from "graphql"
-import {Kind} from "graphql/language"
+import {GraphQLScalarType as Scalar} from "graphql"
 import {GraphQLError} from "graphql/error"
+import {Kind} from "graphql/language"
+
+import validate from "db/model/User/validateLogin"
 
 const STRING = Kind.STRING
-
-const loginRegExpr = /^[a-z0-9-_.]+$/i
 
 function validateLogin(ast) {
   const {kind, value} = ast
@@ -16,7 +16,7 @@ function validateLogin(ast) {
     )
   }
 
-  if (!loginRegExpr.test(value)) {
+  if (!validate(value)) {
     throw new GraphQLError(
       "User login have unnesessary format: Allowed only " +
       "alphabetic characters, numbers and - _ . symbols.", [ast]
@@ -32,15 +32,15 @@ const parseValue = value => validateLogin({
 
 const parseLiteral = ast => validateLogin({...ast})
 
-const TLogin = new GraphQLScalarType({
+const TLogin = new Scalar({
   name: "Login",
   description: (
     "The user human-readable unique identifier. Allowed only " +
     "alphabetic characters, numbers and - _ . symbols."
   ),
-  serialize: value => value,
-  parseValue,
-  parseLiteral
+  serialize: String,
+  parseLiteral,
+  parseValue
 })
 
 export default TLogin

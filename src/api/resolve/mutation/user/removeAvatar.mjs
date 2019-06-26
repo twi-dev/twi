@@ -1,4 +1,5 @@
 import User from "db/model/User"
+import File from "db/model/File"
 
 import auth from "core/auth/checkUser"
 import bind from "core/graphql/bindResolver"
@@ -11,7 +12,8 @@ async function removeAvatar({ctx}) {
     throw new BadRequest("There's no such user.")
   }
 
-  return user.removeAvatar()
+  return File.unlink(user.avatar)
+    .then(() => user.removeAvatar())
 }
 
 export default removeAvatar |> bind |> auth
