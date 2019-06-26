@@ -1,7 +1,7 @@
 import {GraphQLString as TString} from "graphql"
 
-import TAuthTokens from "graphql/type/auth/TAuthTokens"
-import refresh from "graphql/resolve/mutation/auth/refreshTokens"
+import TAuthTokens from "api/type/auth/TAuthTokens"
+import refresh from "api/resolve/mutation/auth/refreshTokens"
 
 const resolve = {
   type: TAuthTokens,

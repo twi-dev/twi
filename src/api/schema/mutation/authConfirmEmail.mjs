@@ -1,6 +1,6 @@
 import {GraphQLString as TString, GraphQLBoolean as TBoolean} from "graphql"
 
-import confirm from "graphql/resolve/mutation/auth/confirmEmail"
+import confirm from "api/resolve/mutation/auth/confirmEmail"
 
 const resolve = {
   type: TBoolean,

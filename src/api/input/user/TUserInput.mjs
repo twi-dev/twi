@@ -1,13 +1,14 @@
-import {GraphQLString as TString} from "graphql"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
+import {GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
 
-import TLogin from "graphql/scalar/user/TLogin"
-import TFileInput from "graphql/input/common/TFileInput"
-import TContactsInput from "graphql/input/user/TContactsInput"
+import TLogin from "api/scalar/user/TLogin"
 
-const TAuthSignUpInput = Input("AuthSignUpInput", "Basic user information.")
+import TFileInput from "api/input/common/TFileInput"
+import TContactsInput from "api/input/user/TContactsInput"
+
+const TUserInput = Input("UserInput", "Basic user information.")
   .field({
     name: "login",
     type: TLogin,
@@ -23,19 +24,19 @@ const TAuthSignUpInput = Input("AuthSignUpInput", "Basic user information.")
   .field({
     name: "password",
     type: TString,
-    description: "User's secured (or not :D) password.",
+    description: "User secured (or not :D) password.",
     required: true
   })
   .field({
     name: "avatar",
     type: TFileInput,
-    description: "User's profile picture."
+    description: "User profile picture."
   })
   .field({
     name: "contacts",
     type: TContactsInput,
-    description: "User's contact information."
+    description: "User contact information."
   })
 .end()
 
-export default TAuthSignUpInput
+export default TUserInput

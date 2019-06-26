@@ -1,5 +1,5 @@
-import TViewer from "graphql/type/user/TViewer"
-import viewer from "graphql/resolve/query/user/viewer"
+import TViewer from "api/type/user/TViewer"
+import viewer from "api/resolve/query/user/viewer"
 
 const resolve = {
   type: TViewer,

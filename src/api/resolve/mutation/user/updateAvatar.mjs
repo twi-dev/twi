@@ -11,7 +11,7 @@ async function updateAvatar({args, ctx}) {
     throw new BadRequest("There's no such user.")
   }
 
-  return user.updateAvatar(args.avatar)
+  return user.updateAvatar(args.file)
 }
 
 export default updateAvatar |> bind |> auth

@@ -4,7 +4,7 @@ import Type from "parasprite/Type"
 
 import TChapter from "./TChapter"
 
-import findChaptersById from "../../resolve/query/story/findChaptersById"
+// import findChaptersById from "../../resolve/query/story/findChaptersById"
 
 import TStoryMinimal from "./TStoryMinimal"
 import TStoryCollaborator from "./TStoryCollaborator"
@@ -22,7 +22,8 @@ const TStory = Type({
     name: "chapters",
     type: [TChapter, true],
     required: true,
-    handler: findChaptersById
+    // handler: findChaptersById
+    handler() { }
   })
     .arg({
       name: "cursor",

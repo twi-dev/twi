@@ -1,7 +1,7 @@
-import TAuthSignUpInput from "graphql/input/auth/TAuthSignUpInput"
-import TAuthTokens from "graphql/type/auth/TAuthTokens"
+import TAuthSignUpInput from "api/input/auth/TAuthSignUpInput"
+import TAuthTokens from "api/type/auth/TAuthTokens"
 
-import signUp from "graphql/resolve/mutation/auth/signUp"
+import signUp from "api/resolve/mutation/auth/signUp"
 
 const resolve = {
   type: TAuthTokens,

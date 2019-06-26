@@ -1,7 +1,7 @@
 import {GraphQLString as TString} from "graphql"
 
-import TRefreshToken from "graphql/type/auth/TAuthRefreshToken"
-import logOut from "graphql/resolve/mutation/auth/logOut"
+import TRefreshToken from "api/type/auth/TAuthRefreshToken"
+import logOut from "api/resolve/mutation/auth/logOut"
 
 const resolve = {
   type: TRefreshToken,
