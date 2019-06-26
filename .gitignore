@@ -18,7 +18,7 @@ node_modules
 deploy
 
 /db
-/graphql
+/api
 /core
 /route
 /setup
