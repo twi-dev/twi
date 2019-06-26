@@ -11,7 +11,7 @@ const generateSlug = payload => nanoid(8).then(short => ({
 
 @createModel(schema)
 class Story extends Model {
-  static async create(story, options = {}) {
+  static async create(story, options) {
     story.slug = await generateSlug(story.title)
 
     return super.create(story, options)

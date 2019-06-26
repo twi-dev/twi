@@ -1,16 +1,13 @@
-import {join} from "path"
-
 import {hash, compare} from "bcryptjs"
-import {copyFile, unlink} from "promise-fs"
 
-import partial from "lodash/partial"
-import nanoid from "nanoid/async"
+import freeze from "js-flock/deepFreeze"
+
+import readOnly from "core/helper/decorator/readOnly"
+import BadRequest from "core/error/http/BadRequest"
 
 import {createModel, Model} from "core/db"
 
-import mkdirp from "core/helper/util/mkdirp"
-import serial from "core/helper/array/runSerial"
-
+import isReserved from "./isReserved"
 import schema from "./schema"
 
 @createModel(schema)
@@ -18,28 +15,27 @@ class User extends Model {
   /**
    * User account status
    */
-  static get statuses() {
-    return {
-      unactivated: 0,
-      activated: 1,
-      suspended: 2,
-      banned: 3
-    }
-  }
+  @readOnly static statuses = freeze({
+    unactivated: 0,
+    activated: 1,
+    suspended: 2,
+    banned: 3
+  })
 
   /**
    * Available user roles
    *
    * @return {object}
    */
-  static get roles() {
-    return {
-      su: 0,
-      admin: 1,
-      mod: 2,
-      user: 3,
-    }
-  }
+  @readOnly static roles = freeze({
+    super: 0,
+    dev: 1,
+    admin: 2,
+    moderator: 3,
+    support: 4,
+    tech: 5,
+    user: 6,
+  })
 
   /**
    * Create a new regular user.
@@ -50,6 +46,11 @@ class User extends Model {
    * @return {object}
    */
   static async create(user, options) {
+    // NOTE: Maybe I can move this to mongoose validators.
+    if (isReserved(user.login)) {
+      throw new BadRequest("You cannot use resered words as your login.")
+    }
+
     const password = await hash(user.password, 15)
 
     if (user.role != null) {
@@ -78,8 +79,8 @@ class User extends Model {
    *
    * @throws {NotFound} – when user is not found
    */
-  static findByLogin(login) {
-    return this.findOne({login: new RegExp(`^${login}$`, "i")})
+  static findByLogin(login, options) {
+    return this.findOne({login: new RegExp(`^${login}$`, "i")}, options)
   }
 
   /**
@@ -164,12 +165,12 @@ class User extends Model {
   }
 
   /**
-   * Check if user is "MOD"
+   * Check if user is "MODERATOR"
    *
    * @return {boolean}
    */
-  get isMod() {
-    return this.role === User.roles.mod
+  get isModerator() {
+    return this.role === User.roles.moderator
   }
 
   /**
@@ -182,12 +183,12 @@ class User extends Model {
   }
 
   /**
-   * Check if user is "SU"
+   * Check if user is "SUPER"
    *
    * @return {boolean}
    */
-  get isSu() {
-    return this.role === User.roles.su
+  get isSuper() {
+    return this.role === User.roles.super
   }
 
   /**

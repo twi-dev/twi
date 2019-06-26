@@ -53,9 +53,9 @@ class Session extends Model {
       .then(() => ({accessToken, refreshToken}))
   }
 
-  static async findByToken(token) {
+  static async findByToken(token, options) {
     const payload = await verify(token, jwt.refreshToken.secret)
-    const session = await this.findOne({hash: payload.hash})
+    const session = await this.findOne({hash: payload.hash}, options)
 
     if (!session) {
       throw new BadRequest("Can't find a session for given token.")
@@ -64,10 +64,10 @@ class Session extends Model {
     return session
   }
 
-  static async revokeAllButCurrent({token, userId}) {
+  static async revokeAllButCurrent({token, userId}, options) {
     const payload = await verify(token, jwt.refreshToken.secret)
 
-    return this.find({userId, hash: {$not: payload.hash}}).remove()
+    return this.find({userId, hash: {$not: payload.hash}}).remove(options)
       .then(({ok}) => ok === 1)
   }
 

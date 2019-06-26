@@ -1,17 +1,19 @@
+import freeze from "js-flock/deepFreeze"
+
+import readOnly from "core/helper/decorator/readOnly"
+
 import {createModel, Model} from "core/db"
 
 import schema from "./schema"
 
 @createModel(schema)
 class Collaborator extends Model {
-  static get roles() {
-    return {
-      writer: 0,
-      editor: 1,
-      translator: 2,
-      painter: 3
-    }
-  }
+  @readOnly static roles = freeze({
+    writer: 0,
+    editor: 1,
+    translator: 2,
+    painter: 3
+  })
 
   static async create(collaborator, options = {}) {
     collaborator.role = Collaborator.roles[collaborator.role]
