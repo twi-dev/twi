@@ -1,7 +1,17 @@
 import User from "db/model/User"
 
+import auth from "core/auth/checkUser"
 import bind from "core/graphql/bindResolver"
+import BadRequest from "core/error/http/BadRequest"
 
-const removeAvatar = params => User.removeAvatar(params)
+async function removeAvatar({ctx}) {
+  const user = await User.findById(ctx.state.user.id)
 
-export default removeAvatar |> bind
+  if (!user) {
+    throw new BadRequest("There's no such user.")
+  }
+
+  return user.removeAvatar()
+}
+
+export default removeAvatar |> bind |> auth
