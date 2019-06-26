@@ -62,7 +62,9 @@ const user = ({roles, statuses}) => new Schema({
   avatar: {
     type: t.ObjectId,
     req: "User",
-    default: null
+    default: null,
+    unique: true,
+    sparse: true
   },
   contacts: {
     type: {

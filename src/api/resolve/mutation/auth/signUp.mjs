@@ -19,7 +19,9 @@ async function signUp({args, ctx}) {
     `
   })
 
-  return Session.sign({userId: user.id, client: ctx.state.client})
+  const client = {...ctx.state.client, ip: ctx.ip}
+
+  return Session.sign({userId: user.id, client})
 }
 
 export default bind(signUp)
