@@ -1,15 +1,23 @@
+import {format} from "url"
+import {join} from "path"
+
 import bind from "core/graphql/bindResolver"
 import mail from "core/mail/transport"
+import config from "core/base/config"
 
 import User from "db/model/User"
 import Session from "db/model/Session"
 import Token from "db/model/EmailConfirmationToken"
 
+const {server} = config
+
 async function signUp({args, ctx}) {
   const user = await User.create(args.user)
 
   const token = await Token.create({userId: user.id, email: user.email})
-  const link = `https://stories.octetstream.me/auth/confirm/${token.hash}`
+  const link = format({
+    host: server.url, pathname: join("/auth", "confirm", token.hash)
+  })
 
   await mail.send({
     to: user.email,
