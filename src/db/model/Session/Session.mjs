@@ -14,12 +14,12 @@ const {jwt} = config
 
 @createModel(schema)
 class Session extends Model {
-  static async createOne() {
-    throw new Error("Method is not available on this model.")
+  static create() {
+    return Promise.reject(Error("Method is not available on this model."))
   }
 
-  static async createMany() {
-    throw new Error("Method is not available on this model.")
+  static createMany() {
+    return Promise.reject(Error("Method is not available on this model."))
   }
 
   /**
