@@ -1,13 +1,13 @@
 import {format} from "url"
 import {join} from "path"
 
-import bind from "core/graphql/bindResolver"
+import config from "core/base/config"
 import auth from "core/auth/checkUser"
 import mail from "core/mail/transport"
-import config from "core/base/config"
+import bind from "core/graphql/bindResolver"
 
-import User from "db/model/User"
 import Token from "db/model/EmailConfirmationToken"
+import User from "db/model/User"
 
 const {server} = config
 
