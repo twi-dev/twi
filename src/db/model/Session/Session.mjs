@@ -35,12 +35,6 @@ class Session extends Model {
    * @throws {Error} when wrong password given
    */
   static async sign({userId, client}, options) {
-    client = {
-      name: `${client.browser.name} (${client.browser.version})`,
-      os: `${client.os.name} (${client.os.version})`,
-      ip: client.ip
-    }
-
     const hash = createHash("sha512")
       .update(JSON.stringify({id: userId, client, now: Date.now()}))
       .digest("hex")
@@ -79,12 +73,6 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   async refresh({client}, options) {
-    client = {
-      name: `${client.browser.name} (${client.browser.version})`,
-      os: `${client.os.name} (${client.os.version})`,
-      ip: client.ip
-    }
-
     const hash = createHash("sha512")
       .update(JSON.stringify({id: this.userId, client, now: Date.now()}))
       .digest("hex")

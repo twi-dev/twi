@@ -15,13 +15,25 @@ const schema = new Schema({
     ref: "User"
   },
   client: {
-    name: {
-      type: t.String,
-      required: true
+    browser: {
+      name: {
+        type: t.String,
+        required: true
+      },
+      version: {
+        type: t.String,
+        required: true
+      }
     },
     os: {
-      type: t.String,
-      required: true
+      name: {
+        type: t.String,
+        required: true
+      },
+      version: {
+        type: t.String,
+        required: true
+      }
     },
     ip: {
       type: t.String,
