@@ -36,8 +36,8 @@ class Session extends Model {
    */
   static async sign({userId, client}, options) {
     client = {
-      name: client.browser.name,
-      os: client.os.name,
+      name: `${client.browser.name} (${client.browser.version})`,
+      os: `${client.os.name} (${client.os.version})`,
       ip: client.ip
     }
 
@@ -80,8 +80,8 @@ class Session extends Model {
    */
   async refresh({client}, options) {
     client = {
-      name: client.browser.name,
-      os: client.os.name,
+      name: `${client.browser.name} (${client.browser.version})`,
+      os: `${client.os.name} (${client.os.version})`,
       ip: client.ip
     }
 
