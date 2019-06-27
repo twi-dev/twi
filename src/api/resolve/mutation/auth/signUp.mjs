@@ -1,6 +1,8 @@
 import {format} from "url"
 import {join} from "path"
 
+import omit from "lodash/omit"
+
 import bind from "core/graphql/bindResolver"
 import mail from "core/mail/transport"
 import config from "core/base/config"
@@ -27,7 +29,7 @@ async function signUp({args, ctx}) {
     `
   })
 
-  return Session.sign({userId: user.id, client: ctx.state.client})
+  return Session.sign({user: omit(user, "password"), client: ctx.state.client})
 }
 
 export default bind(signUp)

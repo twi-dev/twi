@@ -1,5 +1,6 @@
-import bind from "core/graphql/bindResolver"
+import omit from "lodash/omit"
 
+import bind from "core/graphql/bindResolver"
 import Unauthorized from "core/error/http/Unauthorized"
 
 import Session from "db/model/Session"
@@ -16,7 +17,7 @@ async function logIn({args, ctx}) {
     )
   }
 
-  return Session.sign({userId: user.id, client: ctx.state.client})
+  return Session.sign({user: omit(user, "password"), client: ctx.state.client})
 }
 
 export default bind(logIn)

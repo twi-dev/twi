@@ -2,16 +2,22 @@ import {GraphQLDateTime as TDateTime} from "graphql-iso-date"
 
 import Type from "parasprite/Type"
 
+import serialize from "core/helper/graphql/serializeDate"
+
 const TDates = Type("Dates")
-  .field({
+  .resolve({
     name: "createdAt",
     type: TDateTime,
-    description: "The date when story has been created.",
-    required: true
+    noArgs: true,
+    required: true,
+    handler: serialize("createdAt"),
+    description: "The date when story has been created."
   })
-  .field({
+  .resolve({
     name: "updatedAt",
     type: TDateTime,
+    noArgs: true,
+    handler: serialize("updatedAt"),
     description: "The date of last story update."
   })
 .end()

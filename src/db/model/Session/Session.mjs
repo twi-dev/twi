@@ -1,5 +1,7 @@
 import {createHash} from "crypto"
 
+import pick from "lodash/pick"
+
 import {createModel, Model} from "core/db"
 import {verify} from "core/helper/wrapper/jwt"
 
@@ -34,16 +36,17 @@ class Session extends Model {
    * @throws {NotFound} when requested user not found by his login
    * @throws {Error} when wrong password given
    */
-  static async sign({userId, client}, options) {
-    const hash = createHash("sha512")
-      .update(JSON.stringify({id: userId, client, now: Date.now()}))
-      .digest("hex")
+  static async sign({user, client}, options) {
+    user = pick(user, ["id", "role", "status"])
+
+    const payload = JSON.stringify({...user, client, now: Date.now()})
+    const hash = createHash("sha512").update(payload).digest("hex")
 
     const [accessToken, refreshToken] = await Promise.all([
-      signAccessToken({id: userId}), signRefreshToken({hash})
+      signAccessToken(user), signRefreshToken({hash})
     ])
 
-    return super.create({userId, client, hash}, options)
+    return super.create({userId: user.id, client, hash}, options)
       .then(() => ({accessToken, refreshToken}))
   }
 
@@ -72,13 +75,17 @@ class Session extends Model {
    *
    * @return {object} – an access roken with expires date
    */
-  async refresh({client}, options) {
-    const hash = createHash("sha512")
-      .update(JSON.stringify({id: this.userId, client, now: Date.now()}))
-      .digest("hex")
+  async refresh({user, client}, options) {
+    user = pick(user, ["role", "status"])
+
+    const payload = JSON.stringify({
+      ...user, id: this.userId, client, now: Date.now()
+    })
+
+    const hash = createHash("sha512").update(payload).digest("hex")
 
     const [accessToken, refreshToken] = await Promise.all([
-      signAccessToken({id: this.userId}), signRefreshToken({hash})
+      signAccessToken({...user, id: this.userId}), signRefreshToken({hash})
     ])
 
     const params = {$set: {"dates.updatedAt": accessToken.signed, client, hash}}

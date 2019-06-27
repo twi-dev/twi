@@ -5,10 +5,10 @@ import User from "db/model/User"
 
 async function refreshTokens({args, ctx}) {
   const session = await Session.findByToken(args.refreshToken)
-  const tokens = await session.refresh({client: ctx.state.client})
+  const user = await User.findById(session.userId).select("role status")
+  const tokens = await session.refresh({user, client: ctx.state.client})
 
-  return User.findById(session.userId)
-    .update({$set: {"dates.lastVisit": tokens.accessToken.signed}})
+  return user.update({$set: {"dates.lastVisit": tokens.accessToken.signed}})
     .then(() => tokens)
 }
 
