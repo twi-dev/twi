@@ -1,4 +1,4 @@
-import {parse, Body} from "then-busboy"
+import {parse} from "then-busboy"
 import {unlink} from "promise-fs"
 
 import isEmpty from "lodash/isEmpty"
@@ -16,7 +16,7 @@ async function multipart(ctx, next) {
     return next()
   }
 
-  const body = await parse(ctx.req).then(Body.from)
+  const body = await parse(ctx.req)
 
   ctx.request.body = body
 
