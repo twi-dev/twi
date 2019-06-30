@@ -3,12 +3,12 @@ import {unlink} from "promise-fs"
 
 import isEmpty from "lodash/isEmpty"
 
-const toLowerCase = string => String.prototype.toLowerCase.call(string)
-
 const unlinkFile = ({path}) => unlink(path)
 
+const methods = ["post", "put"]
+
 async function multipart(ctx, next) {
-  if (["post", "put"].includes(toLowerCase(ctx.method)) === false) {
+  if (!methods.includes(ctx.method.toLowerCase())) {
     return next()
   }
 
