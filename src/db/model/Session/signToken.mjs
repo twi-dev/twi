@@ -11,8 +11,8 @@ async function signToken(payload, {secret, expires, ...options}) {
   const signed = Date.now()
 
   if (expires) {
-    expires = addMilliseconds(signed, ms(expires)).getTime()
     options.expiresIn = expires
+    expires = addMilliseconds(signed, ms(expires)).getTime()
   }
 
   return sign({...payload, expires, signed}, secret, options)
