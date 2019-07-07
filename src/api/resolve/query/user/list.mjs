@@ -1,4 +1,4 @@
-import bind from "core/graphql/bindResolver"
+import bind from "core/helper/graphql/bindResolver"
 
 import User from "db/model/User"
 

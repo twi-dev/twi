@@ -4,6 +4,7 @@ import isFunction from "lodash/isFunction"
 
 import getType from "core/helper/util/getType"
 import waterfall from "core/helper/array/runWaterfall"
+import deprecate from "core/helper/decorator/deprecate"
 
 import toJS from "./toJS"
 
@@ -41,4 +42,6 @@ function bindResolver(resolver, ctx = null) {
   }
 }
 
-export default bindResolver
+export default deprecate("Use src/core/helper/graphql/bindResolver instead")(
+  bindResolver
+)

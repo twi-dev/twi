@@ -1,7 +1,7 @@
 import bind from "core/graphql/bindResolver"
 
-import User from "db/model/User"
 import Token from "db/model/EmailConfirmationToken"
+import User from "db/model/User"
 
 async function confirmEmail({args}) {
   const token = await Token.findOne({hash: args.hash})
@@ -16,8 +16,10 @@ async function confirmEmail({args}) {
     return false
   }
 
-  await user.updateOne({$set: {status: User.statuses.activated}})
-  await token.remove()
+
+  await Promise.all([
+    user.updateOne({$set: {status: User.statuses.activated}}), token.remove()
+  ])
 
   return true
 }

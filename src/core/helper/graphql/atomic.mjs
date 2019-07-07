@@ -1,9 +1,9 @@
-import atomicOperation from "core/helper/db/atomic"
+import createOperation from "core/helper/db/atomic"
 
 /**
  * Applies atomic operation helper to given resolver
  */
-const atomic = resolver => (...params) => atomicOperation(session => {
+const atomic = fn => (...params) => createOperation(session => {
   if (params.length === 1) {
     // The session will be set to its own property
     // to make it unique for each resolver
@@ -14,7 +14,7 @@ const atomic = resolver => (...params) => atomicOperation(session => {
     params.push(session)
   }
 
-  return resolver(params)
+  return fn(params)
 })
 
 export default atomic
