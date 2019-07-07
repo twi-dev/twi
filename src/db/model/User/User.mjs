@@ -29,7 +29,7 @@ class User extends Model {
    */
   @readOnly static roles = freeze({
     super: 0,
-    dev: 1,
+    developer: 1,
     admin: 2,
     moderator: 3,
     support: 4,
