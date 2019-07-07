@@ -1,6 +1,7 @@
 import {GraphQLInt as TInt} from "graphql"
 
 import TUser from "api/type/user/TUser"
+
 import list from "api/resolve/query/user/list"
 
 const resolve = {
