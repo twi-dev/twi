@@ -41,7 +41,7 @@ const schema = new Schema({
     }
   },
   dates: {
-    signedAt: {
+    createdAt: {
       type: t.Date,
       required: true,
       default: Date.now,
