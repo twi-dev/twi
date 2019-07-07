@@ -39,12 +39,9 @@ coverage
 !src/test/**/*.jsx
 
 # Configs rules
-/config/cert/**
-/config/service/**/*.yml
-/config/system/**/*.yml
+/config/**/*.yml
 
-!config/system/default.yml
-!config/service/**/default.yml
+!/config/default.yml
 
 # An old codebase
 *.old
