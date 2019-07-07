@@ -21,8 +21,6 @@ module.exports = {
     }
   },
   "rules": {
-    "no-shadow": 0,
-
     "indent": ["error", 2, {
       "MemberExpression": "off"
     }],

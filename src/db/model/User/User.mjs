@@ -190,23 +190,6 @@ class User extends Model {
   get isSuper() {
     return this.role === User.roles.super
   }
-
-  /**
-   * @see Model#toJS
-   */
-  async toJS(options) {
-    const user = await super.toJS(options)
-
-    if (user.role != null) {
-      user.role = this.roleName.toUpperCase()
-    }
-
-    if (user.status != null) {
-      user.status = this.statusName.toUpperCase()
-    }
-
-    return user
-  }
 }
 
 export default User
