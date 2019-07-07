@@ -5,12 +5,12 @@ import mongoose from "mongoose"
 
 const {Query} = mongoose
 
-const select = params => query => {
-  if (!(query instanceof Query) || isEmpty(params.node)) {
+const select = node => query => {
+  if (!(query instanceof Query) || isEmpty(node)) {
     return query
   }
 
-  return query.select(fieldsList(params.node))
+  return query.select(fieldsList(node))
 }
 
 export default select

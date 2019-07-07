@@ -25,14 +25,7 @@ module.exports = {
       "MemberExpression": "off"
     }],
 
-    "operator-linebreak": ["error", "after", {
-      overrides: {
-        "+": "ignore",
-        "?": "before",
-        ":": "before",
-        "||": "before"
-      }
-    }],
+    "operator-linebreak": ["error", "before"],
 
     "ava/no-ignored-test-files": ["error", {
       "files": [
