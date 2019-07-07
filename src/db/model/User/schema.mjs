@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 
+import isReserved from "./isReserved"
 import validateLogin from "./validateLogin"
 
 const {Schema} = mongoose
@@ -18,16 +19,22 @@ const user = ({roles, statuses}) => new Schema({
     type: t.String,
     unique: true,
     required: [true, "Login is required for user."],
-    validate: {
-      validator: validateLogin,
-
-      message: (
-        "User login have unnesessary format: Allowed only " +
-        "alphabetic characters, numbers and - _ . symbols."
-      )
-    }
+    validate: [
+      {
+        validator: isReserved,
+        message: "You cannot use resered words as your login."
+      },
+      {
+        validator: validateLogin,
+        message: (
+          "User login have unnesessary format: Allowed only "
+            + "alphabetic characters, numbers and - _ . symbols."
+        )
+      }
+    ]
   },
-  email: { // Private email address
+  // Private email address
+  email: {
     type: t.String,
     unique: true,
     required: [true, "Required an email for user"]

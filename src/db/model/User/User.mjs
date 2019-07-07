@@ -3,11 +3,9 @@ import {hash, compare} from "bcryptjs"
 import freeze from "js-flock/deepFreeze"
 
 import readOnly from "core/helper/decorator/readOnly"
-import BadRequest from "core/error/http/BadRequest"
 
 import {createModel, Model} from "core/db"
 
-import isReserved from "./isReserved"
 import schema from "./schema"
 
 @createModel(schema)
@@ -46,11 +44,6 @@ class User extends Model {
    * @return {object}
    */
   static async create(user, options) {
-    // NOTE: Maybe I can move this to mongoose validators.
-    if (isReserved(user.login)) {
-      throw new BadRequest("You cannot use resered words as your login.")
-    }
-
     const password = await hash(user.password, 15)
 
     if (user.role != null) {
