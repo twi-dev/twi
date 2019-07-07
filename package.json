@@ -66,6 +66,7 @@
     "koa-static": "5.0.0",
     "limax": "1.7.0",
     "lodash": "4.17.11",
+    "lodash-decorators": "6.0.1",
     "logdown": "3.2.8",
     "markdown-it": "8.4.2",
     "mkdirp": "0.5.1",

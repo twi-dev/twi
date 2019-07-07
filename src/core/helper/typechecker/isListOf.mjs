@@ -7,8 +7,8 @@ const isArray = Array.isArray
 function isListOf(list, predicate, ctx = null) {
   if (!isArray(list)) {
     throw new TypeError(
-      "Expected an array as \"list\" argument, " +
-      `but given value is type of ${getType(list)}.`
+      "Expected an array as \"list\" argument, "
+        + `but given value is type of ${getType(list)}.`
     )
   }
 

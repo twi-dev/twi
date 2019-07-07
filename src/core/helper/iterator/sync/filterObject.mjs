@@ -3,7 +3,7 @@ import objectIterator from "./objectIterator"
 /**
  * Filter given object with predicate function
  *
- * @param {object} obj – any iterable plain object
+ * @param {object} object – any iterable plain object
  * @param {function} predicate – the function invoked per iteration.
  *   Should return boolean value.
  *
@@ -11,11 +11,11 @@ import objectIterator from "./objectIterator"
  *
  * @return {object} – filtered object
  */
-function filterObject(obj, predicate, ctx) {
+function filterObject(object, predicate, ctx) {
   const res = {}
 
-  for (const [key, value] of objectIterator.entries(obj)) {
-    if (predicate.call(ctx, value, key, obj) === true) {
+  for (const [key, value] of objectIterator(object).entries()) {
+    if (predicate.call(ctx, value, key, object) === true) {
       res[key] = value
     }
   }

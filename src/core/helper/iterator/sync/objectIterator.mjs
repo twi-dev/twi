@@ -1,5 +1,5 @@
-import isObject from "lodash/isObject"
 import invariant from "@octetstream/invariant"
+import isObject from "lodash/isObject"
 
 import deprecate from "core/helper/decorator/deprecate"
 
@@ -48,8 +48,8 @@ class ObjectIterator {
 const objectIterator = (iterable, entries = false) => {
   if (entries) {
     console.warn(
-      "The \"entries\" flag is deprecated. " +
-      "Use objectIterator(iterable).entries() instead."
+      "The \"entries\" flag is deprecated. "
+        + "Use objectIterator(iterable).entries() instead."
     )
 
     return new ObjectIterator(iterable).entries()

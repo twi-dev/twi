@@ -1,7 +1,9 @@
 const isArray = Array.isArray
 
-function flat(array) {
-  const walk = (prev, next) => isArray(next) ? flat(next) : prev.concat([next])
+function flat(array, depth = 1) {
+  const walk = (prev, next) => (
+    prev.concat(isArray(next) && depth > 0 ? flat(next, depth - 1) : [next])
+  )
 
   return array.reduce(walk, [])
 }
