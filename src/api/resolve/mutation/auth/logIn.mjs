@@ -1,6 +1,6 @@
 import omit from "lodash/omit"
 
-import bind from "core/graphql/bindResolver"
+import bind from "core/helper/graphql/bindResolver"
 import Unauthorized from "core/error/http/Unauthorized"
 
 import Session from "db/model/Session"

@@ -4,7 +4,7 @@ import {join} from "path"
 import config from "core/base/config"
 import auth from "core/auth/checkUser"
 import mail from "core/mail/transport"
-import bind from "core/graphql/bindResolver"
+import bind from "core/helper/graphql/bindResolver"
 
 import Token from "db/model/EmailConfirmationToken"
 import User from "db/model/User"

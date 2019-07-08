@@ -3,13 +3,13 @@ import {join} from "path"
 
 import omit from "lodash/omit"
 
-import bind from "core/graphql/bindResolver"
-import mail from "core/mail/transport"
 import config from "core/base/config"
+import mail from "core/mail/transport"
+import bind from "core/helper/graphql/bindResolver"
 
-import User from "db/model/User"
-import Session from "db/model/Session"
 import Token from "db/model/EmailConfirmationToken"
+import Session from "db/model/Session"
+import User from "db/model/User"
 
 const {server} = config
 

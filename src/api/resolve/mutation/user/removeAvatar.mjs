@@ -2,7 +2,7 @@ import User from "db/model/User"
 import File from "db/model/File"
 
 import auth from "core/auth/checkUser"
-import bind from "core/graphql/bindResolver"
+import bind from "core/helper/graphql/bindResolver"
 import BadRequest from "core/error/http/BadRequest"
 
 async function removeAvatar({ctx}) {

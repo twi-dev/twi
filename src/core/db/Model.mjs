@@ -6,9 +6,11 @@ import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
 
+const {Model} = mongoose
+
 const isArray = Array.isArray
 
-class BaseModel extends mongoose.Model {
+class BaseModel extends Model {
   /**
    * Returns keys of PubSub event types
    *
@@ -61,32 +63,14 @@ class BaseModel extends mongoose.Model {
   }
 
   /**
-   * Find whatever documents. (10 per page)
-   *
-   * @param {object} search – advanced search parameters
-   * @param {number} cursor – page number
-   *
-   * @return {mongoose.Query}
-   */
-  static find(search = {}, cursor = 1, limit = 10) {
-    if (typeof search === "number") {
-      [cursor, limit, search] = [search, cursor, {}]
-    }
-
-    const skip = limit * (cursor - 1)
-
-    return super.find().where(search).skip(skip).limit(limit)
-  }
-
-  /**
    * Find some docs by IDs
    *
    * @param {array} ids – IDs of documents you are looking for
    *
    * @return {mongoose.Query}
    */
-  static findManyByIds(ids, cursor, limit) {
-    return this.findMany(cursor, limit).where({_id: {$in: ids}})
+  static findManyByIds(ids) {
+    return this.find().where({_id: {$in: ids}})
   }
 
   /**
