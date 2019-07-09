@@ -1,27 +1,7 @@
 import util from "util"
 
-import isFunction from "lodash/isFunction"
+import create from "core/helper/decorator/createDecorator"
 
-const decorator = (fn, message, code) => util.deprecate(fn, message, code)
-
-const deprecate = (message, code) => function wrap(target, key, descriptor) {
-  if (isFunction(target) && arguments.length === 1) {
-    return decorator(target, message, code)
-  }
-
-  if (isFunction(descriptor.initializer)) {
-    const init = descriptor.initializer
-
-    descriptor.initializer = function initializer() {
-      return decorator(init.call(this), message, code)
-    }
-  } else {
-    const fn = descriptor.value
-
-    descriptor.value = decorator(fn, message, code)
-  }
-
-  return descriptor
-}
+const deprecate = (msg, code) => create(fn => util.deprecate(fn, msg, code))
 
 export default deprecate
