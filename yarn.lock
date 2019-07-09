@@ -6118,14 +6118,14 @@ node-pre-gyp@^0.10.0:
     semver "^5.3.0"
     tar "^4"
 
-node-yaml@4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/node-yaml/-/node-yaml-4.0.0.tgz#510653c0471fcd83067eac63cb03593ed966b38d"
-  integrity sha512-F7PwidzUFOdfg18xXoAwQo00Wez5zCPmZ7AsnAQ85RvAwkmrOVcr5KywAc7EKIvQWvvfHPj8tEIoHxuQOAFOBA==
+node-yaml@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/node-yaml/-/node-yaml-4.0.1.tgz#3675d27c275fbea9c02e2b0faa18bb1699444cb3"
+  integrity sha512-ZPKi3OexXdiklsRW9g4P7jAxHAhoBRZCFmIDMQ89clLhMz+MTJuCM9y5f1R7Ru75H84hWJouwpxVOq1SdRTe7A==
   dependencies:
     co "4.6.0"
     junk "3.1.0"
-    promise-fs "2.1.0"
+    promise-fs "2.1.1"
 
 nodejieba@^2.2.1:
   version "2.2.6"
