@@ -12,7 +12,7 @@ const reserved = [
  */
 function isReserved(login) {
   for (const word of reserved) {
-    if (new RegExp(word, "i").test(login)) {
+    if (new RegExp(`^${word}$`, "i").test(login)) {
       return true
     }
   }
