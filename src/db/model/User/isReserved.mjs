@@ -1,5 +1,5 @@
 const reserved = [
-  "admin", "superuser", "su", "owner", "dev", "developer",
+  "admin", "superuser", "super", "su", "owner", "dev", "developer",
   "mod", "moderator", "support", "supporttech", "tech"
 ]
 
