@@ -8,7 +8,7 @@ import bind from "core/helper/graphql/bindResolver"
 
 import BadRequest from "core/error/http/BadRequest"
 
-async function updateAvatar({args, ctx}) {
+async function updateAvatar({args, ctx, node}) {
   const user = await User.findById(ctx.state.user.id)
 
   if (!user) {
@@ -26,7 +26,7 @@ async function updateAvatar({args, ctx}) {
 
     () => user.updateAvatar(file.id),
 
-    () => User.findById(user.id)
+    () => (User.findById(user.id) |> select(node))
   ])
 }
 
