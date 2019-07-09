@@ -1,7 +1,7 @@
 const reserved = [
   "admin", "superuser", "super", "su", "owner", "dev", "developer",
   "mod", "moderator", "support", "supporttech", "tech"
-]
+].map(word => new RegExp(`^${word}$`, "i"))
 
 /**
  * Check if given login is reserved for internal usage.
@@ -10,14 +10,6 @@ const reserved = [
  *
  * @return {boolean}
  */
-function isReserved(login) {
-  for (const word of reserved) {
-    if (new RegExp(`^${word}$`, "i").test(login)) {
-      return true
-    }
-  }
-
-  return false
-}
+const isReserved = login => reserved.some(word => word.test(login))
 
 export default isReserved
