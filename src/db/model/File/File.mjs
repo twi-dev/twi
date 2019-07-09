@@ -44,7 +44,6 @@ class File extends Model {
     await copyFile(oldPath, newPath)
 
     return this.update({$set: {...fields, hash, path: newPath}}, options)
-      .then(() => File.findById(this.id))
   }
 
   unlink(options) {
