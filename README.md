@@ -20,8 +20,8 @@ and isn't ready for production! Stay in touch.**
 
 | Dependency name                      | Version (semver)          |
 |--------------------------------------|---------------------------|
-| [Node.js](https://nodejs.org/en/)    | >= 8.5                    |
-| [Yarn](https://yarnpkg.com/lang/en/) | >= 1.1.0                  |
+| [Node.js](https://nodejs.org/en/)    | >= 10.5                   |
+| [Yarn](https://yarnpkg.com/lang/en/) | >= 1.17.0                 |
 | [MongoDB](https://www.mongodb.com/)  | >= 4.x                    |
 
 You also need:
@@ -34,8 +34,6 @@ You also need:
 * Some server for mail service.
 * Any init system, like [systemd](https://github.com/systemd/systemd)
 * [Nodemon](https://github.com/remy/nodemon) for development.
-
-More information about this project you can get from the [Docs](./doc) section.
 
 ## License
 
