@@ -15,14 +15,14 @@ async function updateAvatar({args, ctx}) {
     throw new BadRequest("There's no such user.")
   }
 
-  const file = await File.findById(user.avatar)
+  const file = await File.findById(user.image)
 
   if (!file) {
     throw new BadRequest("Can't find such file.")
   }
 
   return serial([
-    () => file.updateContent(args.file),
+    () => file.updateContent(args.image),
 
     () => user.updateAvatar(file.id),
 

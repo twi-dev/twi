@@ -10,7 +10,7 @@ const resolve = {
 }
 
 const args = {
-  file: TFileInput
+  image: TFileInput
 }
 
 export {resolve, args}
