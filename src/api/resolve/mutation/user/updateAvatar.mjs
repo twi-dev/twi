@@ -2,7 +2,10 @@ import User from "db/model/User"
 import File from "db/model/File"
 
 import auth from "core/auth/checkUser"
+import select from "core/helper/graphql/select"
+import serial from "core/helper/array/runSerial"
 import bind from "core/helper/graphql/bindResolver"
+
 import BadRequest from "core/error/http/BadRequest"
 
 async function updateAvatar({args, ctx}) {
@@ -18,8 +21,13 @@ async function updateAvatar({args, ctx}) {
     throw new BadRequest("Can't find such file.")
   }
 
-  return file.updateContent(args.file)
-    .then(({id}) => user.updateAvatar(id))
+  return serial([
+    () => file.updateContent(args.file),
+
+    () => user.updateAvatar(file.id),
+
+    () => User.findById(user.id)
+  ])
 }
 
 export default updateAvatar |> bind |> auth

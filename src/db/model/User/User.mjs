@@ -81,7 +81,6 @@ class User extends Model {
    */
   async updateAvatar(avatar, options) {
     return this.update({$set: {avatar}}, options)
-      .then(() => User.findById(this.id))
   }
 
   /**
@@ -89,7 +88,6 @@ class User extends Model {
    */
   async removeAvatar() {
     return this.update({$set: {avatar: null}})
-      .then(() => User.findById(this.id))
   }
 
   comparePassword = async string => compare(string, this.password)
