@@ -34,6 +34,7 @@ Our extensions for Airbnb JavaScript Guidelines:
 ```js
 // Dependencies
 import {GraphQLString as TString} from "graphql"
+
 import Type from "parasprite/Type"
 
 // Implementation
