@@ -22,26 +22,7 @@ class Collaborator extends Model {
   }
 
   async updateRole(role, options) {
-    await this.update({$set: {role: Collaborator.roles[role]}}, options)
-
-    return Collaborator.findbyId(this.id)
-  }
-
-  /**
-   * Get collaborator role name
-   *
-   * @private
-   */
-  get roleName() {
-    return this._findKey(Collaborator.roles, this.role).toUpperCase()
-  }
-
-  async toJS(options) {
-    const collaborator = await super.toJS(options)
-
-    collaborator.role = this.roleName
-
-    return collaborator
+    return this.update({$set: {role: Collaborator.roles[role]}}, options)
   }
 }
 

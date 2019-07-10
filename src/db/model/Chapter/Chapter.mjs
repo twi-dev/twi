@@ -1,11 +1,6 @@
-import isPlainObject from "lodash/isPlainObject"
-import invariant from "@octetstream/invariant"
-import isString from "lodash/isString"
 import Markdown from "markdown-it"
 
 import {createModel, Model} from "core/db"
-
-import getType from "core/helper/util/getType"
 
 import schema from "./schema"
 
@@ -25,20 +20,6 @@ class Chapter extends Model {
    * @return {object}
    */
   static async create(chapter, options) {
-    invariant(
-      !chapter, TypeError, "Chapter is required. Received %s", getType(chapter)
-    )
-
-    invariant(
-      !isPlainObject(chapter), TypeError,
-      "Chapter should be a plain object. Received %s", getType(chapter)
-    )
-
-    invariant(
-      !isString(chapter.text), TypeError,
-      "Chapter text should be a string. Received %", getType(chapter.text)
-    )
-
     // TODO: Move content storage to a static server
     const content = {
       original: chapter.text,
