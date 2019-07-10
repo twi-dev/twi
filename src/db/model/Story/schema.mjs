@@ -24,10 +24,11 @@ const schema = new Schema({
       unique: true
     }
   },
-  publisher: {
+  userId: {
     ref: "User",
     type: t.ObjectId,
-    required: true
+    required: true,
+    description: "An ID of user that published the story"
   },
   translation: {
     author: {

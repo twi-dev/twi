@@ -5,7 +5,7 @@ import Input from "parasprite/Input"
 import TFileInput from "api/input/common/TFileInput"
 import TChapterInput from "api/input/story/TChapterInput"
 
-const TStoryInput = Input("StoryInput")
+const TAddStoryInput = Input("AddStoryInput")
   .field({
     name: "title",
     type: TString,
@@ -36,4 +36,4 @@ const TStoryInput = Input("StoryInput")
   })
 .end()
 
-export default TStoryInput
+export default TAddStoryInput
