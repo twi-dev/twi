@@ -4,7 +4,7 @@ import {Kind} from "graphql/language"
 
 import mongoose from "mongoose"
 
-const {types: t} = mongoose.Schema
+const {Types: t} = mongoose
 
 const STRING = Kind.STRING
 
