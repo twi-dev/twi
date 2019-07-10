@@ -1,6 +1,6 @@
 import {join} from "path"
 
-import {unlink, copyFile} from "promise-fs"
+import {unlink} from "promise-fs"
 
 import format from "date-fns/format"
 
@@ -9,7 +9,8 @@ import {createModel, Model} from "core/db"
 import readOnly from "core/helper/decorator/readOnly"
 import BadRequest from "core/error/http/BadRequest"
 
-import calcHash from "./calcHash"
+import calcHash from "./util/calcHash"
+import saveFile from "./util/saveFile"
 import schema from "./schema"
 
 const getDate = () => format(new Date(), "yyyy-MM-dd")
@@ -22,7 +23,7 @@ class File extends Model {
     const newPath = join(File.root, fields.userId, getDate(), filename)
     const hash = await calcHash("sha512", oldPath)
 
-    await copyFile(oldPath, newPath)
+    await saveFile(oldPath, newPath)
 
     return super.create({...fields, hash, path: newPath}, options)
   }
@@ -41,7 +42,7 @@ class File extends Model {
     const newPath = join(File.root, this.userId, getDate(), filename)
     const hash = await calcHash("sha512", oldPath)
 
-    await copyFile(oldPath, newPath)
+    await saveFile(oldPath, newPath)
 
     return this.update({$set: {...fields, hash, path: newPath}}, options)
   }

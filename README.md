@@ -20,7 +20,7 @@ and isn't ready for production! Stay in touch.**
 
 | Dependency name                      | Version (semver)          |
 |--------------------------------------|---------------------------|
-| [Node.js](https://nodejs.org/en/)    | >= 10.5                   |
+| [Node.js](https://nodejs.org/en/)    | >= 10.12                  |
 | [Yarn](https://yarnpkg.com/lang/en/) | >= 1.17.0                 |
 | [MongoDB](https://www.mongodb.com/)  | >= 4.x                    |
 

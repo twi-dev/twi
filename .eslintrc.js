@@ -24,6 +24,9 @@ module.exports = {
     "indent": ["error", 2, {
       "MemberExpression": "off"
     }],
+    "no-constant-condition": ["error", {
+      checkLoops: false
+    }],
 
     "operator-linebreak": ["error", "before"],
 
