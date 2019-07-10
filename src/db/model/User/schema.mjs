@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
-import isReserved from "./isReserved"
-import validateLogin from "./validateLogin"
+import validateLogin from "./util/validateLogin"
+import isReserved from "./util/isReserved"
 
 const {Schema} = mongoose
 const {Types: t} = Schema

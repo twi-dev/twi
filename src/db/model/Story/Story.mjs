@@ -1,5 +1,5 @@
+import nanoid from "nanoid/async"
 import limax from "limax"
-import nanoid from "nanoid"
 
 import {createModel, Model} from "core/db"
 
