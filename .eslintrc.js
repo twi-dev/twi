@@ -27,10 +27,6 @@ module.exports = {
 
     "operator-linebreak": ["error", "before"],
 
-    "ava/no-ignored-test-files": ["error", {
-      "files": [
-        "src/test/unit/**/*.mjs"
-      ]
-    }]
+    "ava/no-ignored-test-files": 0
   }
 }
