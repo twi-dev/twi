@@ -36,8 +36,8 @@ const parseLiteral = ast => validateObjectId({...ast})
 const TObjectID = new Scalar({
   name: "ObjectID",
   description: (
-    "The user human-readable unique identifier. Allowed only "
-      + "alphabetic characters, numbers and - _ . symbols."
+    "An ObjectId is a 12 byte binary BSON type "
+      + "that used as unique identifier for documents."
   ),
   serialize: String,
   parseLiteral,

@@ -1,17 +1,14 @@
-import {
-  GraphQLID as TID,
-  GraphQLInt as TInt,
-  GraphQLString as TString
-} from "graphql"
+import {GraphQLInt as TInt, GraphQLString as TString} from "graphql"
 
 import Type from "parasprite/Type"
 
+import TObjectID from "api/scalar/common/TObjectID"
 import TDates from "api/type/common/TDates"
 
 const TFile = Type("File")
   .field({
     name: "id",
-    type: TID,
+    type: TObjectID,
     require: true
   })
   // TODO: Add a resolver to convert file path to URL
