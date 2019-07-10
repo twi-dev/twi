@@ -1,4 +1,5 @@
-import {basename, extname} from "path"
+import p from "path"
+
 import {format} from "url"
 
 import {Body} from "then-busboy"
@@ -17,9 +18,7 @@ import formatError from "core/graphql/formatError"
 const {server, env} = config
 
 // GraphQL endpoint name for GraphiQL (based on current module name)
-const endpoint = `/${basename(__filename, extname(__filename))}`
-
-// const subscriptionsURL = join(endpoint, "subscribe")
+const endpoint = `/${p.basename(__filename, p.extname(__filename))}`
 
 const extractFile = ({path, basename, extname, filename, mime, enc}) => ({
   path, basename, extname, filename, mime, enc

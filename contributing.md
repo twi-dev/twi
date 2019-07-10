@@ -20,7 +20,7 @@ Please read our [Code of Conduct](code-of-conduct.md) before you begin to contri
 ## Code style guidelines
 
 Our code guidelines based on [Airbnb JavaScript Guidelines](https://github.com/airbnb/javascript).
-We're also using ESLint for linting all Twi's codebase and
+We're also using ESLint to lint all Twi's codebase and
 Editorconfig to automatically set-up basic files formatting.
 
 Our extensions for Airbnb JavaScript Guidelines:
