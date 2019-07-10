@@ -13,14 +13,12 @@ import calcHash from "./util/calcHash"
 import saveFile from "./util/saveFile"
 import schema from "./schema"
 
-const getDate = () => format(new Date(), "yyyy-MM-dd")
-
 @createModel(schema)
 class File extends Model {
   @readOnly static root = join(__dirname, "..", "..", "..", "static", "file")
 
   static async create({path: oldPath, filename, ...fields}, options) {
-    const newPath = join(File.root, fields.userId, getDate(), filename)
+    const newPath = join(File.root, format(new Date(), "yyyy-MM-dd"), filename)
     const hash = await calcHash("sha512", oldPath)
 
     await saveFile(oldPath, newPath)
@@ -39,7 +37,7 @@ class File extends Model {
   }
 
   async updateContent({path: oldPath, filename, ...fields}, options) {
-    const newPath = join(File.root, this.userId, getDate(), filename)
+    const newPath = join(File.root, format(new Date(), "yyyy-MM-dd"), filename)
     const hash = await calcHash("sha512", oldPath)
 
     await saveFile(oldPath, newPath)
