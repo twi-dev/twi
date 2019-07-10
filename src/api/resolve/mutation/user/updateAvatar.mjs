@@ -1,3 +1,5 @@
+import {join} from "path"
+
 import User from "db/model/User"
 import File from "db/model/File"
 
@@ -21,8 +23,10 @@ async function updateAvatar({args, ctx, node}) {
     throw new BadRequest("Can't find such file.")
   }
 
+  const {filename, ...image} = args.image
+
   return serial([
-    () => file.updateContent(args.image),
+    () => file.updateContent({...image, filename: join("avatar", filename)}),
 
     () => user.updateAvatar(file.id),
 
