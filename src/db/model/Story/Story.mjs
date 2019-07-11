@@ -6,7 +6,7 @@ import {createModel, Model} from "core/db"
 import schema from "./schema"
 
 const generateSlug = payload => nanoid(8).then(short => ({
-  short, full: `${short}/${limax(payload)}`
+  short, full: `${short}.${limax(payload)}`
 }))
 
 @createModel(schema)

@@ -28,17 +28,20 @@ const schema = new Schema({
     ref: "User",
     type: t.ObjectId,
     required: true,
-    description: "An ID of user that published the story"
+    description: "Publisher ID"
   },
   translation: {
-    author: {
-      name: t.String, // author's nickname
-      profile: t.String // link to an author profile or site
+    type: {
+      author: {
+        name: t.String, // author's nickname
+        profile: t.String // link to an author profile or site
+      },
+      original: {
+        name: t.String,
+        link: t.String, // link to original story
+      }
     },
-    original: {
-      name: t.String,
-      link: t.String, // link to original story
-    }
+    sparse: true
   },
   collaborators: [{
     type: t.ObjectId,
@@ -63,18 +66,11 @@ const schema = new Schema({
       default: null
     }
   },
-  chapters: {
-    list: [{
-      ref: "Chapter",
-      type: t.ObjectId,
-      required: true
-    }],
-    count: {
-      type: t.Number,
-      default: 0,
-      min: 0
-    }
-  },
+  chapters: [{
+    ref: "Chapter",
+    type: t.ObjectId,
+    required: true
+  }],
   characters: [{
     ref: "Character",
     type: t.ObjectId,
