@@ -26,6 +26,21 @@ class File extends Model {
     return super.create({...fields, hash, path: newPath}, options)
   }
 
+  static async createMany(files, options) {
+    for (const [index, fields] of files.entries()) {
+      const hash = await calcHash("sha512", fields.path)
+      const newPath = join(
+        File.root, format(new Date(), "yyyy-MM-dd"), fields.filename
+      )
+
+      await saveFile(fields.path, newPath)
+
+      files[index] = {...fields, hash}
+    }
+
+    return super.createMany(files, options)
+  }
+
   static async unlink(id, options) {
     const file = await this.findById(id)
 
