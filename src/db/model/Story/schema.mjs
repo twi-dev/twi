@@ -30,7 +30,7 @@ const schema = new Schema({
     required: true,
     description: "Publisher ID"
   },
-  translation: {
+  translationLinks: {
     type: {
       author: {
         name: t.String, // author's nickname

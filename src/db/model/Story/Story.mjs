@@ -12,9 +12,23 @@ const generateSlug = payload => nanoid(8).then(short => ({
 @createModel(schema)
 class Story extends Model {
   static async create(story, options) {
+    // TODO: Move these check to middlewares
+    if (!story.chapters) {
+      story.isDraft = true
+      story.isFinished = false
+    }
+
     story.slug = await generateSlug(story.title)
 
     return super.create(story, options)
+  }
+
+  addChapter(chapter) {
+    return this.updateOne({$push: {chapters: chapter}})
+  }
+
+  removeChapter(chapter) {
+    return this.updateOne({$pull: {chapters: chapter}})
   }
 }
 
