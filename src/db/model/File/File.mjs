@@ -19,7 +19,7 @@ class File extends Model {
 
   static async create({path: oldPath, filename, ...fields}, options) {
     const newPath = join(File.root, format(new Date(), "yyyy-MM-dd"), filename)
-    const hash = await calcHash("sha512", oldPath)
+    const hash = await calcHash(oldPath, "sha512")
 
     await saveFile(oldPath, newPath)
 
@@ -28,7 +28,7 @@ class File extends Model {
 
   static async createMany(files, options) {
     for (const [index, fields] of files.entries()) {
-      const hash = await calcHash("sha512", fields.path)
+      const hash = await calcHash(fields.path, "sha512")
       const newPath = join(
         File.root, format(new Date(), "yyyy-MM-dd"), fields.filename
       )
@@ -53,7 +53,7 @@ class File extends Model {
 
   async updateContent({path: oldPath, filename, ...fields}, options) {
     const newPath = join(File.root, format(new Date(), "yyyy-MM-dd"), filename)
-    const hash = await calcHash("sha512", oldPath)
+    const hash = await calcHash(oldPath, "sha512")
 
     await saveFile(oldPath, newPath)
 
