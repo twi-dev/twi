@@ -7,6 +7,9 @@
   "license": "MIT",
   "repository": "twi-project/twi-server",
   "main": "core/base/main",
+  "engines": {
+    "node": ">= 10.12 < 11 || >= 12"
+  },
   "scripts": {
     "make": "node_modules/.bin/babel src -d . --copy-files --include-dotfiles",
     "watch": "node build",
@@ -41,7 +44,7 @@
     "@koa/router": "8.0.0",
     "@octetstream/invariant": "1.2.0",
     "@octetstream/promisify": "2.0.2",
-    "apollo-server-koa": "2.6.8",
+    "apollo-server-koa": "2.6.9",
     "bcryptjs": "2.4.3",
     "camelcase": "5.3.1",
     "chalk": "2.4.2",
@@ -68,7 +71,6 @@
     "lodash": "4.17.14",
     "lodash-decorators": "6.0.1",
     "logdown": "3.2.8",
-    "markdown-it": "9.0.0",
     "mime-types": "^2.1.24",
     "mkdirp": "0.5.1",
     "mongoose": "5.6.4",
@@ -97,7 +99,6 @@
   "devDependencies": {
     "@babel/cli": "7.5.0",
     "@babel/core": "7.5.4",
-    "@babel/plugin-proposal-async-generator-functions": "7.2.0",
     "@babel/plugin-proposal-class-properties": "7.5.0",
     "@babel/plugin-proposal-decorators": "7.4.4",
     "@babel/plugin-proposal-do-expressions": "7.5.0",
@@ -132,7 +133,7 @@
     "lint-staged": "9.2.0",
     "nyc": "14.1.1",
     "prettier": "1.18.2",
-    "proxyquire": "2.1.0",
+    "proxyquire": "2.1.1",
     "rimraf": "2.6.3",
     "sinon": "7.3.2",
     "supertest": "4.0.2",

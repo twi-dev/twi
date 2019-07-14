@@ -16,7 +16,6 @@ module.exports = {
     ["@babel/proposal-class-properties", {
       loose: true
     }],
-    "@babel/proposal-async-generator-functions",
     "@babel/proposal-nullish-coalescing-operator",
     "@babel/proposal-optional-catch-binding",
     "@babel/proposal-optional-chaining",
