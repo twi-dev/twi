@@ -9,18 +9,31 @@ const schema = new Schema({
     required: true
   },
   content: {
-    type: t.ObjectId,
-    required: true,
-    ref: "File"
+    md: {
+      type: t.ObjectId,
+      required: true,
+      ref: "File"
+    },
+    html: {
+      type: t.ObjectId,
+      ref: "File",
+      sparse: true
+    },
+    text: {
+      type: t.ObjectId,
+      ref: "File",
+      sparse: true
+    }
   },
   dates: {
     createdAt: {
       type: t.Date,
+      required: true,
       default: Date.now
     },
     updatedAt: {
       type: t.Date,
-      default: Date.now
+      default: null
     }
   }
 })
