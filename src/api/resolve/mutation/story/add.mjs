@@ -29,4 +29,4 @@ async function addStory({args, ctx}) {
   return Story.create({...story, userId: ctx.state.user.id})
 }
 
-export default addStory |> bind |> auth
+export default addStory |> auth |> bind

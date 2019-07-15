@@ -1,7 +1,8 @@
-import {GraphQLID as TID, GraphQLString as TString} from "graphql"
+import {GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
 
+import TObjectID from "api/scalar/common/TObjectID"
 import TFileInput from "api/input/common/TFileInput"
 import TChapterInput from "api/input/story/TChapterInput"
 
@@ -22,13 +23,11 @@ const TAddStoryInput = Input("AddStoryInput")
   })
   .field({
     name: "characters",
-    type: [TID, true],
-    required: true
+    type: [TObjectID, true]
   })
   .field({
     name: "genres",
-    type: [TID, true],
-    required: true
+    type: [TObjectID, true]
   })
   .field({
     name: "chapters",

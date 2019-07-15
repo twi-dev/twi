@@ -1,4 +1,5 @@
 import {GraphQLString as TString} from "graphql"
+
 import Input from "parasprite/Input"
 
 const TChapterInput = Input("ChapterInput")
@@ -8,7 +9,7 @@ const TChapterInput = Input("ChapterInput")
     required: true
   })
   .field({
-    name: "text",
+    name: "content",
     type: TString,
     required: true
   })

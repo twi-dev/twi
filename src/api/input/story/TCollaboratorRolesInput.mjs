@@ -1,9 +1,9 @@
 import Enum from "parasprite/Enum"
 
 const TCollaboratorRolesInput = Enum("CollaboratorRolesInput")
+  .value("TRANSLATE", "translate")
   .value("WRITE", "write")
   .value("EDIT", "edit")
-  .value("TRANSLATE", "translate")
   .value("ART", "art")
 .end()
 

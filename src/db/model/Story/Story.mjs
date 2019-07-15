@@ -13,7 +13,7 @@ const generateSlug = payload => nanoid(8).then(short => ({
 class Story extends Model {
   static async create(story, options) {
     // TODO: Move these checks to middlewares
-    if (!story.chapters) {
+    if (!(story.chapters || story.characters || story.genres)) {
       story.isDraft = true
       story.isFinished = false
     }
