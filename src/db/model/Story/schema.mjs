@@ -1,5 +1,7 @@
 import mongoose from "mongoose"
 
+import updateDate from "db/common/hook/pre/updateDate"
+
 const {Schema} = mongoose
 const {Types: t} = Schema
 
@@ -102,5 +104,6 @@ const schema = new Schema({
     }
   }
 })
+  .pre("updateOne", updateDate)
 
 export default schema
