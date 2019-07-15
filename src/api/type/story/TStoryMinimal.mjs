@@ -1,4 +1,4 @@
-import {GraphQLString as TString} from "graphql"
+import {GraphQLString as TString, GraphQLBoolean as TBoolean} from "graphql"
 
 import Type from "parasprite/Type"
 
@@ -61,6 +61,16 @@ const TStoryMinimal = Type({
   .field({
     name: "dates",
     type: TDates,
+    required: true
+  })
+  .field({
+    name: "isDraft",
+    type: TBoolean,
+    required: true
+  })
+  .field({
+    name: "isFinished",
+    type: TBoolean,
     required: true
   })
 .end()
