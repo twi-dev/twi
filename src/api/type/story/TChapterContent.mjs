@@ -1,28 +1,17 @@
-import {GraphQLString as TString} from "graphql"
+import Union from "parasprite/Union"
 
-import Type from "parasprite/Type"
+import TFile from "api/type/common/TFile"
+import TContentMap from "api/type/story/TChapterContentMap"
 
-import concat from "core/helper/string/concatFromArray"
+const TChapterContent = Union({
+  name: "ChapterContent",
+  types: [TFile, TContentMap]
+})
+  .match(({path, mime, hash, size, dates}) => (
+    path && mime && hash && size && dates ? TFile : undefined
+  ))
 
-const deprecate = concat([
-  "Deprecated because of migration ",
-  "to the microservices architecture."
-])
-
-// TODO: replace fields names with each format namr
-const TChapterContent = Type("ChapterContent")
-  .field({
-    name: "original",
-    type: TString,
-    required: true,
-    deprecate
-  })
-  .field({
-    name: "rendered",
-    type: TString,
-    required: true,
-    deprecate
-  })
+  .match(({md}) => md ? TContentMap : undefined)
 .end()
 
 export default TChapterContent
