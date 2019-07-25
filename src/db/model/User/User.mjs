@@ -76,6 +76,10 @@ class User extends Model {
     return this.findOne({login: new RegExp(`^${login}$`, "i")}, options)
   }
 
+  static findByEmail(email, options) {
+    return this.findOne({email}, options)
+  }
+
   /**
    * Updates viewer's avatar
    */

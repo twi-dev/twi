@@ -14,9 +14,7 @@ import {signAccessToken, signRefreshToken} from "./signToken"
 
 const {jwt} = config
 
-const serializeUser = user => pick(user, [
-  "id", "role", "status", "roleName", "statusName"
-])
+const serializeUser = user => pick(user, ["id", "role", "status"])
 
 @createModel(schema)
 class Session extends Model {
