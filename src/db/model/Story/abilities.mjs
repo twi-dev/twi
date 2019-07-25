@@ -8,8 +8,8 @@ const getStoryAbilities = user => Builder.define(allow => {
 
   allow("manage", Story, {userId: user.id})
 
-  if (user.role === Story.roles.moderator) {
-    allow(["update", "delete"], User, ["title", "description"])
+  if (user.role === User.roles.moderator) {
+    allow(["update", "delete"], Story, ["title", "description"])
   }
 })
 
