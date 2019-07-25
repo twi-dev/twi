@@ -14,6 +14,10 @@ import {signAccessToken, signRefreshToken} from "./signToken"
 
 const {jwt} = config
 
+const serializeUser = user => pick(user, [
+  "id", "role", "status", "roleName", "statusName"
+])
+
 @createModel(schema)
 class Session extends Model {
   static create() {
@@ -37,7 +41,7 @@ class Session extends Model {
    * @throws {Error} when wrong password given
    */
   static async sign({user, client}, options) {
-    user = pick(user, ["id", "role", "status"])
+    user = serializeUser(user)
 
     const payload = JSON.stringify({...user, client, now: Date.now()})
     const hash = createHash("sha512").update(payload).digest("hex")
@@ -76,7 +80,7 @@ class Session extends Model {
    * @return {object} – an access roken with expires date
    */
   async refresh({user, client}, options) {
-    user = pick(user, ["role", "status"])
+    user = serializeUser(user)
 
     const payload = JSON.stringify({
       ...user, id: this.userId, client, now: Date.now()
