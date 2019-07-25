@@ -21,3 +21,9 @@ test("Allows to manage file", t => {
 
   t.true(acl.can("read", new File({userId})))
 })
+
+test("Disallow to manage file by non-creator", t => {
+  const acl = getAbilities({userId: 1})
+
+  t.true(acl.cannot("manage", new File({userId: 2})))
+})
