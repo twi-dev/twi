@@ -1,6 +1,6 @@
 import test from "ava"
 
-import getAbilities from "db/model/File/abilities"
+import getAbilities from "acl/File"
 
 class File {
   constructor({userId} = {}) {

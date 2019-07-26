@@ -1,7 +1,7 @@
 import test from "ava"
 
 import User from "db/model/User"
-import getAbilities from "db/model/User/abilities"
+import getAbilities from "acl/user"
 
 test("Allow to read only by default", t => {
   const acl = getAbilities({})
