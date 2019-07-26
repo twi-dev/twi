@@ -11,6 +11,19 @@ const generateSlug = payload => nanoid(8).then(short => ({
 
 @createModel(schema)
 class Story extends Model {
+  static findBySlug(slug) {
+    return this.findOne({
+      $or: [
+        {
+          "slug.short": slug
+        },
+        {
+          "slug.full": slug
+        }
+      ]
+    })
+  }
+
   static async create(story, options) {
     // TODO: Move these checks to middlewares
     if (!(story.chapters || story.characters || story.genres)) {
