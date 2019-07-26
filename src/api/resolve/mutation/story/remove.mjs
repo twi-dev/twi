@@ -10,22 +10,22 @@ import getUserAbilities from "acl/user"
 import Story from "db/model/Story"
 
 async function update({args, ctx}) {
-  const {id, ...fields} = args.story
+  const viewer = ctx.state.user
 
-  const aclStory = getStoryAbilities(ctx.state.user)
-  const aclUser = getUserAbilities(ctx.state.user)
+  const aclStory = getStoryAbilities(viewer)
+  const aclUser = getUserAbilities(viewer)
 
-  const story = await Story.findById(id)
+  const story = await Story.findById(args.storyId)
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
   }
 
-  if (aclStory.cannot("manage", story) || aclUser.cannot("manage", story)) {
-    throw new Forbidden("You can't manage the story.")
+  if (aclStory.cannot("delete", story) || aclUser.cannot("delete", story)) {
+    throw new Forbidden("You can't delete the story.")
   }
 
-  return story.update({$set: fields}).then(() => Story.findById(id))
+  return story.remove().then(() => args.storyId)
 }
 
 export default update |> auth |> bind
