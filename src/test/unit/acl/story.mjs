@@ -2,8 +2,10 @@ import test from "ava"
 
 import {permittedFieldsOf} from "@casl/ability/extra"
 
-import getAbilities from "acl/story"
+import Collaborator from "db/model/Collaborator"
 import User from "db/model/User"
+
+import getAbilities from "acl/story"
 
 class Story {
   constructor({userId} = {}) {
@@ -59,4 +61,24 @@ test("Allow moderator to update anything in its own story", t => {
   const actual = permittedFieldsOf(acl, "update", new Story({userId: id}))
 
   t.deepEqual(actual, [])
+})
+
+test("Allow writer to update stories", t => {
+  const acl = getAbilities({
+    user: {}, collaborator: {role: Collaborator.roles.writer}
+  })
+
+  t.true(acl.can("update", new Story({userId: 1})))
+})
+
+test("Forbid writer to update specific fields", t => {
+  const acl = getAbilities({
+    user: {}, collaborator: {role: Collaborator.roles.writer}
+  })
+
+  const story = new Story({userId: 1})
+
+  t.true(acl.cannot("update", story, "title"))
+  t.true(acl.cannot("update", story, "description"))
+  t.true(acl.cannot("update", story, "cover"))
 })
