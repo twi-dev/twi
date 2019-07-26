@@ -4,10 +4,10 @@ import auth from "core/auth/checkUser"
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
 
-import Story from "db/model/Story"
+import getStoryAbilities from "acl/story"
+import getUserAbilities from "acl/user"
 
-import getStoryAbilities from "db/model/Story/abilities"
-import getUserAbilities from "db/model/User/abilities"
+import Story from "db/model/Story"
 
 async function update({args, ctx}) {
   const {id, ...fields} = args.story

@@ -1,4 +1,3 @@
-import getUserAbilities from "db/model/User/abilities"
 import toFile from "db/model/Story/util/toFile"
 import Chapter from "db/model/Chapter"
 import Story from "db/model/Story"
@@ -10,12 +9,14 @@ import waterfall from "core/helper/array/runWaterfall"
 
 import Forbidden from "core/error/http/Forbidden"
 
+import getAbilities from "acl/user"
+
 async function addStory({args, ctx}) {
   const {story} = args
 
-  const aclUser = getUserAbilities(ctx.state.user)
+  const acl = getAbilities(ctx.state.user)
 
-  if (aclUser.cannot("create")) {
+  if (acl.cannot("create")) {
     throw new Forbidden("You cannot create the new stories")
   }
 
