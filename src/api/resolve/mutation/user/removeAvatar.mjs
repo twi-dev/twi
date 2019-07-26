@@ -24,4 +24,4 @@ async function removeAvatar({ctx, node}) {
   ])
 }
 
-export default removeAvatar |> bind |> auth
+export default removeAvatar |> auth |> bind

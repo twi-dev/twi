@@ -34,4 +34,4 @@ async function updateAvatar({args, ctx, node}) {
   ])
 }
 
-export default updateAvatar |> bind |> auth
+export default updateAvatar |> auth |> bind
