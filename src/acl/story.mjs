@@ -16,7 +16,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
   }
 
   // Creator can do whatever he want with own story.
-  allow("manage", Story, {userId: user.id})
+  allow(["update", "delete"], Story, {userId: user.id})
 
   // Moderators must be able to update only specific fields
   if (user.role === User.roles.moderator) {

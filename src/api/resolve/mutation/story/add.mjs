@@ -9,14 +9,14 @@ import waterfall from "core/helper/array/runWaterfall"
 
 import Forbidden from "core/error/http/Forbidden"
 
-import getAbilities from "acl/user"
+import getCommonAbilities from "acl/common"
 
 async function addStory({args, ctx}) {
   const {story} = args
 
-  const acl = getAbilities(ctx.state.user)
+  const acl = getCommonAbilities(ctx.state.user)
 
-  if (acl.cannot("create")) {
+  if (acl.cannot("create", "Story")) {
     throw new Forbidden("You cannot create the new stories")
   }
 

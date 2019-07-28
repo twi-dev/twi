@@ -1,6 +1,7 @@
 import invariant from "@octetstream/invariant"
 import isFunction from "lodash/isFunction"
 import isString from "lodash/isString"
+import isEmpty from "lodash/isEmpty"
 
 import concat from "core/helper/string/concatWords"
 
@@ -14,9 +15,11 @@ const DEFAULT_MESSAGE = concat(
 const checkUserDecorator = message => resolver => async params => {
   message || (message = DEFAULT_MESSAGE)
 
-  const {isUnauthenticated} = params.ctx
+  const {user} = params.ctx.state
 
-  invariant(isUnauthenticated(), Unauthorized, message)
+  if (isEmpty(user) || !params.ctx.get("authorization")) {
+    throw new Unauthorized(message)
+  }
 
   return resolver(params)
 }
