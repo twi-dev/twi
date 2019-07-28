@@ -1,7 +1,5 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
-import isEmpty from "lodash/isEmpty"
-
 import Collaborator from "db/model/Collaborator"
 import Story from "db/model/Story"
 import User from "db/model/User"
@@ -13,7 +11,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
 
   // Guests must be able to see stories as well, but can't do anything else
   // so just set above delcarations and stop.
-  if (isEmpty(user)) {
+  if (!user) {
     return undefined
   }
 
@@ -33,7 +31,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
     )
   }
 
-  if (isEmpty(collaborator)) {
+  if (!collaborator) {
     return undefined
   }
 
