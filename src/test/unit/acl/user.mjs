@@ -1,23 +1,37 @@
 import test from "ava"
 
-import User from "db/model/User"
 import getAbilities from "acl/user"
+import UserModel from "db/model/User"
 
-test("Allow to read only by default", t => {
-  const acl = getAbilities({})
+const {roles, statuses} = UserModel
 
-  t.true(acl.can("read", "Something"))
-  t.true(acl.cannot("manage", "Something"))
+class User {
+  constructor({role, status} = {}) {
+    this.role = role ?? roles.user
+    this.status = status ?? statuses.unactivated
+  }
+}
+
+test("Allow to read by default", t => {
+  const acl = getAbilities(new User({}))
+
+  t.true(acl.can("read", new User({})))
 })
 
-test("Allow super user to manage everything", t => {
-  const acl = getAbilities({role: User.roles.super})
+test("Forbid to manage by default", t => {
+  const acl = getAbilities(new User({}))
 
-  t.true(acl.can("manage", "Something"))
+  t.true(acl.cannot("manage", new User({})))
 })
 
-test("Forbid banned user to manage something", t => {
-  const acl = getAbilities({status: User.statuses.super})
+test("Allow super to manage users", t => {
+  const acl = getAbilities(new User({role: roles.super}))
 
-  t.true(acl.cannot("manage", "Something"))
+  t.true(acl.can("manage", new User({})))
+})
+
+test("Forbid super to remove their own account", t => {
+  const acl = getAbilities(new User({role: roles.super}))
+
+  t.true(acl.cannot("delete", new User({role: roles.super})))
 })
