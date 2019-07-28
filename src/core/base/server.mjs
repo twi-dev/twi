@@ -1,7 +1,6 @@
 import {createServer} from "http"
 
 import Koa from "koa"
-import passport from "koa-passport"
 
 import config from "core/base/config"
 import router from "core/base/router"
@@ -15,11 +14,7 @@ const {port} = config.server
 const koa = new Koa()
 
 // Add authorization and routes
-middlewares.push(
-  passport.initialize(),
-  router.allowedMethods(),
-  router.routes()
-)
+middlewares.push(router.allowedMethods(), router.routes())
 
 // Assign middlewares to Koa.js instance
 middlewares.forEach(middleware => koa.use(middleware))
