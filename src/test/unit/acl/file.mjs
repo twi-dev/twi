@@ -1,6 +1,6 @@
 import test from "ava"
 
-import getAbilities from "acl/File"
+import getAbilities from "acl/file"
 
 class File {
   constructor({userId} = {}) {

@@ -3,11 +3,16 @@ import test from "ava"
 import User from "db/model/User"
 import getAbilities from "acl/common"
 
-test("Allow to read only by default", t => {
-  const acl = getAbilities({})
+test("Allow to read by default", t => {
+  const acl = getAbilities()
 
   t.true(acl.can("read", "Something"))
-  t.true(acl.cannot("manage", "Something"))
+})
+
+test("Forbid to manage by default", t => {
+  const acl = getAbilities()
+
+  t.true(acl.can("read", "Something"))
 })
 
 test("Allow super user to manage everything", t => {
