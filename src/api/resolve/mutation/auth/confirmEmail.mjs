@@ -16,7 +16,6 @@ async function confirmEmail({args}) {
     return false
   }
 
-
   await Promise.all([
     user.updateOne({$set: {status: User.statuses.activated}}), token.remove()
   ])
