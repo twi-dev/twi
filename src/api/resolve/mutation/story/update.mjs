@@ -1,3 +1,9 @@
+import {permittedFieldsOf} from "@casl/ability/extra"
+
+import pick from "lodash/pick"
+import omit from "lodash/omit"
+import isEmpty from "lodash/isEmpty"
+
 import bind from "core/helper/graphql/bindResolver"
 import auth from "core/auth/checkUser"
 
@@ -10,7 +16,9 @@ import getStoryAbilities from "acl/story"
 import Story from "db/model/Story"
 
 async function update({args, ctx}) {
-  const {id, ...fields} = args.story
+  const {id} = args.story
+
+  let fields = omit(args.story, "id")
 
   const aclStory = getStoryAbilities(ctx.state.user)
   const aclCommon = getCommonAbilities(ctx.state.user)
@@ -21,8 +29,14 @@ async function update({args, ctx}) {
     throw new NotFound("Can't find requested story.")
   }
 
-  if (aclStory.cannot("manage", story) || aclCommon.cannot("manage", story)) {
-    throw new Forbidden("You can't manage the story.")
+  if (aclStory.cannot("update", story) || aclCommon.cannot("manage", story)) {
+    throw new Forbidden("You can't update the story.")
+  }
+
+  const filter = permittedFieldsOf(aclStory, "update", story)
+
+  if (!isEmpty(filter)) {
+    fields = pick(fields, filter)
   }
 
   return story.update({$set: fields}).then(() => Story.findById(id))
