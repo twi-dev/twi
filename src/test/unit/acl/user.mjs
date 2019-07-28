@@ -32,7 +32,7 @@ test("Allow moderator to update user", t => {
   t.true(acl.can("update", new User({})))
 })
 
-test("Restrict moderator on updating specific user's fields", t => {
+test("Restrict moderator on updating specific fields", t => {
   const acl = getAbilities(new User({role: roles.moderator}))
 
   const actual = permittedFieldsOf(acl, "update", new User({}))
@@ -98,6 +98,32 @@ test("Allow admin to update support", t => {
   const acl = getAbilities(new User({role: roles.admin}))
 
   t.true(acl.can("update", new User({role: roles.support})))
+})
+
+test("Allow admin to delete moderator", t => {
+  const acl = getAbilities(new User({role: roles.admin}))
+
+  t.true(acl.can("delete", new User({role: roles.moderator})))
+})
+
+test("Allow admin to delete tech", t => {
+  const acl = getAbilities(new User({role: roles.admin}))
+
+  t.true(acl.can("delete", new User({role: roles.tech})))
+})
+
+test("Allow admin to delete support", t => {
+  const acl = getAbilities(new User({role: roles.admin}))
+
+  t.true(acl.can("delete", new User({role: roles.support})))
+})
+
+test("Restrict admin on updating specific fields", t => {
+  const acl = getAbilities(new User({role: roles.admin}))
+
+  const actual = permittedFieldsOf(acl, "update", new User({}))
+
+  t.deepEqual(actual, ["name", "status", "role"])
 })
 
 test("Allow super to manage users", t => {
