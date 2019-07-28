@@ -33,7 +33,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
     )
   }
 
-  if (!collaborator) {
+  if (isEmpty(collaborator)) {
     return undefined
   }
 
