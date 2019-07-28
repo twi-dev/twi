@@ -1,5 +1,7 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
+import isEmpty from "lodash/isEmpty"
+
 import User from "db/model/User"
 
 const {statuses, roles} = User
@@ -7,7 +9,7 @@ const {statuses, roles} = User
 const getCommonUserAbilities = user => Builder.define((allow, forbid) => {
   allow("read", "all")
 
-  if (!user) {
+  if (isEmpty(user)) {
     return undefined
   }
 
