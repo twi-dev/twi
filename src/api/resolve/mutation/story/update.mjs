@@ -5,6 +5,7 @@ import omit from "lodash/omit"
 import isEmpty from "lodash/isEmpty"
 
 import bind from "core/helper/graphql/bindResolver"
+import select from "core/helper/graphql/select"
 import auth from "core/auth/checkUser"
 
 import NotFound from "core/error/http/NotFound"
@@ -15,7 +16,7 @@ import getStoryAbilities from "acl/story"
 
 import Story from "db/model/Story"
 
-async function update({args, ctx}) {
+async function update({args, ctx, node}) {
   const {id} = args.story
 
   let fields = omit(args.story, "id")
@@ -39,7 +40,8 @@ async function update({args, ctx}) {
     fields = pick(fields, filter)
   }
 
-  return story.update({$set: fields}).then(() => Story.findById(id))
+  return story.update({$set: fields})
+    .then(() => Story.findById(id) |> select(node))
 }
 
 export default update |> auth |> bind
