@@ -3,7 +3,7 @@ import Input from "parasprite/Input"
 import TObjectID from "api/scalar/common/TObjectID"
 import TCollaboratorInput from "api/input/story/TCollaboratorInput"
 
-const TAddCollaboratorInput = Input("AddCollaboratorInput")
+const TCollaboratorAddInput = Input("CollaboratorAddInput")
   .field({
     name: "id",
     type: TObjectID,
@@ -18,4 +18,4 @@ const TAddCollaboratorInput = Input("AddCollaboratorInput")
   })
 .end()
 
-export default TAddCollaboratorInput
+export default TCollaboratorAddInput

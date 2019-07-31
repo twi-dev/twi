@@ -1,4 +1,4 @@
-import TStoryInput from "api/input/story/TAddStoryInput"
+import TStoryInput from "api/input/story/TStoryAddInput"
 import TStory from "api/type/story/TStory"
 
 import add from "api/resolve/mutation/story/add"

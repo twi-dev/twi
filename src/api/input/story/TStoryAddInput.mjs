@@ -6,7 +6,7 @@ import TObjectID from "api/scalar/common/TObjectID"
 import TFileInput from "api/input/common/TFileInput"
 import TChapterInput from "api/input/story/TChapterInput"
 
-const TAddStoryInput = Input("AddStoryInput")
+const TStoryAddInput = Input("StoryAddInput")
   .field({
     name: "title",
     type: TString,
@@ -35,4 +35,4 @@ const TAddStoryInput = Input("AddStoryInput")
   })
 .end()
 
-export default TAddStoryInput
+export default TStoryAddInput
