@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 
 import omit from "lodash/omit"
 import merge from "lodash/merge"
+import freeze from "js-flock/deepFreeze"
 import invariant from "@octetstream/invariant"
 
 import findKey from "core/helper/iterator/sync/objFindKey"
@@ -11,6 +12,11 @@ const {Model} = mongoose
 const isArray = Array.isArray
 
 class BaseModel extends Model {
+  /**
+   * A list of the required fields that must be appeared in .select method
+   */
+  static requiredFields = freeze([])
+
   /**
    * Returns keys of PubSub event types
    *
