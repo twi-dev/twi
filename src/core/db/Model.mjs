@@ -15,7 +15,7 @@ class BaseModel extends Model {
   /**
    * A list of the required fields that must be appeared in .select method
    */
-  static requiredFields = freeze([])
+  static alwaysSelect = freeze([])
 
   /**
    * Returns keys of PubSub event types

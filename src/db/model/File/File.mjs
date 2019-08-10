@@ -3,6 +3,7 @@ import {join} from "path"
 import {unlink} from "promise-fs"
 
 import format from "date-fns/format"
+import freeze from "js-flock/deepFreeze"
 
 import {createModel, Model} from "core/db"
 
@@ -15,6 +16,8 @@ import schema from "./schema"
 
 @createModel(schema)
 class File extends Model {
+  @readOnly static alwaysSelect = freeze(["userId"])
+
   @readOnly static root = join(__dirname, "..", "..", "..", "static", "file")
 
   static async create({path: oldPath, filename, ...fields}, options) {

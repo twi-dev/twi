@@ -1,11 +1,13 @@
 import {createHash} from "crypto"
 
 import pick from "lodash/pick"
+import freeze from "js-flock/deepFreeze"
 
 import {createModel, Model} from "core/db"
 import {verify} from "core/helper/wrapper/jwt"
 
 import BadRequest from "core/error/http/BadRequest"
+import readOnly from "core/helper/decorator/readOnly"
 import config from "core/base/config"
 
 import schema from "./schema"
@@ -18,6 +20,8 @@ const serializeUser = user => pick(user, ["id", "role", "status"])
 
 @createModel(schema)
 class Session extends Model {
+  @readOnly static alwaysSelect = freeze(["userId"])
+
   static create() {
     return Promise.reject(Error("Method is not available on this model."))
   }
