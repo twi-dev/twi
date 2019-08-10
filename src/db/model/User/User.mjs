@@ -10,6 +10,8 @@ import schema from "./schema"
 
 @createModel(schema)
 class User extends Model {
+  @readOnly static requiredFields = freeze(["avatar"])
+
   /**
    * User account status
    */

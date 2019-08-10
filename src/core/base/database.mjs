@@ -3,10 +3,13 @@ import isString from "lodash/isString"
 
 import invariant from "@octetstream/invariant"
 
+import select from "core/db/plugin/selectRequiredFields"
 import config from "core/base/config"
 import log from "core/log"
 
 mongoose.Promise = Promise
+
+mongoose.plugin(select)
 
 function getConnectionString({host, port, name}) {
   invariant(host == null, "Host is required for a connection.")

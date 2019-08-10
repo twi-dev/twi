@@ -1,5 +1,5 @@
 import {GraphQLString as TString} from "graphql"
-import {GraphQLURL as TURL} from "graphql-custom-types"
+import {GraphQLURL as TUrl} from "graphql-custom-types"
 
 import Type from "parasprite/Type"
 
@@ -13,7 +13,7 @@ const TStoryAuthor = Type("StoryAuthor", "An author of the original story.")
   .field({
     name: "profile",
     description: "A link to the author's profile or a website",
-    type: TURL
+    type: TUrl
   })
 .end()
 
