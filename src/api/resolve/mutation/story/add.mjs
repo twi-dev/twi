@@ -13,8 +13,9 @@ import getCommonAbilities from "acl/common"
 
 async function addStory({args, ctx}) {
   const {story} = args
+  const {user} = ctx.state
 
-  const acl = getCommonAbilities(ctx.state.user)
+  const acl = getCommonAbilities(user)
 
   if (acl.cannot("create", "Story")) {
     throw new Forbidden("You cannot create the new stories")
@@ -36,7 +37,7 @@ async function addStory({args, ctx}) {
     ])
   }
 
-  return Story.create({...story, userId: ctx.state.user.id})
+  return Story.create({...story, userId: user.id})
 }
 
 export default addStory |> auth |> bind

@@ -64,7 +64,7 @@ class File extends Model {
   }
 
   unlink(options) {
-    return unlink(this.path).then(() => this.remove(options))
+    return this.remove(options).then(() => unlink(this.path))
   }
 }
 
