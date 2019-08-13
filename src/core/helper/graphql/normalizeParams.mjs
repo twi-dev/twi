@@ -1,15 +1,17 @@
 import create from "core/helper/decorator/createDecorator"
 
 /**
+ * Applies resolvver's params as a single object for better experience
+ *
  * @param {object | array} [parent = undefined]
  * @param {object} args
  * @param {Koa.Context} context
  * @param {object} node
  *
- * @return {Promise<any>}
+ * @return {(params: object) => any | Promise<any>}
  */
-const normalizeParams = create(fn => (parent, args, context, node) => fn({
-  parent, root: parent, args, context, ctx: context, node, ast: node
+const normalizeParams = create(fn => (parent, args, ctx, node) => fn({
+  parent, args, ctx, node, root: parent, context: ctx, ast: node
 }))
 
 export default normalizeParams
