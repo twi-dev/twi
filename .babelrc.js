@@ -16,6 +16,7 @@ module.exports = {
     ["@babel/proposal-class-properties", {
       loose: true
     }],
+    "@babel/plugin-proposal-partial-application",
     "@babel/proposal-nullish-coalescing-operator",
     "@babel/proposal-optional-catch-binding",
     "@babel/proposal-optional-chaining",
@@ -28,8 +29,5 @@ module.exports = {
     ["@babel/transform-modules-commonjs", {
       mjsStrictNamespace: false
     }],
-    ["@babel/proposal-object-rest-spread", {
-      useBuiltIns: true
-    }]
   ]
 }

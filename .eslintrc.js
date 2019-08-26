@@ -15,7 +15,7 @@ module.exports = {
         cwd: __dirname,
         root: ["src"],
         alias: {
-          "packag.json": join(__dirname, "package.json")
+          "package.json": join(__dirname, "package.json")
         }
       }
     }
