@@ -22,7 +22,19 @@ const select = (node, ...fields) => query => {
     return query
   }
 
-  return query.select(fieldsList(node).concat(flat(fields)))
+  query.select(flat(fields))
+
+  const queryFields = fieldsList(node)
+
+  if (isEmpty(queryFields)) {
+    return query
+  }
+
+  if (!isEmpty(query.model.alwaysSelect)) {
+    query.select(query.model.alwaysSelect)
+  }
+
+  return query.select(queryFields)
 }
 
 export default select

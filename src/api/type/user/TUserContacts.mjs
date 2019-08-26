@@ -1,5 +1,5 @@
-import {GraphQLString as TString} from "graphql"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
+import {GraphQLString as TString} from "graphql"
 import Type from "parasprite/Type"
 
 const TUserContacts = Type("UserContacts", "Information about user contacts")
