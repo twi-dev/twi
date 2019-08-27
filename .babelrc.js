@@ -16,7 +16,7 @@ module.exports = {
     ["@babel/proposal-class-properties", {
       loose: true
     }],
-    "@babel/plugin-proposal-partial-application",
+    "@babel/proposal-partial-application",
     "@babel/proposal-nullish-coalescing-operator",
     "@babel/proposal-optional-catch-binding",
     "@babel/proposal-optional-chaining",
