@@ -13,7 +13,7 @@ async function logIn({args, ctx}) {
 
   if (!user || (user && await user.comparePassword(password) === false)) {
     throw new Unauthorized(
-      "Can't authorize user. Check your credentials and try again."
+      "Can't authenticate user. Check your credentials and try again."
     )
   }
 

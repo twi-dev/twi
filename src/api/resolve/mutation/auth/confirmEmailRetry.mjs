@@ -16,7 +16,8 @@ async function confirmEmailRetry({ctx}) {
 
   const token = await Token.create({userId: user.id, email: user.email})
   const link = format({
-    host: server.url, pathname: join("auth", "confirm", token.hash)
+    host: server.url,
+    pathname: join("auth", "confirm", token.hash)
   })
 
   await mail.send({
