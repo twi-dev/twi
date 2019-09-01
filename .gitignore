@@ -23,6 +23,7 @@ deploy
 /core
 /route
 /setup
+/model
 
 # Static content (styles, images, script etc)
 /static/assets/img/**/*.svg
