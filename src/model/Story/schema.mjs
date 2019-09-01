@@ -1,21 +1,6 @@
 import {DataTypes as t} from "sequelize"
 
 const schema = {
-  id: {
-    type: t.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  userId: {
-    type: t.INTEGER,
-    allowNull: false,
-    field: "user_id",
-    comment: "Story publisher."
-  },
-  coverId: {
-    type: t.INTEGER,
-    field: "cover_id"
-  },
   title: {
     type: t.STRING,
     allowNull: false

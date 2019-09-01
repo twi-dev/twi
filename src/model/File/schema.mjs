@@ -2,23 +2,7 @@ import {DataTypes as t} from "sequelize"
 
 import mime from "mime-types"
 
-import User from "model/User/User"
-
 const schema = {
-  id: {
-    type: t.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  userId: {
-    type: t.INTEGER,
-    allowNull: false,
-    field: "user_id",
-    references: {
-      model: User,
-      key: "id"
-    }
-  },
   path: {
     type: t.STRING,
     allowNull: false

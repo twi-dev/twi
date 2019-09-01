@@ -3,28 +3,9 @@ import {DataTypes as t} from "sequelize"
 import isCorrect from "./util/validateLogin"
 import isReserved from "./util/isReserved"
 
-const values = Object.values
+const {values} = Object
 
 const schema = User => ({
-  id: {
-    type: t.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  avatarId: {
-    type: t.INTEGER,
-    unique: true,
-    allowNull: false,
-    field: "avatar_id",
-    comment: "User's avatar referenced from an image File."
-  },
-  contactsId: {
-    type: t.INTEGER,
-    unique: true,
-    allowNull: false,
-    field: "contacts_id",
-    comment: "User's contacts set."
-  },
   email: {
     type: t.STRING,
     unique: true,
