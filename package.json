@@ -45,6 +45,7 @@
     "@koa/router": "8.0.0",
     "@octetstream/invariant": "1.2.0",
     "@octetstream/promisify": "2.0.2",
+    "@sindresorhus/slugify": "^0.9.1",
     "apollo-server-koa": "2.9.1",
     "bcryptjs": "2.4.3",
     "camelcase": "5.3.1",
