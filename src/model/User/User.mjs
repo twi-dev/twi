@@ -130,7 +130,6 @@ User.init({
   },
   updatedAt: {
     type: t.DATE,
-    default: null,
     field: "updated_at"
   },
   lastVisited: {

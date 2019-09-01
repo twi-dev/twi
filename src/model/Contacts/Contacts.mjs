@@ -5,7 +5,8 @@ class Contacts extends Model {}
 Contacts.init({
   id: {
     type: t.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   vk: t.STRING,
   fb: t.STRING,

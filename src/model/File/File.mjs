@@ -25,8 +25,8 @@ class File extends Model {
 File.init({
   id: {
     type: t.INTEGER,
-    allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   userId: {
     type: t.INTEGER,
