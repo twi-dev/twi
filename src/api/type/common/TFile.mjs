@@ -4,6 +4,8 @@ import Type from "parasprite/Type"
 
 import TDates from "api/type/common/TDates"
 
+import dates from "api/resolve/query/common/dates"
+
 const TFile = Type("File")
   .field({
     name: "id",
@@ -32,10 +34,12 @@ const TFile = Type("File")
     type: TInt,
     required: true
   })
-  .field({
+  .resolve({
     name: "dates",
     type: TDates,
-    required: true
+    required: true,
+    noArgs: true,
+    handler: dates
   })
 .end()
 

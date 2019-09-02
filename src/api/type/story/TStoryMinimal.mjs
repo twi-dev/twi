@@ -14,6 +14,7 @@ import TUserMinimal from "api/type/user/TUserMinimal"
 import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
 import user from "api/resolve/query/user/getById"
+import dates from "api/resolve/query/common/dates"
 
 const TStoryMinimal = Type({
   name: "StoryMinimal",
@@ -55,10 +56,12 @@ const TStoryMinimal = Type({
     name: "collaborators",
     type: [TStoryCollaborator, true]
   })
-  .field({
+  .resolve({
     name: "dates",
     type: TDates,
-    required: true
+    required: true,
+    noArgs: true,
+    handler: dates
   })
   .field({
     name: "isDraft",
