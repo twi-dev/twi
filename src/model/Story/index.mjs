@@ -1,6 +1,6 @@
+import Chapter from "model/Chapter/Chapter"
 import User from "model/User/User"
 import File from "model/File/File"
-import Chapter from "model/Chapter/Chapter"
 
 import StoryChapters from "model/StoryChapters"
 
