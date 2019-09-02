@@ -17,7 +17,8 @@ Story.belongsToMany(Chapter, {
   foreignKey: "storyId",
   constraints: false,
   through: {
-    model: StoryChapters
+    model: StoryChapters,
+    scope: "chapters"
   }
 })
 

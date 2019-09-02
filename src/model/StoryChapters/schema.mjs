@@ -10,7 +10,7 @@ const schema = {
     type: t.INTEGER,
     allowNull: false,
     field: "chapter_id"
-  },
+  }
 }
 
 export default schema
