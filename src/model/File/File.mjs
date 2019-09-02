@@ -22,9 +22,9 @@ class File extends Model {
   @readOnly static root = join(__dirname, "..", "..", "static", "file")
 
   static async create(file, options) {
-    const path = format(new Date(), mask)
-    const dest = join(File.root, format(path, file.filename))
+    const path = join(format(new Date(), mask), file.filename)
     const hash = await calcHash(file.path, "sha512")
+    const dest = join(File.root, path)
 
     await saveFile(file.path, dest)
 
@@ -42,9 +42,9 @@ class File extends Model {
   }
 
   async updateContent(file, options) {
-    const path = format(new Date(), mask)
-    const dest = join(File.root, format(path, file.filename))
+    const path = join(format(new Date(), mask), file.filename)
     const hash = await calcHash(file.path, "sha512")
+    const dest = join(File.root, path)
 
     await saveFile(file.path, dest)
 
