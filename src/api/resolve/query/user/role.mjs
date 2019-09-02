@@ -1,5 +1,5 @@
 import findKey from "core/helper/iterator/sync/objFindKey"
-import User from "db/model/User"
+import User from "model/User"
 
 const getRoleName = ({role}) => (
   findKey(User.roles, value => value === role).toUpperCase()

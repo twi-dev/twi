@@ -20,6 +20,8 @@ const serializeUser = user => pick(user, ["id", "role", "status"])
 
 @createModel(schema)
 class Session extends Model {
+  static tableName = "sessions"
+
   static async sign({user, client}) {
     user = serializeUser(user)
 

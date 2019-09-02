@@ -12,6 +12,8 @@ import schema from "./schema"
 
 @createModel(schema)
 class File extends Model {
+  static tableName = "files"
+
   @readOnly static root = join(__dirname, "..", "..", "static", "file")
 
   static async create(file, options) {

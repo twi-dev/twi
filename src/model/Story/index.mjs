@@ -7,11 +7,9 @@ import StoryChapters from "model/StoryChapters"
 import Story from "./Story"
 
 // Associations
-Story.hasOne(User)
-User.belongsToMany(Story)
+Story.hasOne(User, {foreignKey: "userId"})
 
-Story.hasOne(File)
-File.belongsTo(Story)
+Story.hasOne(File, {foreignKey: "coverId"})
 
 Story.belongsToMany(Chapter, {
   foreignKey: "storyId",

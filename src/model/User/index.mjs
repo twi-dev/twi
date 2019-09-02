@@ -1,13 +1,13 @@
-import File from "model/File/File"
 import Contacts from "model/Contacts/Contacts"
+import File from "model/File/File"
 
 import User from "./User"
 
 // Associations
-User.hasOne(File)
-File.belongsTo(User)
+File.hasOne(User, {foreignKey: "avatar_id"})
+User.belongsTo(File, {foreignKey: "avatar_id"})
 
-User.hasOne(Contacts)
-Contacts.belongsTo(User)
+Contacts.hasOne(User, {foreignKey: "contacts_id"})
+User.belongsTo(Contacts, {foreignKey: "contacts_id"})
 
 export default User

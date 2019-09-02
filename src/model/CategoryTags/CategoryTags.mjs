@@ -2,12 +2,12 @@ import {Model} from "sequelize"
 
 import createModel from "core/db/createModel"
 
-import indexes from "./indexes"
 import schema from "./schema"
+import indexes from "./indexes"
 
 @createModel(schema, {indexes})
-class StoryChapters extends Model {
-  static tableName = "story_chapters"
+class CategoryTags extends Model {
+  static tableName = "category_tags"
 }
 
-export default StoryChapters
+export default CategoryTags

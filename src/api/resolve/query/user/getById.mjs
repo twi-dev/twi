@@ -1,6 +1,6 @@
-import bind from "core/helper/graphql/bindResolver"
+import bind from "core/helper/graphql/normalizeParams"
 
-import User from "db/model/User"
+import User from "model/User"
 
 import NotFound from "core/error/http/NotFound"
 

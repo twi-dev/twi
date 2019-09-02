@@ -3,7 +3,7 @@ import User from "model/User/User"
 import File from "./File"
 
 // Associations
-File.hasOne(User)
-User.belongsToMany(File)
+User.hasOne(File, {foreignKey: "user_id"})
+File.belongsToMany(User, {foreighKey: "user_id"})
 
 export default File

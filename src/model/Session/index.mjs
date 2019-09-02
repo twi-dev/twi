@@ -3,5 +3,5 @@ import User from "model/User/User"
 import Session from "./Session"
 
 // Associations
-Session.hasOne(User)
-User.belongsToMany(Session)
+User.hasMany(Session, {foreignKey: "user_id"})
+Session.belongsTo(User, {foreignKey: "user_id"})
