@@ -8,7 +8,9 @@ import User from "model/User"
 async function signUp({args, ctx}) {
   const user = await User.create(args.user)
 
-  return Session.sign({user: omit(user, "password"), client: ctx.state.client})
+  return Session.sign({
+    user: omit(user.toJSON(), "password"), client: ctx.state.client
+  })
 }
 
 export default bind(signUp)

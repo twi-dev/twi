@@ -1,6 +1,11 @@
 import {DataTypes as t} from "sequelize"
 
 const schema = {
+  userId: {
+    type: t.INTEGER,
+    allowNull: false,
+    field: "user_id"
+  },
   title: {
     type: t.STRING,
     allowNull: false

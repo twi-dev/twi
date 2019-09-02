@@ -17,7 +17,9 @@ async function logIn({args, ctx}) {
     )
   }
 
-  return Session.sign({user: omit(user, "password"), client: ctx.state.client})
+  return Session.sign({
+    user: omit(user.toJSON(), "password"), client: ctx.state.client
+  })
 }
 
 export default bind(logIn)
