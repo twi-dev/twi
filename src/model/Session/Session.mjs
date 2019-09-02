@@ -17,12 +17,20 @@ import {signAccessToken, signRefreshToken} from "./util/signToken"
 const {jwt} = config
 
 const serializeUser = user => pick(user, ["id", "role", "status"])
+const serializeClient = ({ip, os, browser}) => ({
+  clientIp: ip,
+  clientOsName: os.name,
+  clientOsVersion: os.version,
+  clientBrowserName: browser.name,
+  clientBrowserVersion: browser.version
+})
 
 @createModel(schema)
 class Session extends Model {
   static tableName = "sessions"
 
   static async sign({user, client}) {
+    client = serializeClient(client)
     user = serializeUser(user)
 
     const payload = JSON.stringify({...user, client, now: Date.now()})
@@ -32,7 +40,7 @@ class Session extends Model {
       signAccessToken(user), signRefreshToken({hash})
     ])
 
-    return super.create({userId: user.id, client, hash})
+    return super.create({...client, hash, userId: user.id})
       .then(() => ({accessToken, refreshToken}))
   }
 
@@ -56,6 +64,7 @@ class Session extends Model {
   }
 
   async refresh({user, client}, options) {
+    client = serializeClient(client)
     user = serializeUser(user)
 
     const payload = JSON.stringify({
@@ -68,8 +77,9 @@ class Session extends Model {
       signAccessToken({...user, id: this.userId}), signRefreshToken({hash})
     ])
 
-    return this.update({updatedAt: accessToken.signed, client, hash}, options)
-      .then(() => ({accessToken, refreshToken}))
+    return this.update({
+      ...client, hash, updatedAt: accessToken.signed
+    }, options).then(() => ({accessToken, refreshToken}))
   }
 }
 
