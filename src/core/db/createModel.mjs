@@ -4,7 +4,10 @@ import sequelize from "./connection"
 
 const createModel = (schema, options = {}) => Target => (
   Target.init(isFunction(schema) ? schema(Target) : schema, {
-    ...options, sequelize: options.sequelize ? options.sequelize : sequelize
+    ...options,
+
+    sequelize: options.sequelize ?? sequelize,
+    tableName: options.tableName ?? Target.tableName
   })
 )
 
