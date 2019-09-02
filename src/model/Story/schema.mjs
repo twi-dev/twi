@@ -23,7 +23,7 @@ const schema = {
   },
   isDraft: {
     type: t.BOOLEAN,
-    default: true,
+    defaultValue: true,
     field: "is_draft",
 
     set(value) {
@@ -36,7 +36,7 @@ const schema = {
   },
   isFinished: {
     type: t.BOOLEAN,
-    default: false,
+    defaultValue: false,
     field: "is_finished"
   }
 }

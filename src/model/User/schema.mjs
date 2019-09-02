@@ -27,7 +27,7 @@ const schema = User => ({
       },
 
       isReserved(value) {
-        if (!isReserved(value)) {
+        if (isReserved(value)) {
           throw new Error("Cannot use reserved word as a user's login.")
         }
       }
@@ -39,24 +39,24 @@ const schema = User => ({
   },
   status: {
     type: t.ENUM(values(User.statuses)),
-    default: User.statuses.inactive,
+    defaultValue: User.statuses.inactive,
     allowNull: false
   },
   role: {
     type: t.ENUM(values(User.roles)),
-    default: User.roles.user,
+    defaultValue: User.roles.user,
     allowNull: false
   },
   registeredAt: {
     type: t.DATE,
     allowNull: false,
-    default: t.NOW,
+    defaultValue: t.NOW,
     field: "registered_at"
   },
   lastVisited: {
     type: t.DATE,
     allowNull: false,
-    default: t.NOW,
+    defaultValue: t.NOW,
     field: "last_visited"
   }
 })

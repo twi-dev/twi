@@ -1,3 +1,4 @@
+import {hash, compare} from "bcryptjs"
 import {Model} from "sequelize"
 
 import freeze from "js-flock/deepFreeze"
@@ -45,6 +46,22 @@ class User extends Model {
   static findByLogin(login, options) {
     return this.findOne({...options, where: {login}})
   }
+
+  static async create(user, options) {
+    user.password = await hash(user.password, 15)
+
+    if (user.role != null) {
+      user.role = User.roles.user
+    }
+
+    if (user.status != null) {
+      user.status = User.statuses.user
+    }
+
+    return super.create(user, options)
+  }
+
+  comparePassword = async string => compare(string, this.password)
 }
 
 export default User
