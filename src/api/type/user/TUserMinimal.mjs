@@ -7,6 +7,7 @@ import TUserDates from "api/type/user/TUserDates"
 import TUserContacts from "api/type/user/TUserContacts"
 
 import status from "api/resolve/query/user/status"
+import dates from "api/resolve/query/user/dates"
 import role from "api/resolve/query/user/role"
 
 const TUserMinimal = Type("UserMinimal", "The minimal User information.")
@@ -22,11 +23,13 @@ const TUserMinimal = Type("UserMinimal", "The minimal User information.")
     description: "User login that represends his/her address",
     required: true
   })
-  .field({
+  .resolve({
     name: "dates",
     type: TUserDates,
     description: "User registration dates",
-    required: true
+    required: true,
+    noArgs: true,
+    handler: dates
   })
   .resolve({
     name: "role",

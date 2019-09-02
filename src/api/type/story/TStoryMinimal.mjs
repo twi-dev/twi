@@ -1,13 +1,15 @@
-import {GraphQLString as TString, GraphQLBoolean as TBoolean} from "graphql"
+import {
+  GraphQLInt as TInt,
+  GraphQLString as TString,
+  GraphQLBoolean as TBoolean
+} from "graphql"
 
 import Type from "parasprite/Type"
 
 import words from "core/helper/string/concatWords"
 
-import TObjectID from "api/scalar/common/TObjectID"
 import TDates from "api/type/common/TDates"
 
-import TStorySlug from "api/type/story/TStorySlug"
 import TUserMinimal from "api/type/user/TUserMinimal"
 import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
@@ -23,7 +25,7 @@ const TStoryMinimal = Type({
 })
   .field({
     name: "id",
-    type: TObjectID,
+    type: TInt,
     required: true
   })
   .field({
@@ -52,11 +54,6 @@ const TStoryMinimal = Type({
   .field({
     name: "collaborators",
     type: [TStoryCollaborator, true]
-  })
-  .field({
-    name: "slug",
-    type: TStorySlug,
-    required: true
   })
   .field({
     name: "dates",
