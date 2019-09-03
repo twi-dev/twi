@@ -1,17 +1,19 @@
-import isPlainObject from "lodash/isPlainObject"
 import isFunction from "lodash/isFunction"
-import mongoose from "mongoose"
 
-const createModel = schema => Target => {
-  if (isPlainObject(schema)) {
-    schema = new mongoose.Schema(schema)
-  }
+import sequelize from "./connection"
 
-  if (isFunction(schema)) {
-    schema = schema(Target)
-  }
-
-  return mongoose.model(Target, schema)
+const defaults = {
+  underscored: true
 }
+
+const createModel = (schema, options = {}) => Target => (
+  Target.init(isFunction(schema) ? schema(Target) : schema, {
+    ...defaults,
+    ...options,
+
+    sequelize: options.sequelize ?? sequelize,
+    tableName: options.tableName ?? Target.tableName
+  })
+)
 
 export default createModel

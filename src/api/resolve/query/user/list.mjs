@@ -1,13 +1,12 @@
-import pagination from "core/helper/graphql/pagination"
-import bind from "core/helper/graphql/bindResolver"
-import select from "core/helper/graphql/select"
+import {Op as op} from "sequelize"
 
-import User from "db/model/User"
+import bind from "core/helper/graphql/normalizeParams"
 
-const list = ({args, node}) => (
-  User.find().where({status: {$ne: User.statuses.unactivated}})
-    |> select(node)
-    |> pagination(args.cursor, args.limit)
-)
+import User from "model/User"
+
+const list = () => User.findAll({
+  where: {status: {[op.ne]: User.statuses.inactive}},
+  attributes: {exclude: ["password"]}
+})
 
 export default bind(list)

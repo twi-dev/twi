@@ -29,11 +29,12 @@ client:
   secure: false
 
 database:
+  dialect: mysql
+  name: twi
   host: localhost
-  port: 27017 # Default MongoDB port
+  port: null
   user: root
   pass: null
-  name: twi
 
 jwt:
   accessToken:

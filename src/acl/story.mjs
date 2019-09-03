@@ -1,8 +1,8 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
-import Collaborator from "db/model/Collaborator"
-import Story from "db/model/Story"
-import User from "db/model/User"
+import Collaborator from "model/Collaborator"
+import Story from "model/Story"
+import User from "model/User"
 
 const getStoryAbilities = members => Builder.define((allow, forbid) => {
   const {user, collaborator} = members

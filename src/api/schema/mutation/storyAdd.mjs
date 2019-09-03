@@ -1,16 +1,16 @@
-import TStoryInput from "api/input/story/TStoryAddInput"
+import TStoryAddInput from "api/input/story/TStoryAddInput"
 import TStory from "api/type/story/TStory"
 
 import add from "api/resolve/mutation/story/add"
 
 const resolve = {
   type: TStory,
-  required: true,
-  handler: add
+  handler: add,
+  required: true
 }
 
 const args = {
-  story: TStoryInput
+  story: [TStoryAddInput, true]
 }
 
 export {resolve, args}

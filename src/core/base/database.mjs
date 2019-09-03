@@ -1,39 +1,8 @@
-import mongoose from "mongoose"
-import isString from "lodash/isString"
-
-import invariant from "@octetstream/invariant"
-
-import config from "core/base/config"
+import connection from "core/db/connection"
 import log from "core/log"
 
-mongoose.Promise = Promise
-
-function getConnectionString({host, port, name}) {
-  invariant(host == null, "Host is required for a connection.")
-
-  invariant(!isString(host), TypeError, "Host should be passed as a string.")
-
-  invariant(name == null, "Database is required for a connection.")
-
-  invariant(!isString(name), TypeError, "Database name should be a string.")
-
-  let connectionString = "mongodb://"
-
-  connectionString += host
-
-  if (port) {
-    connectionString += `:${port}`
-  }
-
-  connectionString += `/${name}`
-
-  return connectionString
-}
-
-const address = getConnectionString(config.database)
-
 const onConnected = () => (
-  log.ok("MongoDB: Database connection established on %s", address)
+  log.ok("Database connection established.")
 )
 
 /**
@@ -41,21 +10,15 @@ const onConnected = () => (
  *
  * @return {Promise<void>}
  */
-const onDisconnected = () => log.ok("MongoDB: Disconnected from %s", address)
+const onDisconnected = () => log.ok("Disconnected from database")
 
-const connect = () => (
-  mongoose.connect(address, {
-    promiseLibrary: Promise,
-    useNewUrlParser: true,
-    useCreateIndex: true
-  }).then(onConnected)
-)
+const connect = () => connection.sync().then(onConnected)
 
 /**
  * Closes connection with MongoDB
  *
  * @return {Promise<void>}
  */
-const disconnect = () => mongoose.disconnect().then(onDisconnected)
+const disconnect = () => connection.close().then(onDisconnected)
 
 export default {connect, disconnect}

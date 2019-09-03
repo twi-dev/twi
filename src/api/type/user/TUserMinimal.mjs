@@ -1,19 +1,20 @@
-import {GraphQLString as TString} from "graphql"
+import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 
 import Type from "parasprite/Type"
 
 import TLogin from "api/scalar/user/TLogin"
 import TUserDates from "api/type/user/TUserDates"
 import TUserContacts from "api/type/user/TUserContacts"
-import TObjectID from "api/scalar/common/TObjectID"
 
+import contacts from "api/resolve/query/user/contacts"
 import status from "api/resolve/query/user/status"
+import dates from "api/resolve/query/user/dates"
 import role from "api/resolve/query/user/role"
 
 const TUserMinimal = Type("UserMinimal", "The minimal User information.")
   .field({
     name: "id",
-    type: TObjectID,
+    type: TInt,
     description: "User unique identifer at the system",
     required: true
   })
@@ -23,11 +24,13 @@ const TUserMinimal = Type("UserMinimal", "The minimal User information.")
     description: "User login that represends his/her address",
     required: true
   })
-  .field({
+  .resolve({
     name: "dates",
     type: TUserDates,
     description: "User registration dates",
-    required: true
+    required: true,
+    noArgs: true,
+    handler: dates
   })
   .resolve({
     name: "role",
@@ -49,10 +52,12 @@ const TUserMinimal = Type("UserMinimal", "The minimal User information.")
     name: "avatar",
     type: TString
   })
-  .field({
+  .resolve({
     name: "contacts",
     type: TUserContacts,
-    description: "User contact information."
+    description: "User contact information.",
+    noArgs: true,
+    handler: contacts
   })
 .end()
 

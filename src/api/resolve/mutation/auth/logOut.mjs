@@ -1,19 +1,23 @@
-import BadRequest from "core/error/http/BadRequest"
-import bind from "core/helper/graphql/bindResolver"
-import auth from "core/auth/checkUser"
+import Unauthorized from "core/error/http/Unauthorized"
+import bind from "core/helper/graphql/normalizeParams"
 
-import User from "db/model/User"
-import Session from "db/model/Session"
+import Session from "model/Session"
 
 async function logOut({args, ctx}) {
-  const session = await Session.findByToken(args.refreshToken)
-  const user = await User.findById(session.userId)
+  const {user: viewer} = ctx.state
+  const {refreshToken} = args
 
-  if (!user || ctx.state.user.id !== String(session.userId)) {
-    throw new BadRequest("Can't find a user associated with given token.")
+  const session = await Session.findByToken(refreshToken)
+
+  const user = await session.getUser()
+
+  if (user.id !== viewer.id) {
+    throw new Unauthorized(
+      "Bad refreshToken signature: Check your credentials and try again."
+    )
   }
 
-  return session.remove().then(() => args.refreshToken)
+  return session.destroy().then(() => refreshToken)
 }
 
-export default logOut |> bind |> auth
+export default bind(logOut)

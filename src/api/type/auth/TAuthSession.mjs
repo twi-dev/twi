@@ -5,6 +5,8 @@ import Type from "parasprite/Type"
 import TDates from "api/type/common/TDates"
 import TClient from "api/type/auth/TAuthSessionClient"
 
+import client from "api/resolve/query/auth/client"
+
 const TAuthSession = Type({
   name: "AuthSession",
   description: "Information about current session"
@@ -19,10 +21,12 @@ const TAuthSession = Type({
     type: TDates,
     required: true
   })
-  .field({
+  .resolve({
     name: "client",
     type: TClient,
-    required: true
+    required: true,
+    noArgs: true,
+    handler: client
   })
 .end()
 

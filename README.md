@@ -22,7 +22,7 @@ and isn't ready for production! Stay in touch.**
 |--------------------------------------|---------------------------|
 | [Node.js](https://nodejs.org/en/)    | >= 10.12                  |
 | [Yarn](https://yarnpkg.com/lang/en/) | >= 1.17.0                 |
-| [MongoDB](https://www.mongodb.com/)  | >= 4.x                    |
+| [MySQL](https://www.mysql.com/)      | (TBD)                     |
 
 You also need:
 
