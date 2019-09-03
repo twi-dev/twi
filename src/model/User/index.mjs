@@ -4,10 +4,16 @@ import File from "model/File"
 import User from "./User"
 
 // Associations
-File.hasOne(User, {foreignKey: "avatar_id", constraints: false})
-User.belongsTo(File, {foreignKey: "avatar_id", constraints: false})
+User.belongsTo(File, {
+  foreignKey: "avatar_id",
+  onDelete: "cascade",
+  hooks: true
+})
 
-Contacts.hasOne(User, {foreignKey: "contacts_id"})
-User.belongsTo(Contacts, {foreignKey: "contacts_id"})
+User.belongsTo(Contacts, {
+  foreignKey: "contacts_id",
+  onDelete: "cascade",
+  hooks: true
+})
 
 export default User

@@ -6,6 +6,14 @@ import isReserved from "./util/isReserved"
 const {values} = Object
 
 const schema = User => ({
+  contactsId: {
+    type: t.INTEGER,
+    field: "contacts_id"
+  },
+  avatarId: {
+    type: t.INTEGER,
+    field: "avatar_id"
+  },
   email: {
     type: t.STRING,
     unique: true,

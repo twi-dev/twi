@@ -3,11 +3,6 @@ import {DataTypes as t} from "sequelize"
 import mime from "mime-types"
 
 const schema = {
-  userId: {
-    type: t.INTEGER,
-    allowNull: false,
-    field: "user_id"
-  },
   path: {
     type: t.STRING,
     allowNull: false
