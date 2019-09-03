@@ -9,6 +9,11 @@ const schema = {
     type: t.STRING,
     allowNull: false
   },
+  prefix: {
+    type: t.STRING,
+    unique: true,
+    comment: "Prefix that is used to match category to where a tag belongs."
+  },
   color: {
     type: t.CHAR(6),
     allowNull: false,

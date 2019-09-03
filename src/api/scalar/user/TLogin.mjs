@@ -2,7 +2,7 @@ import {GraphQLScalarType as Scalar} from "graphql"
 import {GraphQLError} from "graphql/error"
 import {Kind} from "graphql/language"
 
-import validate from "db/model/User/util/validateLogin"
+import validate from "model/User/util/validateLogin"
 
 const STRING = Kind.STRING
 

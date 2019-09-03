@@ -75,7 +75,6 @@
     "lodash-decorators": "6.0.1",
     "logdown": "3.2.8",
     "mime-types": "2.1.24",
-    "mongoose": "5.6.11",
     "ms": "2.1.2",
     "mysql2": "1.7.0",
     "nanoid": "2.1.0",

@@ -1,6 +1,7 @@
-import Chapter from "model/Chapter/Chapter"
+import Chapter from "model/Chapter"
 import User from "model/User/User"
 import File from "model/File/File"
+// import Tag from "model/Tag"
 
 import StoryChapters from "model/StoryChapters"
 
