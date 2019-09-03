@@ -4,7 +4,8 @@ import sequelize from "./connection"
 
 const defaults = {
   createdAt: "created_at",
-  updatedAt: "updated_at"
+  updatedAt: "updated_at",
+  underscored: true
 }
 
 const createModel = (schema, options = {}) => Target => (

@@ -19,6 +19,10 @@ const TUserContacts = Type("UserContacts", "Information about user contacts")
     name: "email",
     type: TEmail
   })
+  .field({
+    name: "website",
+    type: TString
+  })
 .end()
 
 export default TUserContacts

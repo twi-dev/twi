@@ -6,6 +6,7 @@ import TLogin from "api/scalar/user/TLogin"
 import TUserDates from "api/type/user/TUserDates"
 import TUserContacts from "api/type/user/TUserContacts"
 
+import contacts from "api/resolve/query/user/contacts"
 import status from "api/resolve/query/user/status"
 import dates from "api/resolve/query/user/dates"
 import role from "api/resolve/query/user/role"
@@ -51,10 +52,12 @@ const TUserMinimal = Type("UserMinimal", "The minimal User information.")
     name: "avatar",
     type: TString
   })
-  .field({
+  .resolve({
     name: "contacts",
     type: TUserContacts,
-    description: "User contact information."
+    description: "User contact information.",
+    noArgs: true,
+    handler: contacts
   })
 .end()
 
