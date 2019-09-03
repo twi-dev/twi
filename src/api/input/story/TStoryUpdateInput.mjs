@@ -1,13 +1,11 @@
-import {GraphQLString as TString} from "graphql"
+import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 
 import Input from "parasprite/Input"
-
-import TObjectID from "api/scalar/common/TObjectID"
 
 const TStoryUpdateInput = Input("StoryUpdateInput")
   .field({
     name: "id",
-    type: TObjectID,
+    type: TInt,
     required: true
   })
   .field({

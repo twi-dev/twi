@@ -1,12 +1,13 @@
+import {GraphQLInt as TInt} from "graphql"
+
 import Input from "parasprite/Input"
 
-import TObjectID from "api/scalar/common/TObjectID"
 import TChapterAddInput from "api/input/chapter/TChapterAddInput"
 
 const TStoryChapterInput = Input("StoryChapterInput")
   .field({
     name: "id",
-    type: TObjectID,
+    type: TInt,
     required: true
   })
   .field({
