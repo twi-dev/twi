@@ -13,7 +13,7 @@ import TDates from "api/type/common/TDates"
 import TUserMinimal from "api/type/user/TUserMinimal"
 import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
-import user from "api/resolve/query/user/getById"
+import user from "api/resolve/query/user/userFromParent"
 import dates from "api/resolve/query/common/dates"
 
 const TStoryMinimal = Type({
