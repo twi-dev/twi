@@ -8,12 +8,10 @@ import Story from "./Story"
 
 // Associations
 Story.hasOne(User, {foreignKey: "userId", as: "publisher"})
-
 Story.hasOne(File, {foreignKey: "coverId", as: "cover"})
 
 Story.belongsToMany(Chapter, {
   foreignKey: "storyId",
-  constraints: false,
   through: {
     model: StoryChapters
   }
@@ -21,7 +19,6 @@ Story.belongsToMany(Chapter, {
 
 Chapter.belongsToMany(Story, {
   foreignKey: "chapterId",
-  constraints: false,
   through: {
     model: StoryChapters
   }

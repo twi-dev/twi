@@ -4,7 +4,7 @@ import createModel from "core/db/createModel"
 
 import schema from "./schema"
 
-@createModel(schema)
+@createModel(schema, {timestamps: false})
 class Story extends Model {
   static tableName = "stories"
 
