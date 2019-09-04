@@ -5,7 +5,7 @@ import pagination from "core/helper/db/pagination"
 
 import User from "model/User"
 
-const list = ({args}) => User.findAll({
+const list = ({args}) => User.findAndCountAll({
   ...pagination(args),
 
   where: {status: {[op.ne]: User.statuses.inactive}},
