@@ -6,8 +6,6 @@ import indexes from "./indexes"
 import schema from "./schema"
 
 @createModel(schema, {indexes, timestamps: false})
-class StoryChapters extends Model {
-  static tableName = "story_chapters"
-}
+class StoryChapters extends Model { }
 
 export default StoryChapters

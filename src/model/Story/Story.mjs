@@ -6,8 +6,6 @@ import schema from "./schema"
 
 @createModel(schema)
 class Story extends Model {
-  static tableName = "stories"
-
   get isTranslation() {
     const {originalAuthor, originalTitle, originalUrl} = this
 

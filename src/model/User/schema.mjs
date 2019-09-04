@@ -12,12 +12,10 @@ const schema = User => ({
     primaryKey: true
   },
   contactsId: {
-    type: t.INTEGER,
-    field: "contacts_id"
+    type: t.INTEGER
   },
   avatarId: {
-    type: t.INTEGER,
-    field: "avatar_id"
+    type: t.INTEGER
   },
   email: {
     type: t.STRING,
@@ -63,14 +61,12 @@ const schema = User => ({
   registeredAt: {
     type: t.DATE,
     allowNull: false,
-    defaultValue: t.NOW,
-    field: "registered_at"
+    defaultValue: t.NOW
   },
   lastVisited: {
     type: t.DATE,
     allowNull: false,
-    defaultValue: t.NOW,
-    field: "last_visited"
+    defaultValue: t.NOW
   }
 })
 

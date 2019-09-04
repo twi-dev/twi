@@ -11,12 +11,12 @@ const schema = {
     allowNull: false
   },
   description: t.TEXT,
-  content_md: {
+  contentMd: {
     type: t.TEXT("medium"),
     allowNull: false
   },
-  content_html: t.TEXT("medium"),
-  content_text: t.TEXT("medium")
+  contentHtml: t.TEXT("medium"),
+  contentText: t.TEXT("medium")
 }
 
 export default schema

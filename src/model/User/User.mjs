@@ -10,8 +10,6 @@ import schema from "./schema"
 
 @createModel(schema, {createdAt: false})
 class User extends Model {
-  static tableName = "users"
-
   /**
    * User account status
    */

@@ -8,8 +8,7 @@ const schema = {
   },
   userId: {
     type: t.INTEGER,
-    allowNull: false,
-    field: "user_id"
+    allowNull: false
   },
   hash: {
     type: t.CHAR(128),
@@ -19,28 +18,23 @@ const schema = {
   },
   clientBrowserName: {
     type: t.STRING,
-    allowNull: false,
-    field: "client_browser_name"
+    allowNull: false
   },
   clientBrowserVersion: {
     type: t.STRING,
-    allowNull: false,
-    field: "client_browser_version"
+    allowNull: false
   },
   clientOsName: {
     type: t.STRING,
-    allowNull: false,
-    field: "client_os_name"
+    allowNull: false
   },
   clientOsVersion: {
     type: t.STRING,
-    allowNull: false,
-    field: "client_os_version"
+    allowNull: false
   },
   clientIp: {
     type: t.STRING,
-    allowNull: false,
-    field: "client_ip"
+    allowNull: false
   }
 }
 

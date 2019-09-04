@@ -8,8 +8,7 @@ const schema = {
   },
   userId: {
     type: t.INTEGER,
-    allowNull: false,
-    field: "user_id"
+    allowNull: false
   },
   title: {
     type: t.STRING,
@@ -19,22 +18,12 @@ const schema = {
     type: t.TEXT,
     allowNull: false
   },
-  originalAuthor: {
-    type: t.STRING,
-    field: "original_author"
-  },
-  originalTitle: {
-    type: t.STRING,
-    field: "original_title"
-  },
-  originalUrl: {
-    type: t.STRING,
-    field: "original_url"
-  },
+  originalAuthor: t.STRING,
+  originalTitle: t.STRING,
+  originalUrl: t.STRING,
   isDraft: {
     type: t.BOOLEAN,
     defaultValue: true,
-    field: "is_draft",
 
     set(value) {
       const isFinished = this.getDataValue("isFinished")
@@ -46,8 +35,7 @@ const schema = {
   },
   isFinished: {
     type: t.BOOLEAN,
-    defaultValue: false,
-    field: "is_finished"
+    defaultValue: false
   }
 }
 

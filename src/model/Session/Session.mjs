@@ -27,8 +27,6 @@ const serializeClient = ({ip, os, browser}) => ({
 
 @createModel(schema)
 class Session extends Model {
-  static tableName = "sessions"
-
   static async sign({user, client}) {
     client = serializeClient(client)
     user = serializeUser(user)

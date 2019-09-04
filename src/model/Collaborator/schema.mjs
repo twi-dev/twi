@@ -10,8 +10,7 @@ const schema = Collaborator => ({
   },
   userId: {
     type: t.INTEGER,
-    allowNull: false,
-    field: "user_id"
+    allowNull: false
   },
   role: {
     type: t.ENUM(values(Collaborator.roles)),

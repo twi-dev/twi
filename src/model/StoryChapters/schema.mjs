@@ -3,13 +3,11 @@ import {DataTypes as t} from "sequelize"
 const schema = {
   storyId: {
     type: t.INTEGER.UNSIGNED,
-    allowNull: false,
-    field: "story_id"
+    allowNull: false
   },
   chapterId: {
     type: t.INTEGER.UNSIGNED,
-    allowNull: false,
-    field: "chapter_id"
+    allowNull: false
   }
 }
 

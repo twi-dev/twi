@@ -9,8 +9,6 @@ import schema from "./schema"
 
 @createModel(schema)
 class Collaborator extends Model {
-  static tableName = "collaborators"
-
   @readOnly static roles = freeze({
     translate: "translate",
     write: "write",

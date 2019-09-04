@@ -6,8 +6,6 @@ import schema from "./schema"
 import indexes from "./indexes"
 
 @createModel(schema, {indexes, timestamps: false})
-class CategoryTags extends Model {
-  static tableName = "category_tags"
-}
+class CategoryTags extends Model { }
 
 export default CategoryTags
