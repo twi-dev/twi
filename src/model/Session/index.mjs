@@ -5,7 +5,7 @@ import Session from "./Session"
 // Associations
 Session.belongsTo(User, {
   as: "user",
-  foreignKey: "user_id",
+  foreignKey: "userId",
   onDelete: "cascade"
 })
 

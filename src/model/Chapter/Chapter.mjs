@@ -5,8 +5,6 @@ import createModel from "core/db/createModel"
 import schema from "./schema"
 
 @createModel(schema)
-class Chapter extends Model {
-  static tableName = "chapters"
-}
+class Chapter extends Model { }
 
 export default Chapter
