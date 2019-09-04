@@ -5,6 +5,11 @@ import BadRequest from "core/error/http/BadRequest"
 const COLOR_EXPR = /^[0-9a-f]{6}$/
 
 const schema = {
+  id: {
+    type: t.INTEGER.UNSIGNED,
+    autoIncrement: true,
+    primaryKey: true
+  },
   name: {
     type: t.STRING,
     allowNull: false

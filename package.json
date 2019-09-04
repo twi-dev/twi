@@ -50,6 +50,7 @@
     "bcryptjs": "2.4.3",
     "camelcase": "5.3.1",
     "chalk": "2.4.2",
+    "dataloader": "^1.4.0",
     "date-fns": "2.0.1",
     "debug": "4.1.1",
     "dset": "2.0.1",

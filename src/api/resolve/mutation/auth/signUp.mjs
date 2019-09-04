@@ -6,11 +6,11 @@ import Session from "model/Session"
 import User from "model/User"
 
 async function signUp({args, ctx}) {
+  const {client} = ctx.state
+
   const user = await User.create(args.user)
 
-  return Session.sign({
-    user: omit(user.toJSON(), "password"), client: ctx.state.client
-  })
+  return Session.sign({user: omit(user.toJSON(), "password"), client})
 }
 
 export default bind(signUp)

@@ -13,6 +13,11 @@ const slug = partial(slugify, [partial.placeholder, {
 }])
 
 const schema = {
+  id: {
+    type: t.INTEGER.UNSIGNED,
+    autoIncrement: true,
+    primaryKey: true
+  },
   name: {
     type: t.STRING,
     allowNull: false,

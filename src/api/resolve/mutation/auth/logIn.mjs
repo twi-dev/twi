@@ -8,6 +8,7 @@ import User from "model/User"
 
 async function logIn({args, ctx}) {
   const {email, password} = args.user
+  const {client} = ctx.state
 
   const user = await User.findOne({where: {email}})
 
@@ -17,9 +18,7 @@ async function logIn({args, ctx}) {
     )
   }
 
-  return Session.sign({
-    user: omit(user.toJSON(), "password"), client: ctx.state.client
-  })
+  return Session.sign({user: omit(user.toJSON(), "password"), client})
 }
 
 export default bind(logIn)

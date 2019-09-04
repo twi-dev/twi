@@ -2453,6 +2453,11 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+dataloader@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.4.0.tgz#bca11d867f5d3f1b9ed9f737bd15970c65dff5c8"
+  integrity sha512-68s5jYdlvasItOJnCuI2Q9s4q98g0pCyL3HrcKJu8KNugUl8ahgmZYg38ysLTgQjjXX3H8CJLkAvWrclWfcalw==
+
 date-fns@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.1.tgz#c5f30e31d3294918e6b6a82753a4e719120e203d"
