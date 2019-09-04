@@ -1,6 +1,6 @@
 import Chapter from "model/Chapter"
-import User from "model/User/User"
-import File from "model/File/File"
+import User from "model/User"
+import File from "model/File"
 import Tag from "model/Tag"
 
 import StoryChapters from "model/StoryChapters"
@@ -9,8 +9,13 @@ import StoryTags from "model/StoryTags"
 import Story from "./Story"
 
 // Associations
-Story.hasOne(User, {foreignKey: "userId", as: "publisher"})
-Story.hasOne(File, {foreignKey: "coverId", as: "cover"})
+Story.belongsTo(User, {
+  foreignKey: "userId",
+  onDelete: "cascade",
+  as: "publisher"
+})
+
+Story.belongsTo(File, {foreignKey: "coverId", as: "cover", onDelete: "cascade"})
 
 Story.belongsToMany(Chapter, {
   foreignKey: "storyId",

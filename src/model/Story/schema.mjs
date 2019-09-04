@@ -6,10 +6,6 @@ const schema = {
     autoIncrement: true,
     primaryKey: true
   },
-  userId: {
-    type: t.INTEGER,
-    allowNull: false
-  },
   title: {
     type: t.STRING,
     allowNull: false
