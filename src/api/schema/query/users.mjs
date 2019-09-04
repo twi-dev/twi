@@ -11,11 +11,11 @@ const resolve = {
   description: "Get all available users (only 10 per page)."
 }
 
-const cursor = {
+const page = {
   type: TInt,
-  description: "Just a position at users list (aka page number)."
+  description: "The page offset."
 }
 
-const args = {cursor}
+const args = {page}
 
 export {resolve, args}

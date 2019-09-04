@@ -5,6 +5,7 @@ import freeze from "js-flock/deepFreeze"
 
 import createModel from "core/db/createModel"
 import readOnly from "core/helper/decorator/readOnly"
+import BadRequest from "core/error/http/BadRequest"
 
 import schema from "./schema"
 
@@ -61,7 +62,34 @@ class User extends Model {
     return super.create(user, options)
   }
 
+  /**
+   * Compare user's pasword hash with given string
+   *
+   * @param {string} string – a string to compare password with
+   *
+   * @return {boolean} – "true" when given string equals user's password
+   */
   comparePassword = async string => compare(string, this.password)
+
+  updateAvatar(avatarId, options) {
+    return this.update({avatarId}, options)
+  }
+
+  removeAvatar(options) {
+    return this.update({avatarId: null}, options)
+  }
+
+  updateEmail(email, options) {
+    return this.update({email}, options)
+  }
+
+  async updatePassword(oldPassword, newPassword) {
+    if (await this.comparePassword(oldPassword) === false) {
+      throw new BadRequest("Current password is incorrect.")
+    }
+
+    return hash(newPassword, 15).then(password => this.update({password}))
+  }
 }
 
 export default User
