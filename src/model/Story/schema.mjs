@@ -10,7 +10,7 @@ const schema = {
     type: t.STRING,
     allowNull: false
   },
-  desctiontion: {
+  description: {
     type: t.TEXT,
     allowNull: false
   },

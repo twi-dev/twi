@@ -15,8 +15,10 @@ const schema = {
     type: t.TEXT("medium"),
     allowNull: false
   },
-  contentHtml: t.TEXT("medium"),
-  contentText: t.TEXT("medium")
+  contentHtml: {
+    type: t.TEXT("medium"),
+    allowNull: false
+  }
 }
 
 export default schema

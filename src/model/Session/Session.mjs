@@ -21,7 +21,7 @@ const serializeUser = user => pick(user, ["id", "role", "status"])
 
 @createModel(schema)
 class Session extends Model {
-  static async sign({user, client}) {
+  static async sign({user, client}, options) {
     client = objectFlat({client})
     user = serializeUser(user)
 
@@ -32,7 +32,7 @@ class Session extends Model {
       signAccessToken(user), signRefreshToken({hash})
     ])
 
-    return super.create({...client, hash, userId: user.id})
+    return super.create({...client, hash, userId: user.id}, options)
       .then(() => ({accessToken, refreshToken}))
   }
 
