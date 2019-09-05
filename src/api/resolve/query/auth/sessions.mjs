@@ -10,4 +10,4 @@ const sessions = ({ctx}) => (
   Session.findAll({where: {userId: ctx.state.user.id}})
 )
 
-export default sessions |> bind |> auth
+export default sessions |> auth |> bind

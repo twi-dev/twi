@@ -13,4 +13,4 @@ const list = ({args}) => User.findAndCountAll({
   attributes: {exclude: ["password"]}
 }).then(toPage(pagination(args)))
 
-export default bind(list)
+export default list |> bind

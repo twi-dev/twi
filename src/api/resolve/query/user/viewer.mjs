@@ -5,4 +5,4 @@ import User from "model/User"
 
 const viewer = ({ctx}) => User.findByPk(ctx.state.user.id)
 
-export default viewer |> bind |> auth
+export default viewer |> auth |> bind

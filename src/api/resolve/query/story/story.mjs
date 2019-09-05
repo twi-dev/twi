@@ -13,4 +13,4 @@ async function story({args}) {
   return found
 }
 
-export default bind(story)
+export default story |> bind
