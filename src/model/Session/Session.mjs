@@ -7,6 +7,7 @@ import pick from "lodash/pick"
 import {verify} from "core/helper/wrapper/jwt"
 
 import Unauthorized from "core/error/http/Unauthorized"
+import objectFlat from "core/helper/object/flat"
 import createModel from "core/db/createModel"
 import config from "core/base/config"
 
@@ -17,21 +18,14 @@ import {signAccessToken, signRefreshToken} from "./util/signToken"
 const {jwt} = config
 
 const serializeUser = user => pick(user, ["id", "role", "status"])
-const serializeClient = ({ip, os, browser}) => ({
-  clientIp: ip,
-  clientOsName: os.name,
-  clientOsVersion: os.version,
-  clientBrowserName: browser.name,
-  clientBrowserVersion: browser.version
-})
 
 @createModel(schema)
 class Session extends Model {
   static async sign({user, client}) {
-    client = serializeClient(client)
+    client = objectFlat({client})
     user = serializeUser(user)
 
-    const payload = JSON.stringify({...user, client, now: Date.now()})
+    const payload = JSON.stringify({...client, ...user, now: Date.now()})
     const hash = createHash("sha512").update(payload).digest("hex")
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -62,11 +56,11 @@ class Session extends Model {
   }
 
   async refresh({user, client}, options) {
-    client = serializeClient(client)
+    client = objectFlat({client})
     user = serializeUser(user)
 
     const payload = JSON.stringify({
-      ...user, id: this.userId, client, now: Date.now()
+      ...client, ...user, id: this.userId, now: Date.now()
     })
 
     const hash = createHash("sha512").update(payload).digest("hex")
