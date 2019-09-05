@@ -1,12 +1,11 @@
 import {GraphQLInt as TInt} from "graphql"
 
-import TUser from "api/type/user/TUser"
-import createPageType from "api/type/abstract/createPageType"
+import TUserPage from "api/type/user/TUserPage"
 
 import list from "api/resolve/query/user/list"
 
 const resolve = {
-  type: createPageType(TUser),
+  type: TUserPage,
   required: true,
   handler: list,
   description: "Get all available users (only 10 per page)."

@@ -4,7 +4,7 @@ const pagination = ({page = 1, limit = 10} = {}, params = {}) => {
 
   const offset = limit * (page - 1)
 
-  return {...params, limit, offset}
+  return {...params, limit, offset, page}
 }
 
 export default pagination
