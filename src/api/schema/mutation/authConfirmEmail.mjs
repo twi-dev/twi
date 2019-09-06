@@ -7,8 +7,9 @@ const resolve = {
   required: true,
   handler: confirm,
   descriotion: "Executes account confirmation using given token. "
-    + "Returns  \"true\" when the operation has been finished successfully "
-    + "and \"false\" for otherwise"
+    + "User's client will receive a new session and any existent session, "
+    + "associated with him will be destroyed. "
+    + "If the operation failed, BadRequest exception will be thrown."
 }
 
 const args = {
