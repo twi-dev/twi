@@ -28,6 +28,11 @@ const schema = {
   isFinished: {
     type: t.BOOLEAN,
     defaultValue: false
+  },
+  chaptersCount: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false,
+    defaultValue: 0
   }
 }
 
