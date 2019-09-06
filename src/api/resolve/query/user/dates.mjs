@@ -1,5 +1,5 @@
-const dates = ({registeredAt, updatedAt, lastVisit}) => ({
-  registeredAt, updatedAt, lastVisit
+const dates = ({registeredAt, updatedAt, lastVisited}) => ({
+  registeredAt, updatedAt, lastVisited
 })
 
 export default dates
