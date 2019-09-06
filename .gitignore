@@ -52,3 +52,6 @@ coverage
 .*.dockerfile
 test.js
 cli/**/*.js
+
+# Ignore npm's lockfile in favour of Yarn
+package-lock.json

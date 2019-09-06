@@ -11,20 +11,21 @@
     "node": ">= 10.12 < 11 || >= 12"
   },
   "scripts": {
-    "make": "node_modules/.bin/babel src -d . --copy-files --include-dotfiles",
+    "make": "babel src -d . --copy-files --include-dotfiles",
     "watch": "node build",
-    "m": "yarn make",
-    "w": "yarn watch",
-    "make:spec": "node_modules/.bin/babel src -s -d . --copy-files --include-dotfiles",
-    "cleanup": "node_modules/.bin/rimraf core model db api route test",
-    "cleanup:all": "yarn cleanup && node_modules/.bin/rimraf .nyc_output coverage",
-    "lint": "node_modules/.bin/eslint bin build src migration",
-    "staged": "node_modules/.bin/lint-staged",
-    "coverage": "node_modules/.bin/nyc yarn test",
-    "codecov": "node_modules/.bin/codecov",
-    "report": "yarn make:spec && yarn coverage && node_modules/.bin/nyc report --reporter=html yarn test && yarn cleanup && yarn make",
-    "report:ci": "node_modules/.bin/nyc report --reporter=lcov yarn test",
-    "ci": "yarn make:spec && yarn coverage && yarn report:ci && yarn codecov"
+    "m": "npm run make",
+    "w": "npm run watch",
+    "test": "npm run make:spec && ava && npm run cleanup && npm run make",
+    "make:spec": "babel src -s -d . --copy-files --include-dotfiles",
+    "cleanup": "rimraf core model db api route test",
+    "cleanup:all": "npm run cleanup && rimraf .nyc_output coverage",
+    "lint": "eslint bin build src migration",
+    "staged": "lint-staged",
+    "coverage": "nyc npm run test",
+    "codecov": "codecov",
+    "report": "npm run make:spec && npm run coverage && nyc report --reporter=html npm run test && npm run cleanup && npm run make",
+    "report:ci": "nyc report --reporter=lcov npm run test",
+    "ci": "npm run make:spec && npm run coverage && npm run report:ci && npm run codecov"
   },
   "ava": {
     "files": [

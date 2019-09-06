@@ -2,21 +2,35 @@ import test from "ava"
 
 import {permittedFieldsOf} from "@casl/ability/extra"
 
-import Collaborator from "db/model/Collaborator"
-import User from "db/model/User"
+import Collaborator from "model/Collaborator"
+import User from "model/User"
 
 import getAbilities from "acl/story"
 
 class Story {
-  constructor({userId} = {}) {
+  constructor({userId, isDraft = true, isFinished = false} = {}) {
     this.userId = userId
+    this.isDraft = isDraft
+    this.isFinished = isFinished
   }
 }
 
 test("Allow anyone to read by default", t => {
   const acl = getAbilities({})
 
-  t.true(acl.can("read", new Story()))
+  t.true(acl.can("read", new Story({isDraft: false, isFinished: true})))
+})
+
+test("Forbid to read drafted story", t => {
+  const acl = getAbilities({})
+
+  t.true(acl.cannot("read", new Story()))
+})
+
+test("Forbid to read unfinished story", t => {
+  const acl = getAbilities({})
+
+  t.true(acl.cannot("read", new Story({isDraft: false})))
 })
 
 test("Forbid anyone to manage by default", t => {

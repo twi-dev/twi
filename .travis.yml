@@ -1,10 +1,8 @@
 os:
-  # - osx
+  - osx
   - linux
 sudo: false
 cache: yarn
-services:
-  - mongodb
 language: node_js
 node_js:
   - node
@@ -13,8 +11,5 @@ node_js:
   - 10
 install:
   - yarn
-before_script:
-  - sleep 15
-  - mongo twi-test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - yarn run ci

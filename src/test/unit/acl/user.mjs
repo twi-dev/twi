@@ -3,7 +3,7 @@ import test from "ava"
 import {permittedFieldsOf} from "@casl/ability/extra"
 
 import getAbilities from "acl/user"
-import UserModel from "db/model/User"
+import UserModel from "model/User"
 
 const {roles, statuses} = UserModel
 

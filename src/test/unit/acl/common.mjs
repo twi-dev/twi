@@ -1,6 +1,6 @@
 import test from "ava"
 
-import User from "db/model/User"
+import User from "model/User"
 import getAbilities from "acl/common"
 
 test("Allow to read by default", t => {
