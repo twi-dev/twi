@@ -1,11 +1,11 @@
 import TStoryAddInput from "api/input/story/TStoryAddInput"
 import TStory from "api/type/story/TStory"
 
-import add from "api/resolve/mutation/story/add"
+import create from "api/resolve/mutation/story/create"
 
 const resolve = {
   type: TStory,
-  handler: add,
+  handler: create,
   required: true
 }
 

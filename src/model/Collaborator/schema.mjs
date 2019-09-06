@@ -9,7 +9,7 @@ const schema = Collaborator => ({
     primaryKey: true
   },
   userId: {
-    type: t.INTEGER,
+    type: t.INTEGER.UNSIGNED,
     allowNull: false
   },
   role: {
@@ -19,4 +19,4 @@ const schema = Collaborator => ({
   }
 })
 
-export default schema()
+export default schema

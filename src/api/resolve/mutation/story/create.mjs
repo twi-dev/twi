@@ -5,7 +5,7 @@ import auth from "core/auth/checkUser"
 import Story from "model/Story"
 import getCommonAbilities from "acl/common"
 
-async function addStory({args, ctx}) {
+async function storyCreate({args, ctx}) {
   const {user} = ctx.state
   const {story} = args
 
@@ -18,4 +18,4 @@ async function addStory({args, ctx}) {
   return Story.create(story)
 }
 
-export default addStory |> auth |> bind
+export default storyCreate |> auth |> bind

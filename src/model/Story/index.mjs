@@ -1,10 +1,12 @@
+import Collaborator from "model/Collaborator"
 import Chapter from "model/Chapter"
 import User from "model/User"
 import File from "model/File"
 import Tag from "model/Tag"
 
-import StoryChapters from "model/StoryChapters"
 import StoryTags from "model/StoryTags"
+import StoryChapters from "model/StoryChapters"
+import StoryCollaborators from "model/StoryCollaborators"
 
 import Story from "./Story"
 
@@ -42,6 +44,20 @@ Tag.belongsToMany(Story, {
   foreignKey: "tagId",
   through: {
     model: StoryTags
+  }
+})
+
+Story.belongsToMany(Collaborator, {
+  foreignKey: "storyId",
+  through: {
+    model: StoryCollaborators
+  }
+})
+
+Collaborator.belongsToMany(Story, {
+  foreignKey: "collaboratorId",
+  through: {
+    model: StoryCollaborators
   }
 })
 
