@@ -1,21 +1,35 @@
+import waterfall from "core/helper/array/runWaterfall"
 import bind from "core/helper/graphql/normalizeParams"
+import BadRequest from "core/error/http/BadRequest"
 
 import {get, remove} from "core/auth/tokens"
 
 import User from "model/User"
+import Session from "model/Session"
 
-async function confirmEmail({args}) {
+async function confirmEmail({args, ctx}) {
+  const {client} = ctx.state
+
   const email = await get(args.hash)
 
   // Return false if token is expired
   if (!email) {
-    return false
+    throw new BadRequest("Can't active a user: Bad token signature.")
   }
 
-  return Promise.all([
-    remove(args.hash),
-    User.update({status: User.statuses.active}, {where: {email}})
-  ]).then(() => true)
+  const user = await User.findOne({where: email})
+
+  return waterfall([
+    () => remove(args.hash),
+
+    () => Session.destroy({where: {userId: user.id}}),
+
+    () => user.update({status: User.statuses.active}),
+
+    () => user.reload({attributes: {exclude: ["password"]}}),
+
+    updated => Session.sign({user: updated.toJSON(), client})
+  ])
 }
 
 export default confirmEmail |> bind
