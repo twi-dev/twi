@@ -22,7 +22,8 @@ and isn't ready for production! Stay in touch.**
 |--------------------------------------|---------------------------|
 | [Node.js](https://nodejs.org/en/)    | >= 10.12                  |
 | [Yarn](https://yarnpkg.com/lang/en/) | >= 1.17.0                 |
-| [MySQL](https://www.mysql.com/)      | (TBD)                     |
+| [MySQL](https://www.mysql.com/)      | >= 8.x                    |
+| [Redis](https://redis.io)            | >= 2.6.12                 |
 
 You also need:
 

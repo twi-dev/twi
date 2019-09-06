@@ -7,7 +7,7 @@ const schema = {
     primaryKey: true
   },
   userId: {
-    type: t.INTEGER,
+    type: t.INTEGER.UNSIGNED,
     allowNull: false
   },
   hash: {

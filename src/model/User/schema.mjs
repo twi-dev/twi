@@ -12,10 +12,12 @@ const schema = User => ({
     primaryKey: true
   },
   contactsId: {
-    type: t.INTEGER
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
   },
   avatarId: {
-    type: t.INTEGER
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
   },
   email: {
     type: t.STRING,

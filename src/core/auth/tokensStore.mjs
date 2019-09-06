@@ -1,5 +1,5 @@
-import redis from "async-redis"
+import Redis from "ioredis"
 
-const store = redis.createClient()
+const store = new Redis()
 
 export default store
