@@ -7,6 +7,8 @@ import User from "model/User"
 const getStoryAbilities = members => Builder.define((allow, forbid) => {
   const {user, collaborator} = members
 
+  // Drafted or unfinished stories avaialable to read only by the story's
+  // publisher.
   allow("read", Story, {isDraft: false, isFinished: true})
 
   // Guests must be able to see stories as well, but can't do anything else
@@ -21,7 +23,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
   // Moderators must be able to update only specific fields
   if (user.role === User.roles.moderator) {
     allow(
-      "update", Story,
+      ["read", "update"], Story,
 
       ["title", "description", "genres", "characters", "cover"],
 
@@ -38,7 +40,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
   // Collaborators must be able to update story fields in general,
   // except its main info
   if (collaborator.role === Collaborator.roles.writer) {
-    allow("update", Story)
+    allow(["read", "update"], Story)
     forbid("update", Story, ["title", "description", "cover"])
   }
 })

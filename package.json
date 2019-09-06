@@ -15,17 +15,15 @@
     "watch": "node build",
     "m": "npm run make",
     "w": "npm run watch",
-    "test": "npm run make:spec && ava && npm run cleanup && npm run make",
-    "make:spec": "babel src -s -d . --copy-files --include-dotfiles",
+    "test": "npm run make:test && ava && npm run cleanup && npm run make",
+    "make:test": "babel src -s -d . --copy-files --include-dotfiles",
     "cleanup": "rimraf core model db api route test",
     "cleanup:all": "npm run cleanup && rimraf .nyc_output coverage",
     "lint": "eslint bin build src migration",
     "staged": "lint-staged",
-    "coverage": "nyc npm run test",
-    "codecov": "codecov",
-    "report": "npm run make:spec && npm run coverage && nyc report --reporter=html npm run test && npm run cleanup && npm run make",
-    "report:ci": "nyc report --reporter=lcov npm run test",
-    "ci": "npm run make:spec && npm run coverage && npm run report:ci && npm run codecov"
+    "coverage": "npm run cleanup && npm run make:test && nyc npm run test && npm run cleanup && npm run make",
+    "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html && npm run cleanup && npm run make",
+    "ci": "npm run make:test && nyc npm run test && npm run test:types && nyc report -r=lcov && codecov"
   },
   "ava": {
     "files": [
@@ -36,8 +34,12 @@
     ]
   },
   "nyc": {
+    "extension": [
+      ".mjs"
+    ],
     "exclude": [
-      "test"
+      "test/**",
+      ".babelrc.js"
     ]
   },
   "dependencies": {
