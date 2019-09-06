@@ -1,10 +1,11 @@
-import remove from "api/resolve/mutation/user/removeAvatar"
-import TUser from "api/type/user/TUser"
+import TViewer from "api/type/user/TViewer"
+
+import removeAvatar from "api/resolve/mutation/user/removeAvatar"
 
 const resolve = {
-  type: TUser,
+  type: TViewer,
   required: true,
-  handler: remove
+  handler: removeAvatar
 }
 
 export {resolve}
