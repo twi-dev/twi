@@ -1,9 +1,10 @@
-import {GraphQLString as TString, GraphQLBoolean as TBoolean} from "graphql"
+import {GraphQLString as TString} from "graphql"
 
+import TAuthTokens from "api/type/auth/TAuthTokens"
 import confirm from "api/resolve/mutation/auth/confirmEmail"
 
 const resolve = {
-  type: TBoolean,
+  type: TAuthTokens,
   required: true,
   handler: confirm,
   descriotion: "Executes account confirmation using given token. "
