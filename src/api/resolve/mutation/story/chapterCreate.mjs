@@ -22,6 +22,7 @@ async function chapterCreate({args, ctx}) {
   }
 
   return story.createChapter(chapter)
+    .then(() => story.increment("chaptersCount"))
 }
 
 export default chapterCreate |> auth |> bind

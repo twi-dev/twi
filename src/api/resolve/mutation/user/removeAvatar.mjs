@@ -13,7 +13,7 @@ async function removeAvatar({ctx}) {
     throw new NotFound("Can't find requested user.")
   }
 
-  return found.removeAvatar()
+  return found.removeAvatar().then(() => found.reload())
 }
 
 export default removeAvatar |> auth |> bind

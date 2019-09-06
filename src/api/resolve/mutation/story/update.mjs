@@ -39,8 +39,7 @@ async function update({args, ctx}) {
     fields = pick(fields, filter)
   }
 
-  return story.update(fields)
-    .then(() => Story.findByPk(id))
+  return story.update(fields).then(() => story.reload())
 }
 
 export default update |> auth |> bind
