@@ -7,7 +7,7 @@ async function refreshTokens({args, ctx}) {
   const user = await session.getUser({attributes: {exclude: ["password"]}})
   const tokens = await session.refresh({user, client: ctx.state.client})
 
-  return user.update({lastVisit: tokens.accessToken.signed})
+  return user.update({lastVisited: tokens.accessToken.signed})
     .then(() => tokens)
 }
 

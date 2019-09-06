@@ -17,19 +17,21 @@ async function confirmEmail({args, ctx}) {
     throw new BadRequest("Can't active a user: Bad token signature.")
   }
 
-  const user = await User.findOne({where: email})
+  let user = await User.findOne({where: email})
 
-  return waterfall([
+  user = await waterfall([
     () => remove(args.hash),
 
     () => Session.destroy({where: {userId: user.id}}),
 
     () => user.update({status: User.statuses.active}),
 
-    () => user.reload({attributes: {exclude: ["password"]}}),
-
-    updated => Session.sign({user: updated.toJSON(), client})
+    () => user.reload({attributes: {exclude: ["password"]}})
   ])
+
+  const tokens = Session.sign({user: user.toJSON(), client})
+
+  return user.update({lastVisited: new Date()}).then(() => tokens)
 }
 
 export default confirmEmail |> bind
