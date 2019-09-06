@@ -3,10 +3,15 @@ import NotFound from "core/error/http/NotFound"
 
 import Story from "model/Story"
 
-async function story({args}) {
-  const found = await Story.findByPk(args.id)
+import getStoryAbilities from "acl/story"
 
-  if (!found) {
+async function story({args, ctx}) {
+  const {user} = ctx.state
+
+  const found = await Story.findByPk(args.id)
+  const acl = getStoryAbilities({user})
+
+  if (!found || acl.cannot("read", story)) {
     throw new NotFound("Cant find requested story.")
   }
 
