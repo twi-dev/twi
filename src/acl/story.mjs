@@ -7,7 +7,7 @@ import User from "model/User"
 const getStoryAbilities = members => Builder.define((allow, forbid) => {
   const {user, collaborator} = members
 
-  allow("read", Story)
+  allow("read", Story, {isDraft: false})
 
   // Guests must be able to see stories as well, but can't do anything else
   // so just set above delcarations and stop.
