@@ -15,6 +15,8 @@ async function storyCreate({args, ctx}) {
     throw new Forbidden("You cannot create a new story.")
   }
 
+  story.userId = user.id
+
   return Story.create(story)
 }
 
