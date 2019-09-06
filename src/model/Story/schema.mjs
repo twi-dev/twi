@@ -19,15 +19,7 @@ const schema = {
   originalUrl: t.STRING,
   isDraft: {
     type: t.BOOLEAN,
-    defaultValue: true,
-
-    set(value) {
-      const isFinished = this.getDataValue("isFinished")
-
-      // This field's value can be updated with given value only when
-      // the story marked as finished.
-      this.setDataValue("isDraft", isFinished === true ? value : false)
-    }
+    defaultValue: true
   },
   isFinished: {
     type: t.BOOLEAN,
