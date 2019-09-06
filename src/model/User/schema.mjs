@@ -11,14 +11,8 @@ const schema = User => ({
     autoIncrement: true,
     primaryKey: true
   },
-  contactsId: {
-    type: t.INTEGER.UNSIGNED,
-    allowNull: false
-  },
-  avatarId: {
-    type: t.INTEGER.UNSIGNED,
-    allowNull: false
-  },
+  contactsId: t.INTEGER.UNSIGNED,
+  avatarId: t.INTEGER.UNSIGNED,
   email: {
     type: t.STRING,
     unique: true,

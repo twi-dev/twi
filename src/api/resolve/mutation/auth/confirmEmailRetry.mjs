@@ -1,28 +1,24 @@
 import {format} from "url"
 
-import omit from "lodash/omit"
-
 import {add} from "core/auth/tokens"
 
+import config from "core/base/config"
+import auth from "core/auth/checkUser"
+import mail from "core/mail/transport"
 import concat from "core/helper/string/concatFromArray"
 import bind from "core/helper/graphql/normalizeParams"
-import mail from "core/mail/transport"
-import config from "core/base/config"
 
-import Session from "model/Session"
 import User from "model/User"
 
 const {server} = config
 
-async function signUp({args, ctx}) {
-  const {client} = ctx.state
-
-  const user = await User.create(args.user)
-
+async function confirmEmailRetry({ctx}) {
+  const user = await User.findByPk(ctx.state.user.id)
   const token = await add(user)
 
   const link = format({
-    host: server.url, pathname: concat(["/auth", "confirm", token], "/")
+    host: server.url,
+    pathname: concat(["/auth", "confirm", token.hash], "/")
   })
 
   await mail.send({
@@ -33,7 +29,7 @@ async function signUp({args, ctx}) {
     `
   })
 
-  return Session.sign({user: omit(user.toJSON(), "password"), client})
+  return token
 }
 
-export default bind(signUp)
+export default confirmEmailRetry |> auth |> bind
