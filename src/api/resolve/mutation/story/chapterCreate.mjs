@@ -21,7 +21,7 @@ async function chapterCreate({args, ctx}) {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
-  return story.createChapter(chapter)
+  return story.addChapter(chapter)
     .then(() => story.increment("chaptersCount"))
 }
 

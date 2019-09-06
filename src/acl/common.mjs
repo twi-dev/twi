@@ -6,7 +6,7 @@ import User from "model/User"
 
 const {statuses, roles} = User
 
-const getCommonUserAbilities = user => Builder.define((allow, forbid) => {
+const getCommonUserAbilities = user => Builder.define(allow => {
   allow("read", "all")
 
   if (isEmpty(user)) {
@@ -14,8 +14,8 @@ const getCommonUserAbilities = user => Builder.define((allow, forbid) => {
   }
 
   // Unactivated, banned and suspended users can only read things.
-  if (user.status !== statuses.activated) {
-    forbid("manage", "all")
+  if (user.status === statuses.active) {
+    allow("manage", "all")
   }
 
   // Super user can do anything with everything.

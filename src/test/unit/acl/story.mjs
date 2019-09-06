@@ -8,7 +8,7 @@ import User from "model/User"
 import getAbilities from "acl/story"
 
 class Story {
-  constructor({userId, isDraft = true, isFinished = false} = {}) {
+  constructor({userId, isDraft = false, isFinished = false} = {}) {
     this.userId = userId
     this.isDraft = isDraft
     this.isFinished = isFinished
@@ -18,7 +18,7 @@ class Story {
 test("Allow anyone to read by default", t => {
   const acl = getAbilities({})
 
-  t.true(acl.can("read", new Story({isDraft: false, isFinished: true})))
+  t.true(acl.can("read", new Story({isFinished: true})))
 })
 
 test("Forbid to read drafted story", t => {

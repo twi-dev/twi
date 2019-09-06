@@ -23,11 +23,17 @@ const schema = {
   originalUrl: t.STRING,
   isDraft: {
     type: t.BOOLEAN,
-    defaultValue: true
+    defaultValue: false
   },
   isFinished: {
     type: t.BOOLEAN,
-    defaultValue: false
+    defaultValue: false,
+
+    set(flag) {
+      const chaptersCount = this.getDataValue("chaptersCount")
+
+      this.setDataValue("isFinished", chaptersCount > 0 ? flag : false)
+    }
   },
   chaptersCount: {
     type: t.INTEGER.UNSIGNED,

@@ -5,7 +5,6 @@ import Type from "parasprite/Type"
 import TChapter from "api/type/story/TChapter"
 
 import TStoryMinimal from "api/type/story/TStoryMinimal"
-import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
 // import chapers from "../../resolve/query/story/chapers"
 
@@ -16,10 +15,6 @@ const TStory = Type({
   type: "Represends available information about the stories",
   extends: TStoryMinimal
 })
-  .field({
-    name: "collaborators",
-    type: [TStoryCollaborator, true]
-  })
   // .resolve({
   //   name: "currentCollaborator",
   //   type: TStoryCollaborator,

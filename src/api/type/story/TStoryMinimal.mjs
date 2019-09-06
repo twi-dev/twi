@@ -13,7 +13,7 @@ import TDates from "api/type/common/TDates"
 import TUserMinimal from "api/type/user/TUserMinimal"
 import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
-import user from "api/resolve/query/user/userFromParent"
+import publisher from "api/resolve/query/story/publisher"
 import dates from "api/resolve/query/common/dates"
 
 const TStoryMinimal = Type({
@@ -48,7 +48,7 @@ const TStoryMinimal = Type({
   .resolve({
     name: "publisher",
     type: TUserMinimal,
-    handler: user,
+    handler: publisher,
     required: true,
     noArgs: true
   })
