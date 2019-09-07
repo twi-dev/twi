@@ -1,5 +1,7 @@
 import bind from "core/helper/graphql/normalizeParams"
+import waterfall from "core/helper/array/runWaterfall"
 import Forbidden from "core/error/http/Forbidden"
+import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
 
 import Story from "model/Story"
@@ -15,6 +17,10 @@ async function chapterCreate({args, ctx}) {
   // TODO: Don't forget to fetch a collaborator by current user
   const story = await Story.findByPk(id)
 
+  if (!story) {
+    throw new NotFound("Cannot find requested story.")
+  }
+
   const aclCommon = getCommonAbilities(user)
   const aclStory = getStoryAbilities({user})
 
@@ -24,8 +30,13 @@ async function chapterCreate({args, ctx}) {
 
   const created = await Chapter.create(chapter)
 
-  return story.addChapter(created.id)
-    .then(() => story.increment("chaptersCount"))
+  return waterfall([
+    () => story.addChapter(created.id),
+
+    () => story.increment("chaptersCount"),
+
+    () => created
+  ])
 }
 
 export default chapterCreate |> auth |> bind

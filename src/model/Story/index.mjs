@@ -48,6 +48,7 @@ Tag.belongsToMany(Story, {
 })
 
 Story.belongsToMany(Collaborator, {
+  as: "collaborators",
   foreignKey: "storyId",
   through: {
     model: StoryCollaborators
@@ -55,6 +56,7 @@ Story.belongsToMany(Collaborator, {
 })
 
 Collaborator.belongsToMany(Story, {
+  as: "stories",
   foreignKey: "collaboratorId",
   through: {
     model: StoryCollaborators
