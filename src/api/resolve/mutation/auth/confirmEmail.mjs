@@ -19,6 +19,10 @@ async function confirmEmail({args, ctx}) {
 
   let user = await User.findOne({where: email})
 
+  if (!user) {
+    throw new BadRequest("There's no user with such email.")
+  }
+
   user = await serial([
     () => remove(args.hash),
 
