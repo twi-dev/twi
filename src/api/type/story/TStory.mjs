@@ -1,8 +1,8 @@
 import Type from "parasprite/Type"
 
 import TStoryChapter from "api/type/story/TStoryChapter"
-
 import TStoryMinimal from "api/type/story/TStoryMinimal"
+// import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
 import chapers from "api/resolve/query/story/chaptersFromStory"
 
@@ -18,6 +18,13 @@ const TStory = Type({
   //   type: TStoryCollaborator,
   //   handler: currentCollaborator,
   //   noArgs: true
+  // })
+  // .resolve({
+  //   name: "collaborators",
+  //   type: [TStoryCollaborator, true],
+  //   required: true,
+  //   noArgs: true,
+  //   handler() { }
   // })
   .resolve({
     name: "chapters",
