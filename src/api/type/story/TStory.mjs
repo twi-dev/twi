@@ -1,12 +1,10 @@
-import {GraphQLInt as TInt} from "graphql"
-
 import Type from "parasprite/Type"
 
-import TChapter from "api/type/story/TChapter"
+import TStoryChapter from "api/type/story/TStoryChapter"
 
 import TStoryMinimal from "api/type/story/TStoryMinimal"
 
-// import chapers from "../../resolve/query/story/chapers"
+import chapers from "api/resolve/query/story/chaptersFromStory"
 
 // import currentCollaborator from "api/resolve/query/story/currentCollaborator"
 
@@ -23,15 +21,10 @@ const TStory = Type({
   // })
   .resolve({
     name: "chapters",
-    type: [TChapter, true],
+    type: [TStoryChapter, true],
     required: true,
-    // handler: chapers
-    handler() { }
+    handler: chapers
   })
-    .arg({
-      name: "cursor",
-      type: TInt
-    })
   .end()
 .end()
 
