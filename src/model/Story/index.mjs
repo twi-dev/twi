@@ -20,6 +20,7 @@ Story.belongsTo(User, {
 Story.belongsTo(File, {foreignKey: "coverId", as: "cover", onDelete: "cascade"})
 
 Story.belongsToMany(Chapter, {
+  as: "chapters",
   foreignKey: "storyId",
   through: {
     model: StoryChapters
@@ -27,6 +28,7 @@ Story.belongsToMany(Chapter, {
 })
 
 Chapter.belongsToMany(Story, {
+  as: "stories",
   foreignKey: "chapterId",
   through: {
     model: StoryChapters
@@ -34,6 +36,7 @@ Chapter.belongsToMany(Story, {
 })
 
 Story.belongsToMany(Tag, {
+  as: "tags",
   foreignKey: "storyId",
   through: {
     model: StoryTags
@@ -41,6 +44,7 @@ Story.belongsToMany(Tag, {
 })
 
 Tag.belongsToMany(Story, {
+  as: "stories",
   foreignKey: "tagId",
   through: {
     model: StoryTags
