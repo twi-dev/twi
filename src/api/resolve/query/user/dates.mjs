@@ -1,5 +1,5 @@
-const dates = ({registeredAt, updatedAt, lastVisited}) => ({
+const getDates = ({registeredAt, updatedAt, lastVisited}) => ({
   registeredAt, updatedAt, lastVisited
 })
 
-export default dates
+export default getDates

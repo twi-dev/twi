@@ -1,3 +1,3 @@
-const contacts = user => user.getContacts()
+const getContacts = user => user.getContacts()
 
-export default contacts
+export default getContacts

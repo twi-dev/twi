@@ -5,17 +5,17 @@ import Story from "model/Story"
 
 import getStoryAbilities from "acl/story"
 
-async function story({args, ctx}) {
+async function getStory({args, ctx}) {
   const {user} = ctx.state
 
-  const found = await Story.findByPk(args.id)
+  const story = await Story.findByPk(args.id)
   const acl = getStoryAbilities({user})
 
-  if (!found || acl.cannot("read", story)) {
+  if (!story || acl.cannot("read", story)) {
     throw new NotFound("Cant find requested story.")
   }
 
-  return found
+  return story
 }
 
-export default story |> bind
+export default getStory |> bind

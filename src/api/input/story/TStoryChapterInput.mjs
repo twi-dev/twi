@@ -11,7 +11,7 @@ const TStoryChapterInput = Input("StoryChapterInput")
     required: true
   })
   .field({
-    name: "content",
+    name: "chapter",
     type: TChapterAddInput,
     required: true
   })

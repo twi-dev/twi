@@ -1,4 +1,4 @@
-const client = session => ({
+const getClient = session => ({
   ip: session.clientIp,
   os: {
     name: session.clientOsName,
@@ -10,4 +10,4 @@ const client = session => ({
   }
 })
 
-export default client
+export default getClient

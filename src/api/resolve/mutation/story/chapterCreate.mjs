@@ -3,6 +3,7 @@ import Forbidden from "core/error/http/Forbidden"
 import auth from "core/auth/checkUser"
 
 import Story from "model/Story"
+import Chapter from "model/Chapter"
 
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
@@ -21,7 +22,9 @@ async function chapterCreate({args, ctx}) {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
-  return story.addChapter(chapter)
+  const created = await Chapter.create(chapter)
+
+  return story.addChapter(created.id)
     .then(() => story.increment("chaptersCount"))
 }
 

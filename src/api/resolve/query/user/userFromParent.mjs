@@ -1,5 +1,5 @@
 import bind from "core/helper/graphql/normalizeParams"
 
-const userFromParent = parent => parent.getUser()
+const getUserFromParent = parent => parent.getUser()
 
-export default userFromParent |> bind
+export default getUserFromParent |> bind

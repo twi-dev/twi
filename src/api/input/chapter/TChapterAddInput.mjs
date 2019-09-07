@@ -4,7 +4,7 @@ import Input from "parasprite/Input"
 
 const TChapterAddInput = Input("ChapterAddInput")
   .field({
-    name: "name",
+    name: "title",
     type: TString,
     required: true
   })

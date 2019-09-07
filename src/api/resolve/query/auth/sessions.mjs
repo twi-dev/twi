@@ -6,8 +6,8 @@ import Session from "model/Session"
 /**
  * Returns a list of session associated with the current user
  */
-const sessions = ({ctx}) => (
+const getSessions = ({ctx}) => (
   Session.findAll({where: {userId: ctx.state.user.id}})
 )
 
-export default sessions |> auth |> bind
+export default getSessions |> auth |> bind

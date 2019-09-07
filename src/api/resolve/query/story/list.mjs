@@ -6,7 +6,7 @@ import Story from "model/Story"
 import File from "model/File"
 import User from "model/User"
 
-const list = ({args}) => Story.findAndCountAll({
+const getStories = ({args}) => Story.findAndCountAll({
   ...pagination(args),
 
   where: {isDraft: false, isFinished: true},
@@ -22,4 +22,4 @@ const list = ({args}) => Story.findAndCountAll({
   ],
 }).then(toPage(pagination(args)))
 
-export default list |> bind
+export default getStories |> bind
