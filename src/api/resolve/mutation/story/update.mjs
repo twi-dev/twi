@@ -17,17 +17,18 @@ import Story from "model/Story"
 
 async function update({args, ctx}) {
   const {id} = args.story
+  const {user} = ctx.state
 
   let fields = omit(args.story, "id")
-
-  const aclStory = getStoryAbilities(ctx.state.user)
-  const aclCommon = getCommonAbilities(ctx.state.user)
 
   const story = await Story.findByPk(id)
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
   }
+
+  const aclStory = getStoryAbilities({user})
+  const aclCommon = getCommonAbilities(user)
 
   if (aclStory.cannot("update", story) && aclCommon.cannot("update", story)) {
     throw new Forbidden("You can't update the story.")
