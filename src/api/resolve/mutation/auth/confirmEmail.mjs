@@ -1,4 +1,4 @@
-import waterfall from "core/helper/array/runWaterfall"
+import serial from "core/helper/array/runSerial"
 import bind from "core/helper/graphql/normalizeParams"
 import BadRequest from "core/error/http/BadRequest"
 
@@ -19,7 +19,7 @@ async function confirmEmail({args, ctx}) {
 
   let user = await User.findOne({where: email})
 
-  user = await waterfall([
+  user = await serial([
     () => remove(args.hash),
 
     () => Session.destroy({where: {userId: user.id}}),
