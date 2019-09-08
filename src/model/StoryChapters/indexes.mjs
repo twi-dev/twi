@@ -1,6 +1,6 @@
 const indexes = [
   {
-    fields: ["story_id", "chapter_id"],
+    fields: ["story_id", "chapter_id", "order"],
     unique: true
   }
 ]

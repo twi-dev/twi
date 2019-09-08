@@ -31,9 +31,14 @@ async function chapterCreate({args, ctx}) {
   const created = await Chapter.create(chapter)
 
   return waterfall([
-    () => story.addChapter(created.id),
-
+    // Increase chapters count
     () => story.increment("chaptersCount"),
+
+    // and then push the new chapter to join table and set its order
+    // to the last known chaptersCounter value
+    updatedStory => updatedStory.addChapter(created.id, {
+      through: {order: updatedStory.chaptersCount}
+    }),
 
     () => created
   ])

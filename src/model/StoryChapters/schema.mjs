@@ -8,6 +8,11 @@ const schema = {
   chapterId: {
     type: t.INTEGER.UNSIGNED,
     allowNull: false
+  },
+  order: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false,
+    // defaultValue: 1
   }
 }
 
