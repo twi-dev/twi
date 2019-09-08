@@ -11,8 +11,7 @@ const schema = {
   },
   order: {
     type: t.INTEGER.UNSIGNED,
-    allowNull: false,
-    // defaultValue: 1
+    allowNull: false
   }
 }
 
