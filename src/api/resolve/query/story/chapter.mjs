@@ -13,23 +13,13 @@ async function getChapter({args, ctx}) {
   const acl = getStoryAbilities({user})
 
   const chapter = await Chapter.findOne({
-    include: [{
-      required: true,
-      as: "stories",
-      model: Story,
-      where: {
-        id: storyId
-      },
-      through: {
-        where: {order}
-      }
-    }]
+    where: {storyId, order},
+    include: [Story]
   })
 
-  const [story] = chapter.stories
-
-  if (acl.cannot("read", story)) {
-    throw new NotFound("Can't finnd requested story.")
+  // FIXME: Find a way to rename "Story" as "story"
+  if (!chapter || acl.cannot("read", chapter.Story)) {
+    throw new NotFound("Can't finnd requested chapter.")
   }
 
   return chapter

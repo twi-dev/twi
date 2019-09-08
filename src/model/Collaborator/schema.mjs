@@ -12,6 +12,10 @@ const schema = Collaborator => ({
     type: t.INTEGER.UNSIGNED,
     allowNull: false
   },
+  storyId: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
+  },
   role: {
     type: t.ENUM(values(Collaborator.roles)),
     default: Collaborator.roles.write,

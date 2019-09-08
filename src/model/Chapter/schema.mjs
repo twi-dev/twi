@@ -6,6 +6,14 @@ const schema = {
     autoIncrement: true,
     primaryKey: true
   },
+  storyId: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
+  },
+  order: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
+  },
   title: {
     type: t.STRING,
     allowNull: false

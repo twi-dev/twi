@@ -1,5 +1,4 @@
 import bind from "core/helper/graphql/normalizeParams"
-import waterfall from "core/helper/array/runWaterfall"
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
@@ -15,7 +14,7 @@ async function chapterCreate({args, ctx}) {
   const {id, chapter} = args.story
 
   // TODO: Don't forget to fetch a collaborator by current user
-  const story = await Story.findByPk(id)
+  let story = await Story.findByPk(id)
 
   if (!story) {
     throw new NotFound("Cannot find requested story.")
@@ -28,20 +27,12 @@ async function chapterCreate({args, ctx}) {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
-  const created = await Chapter.create(chapter)
+  story = await story.increment("chaptersCount").then(() => story.reload())
 
-  return waterfall([
-    // Increase chapters count
-    () => story.increment("chaptersCount"),
+  chapter.order = story.chaptersCount
+  chapter.storyId = story.id
 
-    // and then push the new chapter to join table and set its order
-    // to the last known chaptersCounter value
-    updatedStory => updatedStory.addChapter(created.id, {
-      through: {order: updatedStory.chaptersCount}
-    }),
-
-    () => created
-  ])
+  return Chapter.create(chapter)
 }
 
 export default chapterCreate |> auth |> bind
