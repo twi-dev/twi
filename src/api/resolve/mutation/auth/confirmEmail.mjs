@@ -17,7 +17,7 @@ async function confirmEmail({args, ctx}) {
     throw new BadRequest("Can't active a user: Bad token signature.")
   }
 
-  let user = await User.findOne({where: email})
+  let user = await User.findOne({where: {email}})
 
   if (!user) {
     throw new BadRequest("There's no user with such email.")
