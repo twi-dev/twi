@@ -5,8 +5,7 @@ import Input from "parasprite/Input"
 const TChapterCreateInput = Input("ChapterCreateInput")
   .field({
     name: "title",
-    type: TString,
-    required: true
+    type: TString
   })
   .field({
     name: "content",

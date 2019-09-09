@@ -11,6 +11,11 @@ class Chapter extends Model {
   static async create({content, ...chapter}, options) {
     [chapter.contentMd, chapter.contentHtml] = [content, await toHtml(content)]
 
+    // Automatically generate a title if there's no such thing
+    if (!chapter.title) {
+      chapter.title = `Chapter ${chapter.order}`
+    }
+
     return super.create(chapter, options)
   }
 }
