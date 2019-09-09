@@ -83,12 +83,13 @@ class User extends Model {
     return this.update({email}, options)
   }
 
-  async updatePassword(oldPassword, newPassword) {
+  async updatePassword(oldPassword, newPassword, options) {
     if (await this.comparePassword(oldPassword) === false) {
       throw new BadRequest("Current password is incorrect.")
     }
 
-    return hash(newPassword, 15).then(password => this.update({password}))
+    return hash(newPassword, 15)
+      .then(password => this.update({password}, options))
   }
 }
 

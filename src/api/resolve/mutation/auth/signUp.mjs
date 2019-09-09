@@ -8,16 +8,17 @@ import concat from "core/helper/string/concatFromArray"
 import bind from "core/helper/graphql/normalizeParams"
 import mail from "core/mail/transport"
 import config from "core/base/config"
+import conn from "core/db/connection"
 
 import Session from "model/Session"
 import User from "model/User"
 
 const {server} = config
 
-async function signUp({args, ctx}) {
+const signUp = ({args, ctx}) => conn.transaction(async t => {
   const {client} = ctx.state
 
-  const user = await User.create(args.user)
+  const user = await User.create(args.user, {transaction: t})
 
   const token = await add(user)
 
@@ -33,7 +34,9 @@ async function signUp({args, ctx}) {
     `
   })
 
-  return Session.sign({user: omit(user.toJSON(), "password"), client})
-}
+  return Session.sign({
+    client, user: omit(user.toJSON(), "password")
+  }, {transaction: t})
+})
 
 export default bind(signUp)

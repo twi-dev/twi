@@ -1,9 +1,8 @@
-import conn from "core/db/connection"
-
 import bind from "core/helper/graphql/normalizeParams"
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
+import conn from "core/db/connection"
 
 import Story from "model/Story"
 import Chapter from "model/Chapter"

@@ -1,13 +1,14 @@
-import serial from "core/helper/array/runSerial"
 import bind from "core/helper/graphql/normalizeParams"
 import BadRequest from "core/error/http/BadRequest"
+import serial from "core/helper/array/runSerial"
+import conn from "core/db/connection"
 
 import {get, remove} from "core/auth/tokens"
 
 import User from "model/User"
 import Session from "model/Session"
 
-async function confirmEmail({args, ctx}) {
+const confirmEmail = ({args, ctx}) => conn.transaction(async t => {
   const {client} = ctx.state
 
   const email = await get(args.hash)
@@ -17,7 +18,7 @@ async function confirmEmail({args, ctx}) {
     throw new BadRequest("Can't active a user: Bad token signature.")
   }
 
-  let user = await User.findOne({where: {email}})
+  let user = await User.findOne({where: {email}}, {transaction: t})
 
   if (!user) {
     throw new BadRequest("There's no user with such email.")
@@ -26,16 +27,19 @@ async function confirmEmail({args, ctx}) {
   user = await serial([
     () => remove(args.hash),
 
-    () => Session.destroy({where: {userId: user.id}}),
+    () => Session.destroy({where: {userId: user.id}}, {transaction: t}),
 
-    () => user.update({status: User.statuses.active}),
+    () => user.update({status: User.statuses.active}, {transaction: t}),
 
-    () => user.reload({attributes: {exclude: ["password"]}})
+    () => user.reload({attributes: {exclude: ["password"]}}, {transaction: t})
   ])
 
-  const tokens = Session.sign({user: user.toJSON(), client})
+  const tokens = await Session.sign({
+    client, user: user.toJSON()
+  }, {transaction: t})
 
-  return user.update({lastVisited: new Date()}).then(() => tokens)
-}
+  return user.update({lastVisited: new Date()}, {transaction: t})
+    .then(() => tokens)
+})
 
 export default confirmEmail |> bind

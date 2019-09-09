@@ -1,16 +1,17 @@
 import omit from "lodash/omit"
 
+import conn from "core/db/connection"
 import bind from "core/helper/graphql/normalizeParams"
 import Unauthorized from "core/error/http/Unauthorized"
 
 import Session from "model/Session"
 import User from "model/User"
 
-async function logIn({args, ctx}) {
+const logIn = ({args, ctx}) => conn.transaction(async t => {
   const {email, password} = args.user
   const {client} = ctx.state
 
-  const user = await User.findOne({where: {email}})
+  const user = await User.findOne({where: {email}}, {transaction: t})
 
   if (!user || (user && await user.comparePassword(password) === false)) {
     throw new Unauthorized(
@@ -18,7 +19,9 @@ async function logIn({args, ctx}) {
     )
   }
 
-  return Session.sign({user: omit(user.toJSON(), "password"), client})
-}
+  return Session.sign({
+    client, user: omit(user.toJSON(), "password")
+  }, {transaction: t})
+})
 
 export default bind(logIn)
