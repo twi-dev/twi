@@ -19,6 +19,11 @@ const schema = {
     unique: true,
     comment: "Prefix that is used to match category to where a tag belongs."
   },
+  order: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false,
+    unique: true
+  },
   color: {
     type: t.CHAR(6),
     allowNull: false,
