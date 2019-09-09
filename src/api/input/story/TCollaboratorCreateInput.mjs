@@ -4,7 +4,7 @@ import Input from "parasprite/Input"
 
 import TCollaboratorInput from "api/input/story/TCollaboratorInput"
 
-const TCollaboratorAddInput = Input("CollaboratorAddInput")
+const TCollaboratorCreateInput = Input("CollaboratorCreateInput")
   .field({
     name: "id",
     type: TInt,
@@ -19,4 +19,4 @@ const TCollaboratorAddInput = Input("CollaboratorAddInput")
   })
 .end()
 
-export default TCollaboratorAddInput
+export default TCollaboratorCreateInput

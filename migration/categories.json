@@ -1,5 +1,9 @@
 [
   {
+    "name": "Others",
+    "color": "(tbd, don't import now)"
+  },
+  {
     "name": "Authors",
     "color": "(tbd, don't import now)"
   },
@@ -17,10 +21,6 @@
   },
   {
     "name": "Series",
-    "color": "(tbd, don't import now)"
-  },
-  {
-    "name": "Others",
     "color": "(tbd, don't import now)"
   },
 ]

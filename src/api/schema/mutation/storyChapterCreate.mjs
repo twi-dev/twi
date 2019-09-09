@@ -1,5 +1,5 @@
-import TStoryChapterCreate from "api/input/story/TStoryChapterInput"
-import TChapter from "api/type/story/TChapter"
+import TStoryChapterCreate from "api/input/story/TStoryChapterCreateInput"
+import TChapter from "api/type/story/TStoryChapter"
 
 import create from "api/resolve/mutation/story/chapterCreate"
 

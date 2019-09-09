@@ -41,9 +41,13 @@ const start = () => new Promise((resolve, reject) => {
  *
  * @return {Promise<void>}
  */
-const close = () => new Promise(resolve => {
-  function onClosed() {
-    log.ok("Server has been closed")
+const close = () => new Promise((resolve, reject) => {
+  function onClosed(error) {
+    if (error) {
+      return reject(error)
+    }
+
+    log.ok("Server closed.")
     resolve()
   }
 
