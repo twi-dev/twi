@@ -5,8 +5,6 @@ import File from "model/File"
 import Tag from "model/Tag"
 
 import StoryTags from "model/StoryTags"
-// import StoryChapters from "model/StoryChapters"
-// import StoryCollaborators from "model/StoryCollaborators"
 
 import Story from "./Story"
 
