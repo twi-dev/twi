@@ -2,17 +2,18 @@ import bind from "core/helper/graphql/normalizeParams"
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
+import conn from "core/db/connection"
 
 import Story from "model/Story"
 import getCommonAbilities from "acl/common"
 import getStoryAbilities from "acl/story"
 
-async function storyRemove({args, ctx}) {
+const storyRemove = ({args, ctx}) => conn.transaction(async t => {
   const {user} = ctx.state
   const {storyId} = args
 
   // TODO: fetch member as well
-  const story = await Story.findByPk(storyId)
+  const story = await Story.findByPk(storyId, {transaction: t})
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
@@ -25,7 +26,7 @@ async function storyRemove({args, ctx}) {
     throw new Forbidden("You cannot delete the story.")
   }
 
-  return story.destroy().then(() => storyId)
-}
+  return story.destroy({transaction: t}).then(() => storyId)
+})
 
 export default storyRemove |> auth |> bind

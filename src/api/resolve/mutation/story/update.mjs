@@ -6,6 +6,7 @@ import isEmpty from "lodash/isEmpty"
 
 import bind from "core/helper/graphql/normalizeParams"
 import auth from "core/auth/checkUser"
+import conn from "core/db/connection"
 
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
@@ -15,13 +16,13 @@ import getStoryAbilities from "acl/story"
 
 import Story from "model/Story"
 
-async function update({args, ctx}) {
+const update = ({args, ctx}) => conn.transaction(async t => {
   const {id} = args.story
   const {user} = ctx.state
 
   let fields = omit(args.story, "id")
 
-  const story = await Story.findByPk(id)
+  const story = await Story.findByPk(id, {transaction: t})
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
@@ -40,7 +41,8 @@ async function update({args, ctx}) {
     fields = pick(fields, filter)
   }
 
-  return story.update(fields).then(() => story.reload())
-}
+  return story.update(fields, {transaction: t})
+    .then(() => story.reload({transaction: t}))
+})
 
 export default update |> auth |> bind
