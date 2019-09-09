@@ -1,8 +1,9 @@
 import bind from "core/helper/graphql/normalizeParams"
-import waterfall from "core/helper/array/runWaterfall"
 import Forbidden from "core/error/http/Forbidden"
+import serial from "core/helper/array/runSerial"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
+import conn from "core/db/connection"
 
 import Story from "model/Story"
 import Chapter from "model/Chapter"
@@ -10,41 +11,36 @@ import Chapter from "model/Chapter"
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
 
-async function chapterRemove({args, ctx}) {
+const chapterRemove = ({args, ctx}) => conn.transaction(async t => {
   const {user} = ctx.state
   const {chapterId} = args
 
-  // TODO: Don't forget to fetch a collaborator by current user
-  const story = await Story.findOne({
-    include: [{
-      model: Chapter,
-      as: "chapters",
-      where: {
-        id: chapterId
-      }
-    }]
+  const chapter = await Chapter.findByPk(chapterId, {
+    include: [Story],
+    transaction: t
   })
 
-  if (!story) {
-    throw new NotFound("Cannot find requested story.")
+  if (!chapter) {
+    throw new NotFound("Cannot find requested chapter.")
   }
 
   const aclCommon = getCommonAbilities(user)
   const aclStory = getStoryAbilities({user})
 
-  if (aclCommon.cannot("update", story) || aclStory.cannot("update", story)) {
+  if (
+    aclCommon.cannot("update", chapter.Story)
+      || aclStory.cannot("update", chapter.Story)
+  ) {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
-  const [chapter] = story.chapters
+  return serial([
+    () => chapter.destroy({transaction: t}),
 
-  return waterfall([
-    () => chapter.destroy(),
-
-    () => story.decrement("chaptersCount"),
+    () => chapter.Story.decrement("chaptersCount", {transaction: t}),
 
     () => chapterId
   ])
-}
+})
 
 export default chapterRemove |> auth |> bind
