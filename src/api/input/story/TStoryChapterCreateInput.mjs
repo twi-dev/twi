@@ -4,7 +4,7 @@ import Input from "parasprite/Input"
 
 import TChapterCreateInput from "api/input/chapter/TChapterCreateInput"
 
-const TStoryChapterCreateInput = Input("StoryhapterCreateInput")
+const TStoryChapterCreateInput = Input("StoryChapterCreateInput")
   .field({
     name: "id",
     type: TInt,
