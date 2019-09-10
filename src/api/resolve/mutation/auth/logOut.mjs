@@ -1,5 +1,6 @@
 import Unauthorized from "core/error/http/Unauthorized"
 import bind from "core/helper/graphql/normalizeParams"
+import auth from "core/auth/checkUser"
 import conn from "core/db/connection"
 
 import User from "model/User"
@@ -22,4 +23,4 @@ const logOut = ({args, ctx}) => conn.transaction(async t => {
   return session.destroy({transaction: t}).then(() => refreshToken)
 })
 
-export default bind(logOut)
+export default logOut |> auth |> bind
