@@ -25,7 +25,7 @@ const chapterCreate = ({args, ctx}) => conn.transaction(async t => {
   const aclStory = getStoryAbilities({user})
 
   if (aclCommon.cannot("update", story) || aclStory.cannot("update", story)) {
-    throw new Forbidden("You cannot add a new chapter.")
+    throw new Forbidden("You can't add a new chapter.")
   }
 
   story = await story.increment("chaptersCount", {transaction: t})

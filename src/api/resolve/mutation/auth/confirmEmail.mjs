@@ -13,7 +13,6 @@ const confirmEmail = ({args, ctx}) => conn.transaction(async t => {
 
   const email = await get(args.hash)
 
-  // Return false if token is expired
   if (!email) {
     throw new BadRequest("Can't active a user: Bad token signature.")
   }
