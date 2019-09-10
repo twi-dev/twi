@@ -1,5 +1,7 @@
 import {DataTypes as t} from "sequelize"
 
+import BadRequest from "core/error/http/BadRequest"
+
 import isCorrect from "./util/validateLogin"
 import isReserved from "./util/isReserved"
 
@@ -28,13 +30,13 @@ const schema = User => ({
     validate: {
       isCorrect(value) {
         if (!isCorrect(value)) {
-          throw new Error("Incorrect login format.")
+          throw new BadRequest("Incorrect login format.")
         }
       },
 
       isReserved(value) {
         if (isReserved(value)) {
-          throw new Error("Cannot use reserved word as a user's login.")
+          throw new BadRequest("Cannot use reserved word as a user's login.")
         }
       }
     }
