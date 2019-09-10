@@ -6,6 +6,11 @@ const schema = {
     autoIncrement: true,
     primaryKey: true
   },
+  userId: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false,
+    unique: true
+  },
   vk: t.STRING,
   fb: t.STRING,
   twitter: t.STRING,

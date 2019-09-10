@@ -10,10 +10,7 @@ const schema = {
     type: t.INTEGER.UNSIGNED,
     allowNull: false
   },
-  coverId: {
-    type: t.INTEGER.UNSIGNED,
-    allowNull: false
-  },
+  coverId: t.INTEGER.UNSIGNED,
   title: {
     type: t.STRING,
     allowNull: false
