@@ -1,4 +1,4 @@
-import {hash, compare} from "bcryptjs"
+import {hash, compare} from "bcrypt"
 import {Model} from "sequelize"
 
 import freeze from "js-flock/deepFreeze"
