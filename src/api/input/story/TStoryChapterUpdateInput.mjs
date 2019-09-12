@@ -2,9 +2,9 @@ import {GraphQLInt as TInt} from "graphql"
 
 import Input from "parasprite/Input"
 
-import TChapterCreateInput from "api/input/chapter/TChapterCreateInput"
+import TChapterUpdateInput from "api/input/chapter/TChapterUpdateInput"
 
-const TStoryChapterCreateInput = Input("StoryChapterCreateInput")
+const TStoryChapterUpdateInput = Input("StoryChapterUpdateInput")
   .field({
     name: "id",
     type: TInt,
@@ -12,9 +12,9 @@ const TStoryChapterCreateInput = Input("StoryChapterCreateInput")
   })
   .field({
     name: "chapter",
-    type: TChapterCreateInput,
+    type: TChapterUpdateInput,
     required: true
   })
 .end()
 
-export default TStoryChapterCreateInput
+export default TStoryChapterUpdateInput

@@ -15,6 +15,9 @@ Story.belongsTo(User, {
   as: "publisher"
 })
 
+User.hasMany(Story, {foreignKey: "userId", as: "publisher"})
+
+File.hasMany(Story, {foreignKey: "coverId", as: "cover"})
 Story.belongsTo(File, {foreignKey: "coverId", as: "cover", onDelete: "cascade"})
 
 Story.hasMany(Chapter, {foreignKey: "storyId"})

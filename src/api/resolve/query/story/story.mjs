@@ -9,8 +9,8 @@ async function getStory({args, ctx}) {
   const {user} = ctx.state
 
   const story = await Story.findByPk(args.id)
-  const acl = getStoryAbilities({user})
 
+  const acl = getStoryAbilities({user})
   if (!story || acl.cannot("read", story)) {
     throw new NotFound("Cant find requested story.")
   }

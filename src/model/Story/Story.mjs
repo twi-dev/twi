@@ -11,6 +11,10 @@ class Story extends Model {
 
     return Boolean(originalAuthor && originalTitle && originalUrl)
   }
+
+  hasPublisher(user) {
+    return this.userId === user?.id
+  }
 }
 
 export default Story
