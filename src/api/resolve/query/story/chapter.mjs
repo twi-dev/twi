@@ -14,11 +14,10 @@ async function getChapter({args, ctx}) {
 
   const chapter = await Chapter.findOne({
     where: {storyId, order},
-    include: [Story]
+    include: [{model: Story, as: "story"}]
   })
 
-  // FIXME: Find a way to rename "Story" as "story"
-  if (!chapter || acl.cannot("read", chapter.Story)) {
+  if (!chapter || acl.cannot("read", chapter.story)) {
     throw new NotFound("Can't finnd requested chapter.")
   }
 

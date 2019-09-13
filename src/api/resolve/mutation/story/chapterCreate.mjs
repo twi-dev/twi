@@ -10,12 +10,12 @@ import Chapter from "model/Chapter"
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
 
-const chapterCreate = ({args, ctx}) => conn.transaction(async t => {
+const chapterCreate = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
   const {id, chapter} = args.story
 
   // TODO: Don't forget to fetch a collaborator by current user
-  let story = await Story.findByPk(id, {transaction: t})
+  let story = await Story.findByPk(id, {transaction})
 
   if (!story) {
     throw new NotFound("Cannot find requested story.")
@@ -28,13 +28,13 @@ const chapterCreate = ({args, ctx}) => conn.transaction(async t => {
     throw new Forbidden("You can't add a new chapter.")
   }
 
-  story = await story.increment("chaptersCount", {transaction: t})
-    .then(() => story.reload({transaction: t}))
+  story = await story.increment("chaptersCount", {transaction})
+    .then(() => story.reload({transaction}))
 
   chapter.order = story.chaptersCount
   chapter.storyId = story.id
 
-  return Chapter.create(chapter, {transaction: t})
+  return Chapter.create(chapter, {transaction})
 })
 
 export default chapterCreate |> auth |> bind

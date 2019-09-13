@@ -21,8 +21,12 @@ module.exports = {
     }
   },
   "rules": {
-    "indent": ["error", 2, {
+    indent: ["error", 2, {
       "MemberExpression": "off"
+    }],
+    // TODO: Don't forget to move this rule to my personal shared config.
+    "prefer-const": ["error", {
+      "destructuring": "all"
     }],
     "no-constant-condition": ["error", {
       checkLoops: false

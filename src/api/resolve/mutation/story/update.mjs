@@ -1,7 +1,6 @@
 import {permittedFieldsOf} from "@casl/ability/extra"
 
 import pick from "lodash/pick"
-import omit from "lodash/omit"
 import isEmpty from "lodash/isEmpty"
 
 import bind from "core/helper/graphql/normalizeParams"
@@ -16,13 +15,11 @@ import getStoryAbilities from "acl/story"
 
 import Story from "model/Story"
 
-const update = ({args, ctx}) => conn.transaction(async t => {
-  const {id} = args.story
+const update = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
+  let {id, ...fields} = args.story
 
-  let fields = omit(args.story, "id")
-
-  const story = await Story.findByPk(id, {transaction: t})
+  const story = await Story.findByPk(id, {transaction})
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
@@ -41,8 +38,8 @@ const update = ({args, ctx}) => conn.transaction(async t => {
     fields = pick(fields, filter)
   }
 
-  return story.update(fields, {transaction: t})
-    .then(() => story.reload({transaction: t}))
+  return story.update(fields, {transaction})
+    .then(() => story.reload({transaction}))
 })
 
 export default update |> auth |> bind

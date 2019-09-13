@@ -8,12 +8,12 @@ import Story from "model/Story"
 import getCommonAbilities from "acl/common"
 import getStoryAbilities from "acl/story"
 
-const storyRemove = ({args, ctx}) => conn.transaction(async t => {
+const storyRemove = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
   const {storyId} = args
 
   // TODO: fetch member as well
-  const story = await Story.findByPk(storyId, {transaction: t})
+  const story = await Story.findByPk(storyId, {transaction})
 
   if (!story) {
     throw new NotFound("Can't find requested story.")
@@ -26,7 +26,7 @@ const storyRemove = ({args, ctx}) => conn.transaction(async t => {
     throw new Forbidden("You cannot delete the story.")
   }
 
-  return story.destroy({transaction: t}).then(() => storyId)
+  return story.destroy({transaction}).then(() => storyId)
 })
 
 export default storyRemove |> auth |> bind

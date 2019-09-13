@@ -14,14 +14,20 @@ Story.belongsTo(User, {
   onDelete: "cascade",
   as: "publisher"
 })
+User.hasMany(Story, {foreignKey: "userId"})
 
-User.hasMany(Story, {foreignKey: "userId", as: "publisher"})
-
-File.hasMany(Story, {foreignKey: "coverId", as: "cover"})
+File.hasMany(Story, {foreignKey: "coverId"})
 Story.belongsTo(File, {foreignKey: "coverId", as: "cover", onDelete: "cascade"})
 
 Story.hasMany(Chapter, {foreignKey: "storyId"})
-Chapter.belongsTo(Story, {foreignKey: "storyId", onDelete: "cascade"})
+Chapter.belongsTo(Story, {
+  foreignKey: "storyId",
+  onDelete: "cascade",
+  as: "story"
+})
+
+Story.hasMany(Collaborator, {foreignKey: "storyId"})
+Collaborator.belongsTo(Story, {foreignKey: "storyId", onDelete: "cascade"})
 
 Story.belongsToMany(Tag, {
   as: "tags",
@@ -38,8 +44,5 @@ Tag.belongsToMany(Story, {
     model: StoryTags
   }
 })
-
-Story.hasMany(Collaborator, {foreignKey: "storyId"})
-Collaborator.belongsTo(Story, {foreignKey: "storyId", onDelete: "cascade"})
 
 export default Story

@@ -11,13 +11,13 @@ import Chapter from "model/Chapter"
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
 
-const chapterRemove = ({args, ctx}) => conn.transaction(async t => {
+const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
   const {chapterId} = args
 
   const chapter = await Chapter.findByPk(chapterId, {
     include: [Story],
-    transaction: t
+    transaction
   })
 
   if (!chapter) {
@@ -35,9 +35,9 @@ const chapterRemove = ({args, ctx}) => conn.transaction(async t => {
   }
 
   return serial([
-    () => chapter.destroy({transaction: t}),
+    () => chapter.destroy({transaction}),
 
-    () => chapter.Story.decrement("chaptersCount", {transaction: t}),
+    () => chapter.Story.decrement("chaptersCount", {transaction}),
 
     () => chapterId
   ])
