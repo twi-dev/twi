@@ -13,7 +13,11 @@ class Story extends Model {
   }
 
   hasPublisher(user) {
-    return this.userId === user?.id
+    if (!user) {
+      return false
+    }
+
+    return this.userId === Number(user.id)
   }
 }
 
