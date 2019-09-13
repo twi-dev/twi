@@ -72,11 +72,11 @@ class User extends Model {
   comparePassword = async string => compare(string, this.password)
 
   updateAvatar(avatarId, options) {
-    return this.update({avatarId}, options)
+    return this.setAvatar(avatarId, options)
   }
 
   removeAvatar(options) {
-    return this.update({avatarId: null}, options)
+    return this.setAvatar(null, options)
   }
 
   updateEmail(email, options) {

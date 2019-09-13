@@ -1,8 +1,8 @@
 import {GraphQLString as TString} from "graphql"
 
-import Type from "parasprite/Type"
+import Input from "parasprite/Input"
 
-const TUserPasswordUpdateInput = Type("UserPasswordUpdateInput")
+const TUserPasswordUpdateInput = Input("UserPasswordUpdateInput")
   .field({
     name: "old",
     type: TString,
