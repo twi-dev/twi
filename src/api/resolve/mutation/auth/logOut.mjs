@@ -6,12 +6,12 @@ import conn from "core/db/connection"
 import User from "model/User"
 import Session from "model/Session"
 
-const logOut = ({args, ctx}) => conn.transaction(async t => {
+const logOut = ({args, ctx}) => conn.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {refreshToken} = args
 
   const session = await Session.findByToken(refreshToken, {
-    transaction: t, include: [User]
+    transaction, include: [User]
   })
 
   if (!session || session.User.id !== viewer.id) {
@@ -20,7 +20,7 @@ const logOut = ({args, ctx}) => conn.transaction(async t => {
     )
   }
 
-  return session.destroy({transaction: t}).then(() => refreshToken)
+  return session.destroy({transaction}).then(() => refreshToken)
 })
 
 export default logOut |> auth |> bind

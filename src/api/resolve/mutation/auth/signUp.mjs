@@ -15,10 +15,10 @@ import User from "model/User"
 
 const {server} = config
 
-const signUp = ({args, ctx}) => conn.transaction(async t => {
+const signUp = ({args, ctx}) => conn.transaction(async transaction => {
   const {client} = ctx.state
 
-  const user = await User.create(args.user, {transaction: t})
+  const user = await User.create(args.user, {transaction})
 
   const token = await add(user)
 
@@ -36,7 +36,7 @@ const signUp = ({args, ctx}) => conn.transaction(async t => {
 
   return Session.sign({
     client, user: omit(user.toJSON(), "password")
-  }, {transaction: t})
+  }, {transaction})
 })
 
 export default bind(signUp)

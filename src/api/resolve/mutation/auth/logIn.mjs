@@ -7,11 +7,11 @@ import Unauthorized from "core/error/http/Unauthorized"
 import Session from "model/Session"
 import User from "model/User"
 
-const logIn = ({args, ctx}) => conn.transaction(async t => {
+const logIn = ({args, ctx}) => conn.transaction(async transaction => {
   const {email, password} = args.user
   const {client} = ctx.state
 
-  const user = await User.findOne({where: {email}}, {transaction: t})
+  const user = await User.findOne({where: {email}}, {transaction})
 
   if (!user || (user && await user.comparePassword(password) === false)) {
     throw new Unauthorized(
@@ -21,7 +21,7 @@ const logIn = ({args, ctx}) => conn.transaction(async t => {
 
   return Session.sign({
     client, user: omit(user.toJSON(), "password")
-  }, {transaction: t})
+  }, {transaction})
 })
 
 export default bind(logIn)
