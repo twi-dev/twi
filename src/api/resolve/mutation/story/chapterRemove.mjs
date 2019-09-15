@@ -8,29 +8,23 @@ import conn from "core/db/connection"
 import Story from "model/Story"
 import Chapter from "model/Chapter"
 
-import getStoryAbilities from "acl/story"
-import getCommonAbilities from "acl/common"
+import getChapterAbilities from "acl/chapter"
+
+const include = [{model: Story, as: "story"}]
 
 const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
   const {chapterId} = args
 
-  const chapter = await Chapter.findByPk(chapterId, {
-    include: [Story],
-    transaction
-  })
+  const chapter = await Chapter.findByPk(chapterId, {include, transaction})
 
   if (!chapter) {
     throw new NotFound("Cannot find requested chapter.")
   }
 
-  const aclCommon = getCommonAbilities(user)
-  const aclStory = getStoryAbilities({user})
+  const acl = getChapterAbilities({user})
 
-  if (
-    aclCommon.cannot("update", chapter.Story)
-      || aclStory.cannot("update", chapter.Story)
-  ) {
+  if (acl.cannot("delete", chapter)) {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
