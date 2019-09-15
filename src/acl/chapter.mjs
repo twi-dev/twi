@@ -5,10 +5,12 @@ import Chapter from "model/Chapter"
 
 const {roles} = Collaborator
 
-const getChapterAbilities = members => Builder.define(async allow => {
+const getChapterAbilities = members => Builder.define(allow => {
   const {user, collaborator} = members
 
-  allow("read", Chapter, {isPublished: true})
+  // Drafted or unfinished stories avaialable to read only by the story's
+  // publisher.
+  allow("read", Chapter, {isDraft: false})
 
   if (!user) {
     return undefined

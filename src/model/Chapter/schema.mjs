@@ -26,6 +26,11 @@ const schema = {
   contentHtml: {
     type: t.TEXT("medium"),
     allowNull: false
+  },
+  isDraft: {
+    type: t.BOOLEAN,
+    defaultValue: false,
+    allowNull: true
   }
 }
 
