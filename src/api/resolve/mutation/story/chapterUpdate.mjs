@@ -30,7 +30,6 @@ const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
   const aclCommon = getCommonAbilities(user)
   const aclChapter = getChapterAbilities({user, collaborator})
 
-  // Check abilities for story and chapter
   if (
     aclCommon.cannot("update", chapter) && aclChapter.cannot("update", chapter)
   ) {
