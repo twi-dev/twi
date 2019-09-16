@@ -12,7 +12,7 @@ class Collaborator extends Model {
   @readOnly static roles = freeze({
     translate: "translate",
     write: "write",
-    edit: "edit",
+    beta: "beta",
     art: "art"
   })
 }
