@@ -6,6 +6,7 @@ import conn from "core/db/connection"
 
 import Story from "model/Story"
 import Chapter from "model/Chapter"
+import Collaborator from "model/Collaborator"
 
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
@@ -21,10 +22,18 @@ const chapterCreate = ({args, ctx}) => conn.transaction(async transaction => {
     throw new NotFound("Cannot find requested story.")
   }
 
-  const aclCommon = getCommonAbilities(user)
-  const aclStory = getStoryAbilities({user})
+  const collaborator = await Collaborator.findOne({
+    where: {userId: user.id, storyId: story.id}
+  })
 
-  if (aclCommon.cannot("update", story) || aclStory.cannot("update", story)) {
+  const aclCommon = getCommonAbilities(user)
+  const aclStory = getStoryAbilities({user, collaborator})
+
+  if (
+    aclCommon.cannot("update", story) || (
+      aclStory.cannot("create", Chapter) && aclStory.cannot("manage", story)
+    )
+  ) {
     throw new Forbidden("You can't add a new chapter.")
   }
 

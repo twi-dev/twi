@@ -1,6 +1,7 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
 import Collaborator from "model/Collaborator"
+import Chapter from "model/Chapter"
 import Story from "model/Story"
 import User from "model/User"
 
@@ -37,11 +38,20 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
     return undefined
   }
 
-  // Collaborators must be able to update story fields in general,
-  // except its main info
+  // Collaborators must be able to update some story fields
   if (collaborator.role === Collaborator.roles.writer) {
     allow(["read", "update"], Story)
-    forbid("update", Story, ["title", "description", "cover"])
+    forbid("update", Story, ["title", "isDraft", "isFinished"])
+
+    // Writers can also create a new chapter
+    allow("create", Chapter)
+
+    return undefined
+  }
+
+  // Artists can update story's cover, but can't remove that
+  if (collaborator.role === Collaborator.roles.art) {
+    allow("update", Story, ["cover", "coverId"])
   }
 })
 
