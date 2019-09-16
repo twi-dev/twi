@@ -1,3 +1,8 @@
+import {permittedFieldsOf} from "@casl/ability/extra"
+
+import pick from "lodash/pick"
+import isEmpty from "lodash/isEmpty"
+
 import bind from "core/helper/graphql/normalizeParams"
 import Forbidden from "core/error/http/Forbidden"
 import NotFound from "core/error/http/NotFound"
@@ -15,7 +20,7 @@ const include = [{model: Story, as: "story", required: true}]
 
 const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
-  const {id, ...fields} = args.chapter
+  let {id, ...fields} = args.chapter
 
   const chapter = await Chapter.findByPk(id, {include, transaction})
 
@@ -34,6 +39,12 @@ const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
     aclCommon.cannot("update", chapter) || aclChapter.cannot("update", chapter)
   ) {
     throw new Forbidden("You have no access to update this chapter.")
+  }
+
+  const filter = permittedFieldsOf(aclChapter, "update", chapter)
+
+  if (!isEmpty(filter)) {
+    fields = pick(fields, filter)
   }
 
   return chapter.update(fields, {transaction})

@@ -40,7 +40,7 @@ const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
   return serial([
     () => chapter.destroy({transaction}),
 
-    () => chapter.Story.decrement("chaptersCount", {transaction}),
+    () => chapter.story.decrement("chaptersCount", {transaction}),
 
     () => chapterId
   ])
