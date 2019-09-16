@@ -32,7 +32,7 @@ const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
   const aclChapter = getChapterAbilities({user, collaborator})
 
   if (
-    aclCommon.cannot("delete", chapter) && aclChapter.cannot("delete", chapter)
+    aclCommon.cannot("delete", chapter) || aclChapter.cannot("delete", chapter)
   ) {
     throw new Forbidden("You cannot add a new chapter.")
   }

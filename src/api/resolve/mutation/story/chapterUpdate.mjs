@@ -31,7 +31,7 @@ const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
   const aclChapter = getChapterAbilities({user, collaborator})
 
   if (
-    aclCommon.cannot("update", chapter) && aclChapter.cannot("update", chapter)
+    aclCommon.cannot("update", chapter) || aclChapter.cannot("update", chapter)
   ) {
     throw new Forbidden("You have no access to update this chapter.")
   }
