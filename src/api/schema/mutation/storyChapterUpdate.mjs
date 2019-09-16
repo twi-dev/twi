@@ -1,4 +1,4 @@
-import TChapterUpdateInput from "api/input/chapter/TChapterUpdateInput"
+import TStoryChapterUpdateInput from "api/input/story/TStoryChapterUpdateInput"
 import update from "api/resolve/mutation/story/chapterUpdate"
 import TChapter from "api/type/story/TStoryChapter"
 
@@ -9,7 +9,7 @@ const resolve = {
 }
 
 const args = {
-  story: [TChapterUpdateInput, true]
+  story: [TStoryChapterUpdateInput, true]
 }
 
 export {resolve, args}

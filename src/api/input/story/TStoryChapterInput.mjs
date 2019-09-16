@@ -2,7 +2,7 @@ import {GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
 
-const TChapterCreateInput = Input("ChapterCreateInput")
+const TStoryChapterInput = Input("StoryChapterInput")
   .field({
     name: "title",
     type: TString
@@ -14,4 +14,4 @@ const TChapterCreateInput = Input("ChapterCreateInput")
   })
 .end()
 
-export default TChapterCreateInput
+export default TStoryChapterInput
