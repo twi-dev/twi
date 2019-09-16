@@ -1,3 +1,3 @@
-const getContacts = user => user.getContacts()
+const getContacts = user => user.contacts ?? user.getContacts()
 
 export default getContacts

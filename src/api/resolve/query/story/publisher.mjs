@@ -1,3 +1,3 @@
-const getPublisher = story => story.getPublisher()
+const getPublisher = story => story.publisher ?? story.getPublisher()
 
 export default getPublisher

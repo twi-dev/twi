@@ -1,3 +1,3 @@
-const getCover = story => story.getCover()
+const getCover = story => story.cover ?? story.getCover()
 
 export default getCover
