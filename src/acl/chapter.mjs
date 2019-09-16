@@ -23,9 +23,8 @@ const getChapterAbilities = members => Builder.define(allow => {
     return undefined
   }
 
-  // Writers and translators can update content
-  // TODO: Add "beta" collaborators here.
-  if ([roles.write, roles.translate].includes(collaborator.role)) {
+  // Writers, translators and betas can update content
+  if ([roles.write, roles.translate, roles.beta].includes(collaborator.role)) {
     allow("update", Chapter, "content")
   }
 })
