@@ -92,7 +92,6 @@ test("Forbid writer to update specific fields", t => {
 
   const story = new Story({userId: 1})
 
-  t.true(acl.cannot("update", story, "title"))
-  t.true(acl.cannot("update", story, "description"))
-  t.true(acl.cannot("update", story, "cover"))
+  t.true(acl.cannot("update", story, "isDraft"))
+  t.true(acl.cannot("update", story, "isFinished"))
 })

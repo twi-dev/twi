@@ -4,12 +4,14 @@ import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
 import conn from "core/db/connection"
 
-import Chapter from "model/Chapter"
 import Story from "model/Story"
+import Chapter from "model/Chapter"
+import Collaborator from "model/Collaborator"
 
+import getChapterAbilities from "acl/chapter"
 import getCommonAbilities from "acl/common"
 
-const include = [{model: Story, as: "story"}]
+const include = [{model: Story, as: "story", required: true}]
 
 const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
@@ -21,10 +23,17 @@ const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
     throw new NotFound("Can't find requested chapter.")
   }
 
+  const collaborator = await Collaborator.findOne({
+    where: {userId: user.id, storyId: chapter.story.id}
+  })
+
   const aclCommon = getCommonAbilities(user)
+  const aclChapter = getChapterAbilities({user, collaborator})
 
   // Check abilities for story and chapter
-  if (aclCommon.cannot("update", chapter)) {
+  if (
+    aclCommon.cannot("update", chapter) && aclChapter.cannot("update", chapter)
+  ) {
     throw new Forbidden("You have no access to update this chapter.")
   }
 

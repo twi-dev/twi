@@ -41,7 +41,7 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
   // Collaborators must be able to update some story fields
   if (collaborator.role === Collaborator.roles.writer) {
     allow(["read", "update"], Story)
-    forbid("update", Story, ["title", "isDraft", "isFinished"])
+    forbid("update", Story, ["isDraft", "isFinished"])
 
     // Writers can also create a new chapter
     allow("create", Chapter)
