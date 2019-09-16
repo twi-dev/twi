@@ -4,7 +4,7 @@ import auth from "core/auth/checkUser"
 
 import User from "model/User"
 
-async function removeAvatar({ctx}) {
+async function avatarRemove({ctx}) {
   const {user} = ctx.state
 
   const found = await User.findByPk(user.id)
@@ -13,7 +13,7 @@ async function removeAvatar({ctx}) {
     throw new NotFound("Can't find requested user.")
   }
 
-  return found.removeAvatar().then(() => found.reload())
+  return found.avatarRemove().then(() => found.reload())
 }
 
-export default removeAvatar |> auth |> bind
+export default avatarRemove |> auth |> bind
