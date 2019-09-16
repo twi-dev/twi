@@ -1,5 +1,6 @@
-const getChapterContent = ({contentMd: md, contentHtml: html}) => ({
-  md, html
+const getChapterContent = ({contentMd, contentHtml}) => ({
+  html: contentHtml,
+  md: contentMd
 })
 
 export default getChapterContent
