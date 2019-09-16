@@ -6,7 +6,8 @@ import logOut from "api/resolve/mutation/auth/logOut"
 const resolve = {
   type: TRefreshToken,
   handler: logOut,
-  required: true
+  required: true,
+  description: "Destroy current user's session."
 }
 
 const args = {

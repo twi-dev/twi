@@ -6,7 +6,8 @@ import logIn from "api/resolve/mutation/auth/logIn"
 const resolve = {
   type: TAuthTokens,
   required: true,
-  handler: logIn
+  handler: logIn,
+  description: "Create a new session for user found by given credentials."
 }
 
 const user = [TAuthLogInInput, true]
