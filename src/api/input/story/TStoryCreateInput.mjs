@@ -3,7 +3,7 @@ import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 import Input from "parasprite/Input"
 
 import TFileInput from "api/input/common/TFileInput"
-import TChapterInput from "api/input/story/TChapterInput"
+import TStoryChapterInput from "api/input/story/TStoryChapterInput"
 
 const TStoryCreateInput = Input("StoryCreateInput")
   .field({
@@ -32,7 +32,7 @@ const TStoryCreateInput = Input("StoryCreateInput")
   })
   .field({
     name: "chapters",
-    type: [TChapterInput, true]
+    type: [TStoryChapterInput, true]
   })
 .end()
 
