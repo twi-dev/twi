@@ -15,7 +15,7 @@ const avatarRemove = ({ctx}) => conn.transaction(async transaction => {
   const user = await User.findByPk(viewer.id, {include, transaction})
 
   if (!user) {
-    throw new NotFound("Can't find requested user.")
+    throw new NotFound("Can't find a user.")
   }
 
   return waterfall([
