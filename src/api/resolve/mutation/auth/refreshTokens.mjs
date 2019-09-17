@@ -1,14 +1,19 @@
 import bind from "core/helper/graphql/normalizeParams"
+import conn from "core/db/connection"
 
 import Session from "model/Session"
 
-async function refreshTokens({args, ctx}) {
-  const session = await Session.findByToken(args.refreshToken)
-  const user = await session.getUser({attributes: {exclude: ["password"]}})
-  const tokens = await session.refresh({user, client: ctx.state.client})
+const attributes = {exclude: ["password"]}
 
-  return user.update({lastVisited: tokens.accessToken.signed})
+const refreshTokens = ({args, ctx}) => conn.transaction(async transaction => {
+  const {client} = ctx.state
+
+  const session = await Session.findByToken(args.refreshToken, {transaction})
+  const user = await session.getUser({attributes, transaction})
+  const tokens = await session.refresh({user, client}, {transaction})
+
+  return user.update({lastVisited: tokens.accessToken.signed}, {transaction})
     .then(() => tokens)
-}
+})
 
 export default refreshTokens |> bind
