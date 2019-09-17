@@ -6,15 +6,17 @@ import conn from "core/db/connection"
 import User from "model/User"
 import Session from "model/Session"
 
+const include = [{model: User, as: "user", required: true}]
+
 const logOut = ({args, ctx}) => conn.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {refreshToken} = args
 
   const session = await Session.findByToken(refreshToken, {
-    transaction, include: [User]
+    transaction, include
   })
 
-  if (!session || session.User.id !== viewer.id) {
+  if (!session || session.user.id !== viewer.id) {
     throw new Unauthorized(
       "Bad refreshToken signature: Check your credentials and try again."
     )
