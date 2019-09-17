@@ -1,19 +1,19 @@
 /**
  * Run given tasks sequentially
  *
- * @param {Array<Promise<any>>} iterable
+ * @param {Array<Promise<any>>} tasks
  * @param {any[]} [args = []] - a list of arguments to execute function with
  *
- * @return {Promise<Array<any>>}
+ * @return {Promise<any>}
  */
-function runSerial(iterable, args = []) {
+function runSerial(tasks, args = []) {
   const step = (prev, next) => Promise.resolve(prev).then(() => next(...args))
 
-  if (iterable.length <= 1) {
-    return step(null, iterable[0])
+  if (tasks.length <= 1) {
+    return step(null, tasks[0])
   }
 
-  return iterable.reduce(step, null)
+  return tasks.reduce(step, null)
 }
 
 export default runSerial

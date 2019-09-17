@@ -1,5 +1,5 @@
-import waterfall from "core/helper/array/runWaterfall"
 import bind from "core/helper/graphql/normalizeParams"
+import serial from "core/helper/array/runSerial"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
 import conn from "core/db/connection"
@@ -21,7 +21,7 @@ const avatarUpdate = ({args, ctx}) => conn.transaction(async transaction => {
 
   const file = await File.create(image, {transaction})
 
-  return waterfall([
+  return serial([
     () => user.avatar.destroy({transaction}),
 
     () => user.setAvatar(file.id, {transaction}),
