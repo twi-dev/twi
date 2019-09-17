@@ -10,10 +10,11 @@ import conn from "core/db/connection"
 import NotFound from "core/error/http/NotFound"
 import Forbidden from "core/error/http/Forbidden"
 
-import getCommonAbilities from "acl/common"
-import getStoryAbilities from "acl/story"
-
+import Collaborator from "model/Collaborator"
 import Story from "model/Story"
+
+import getStoryAbilities from "acl/story"
+import getCommonAbilities from "acl/common"
 
 const update = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
@@ -25,10 +26,14 @@ const update = ({args, ctx}) => conn.transaction(async transaction => {
     throw new NotFound("Can't find requested story.")
   }
 
-  const aclStory = getStoryAbilities({user})
-  const aclCommon = getCommonAbilities(user)
+  const collaborator = await Collaborator.findOne({
+    where: {userId: user.id, storyId: story.id}
+  })
 
-  if (aclStory.cannot("update", story) && aclCommon.cannot("update", story)) {
+  const aclCommon = getCommonAbilities(user)
+  const aclStory = getStoryAbilities({user, collaborator})
+
+  if (aclStory.cannot("update", story) || aclCommon.cannot("update", story)) {
     throw new Forbidden("You can't update the story.")
   }
 
