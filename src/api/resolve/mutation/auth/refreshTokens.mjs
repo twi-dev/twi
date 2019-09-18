@@ -9,14 +9,14 @@ const attributes = {exclude: ["password"]}
 const include = [{model: User, as: "user", required: true, attributes}]
 
 const refreshTokens = ({args, ctx}) => conn.transaction(async transaction => {
-  const {client, user: viewer} = ctx.state
+  const {client} = ctx.state
   const {refreshToken} = args
 
   const session = await Session.findByToken(refreshToken, {
     transaction, include
   })
 
-  if (!session || session.user.id !== viewer.id) {
+  if (!session) {
     throw new Unauthorized(
       "Bad refreshToken signature: Check your credentials and try again."
     )
