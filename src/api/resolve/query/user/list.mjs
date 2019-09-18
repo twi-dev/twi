@@ -6,15 +6,14 @@ import toPage from "core/helper/graphql/toPage"
 
 import User from "model/User"
 
+const where = {status: {[op.ne]: User.statuses.inactive}}
+const attributes = {exclude: ["password"]}
+
 function getUsers({args}) {
   const pageInfo = pagination(args)
 
-  return User.findAndCountAll({
-    ...pageInfo,
-
-    where: {status: {[op.ne]: User.statuses.inactive}},
-    attributes: {exclude: ["password"]}
-  }).then(toPage(pageInfo))
+  return User.findAndCountAll({...pageInfo, where, attributes})
+    .then(toPage(pageInfo))
 }
 
 export default getUsers |> bind
