@@ -6,20 +6,24 @@ import Story from "model/Story"
 import File from "model/File"
 import User from "model/User"
 
-const getStories = ({args}) => Story.findAndCountAll({
-  ...pagination(args),
+const where = {isDraft: false, isFinished: true}
 
-  where: {isDraft: false, isFinished: true},
-  include: [
-    {
-      model: File,
-      as: "cover"
-    },
-    {
-      model: User,
-      as: "publisher"
-    }
-  ],
-}).then(toPage(pagination(args)))
+const include = [
+  {
+    model: File,
+    as: "cover"
+  },
+  {
+    model: User,
+    as: "publisher"
+  }
+]
+
+function getStories({args}) {
+  const pageInfo = pagination(args)
+
+  return Story.findAndCountAll({...pageInfo, where, include})
+    .then(toPage(pageInfo))
+}
 
 export default getStories |> bind
