@@ -10,7 +10,7 @@ import words from "core/helper/string/concatWords"
 
 import TDates from "api/type/common/TDates"
 
-import TUserMinimal from "api/type/user/TUserMinimal"
+import TUser from "api/type/user/TUser"
 import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
 import publisher from "api/resolve/query/story/publisher"
@@ -47,7 +47,7 @@ const TStoryMinimal = Type({
   })
   .resolve({
     name: "publisher",
-    type: TUserMinimal,
+    type: TUser,
     handler: publisher,
     required: true,
     noArgs: true

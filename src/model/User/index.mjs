@@ -11,11 +11,7 @@ User.belongsTo(File, {
   hooks: true
 })
 
-User.hasOne(Contacts, {foreignKey: "userId"})
-Contacts.belongsTo(User, {
-  as: "contacts",
-  foreignKey: "userId",
-  onDelete: "cascade"
-})
+User.hasOne(Contacts, {foreignKey: "userId", as: "contacts"})
+Contacts.belongsTo(User, {foreignKey: "userId", onDelete: "cascade"})
 
 export default User

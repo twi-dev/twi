@@ -1,3 +1,4 @@
+import {GraphQLString as TString} from "graphql"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
 
 import Type from "parasprite/Type"
@@ -13,6 +14,18 @@ const TViewer = Type({
     name: "email",
     type: TEmail,
     description: "Registration email.",
+    required: true
+  })
+  .field({
+    name: "role",
+    type: TString,
+    description: "User role name",
+    required: true
+  })
+  .field({
+    name: "status",
+    type: TString,
+    description: "User accoutn status",
     required: true
   })
 .end()

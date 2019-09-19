@@ -4,7 +4,7 @@ import concat from "core/helper/string/concatFromArray"
 
 import Type from "parasprite/Type"
 
-import TUserMinimal from "../user/TUserMinimal"
+import TUser from "../user/TUser"
 
 const TStoryCollaborator = Type("StoryCollaborator", concat([
   // TODO: Improve this description :D
@@ -13,7 +13,7 @@ const TStoryCollaborator = Type("StoryCollaborator", concat([
   "or something else."
 ]))
   .field({name: "role", type: TString, required: true})
-  .field({name: "user", type: TUserMinimal, required: true})
+  .field({name: "user", type: TUser, required: true})
 .end()
 
 export default TStoryCollaborator

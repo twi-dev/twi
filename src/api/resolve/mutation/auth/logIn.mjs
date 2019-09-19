@@ -24,4 +24,4 @@ const logIn = ({args, ctx}) => conn.transaction(async transaction => {
   }, {transaction})
 })
 
-export default bind(logIn)
+export default logIn |> bind
