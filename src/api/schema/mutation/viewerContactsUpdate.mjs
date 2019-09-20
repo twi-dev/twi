@@ -1,8 +1,8 @@
 import update from "api/resolve/mutation/user/contactsUpdate"
-import TUser from "api/type/user/TUser"
+import TViewer from "api/type/user/TViewer"
 
 const resolve = {
-  type: TUser,
+  type: TViewer,
   required: true,
   handler: update
 }

@@ -1,9 +1,9 @@
-import TViewer from "api/type/user/TViewer"
+import {GraphQLInt as TInt} from "graphql"
 
 import remove from "api/resolve/mutation/user/avatarRemove"
 
 const resolve = {
-  type: TViewer,
+  type: TInt,
   required: true,
   handler: remove
 }

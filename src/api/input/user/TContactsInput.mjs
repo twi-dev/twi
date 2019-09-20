@@ -1,4 +1,4 @@
-import {GraphQLURL as TURL} from "graphql-custom-types"
+import {GraphQLURL as TUrl} from "graphql-custom-types"
 import {GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
@@ -21,7 +21,7 @@ const TContactsInput = Input("ContactsInput", "User contacts")
   })
   .field({
     name: "website",
-    type: TURL,
+    type: TUrl,
     description: "A personal home page at the Web."
   })
 .end()
