@@ -15,7 +15,6 @@ const chapterCreate = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state
   const {id, chapter} = args.story
 
-  // TODO: Don't forget to fetch a collaborator by current user
   let story = await Story.findByPk(id, {transaction})
 
   if (!story) {
