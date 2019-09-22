@@ -3,8 +3,9 @@ import Type from "parasprite/Type"
 import TStoryCollaboratorPage from "api/type/story/TStoryCollaboratorPage"
 import TStoryChapterPage from "api/type/story/TStoryChapterPage"
 import TStoryMinimal from "api/type/story/TStoryMinimal"
-import TStoryTag from "api/type/story/TStoryTag"
+import TStoryTagPage from "api/type/story/TStoryTagPage"
 
+import tags from "api/resolve/query/story/tag/list"
 import chapers from "api/resolve/query/story/chapter/list"
 import collaborators from "api/resolve/query/story/collaborators"
 import currentCollaborator from "api/resolve/query/story/currentCollaborator"
@@ -34,9 +35,12 @@ const TStory = Type({
     handler: chapers,
     noArgs: true
   })
-  .field({
+  .resolve({
     name: "tags",
-    type: [TStoryTag, true]
+    type: TStoryTagPage,
+    noArgs: true,
+    required: true,
+    handler: tags
   })
 .end()
 

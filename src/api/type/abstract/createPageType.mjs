@@ -11,9 +11,7 @@ const isArray = Array.isArray
 
 const rowsToList = ({rows: list}) => list
 
-const hasNextPage = ({limit, page, count}) => {
-  return count - (limit * page) > 0
-}
+const hasNextPage = ({limit, page, count}) => count - (limit * page) > 0
 
 function getTypeInfo(t) {
   if (isArray(t)) {

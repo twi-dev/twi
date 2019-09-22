@@ -10,4 +10,4 @@ Tag.belongsTo(Category, {
   onDelete: "set null"
 })
 
-export default Category
+export default Tag
