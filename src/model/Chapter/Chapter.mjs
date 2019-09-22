@@ -18,6 +18,16 @@ class Chapter extends Model {
 
     return super.create(chapter, options)
   }
+
+  async update({content, ...chapter}, options) {
+    if (chapter.content) {
+      [chapter.contentMd, chapter.contentHtml] = [
+        content, await toHtml(content)
+      ]
+    }
+
+    return super.update(chapter, options)
+  }
 }
 
 export default Chapter
