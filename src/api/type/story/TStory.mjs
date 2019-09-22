@@ -5,7 +5,7 @@ import TStoryChapterPage from "api/type/story/TStoryChapterPage"
 import TStoryMinimal from "api/type/story/TStoryMinimal"
 import TStoryTagPage from "api/type/story/TStoryTagPage"
 
-import tags from "api/resolve/query/story/tag/list"
+import tags from "api/resolve/query/story/storyTags"
 import chapers from "api/resolve/query/story/chapter/list"
 import collaborators from "api/resolve/query/story/collaborators"
 import currentCollaborator from "api/resolve/query/story/currentCollaborator"
