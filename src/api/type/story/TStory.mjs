@@ -1,38 +1,43 @@
 import Type from "parasprite/Type"
 
-import TStoryChapter from "api/type/story/TStoryChapter"
+import TStoryCollaboratorPage from "api/type/story/TStoryCollaboratorPage"
+import TStoryChapterPage from "api/type/story/TStoryChapterPage"
 import TStoryMinimal from "api/type/story/TStoryMinimal"
-// import TStoryCollaborator from "api/type/story/TStoryCollaborator"
+import TStoryTag from "api/type/story/TStoryTag"
 
-import chapers from "api/resolve/query/story/chaptersFromStory"
-
-// import currentCollaborator from "api/resolve/query/story/currentCollaborator"
+import chapers from "api/resolve/query/story/chapter/list"
+import collaborators from "api/resolve/query/story/collaborators"
+import currentCollaborator from "api/resolve/query/story/currentCollaborator"
 
 const TStory = Type({
   name: "Story",
   type: "Represends available information about the stories",
   extends: TStoryMinimal
 })
-  // .resolve({
-  //   name: "currentCollaborator",
-  //   type: TStoryCollaborator,
-  //   handler: currentCollaborator,
-  //   noArgs: true
-  // })
-  // .resolve({
-  //   name: "collaborators",
-  //   type: [TStoryCollaborator, true],
-  //   required: true,
-  //   noArgs: true,
-  //   handler() { }
-  // })
+  .resolve({
+    name: "currentCollaborator",
+    type: TStoryCollaboratorPage,
+    handler: currentCollaborator,
+    noArgs: true
+  })
+  .resolve({
+    name: "collaborators",
+    type: TStoryCollaboratorPage,
+    required: true,
+    noArgs: true,
+    handler: collaborators
+  })
   .resolve({
     name: "chapters",
-    type: [TStoryChapter, true],
+    type: TStoryChapterPage,
     required: true,
-    handler: chapers
+    handler: chapers,
+    noArgs: true
   })
-  .end()
+  .field({
+    name: "tags",
+    type: [TStoryTag, true]
+  })
 .end()
 
 export default TStory

@@ -2,16 +2,14 @@ import bind from "core/helper/graphql/normalizeParams"
 import pagination from "core/helper/db/pagination"
 import toPage from "core/helper/graphql/toPage"
 
-import Chapter from "model/Chapter"
+import Collaborator from "model/Collaborator"
 
-async function getChapters({parent: story, args}) {
+async function getCollaborators({parent: story, args}) {
   const storyId = story ? story.id : args.storyId
-
   const pageInfo = pagination(args)
-  const where = {isDraft: false, storyId}
 
-  return Chapter.findAndCountAll({...pageInfo, where})
+  return Collaborator.findAndCountAll({...pageInfo, where: storyId})
     .then(toPage(pageInfo))
 }
 
-export default getChapters |> bind
+export default getCollaborators |> bind

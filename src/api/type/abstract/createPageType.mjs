@@ -11,7 +11,9 @@ const isArray = Array.isArray
 
 const rowsToList = ({rows: list}) => list
 
-const hasNextPage = ({limit, page, count}) => count - (limit * page) > 0
+const hasNextPage = ({limit, page, count}) => {
+  return count - (limit * page) > 0
+}
 
 function getTypeInfo(t) {
   if (isArray(t)) {
@@ -29,6 +31,22 @@ function createPageType({type: target, isRequired, ...field}) {
   return Type(typeName)
     .field({
       name: "count",
+      type: TInt,
+      required: true
+    })
+    .field({
+      name: "limit",
+      type: TInt,
+      required: true,
+      description: "Return the actual limit of per-page entities"
+    })
+    .field({
+      name: "offset",
+      type: TInt,
+      required: true
+    })
+    .field({
+      name: "page",
       type: TInt,
       required: true
     })
