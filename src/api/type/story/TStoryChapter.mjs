@@ -3,7 +3,7 @@ import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 import Type from "parasprite/Type"
 
 import TStoryChapterContent from "api/type/story/TStoryChapterContent"
-import content from "api/resolve/query/story/chapterContent"
+import content from "api/resolve/query/story/chapter/content"
 
 const TStoryChapter = Type({
   name: "StoryChapter",

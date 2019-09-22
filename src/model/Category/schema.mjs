@@ -1,8 +1,6 @@
 import {DataTypes as t} from "sequelize"
 
-import BadRequest from "core/error/http/BadRequest"
-
-const COLOR_EXPR = /^[0-9a-f]{6}$/
+import createSlug from "core/helper/util/createSlug"
 
 const schema = {
   id: {
@@ -11,6 +9,16 @@ const schema = {
     primaryKey: true
   },
   name: {
+    type: t.STRING,
+    allowNull: false,
+    unique: true,
+
+    set(name) {
+      this.setDataValue("name", name)
+      this.setDataValue("slug", createSlug(name))
+    }
+  },
+  slug: {
     type: t.STRING,
     allowNull: false
   },
@@ -23,17 +31,6 @@ const schema = {
     type: t.INTEGER.UNSIGNED,
     allowNull: false,
     unique: true
-  },
-  color: {
-    type: t.CHAR(6),
-    allowNull: false,
-    validate: {
-      isValid(value) {
-        if (COLOR_EXPR.test(value)) {
-          throw new BadRequest("Invalid color format.")
-        }
-      }
-    }
   }
 }
 

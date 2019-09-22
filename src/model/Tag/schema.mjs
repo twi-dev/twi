@@ -1,16 +1,6 @@
 import {DataTypes as t} from "sequelize"
 
-import slugify from "@sindresorhus/slugify"
-import partial from "lodash/partial"
-
-const slug = partial(slugify, [partial.placeholder, {
-  customReplacements: [
-    [":", " colon "],
-    [",", " comma "],
-    [".", " period "],
-    ["@", " at "]
-  ]
-}])
+import createSlug from "core/helper/util/createSlug"
 
 const schema = {
   id: {
@@ -18,13 +8,15 @@ const schema = {
     autoIncrement: true,
     primaryKey: true
   },
+  categoryId: t.INTEGER.UNSIGNED,
   name: {
     type: t.STRING,
     allowNull: false,
+    unique: true,
 
     set(name) {
       this.setDataValue("name", name)
-      this.setDataValue("slug", slug(name))
+      this.setDataValue("slug", createSlug(name))
     }
   },
   description: t.STRING,
