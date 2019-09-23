@@ -4,12 +4,16 @@ import createModel from "core/db/createModel"
 
 import schema from "./schema"
 
-@createModel(schema)
+@createModel(schema, {paranoid: true})
 class Story extends Model {
   get isTranslation() {
     const {originalAuthor, originalTitle, originalUrl} = this
 
     return Boolean(originalAuthor && originalTitle && originalUrl)
+  }
+
+  get isDeleted() {
+    return Boolean(this.deletedAt)
   }
 
   hasPublisher(user) {

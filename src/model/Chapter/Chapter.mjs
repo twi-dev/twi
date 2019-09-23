@@ -6,7 +6,7 @@ import toHtml from "core/md/toHtml"
 import indexes from "./indexes"
 import schema from "./schema"
 
-@createModel(schema, {indexes})
+@createModel(schema, {indexes, paranoid: true})
 class Chapter extends Model {
   static async create({content, ...chapter}, options) {
     [chapter.contentMd, chapter.contentHtml] = [content, await toHtml(content)]
@@ -17,6 +17,10 @@ class Chapter extends Model {
     }
 
     return super.create(chapter, options)
+  }
+
+  get isDeleted() {
+    return Boolean(this.deletedAt)
   }
 
   async update({content, ...chapter}, options) {
