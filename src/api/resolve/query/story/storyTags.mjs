@@ -20,7 +20,7 @@ async function getTags({parent: story, args}) {
   }
 
   return waterfall([
-    () => Promise.all([story.getTags.bind(story), story.countTags.bind(story)]),
+    () => Promise.all([story.getTags.call(story), story.countTags.call(story)]),
 
     ([rows, count]) => ({rows, count}),
 
