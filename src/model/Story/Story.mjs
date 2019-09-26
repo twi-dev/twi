@@ -12,7 +12,7 @@ class Story extends Model {
     return Boolean(originalAuthor && originalTitle && originalUrl)
   }
 
-  get isDeleted() {
+  get isRemoved() {
     return Boolean(this.deletedAt)
   }
 

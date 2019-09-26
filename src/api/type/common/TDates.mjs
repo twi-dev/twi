@@ -18,7 +18,14 @@ const TDates = Type("Dates")
     type: TDateTime,
     noArgs: true,
     handler: serialize("updatedAt"),
-    description: "The date of last story update."
+    description: "The date of last entity update."
+  })
+  .resolve({
+    name: "deletedAt",
+    type: TDateTime,
+    noArgs: true,
+    handler: serialize("deletedAt"),
+    description: "The date entity's was removed."
   })
 .end()
 

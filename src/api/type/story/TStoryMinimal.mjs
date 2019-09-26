@@ -11,7 +11,6 @@ import words from "core/helper/string/concatWords"
 import TDates from "api/type/common/TDates"
 
 import TUser from "api/type/user/TUser"
-import TStoryCollaborator from "api/type/story/TStoryCollaborator"
 
 import publisher from "api/resolve/query/story/publisher"
 import dates from "api/resolve/query/common/dates"
@@ -51,10 +50,6 @@ const TStoryMinimal = Type({
     handler: publisher,
     required: true,
     noArgs: true
-  })
-  .field({
-    name: "collaborators",
-    type: [TStoryCollaborator, true]
   })
   .resolve({
     name: "dates",

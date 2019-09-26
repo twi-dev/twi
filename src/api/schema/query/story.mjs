@@ -1,11 +1,11 @@
 import {GraphQLInt as TInt} from "graphql"
 
-import TStory from "api/type/story/TStory"
+import TStoryOrRemovedStory from "api/type/story/TStoryOrRemovedStory"
 
 import story from "api/resolve/query/story/story"
 
 const resolve = {
-  type: TStory,
+  type: TStoryOrRemovedStory,
   required: true,
   handler: story,
   description: "Get a story by its ID."

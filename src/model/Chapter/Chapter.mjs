@@ -19,7 +19,7 @@ class Chapter extends Model {
     return super.create(chapter, options)
   }
 
-  get isDeleted() {
+  get isRemoved() {
     return Boolean(this.deletedAt)
   }
 
