@@ -8,7 +8,7 @@ async function getChapters({parent: story, args}) {
   const storyId = story ? story.id : args.storyId
 
   const pageInfo = pagination(args)
-  const where = {isDraft: false, deletedAt: null, storyId}
+  const where = {isDraft: false, storyId}
 
   return Chapter.findAndCountAll({...pageInfo, where})
     .then(toPage(pageInfo))

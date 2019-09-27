@@ -6,7 +6,7 @@ import Story from "model/Story"
 import File from "model/File"
 import User from "model/User"
 
-const where = {isDraft: false, isFinished: true, deletedAt: null}
+const where = {isDraft: false, isFinished: true}
 
 const include = [
   {
