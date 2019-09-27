@@ -7,7 +7,7 @@ const TStoryChapterOrStoryChapterRemoved = Union(
   "TStoryChapterOrStoryChapterRemoved",
   [TStoryChapter, TStoryChapterRemoved]
 )
-  .match(({isDeleted}) => isDeleted && TStoryChapterRemoved)
+  .match(({isRemoved}) => isRemoved && TStoryChapterRemoved)
   .match(() => TStoryChapter)
 .end()
 

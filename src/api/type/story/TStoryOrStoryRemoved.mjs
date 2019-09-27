@@ -6,7 +6,7 @@ import TStory from "./TStory"
 const types = [TStory, TStoryRemoved]
 
 const TStoryOrStoryRemoved = Union("StoryOrStoryRemoved", types)
-  .match(({isDeleted}) => isDeleted && TStoryRemoved)
+  .match(({isRemoved}) => isRemoved && TStoryRemoved)
   .match(() => TStory)
 .end()
 

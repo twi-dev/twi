@@ -8,7 +8,7 @@ import getStoryAbilities from "acl/story"
 async function getStory({args, ctx}) {
   const {user} = ctx.state
 
-  const story = await Story.findByPk(args.id)
+  const story = await Story.findByPk(args.id, {paranoid: false})
 
   const acl = getStoryAbilities({user})
   if (!story || acl.cannot("read", story)) {

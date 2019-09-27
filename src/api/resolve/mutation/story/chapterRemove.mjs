@@ -12,7 +12,7 @@ import Collaborator from "model/Collaborator"
 import getChapterAbilities from "acl/chapter"
 import getCommonAbilities from "acl/common"
 
-const include = [{model: Story, as: "story", required: true}]
+const include = [{model: Story, as: "story", required: true, paranoid: false}]
 
 const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
   const {user} = ctx.state

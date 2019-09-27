@@ -7,7 +7,7 @@ import Chapter from "model/Chapter"
 import getStoryAbilities from "acl/story"
 import getChapterAbilities from "acl/chapter"
 
-const include = [{model: Story, as: "story", required: true}]
+const include = [{model: Story, as: "story", required: true, paranoid: false}]
 
 async function getChapter({args, ctx}) {
   const {storyId, chapterNumber: order} = args
@@ -16,7 +16,9 @@ async function getChapter({args, ctx}) {
   const aclStory = getStoryAbilities({user})
   const aclChapter = getChapterAbilities({user})
 
-  const chapter = await Chapter.findOne({include, where: {storyId, order}})
+  const chapter = await Chapter.findOne({
+    include, paranoid: false, where: {storyId, order}
+  })
 
   if (
     !chapter
