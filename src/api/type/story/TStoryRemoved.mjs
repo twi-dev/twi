@@ -12,8 +12,9 @@ import TStoryTagPage from "api/type/story/TStoryTagPage"
 
 import publisher from "api/resolve/query/story/publisher"
 import tags from "api/resolve/query/story/storyTags"
+import dates from "api/resolve/query/common/dates"
 
-const TRemovedStory = Type("RemovedStory")
+const TStoryRemoved = Type("StoryRemoved")
   .field({
     name: "id",
     type: TInt,
@@ -24,10 +25,12 @@ const TRemovedStory = Type("RemovedStory")
     type: TString,
     required: true
   })
-  .field({
+  .resolve({
     name: "dates",
     type: TDates,
-    required: true
+    required: true,
+    noArgs: true,
+    handler: dates
   })
   .resolve({
     name: "publisher",
@@ -50,4 +53,4 @@ const TRemovedStory = Type("RemovedStory")
   })
 .end()
 
-export default TRemovedStory
+export default TStoryRemoved

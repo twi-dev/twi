@@ -1,10 +1,10 @@
 import {GraphQLInt as TInt} from "graphql"
 
-import TStoryChapter from "api/type/story/TStoryChapter"
+import TChapterUnion from "api/type/story/TStoryChapterOrStoryChapterRemoved"
 import chapter from "api/resolve/query/story/chapter"
 
 const resolve = {
-  type: TStoryChapter,
+  type: TChapterUnion,
   handler: chapter,
   required: true
 }
