@@ -1,3 +1,5 @@
-const getDates = ({createdAt, updatedAt}) => ({createdAt, updatedAt})
+const getDates = ({createdAt, updatedAt, deletedAt}) => ({
+  createdAt, updatedAt, deletedAt
+})
 
 export default getDates
