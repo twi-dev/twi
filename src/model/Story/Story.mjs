@@ -3,8 +3,9 @@ import {Model} from "sequelize"
 import createModel from "core/db/createModel"
 
 import schema from "./schema"
+import hooks from "./hooks"
 
-@createModel(schema, {paranoid: true})
+@createModel(schema, {hooks, paranoid: true})
 class Story extends Model {
   get isTranslation() {
     const {originalAuthor, originalTitle, originalUrl} = this
