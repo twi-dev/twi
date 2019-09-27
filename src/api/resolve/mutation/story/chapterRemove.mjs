@@ -1,6 +1,5 @@
 import bind from "core/helper/graphql/normalizeParams"
 import Forbidden from "core/error/http/Forbidden"
-import serial from "core/helper/array/runSerial"
 import NotFound from "core/error/http/NotFound"
 import auth from "core/auth/checkUser"
 import conn from "core/db/connection"
@@ -37,13 +36,7 @@ const chapterRemove = ({args, ctx}) => conn.transaction(async transaction => {
     throw new Forbidden("You cannot add a new chapter.")
   }
 
-  return serial([
-    () => chapter.destroy({transaction}),
-
-    () => chapter.story.decrement("chaptersCount", {transaction}),
-
-    () => chapterId
-  ])
+  return chapter.destroy({transaction}).then(() => chapterId)
 })
 
 export default chapterRemove |> auth |> bind
