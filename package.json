@@ -85,6 +85,7 @@
     "nanoid": "2.1.1",
     "node-yaml": "4.0.1",
     "nodemailer": "6.3.0",
+    "object-deep-from-entries": "^0.3.0",
     "parasprite": "1.0.0-beta.8",
     "promise-fs": "2.1.1",
     "pug": "2.0.4",

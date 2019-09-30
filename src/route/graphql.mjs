@@ -7,6 +7,7 @@ import {Body} from "then-busboy"
 import {graphqlKoa} from "apollo-server-koa/dist/koaApollo"
 import {renderPlaygroundPage} from "graphql-playground-html"
 
+import toObject from "object-deep-from-entries"
 import Router from "@koa/router"
 import ms from "ms"
 
@@ -20,16 +21,24 @@ const {server, env} = config
 // GraphQL endpoint name for GraphiQL (based on current module name)
 const endpoint = `/${p.basename(__filename, p.extname(__filename))}`
 
-const extractFile = ({path, basename, extname, filename, mime, enc}) => ({
-  path, basename, extname, filename, mime, enc
-})
+const extractFile = (prev, [path, file]) => ([
+  ...prev,
+
+  [[...path, "path"], file.path],
+  [[...path, "basename"], file.basename],
+  [[...path, "extname"], file.extname],
+  [[...path, "filename"], file.filename],
+  [[...path, "mime"], file.mime],
+  [[...path, "enc"], file.enc]
+])
 
 function extractFiles(ctx, next) {
   const {body} = ctx.request.body
 
   if (body instanceof Body) {
-    ctx.request.body = Body.json([
-      ...body.fields(), ...body.files().map(extractFile)
+    ctx.request.body = toObject([
+      ...body.fields.entries(),
+      ...body.files.entries().reduce(extractFile)
     ])
   }
 
