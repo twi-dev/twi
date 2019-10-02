@@ -7,7 +7,7 @@ import {
 
 import Type from "parasprite/Type"
 
-const isArray = Array.isArray
+const {isArray} = Array
 
 const rowsToList = ({rows: list}) => list
 
