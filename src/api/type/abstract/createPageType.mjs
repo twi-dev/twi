@@ -13,6 +13,8 @@ const rowsToList = ({rows: list}) => list
 
 const hasNextPage = ({limit, page, count}) => count - (limit * page) > 0
 
+const getLastPage = ({limit, page, count}) => Math.round(count / (limit * page))
+
 function getTypeInfo(t) {
   if (isArray(t)) {
     return t
@@ -54,6 +56,14 @@ function createPageType({type: target, isRequired, ...field}) {
       required: true,
       noArgs: true,
       handler: hasNextPage
+    })
+    .resolve({
+      name: "last",
+      type: TInt,
+      required: true,
+      noArgs: true,
+      handler: getLastPage,
+      description: "Returns the number of the last page"
     })
     .resolve({
       ...field,
