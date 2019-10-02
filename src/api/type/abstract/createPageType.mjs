@@ -9,11 +9,11 @@ import Type from "parasprite/Type"
 
 const {isArray} = Array
 
-const rowsToList = ({rows: list}) => list
+const rowsToList = ({rows}) => rows
 
 const hasNextPage = ({limit, page, count}) => count - (limit * page) > 0
 
-const getLastPage = ({limit, page, count}) => Math.round(count / (limit * page))
+const getLastPage = ({limit, page, count}) => Math.ceil(count / (limit * page))
 
 function getTypeInfo(t) {
   if (isArray(t)) {
