@@ -1,5 +1,5 @@
-import {GraphQLString as TString} from "graphql"
 import {GraphQLURL as TUrl} from "graphql-custom-types"
+import {GraphQLString as TString} from "graphql"
 
 import Type from "parasprite/Type"
 
