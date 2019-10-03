@@ -3,6 +3,9 @@ import {GraphQLString as TString} from "graphql"
 
 import Type from "parasprite/Type"
 
+import sessions from "api/resolve/query/auth/sessions"
+import TAuthSessionPage from "api/type/auth/TAuthSessionPage"
+
 import TUser from "./TUser"
 
 const TViewer = Type({
@@ -27,6 +30,13 @@ const TViewer = Type({
     type: TString,
     description: "User accoutn status",
     required: true
+  })
+  .resolve({
+    name: "sessions",
+    type: TAuthSessionPage,
+    required: true,
+    noArgs: true,
+    handler: sessions
   })
 .end()
 
