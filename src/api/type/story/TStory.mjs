@@ -7,8 +7,8 @@ import TStoryTagPage from "api/type/story/TStoryTagPage"
 
 import tags from "api/resolve/query/story/storyTags"
 import chapers from "api/resolve/query/story/chapter/list"
-import collaborators from "api/resolve/query/story/collaborators"
-import currentCollaborator from "api/resolve/query/story/currentCollaborator"
+import collaborators from "api/resolve/query/story/collaborator/list"
+import currentCollaborator from "api/resolve/query/story/collaborator/current"
 
 const TStory = Type({
   name: "Story",
