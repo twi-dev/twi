@@ -1,6 +1,6 @@
 import {Model} from "sequelize"
 
-import waterfall from "core/helper/array/runWaterfall"
+import parallel from "core/helper/array/runParallel"
 import bind from "core/helper/graphql/normalizeParams"
 import pagination from "core/helper/db/pagination"
 import toPage from "core/helper/graphql/toPage"
@@ -19,13 +19,8 @@ async function getTags({parent: story, args}) {
     return toPage(pageInfo)({rows: [], count: 0})
   }
 
-  return waterfall([
-    () => Promise.all([story.getTags.call(story), story.countTags.call(story)]),
-
-    ([rows, count]) => ({rows, count}),
-
-    toPage(pageInfo)
-  ])
+  return parallel([() => story.getTags(), () => story.countTags()])
+    .then(toPage(pageInfo))
 }
 
 export default getTags |> bind
