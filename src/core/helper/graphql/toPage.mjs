@@ -2,7 +2,7 @@ import isNumber from "lodash/isNumber"
 
 const {isArray} = Array
 
-const normalize = fn => data => {
+const normalize = fn => (data = []) => {
   if (!isArray(data)) {
     return fn(data)
   }

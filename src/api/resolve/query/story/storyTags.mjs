@@ -16,7 +16,7 @@ async function getTags({parent: story, args}) {
   const pageInfo = pagination(args)
 
   if (!story) {
-    return toPage(pageInfo)({rows: [], count: 0})
+    return toPage(pageInfo)()
   }
 
   return parallel([() => story.getTags(), () => story.countTags()])
