@@ -1,5 +1,5 @@
+import getPageInfo from "core/helper/graphql/getPageInfo"
 import bind from "core/helper/graphql/normalizeParams"
-import pagination from "core/helper/db/pagination"
 import toPage from "core/helper/graphql/toPage"
 
 import Story from "model/Story"
@@ -20,7 +20,7 @@ const include = [
 ]
 
 function getStories({args}) {
-  const pageInfo = pagination(args)
+  const pageInfo = getPageInfo(args)
 
   return Story.findAndCountAll({...pageInfo, where, include})
     .then(toPage(pageInfo))

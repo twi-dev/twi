@@ -3,7 +3,7 @@ import create from "core/helper/decorator/createDecorator"
 /**
  * Applies resolvver's params as a single object for better experience
  *
- * @param {object | array} [parent = undefined]
+ * @param {any} [parent = undefined]
  * @param {object} args
  * @param {Koa.Context} context
  * @param {object} node
