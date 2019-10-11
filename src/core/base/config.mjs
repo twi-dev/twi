@@ -16,12 +16,10 @@ const setUrl = ({secure, host: hostname, ...url}) => format({
   ...url, hostname, protocol: secure ? "https" : "http"
 })
 
-const name = process.env.NODE_ENV || "name"
-
+const name = process.env.NODE_ENV
 const dev = name !== "production"
 const test = name === "test"
 const debug = name === "debug"
-
 const env = {name, dev, test, debug}
 
 const defaultConfig = readSync(join(CONFIGS_ROOT, "default"))
