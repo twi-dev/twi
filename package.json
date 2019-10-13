@@ -17,7 +17,7 @@
     "w": "npm run watch",
     "test": "npm run make:test && ava && npm run cleanup && npm run make",
     "make:test": "babel src -s -d . --copy-files --include-dotfiles",
-    "cleanup": "rimraf core model db api route test",
+    "cleanup": "rimraf core model db api route test setup",
     "cleanup:all": "npm run cleanup && rimraf .nyc_output coverage",
     "lint": "eslint bin build src migration",
     "staged": "lint-staged",

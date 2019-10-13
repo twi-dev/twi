@@ -25,7 +25,19 @@ const schema = {
   prefix: {
     type: t.STRING,
     unique: true,
-    comment: "Prefix that is used to match category to where a tag belongs."
+    comment: "Prefix that is used to match category to where a tag belongs.",
+
+    set(prefix) {
+      if (!prefix) {
+        return undefined
+      }
+
+      if (!prefix.endsWith(":")) {
+        prefix += ":"
+      }
+
+      this.setDataValue("prefix", prefix)
+    }
   },
   order: {
     type: t.INTEGER.UNSIGNED,
