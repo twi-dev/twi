@@ -44,5 +44,4 @@ function checkUser(messageOrTarget) {
   return checkUserDecorator()(messageOrTarget)
 }
 
-export default checkUser
-export {checkUserDecorator}
+export {checkUser as default, checkUserDecorator}
