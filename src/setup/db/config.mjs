@@ -34,4 +34,4 @@ const config = toObject(environments.map(configName => [
   normalize(merge({}, defaultConfig.database, readConfig(configName).database))
 ]))
 
-export default config
+module.exports = config
