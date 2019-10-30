@@ -86,6 +86,8 @@ const up = q => q.sequelize.transaction(async transaction => {
   )
 })
 
-const down = q => q.bulkDelete("categories")
+const down = q => q.sequelize.transaction(transaction => (
+  q.bulkDelete("categories", {transaction})
+))
 
 export {up, down}
