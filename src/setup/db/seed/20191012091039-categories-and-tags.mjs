@@ -70,8 +70,7 @@ const up = q => q.sequelize.transaction(async transaction => {
           tags.map(
             name => ({
               name,
-              slug:
-              createSlug(name),
+              slug: createSlug(name),
               category_id: id,
               created_at: new Date(),
               updated_at: new Date()
