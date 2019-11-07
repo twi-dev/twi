@@ -17,9 +17,7 @@ async function loadTags(name) {
       join(__dirname, "..", "data", `tags-${createSlug(name)}.json`),
 
       "utf8"
-    )
-
-    tags = JSON.parse(tags)
+    ).then(JSON.parse)
   } catch (err) {
     if (err.code !== "ENOENT") {
       throw err
@@ -51,7 +49,9 @@ const up = q => q.sequelize.transaction(async transaction => {
   categories = await q.sequelize.query(
     "SELECT * FROM categories",
 
-    {transaction}
+    {
+      transaction
+    }
   ).then(first)
 
   categories = await Promise.all(
