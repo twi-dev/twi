@@ -12,7 +12,7 @@ import normalize from "setup/db/helper/normalizeCategoryOrTag"
 
 const up = q => q.sequelize.transaction(async transaction => {
   let categories = await waterfall([
-    () => readFile(join(__dirname, "..", "categories.json")),
+    () => readFile(join(__dirname, "..", "data", "categories.json")),
 
     content => JSON.parse(content),
 
@@ -33,14 +33,14 @@ const up = q => q.sequelize.transaction(async transaction => {
   ).then(first)
 
   categories = categories
-    .filter(name => !exists.some(category => category.name === name))
+    .filter(({slug}) => !exists.some(category => category.slug === slug))
 
   // Do nothing and exit if no new categories found
   if (isEmpty(categories)) {
     return undefined
   }
 
-  const {order} = last(exists)
+  const shift = isEmpty(exists) ? 0 : last(exists).order
 
   return q.bulkInsert(
     "categories",
@@ -48,7 +48,7 @@ const up = q => q.sequelize.transaction(async transaction => {
     categories.map((category, index) => ({
       ...normalize(category),
 
-      order: isEmpty(categories) ? index + 1 : order + index + 1
+      order: shift + index + 1
     })),
 
     {

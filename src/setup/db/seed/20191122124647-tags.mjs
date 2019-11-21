@@ -40,7 +40,7 @@ const up = q => q.sequelize.transaction(async transaction => {
 
   categories = await Promise.all(
     categories.map(
-      ({categoryId, name}) => load(name).then(tags => ({categoryId, tags}))
+      ({categoryId, slug}) => load(slug).then(tags => ({categoryId, tags}))
     )
   )
 
@@ -52,7 +52,7 @@ const up = q => q.sequelize.transaction(async transaction => {
           list.map(tag => ({
             ...normalize(tag),
 
-            categoryId
+            category_id: categoryId
           }))
         )
       )
@@ -81,11 +81,11 @@ const up = q => q.sequelize.transaction(async transaction => {
     return undefined
   }
 
-  return q.bulkInsert(tags, {transaction})
+  return q.bulkInsert("tags", tags, {transaction})
 })
 
 const down = q => q.sequelize.transaction(transaction => (
-  q.bulkDelete("categories", {transaction})
+  q.bulkDelete("tags", {transaction})
 ))
 
 export {up, down}
