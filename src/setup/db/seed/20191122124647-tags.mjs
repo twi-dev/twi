@@ -1,6 +1,7 @@
 import {join} from "path"
 
 import {readFile} from "promise-fs"
+import {Op as op} from "sequelize"
 
 import isEmpty from "lodash/isEmpty"
 import first from "lodash/first"
@@ -104,7 +105,7 @@ const down = q => q.sequelize.transaction(async transaction => {
     list => list.map(({slug}) => slug)
   ])
 
-  return q.bulkDelete("tags", {slug: tags}, {transaction})
+  return q.bulkDelete("tags", {slug: {[op.in]: tags}}, {transaction})
 })
 
 export {up, down}
