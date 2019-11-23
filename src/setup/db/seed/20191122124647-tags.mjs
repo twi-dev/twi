@@ -6,10 +6,12 @@ import isEmpty from "lodash/isEmpty"
 import first from "lodash/first"
 
 import flat from "core/helper/array/flat"
+import waterfall from "core/helper/array/runWaterfall"
 
 import normalize from "setup/db/helper/normalizeCategoryOrTag"
+import loadCategories from "setup/db/helper/loadCategories"
 
-async function load(category) {
+async function loadTag(category) {
   let tags = []
 
   try {
@@ -27,24 +29,14 @@ async function load(category) {
   return tags
 }
 
-const up = q => q.sequelize.transaction(async transaction => {
-  let categories = await q.sequelize.query(
-    "SELECT id as categoryId, slug FROM categories",
-
-    {
-      transaction,
-
-      raw: true
-    }
-  ).then(first)
-
+async function loadTags(categories) {
   categories = await Promise.all(
     categories.map(
-      ({categoryId, slug}) => load(slug).then(tags => ({categoryId, tags}))
+      ({categoryId, slug}) => loadTag(slug).then(tags => ({categoryId, tags}))
     )
   )
 
-  let tags = flat(
+  const tags = flat(
     categories
       .filter(({tags: list}) => !isEmpty(list))
       .map(
@@ -57,6 +49,22 @@ const up = q => q.sequelize.transaction(async transaction => {
         )
       )
   )
+
+  return tags
+}
+
+const up = q => q.sequelize.transaction(async transaction => {
+  const categories = await q.sequelize.query(
+    "SELECT id as categoryId, slug FROM categories",
+
+    {
+      transaction,
+
+      raw: true
+    }
+  ).then(first)
+
+  let tags = loadTags(categories)
 
   if (isEmpty(tags)) {
     return undefined
@@ -84,8 +92,19 @@ const up = q => q.sequelize.transaction(async transaction => {
   return q.bulkInsert("tags", tags, {transaction})
 })
 
-const down = q => q.sequelize.transaction(transaction => (
-  q.bulkDelete("tags", {transaction})
-))
+const down = q => q.sequelize.transaction(async transaction => {
+  const categories = await loadCategories()
+    .then(list => list.map(({slug}) => slug))
+
+  const tags = await waterfall([
+    () => Promise.all(
+      categories.map(({slug}) => loadTag(slug).then(list => list))
+    ),
+
+    list => list.map(({slug}) => slug)
+  ])
+
+  return q.bulkDelete("tags", {slug: tags}, {transaction})
+})
 
 export {up, down}

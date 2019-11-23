@@ -1,23 +1,13 @@
-import {join} from "path"
-
-import {readFile} from "promise-fs"
-
 import last from "lodash/last"
 import first from "lodash/first"
 import isEmpty from "lodash/isEmpty"
 
-import waterfall from "core/helper/array/runWaterfall"
+import {Op as op} from "sequelize"
 
-import normalize from "setup/db/helper/normalizeCategoryOrTag"
+import load from "setup/db/helper/loadCategories"
 
 const up = q => q.sequelize.transaction(async transaction => {
-  let categories = await waterfall([
-    () => readFile(join(__dirname, "..", "data", "categories.json")),
-
-    content => JSON.parse(content),
-
-    list => list.map(normalize)
-  ])
+  let categories = await load()
 
   const exists = await q.sequelize.query(
     "SELECT * FROM categories WHERE slug IN (:categories)",
@@ -46,7 +36,7 @@ const up = q => q.sequelize.transaction(async transaction => {
     "categories",
 
     categories.map((category, index) => ({
-      ...normalize(category),
+      ...category,
 
       order: shift + index + 1
     })),
@@ -57,8 +47,22 @@ const up = q => q.sequelize.transaction(async transaction => {
   )
 })
 
-const down = q => q.sequelize.transaction(transaction => (
-  q.bulkDelete("categories", {transaction})
-))
+const down = q => q.sequelize.transaction(async transaction => {
+  const categories = await load().then(list => list.map(({slug}) => slug))
+
+  return q.bulkDelete(
+    "categories",
+
+    {
+      slug: {
+        [op.in]: categories
+      }
+    },
+
+    {
+      transaction
+    }
+  )
+})
 
 export {up, down}
