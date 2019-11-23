@@ -64,7 +64,7 @@ const up = q => q.sequelize.transaction(async transaction => {
     }
   ).then(first)
 
-  let tags = loadTags(categories)
+  let tags = await loadTags(categories)
 
   if (isEmpty(tags)) {
     return undefined
