@@ -2,18 +2,21 @@ import isPlainObject from "lodash/isPlainObject"
 
 import createSlug from "core/helper/util/createSlug"
 
-function normalizeCategoryOrTag(categoryOrTag) {
-  if (!isPlainObject(categoryOrTag)) {
-    categoryOrTag = {name: categoryOrTag}
+/**
+ * Assign common params both for category and tag
+ */
+function normalizeCategoryOrTag(value) {
+  if (isPlainObject(value)) {
+    throw new TypeError("Tag must be an object.")
   }
 
   const now = new Date()
 
   return {
-    ...categoryOrTag,
+    ...value,
 
-    name: categoryOrTag.name.toLowerCase(),
-    slug: createSlug(categoryOrTag.slug ?? categoryOrTag.name),
+    name: value.name.toLowerCase(),
+    slug: createSlug(value.slug ?? value.name),
     created_at: now,
     updated_at: now
   }

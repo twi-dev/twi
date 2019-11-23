@@ -4,7 +4,7 @@ import {readFile} from "promise-fs"
 
 import waterfall from "core/helper/array/runWaterfall"
 
-import normalize from "setup/db/helper/normalizeCategoryOrTag"
+import normalize from "setup/db/helper/normalizeCategory"
 
 const loadCategories = () => waterfall([
   () => readFile(join(__dirname, "..", "data", "categories.json")),

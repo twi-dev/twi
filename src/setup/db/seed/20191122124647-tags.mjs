@@ -9,8 +9,8 @@ import first from "lodash/first"
 import flat from "core/helper/array/flat"
 import waterfall from "core/helper/array/runWaterfall"
 
-import normalize from "setup/db/helper/normalizeCategoryOrTag"
 import loadCategories from "setup/db/helper/loadCategories"
+import normalize from "setup/db/helper/normalizeTag"
 
 async function loadTag(category) {
   let tags = []
