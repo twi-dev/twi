@@ -15,7 +15,7 @@ const schema = {
     unique: true,
 
     set(name) {
-      this.setDataValue("name", name)
+      this.setDataValue("name", name.toLowerCase())
       this.setDataValue("slug", createSlug(name))
     }
   },

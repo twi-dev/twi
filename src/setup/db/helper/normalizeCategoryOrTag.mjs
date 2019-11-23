@@ -12,6 +12,7 @@ function normalizeCategoryOrTag(categoryOrTag) {
   return {
     ...categoryOrTag,
 
+    name: categoryOrTag.name.toLowerCase(),
     slug: createSlug(categoryOrTag.slug ?? categoryOrTag.name),
     created_at: now,
     updated_at: now
