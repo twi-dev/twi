@@ -82,7 +82,7 @@ const up = q => q.sequelize.transaction(async transaction => {
         tags: tags.map(({slug}) => slug)
       }
     }
-  )
+  ).then(first)
 
   tags = tags.filter(({slug}) => !exists.some(tag => tag.slug === slug))
 

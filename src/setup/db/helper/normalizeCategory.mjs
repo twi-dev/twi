@@ -9,7 +9,7 @@ function normalizeCategory(category) {
 
   let {prefix, ...rest} = normalize(category)
 
-  if (!prefix.endsWith(":")) {
+  if (prefix && !prefix.endsWith(":")) {
     prefix += ":"
   }
 

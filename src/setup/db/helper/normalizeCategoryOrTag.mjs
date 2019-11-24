@@ -6,8 +6,8 @@ import createSlug from "core/helper/util/createSlug"
  * Assign common params both for category and tag
  */
 function normalizeCategoryOrTag(value) {
-  if (isPlainObject(value)) {
-    throw new TypeError("Tag must be an object.")
+  if (!isPlainObject(value)) {
+    throw new TypeError("Value must be an object.")
   }
 
   const now = new Date()
