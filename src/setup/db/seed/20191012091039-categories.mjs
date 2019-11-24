@@ -1,5 +1,5 @@
-import last from "lodash/last"
 import isEmpty from "lodash/isEmpty"
+import last from "lodash/last"
 
 import {Op as op} from "sequelize"
 

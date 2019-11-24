@@ -8,6 +8,7 @@
 
   {
     "name": "Original Character",
-    "prefix": "oc"
+    "prefix": "oc",
+    "slug": "oc"
   }
 ]
