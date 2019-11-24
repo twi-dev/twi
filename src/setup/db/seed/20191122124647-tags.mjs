@@ -4,7 +4,6 @@ import {readFile} from "promise-fs"
 import {Op as op} from "sequelize"
 
 import isEmpty from "lodash/isEmpty"
-import first from "lodash/first"
 
 import flat from "core/helper/array/flat"
 import waterfall from "core/helper/array/runWaterfall"
@@ -55,7 +54,7 @@ async function loadTags(categories) {
 }
 
 const up = q => q.sequelize.transaction(async transaction => {
-  const categories = await q.sequelize.query(
+  const [categories] = await q.sequelize.query(
     "SELECT id as categoryId, slug FROM categories",
 
     {
@@ -63,7 +62,7 @@ const up = q => q.sequelize.transaction(async transaction => {
 
       raw: true
     }
-  ).then(first)
+  )
 
   let tags = await loadTags(categories)
 
@@ -71,7 +70,7 @@ const up = q => q.sequelize.transaction(async transaction => {
     return undefined
   }
 
-  const exists = await q.sequelize.query(
+  const [exists] = await q.sequelize.query(
     "SELECT slug FROM tags WHERE slug IN (:tags)",
 
     {
@@ -82,7 +81,7 @@ const up = q => q.sequelize.transaction(async transaction => {
         tags: tags.map(({slug}) => slug)
       }
     }
-  ).then(first)
+  )
 
   tags = tags.filter(({slug}) => !exists.some(tag => tag.slug === slug))
 

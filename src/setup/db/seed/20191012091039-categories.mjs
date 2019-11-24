@@ -1,5 +1,4 @@
 import last from "lodash/last"
-import first from "lodash/first"
 import isEmpty from "lodash/isEmpty"
 
 import {Op as op} from "sequelize"
@@ -9,7 +8,7 @@ import load from "setup/db/helper/loadCategories"
 const up = q => q.sequelize.transaction(async transaction => {
   let categories = await load()
 
-  const exists = await q.sequelize.query(
+  const [exists] = await q.sequelize.query(
     "SELECT * FROM categories WHERE slug IN (:categories)",
 
     {
@@ -20,7 +19,7 @@ const up = q => q.sequelize.transaction(async transaction => {
         categories: categories.map(({slug}) => slug)
       }
     }
-  ).then(first)
+  )
 
   categories = categories
     .filter(({slug}) => !exists.some(category => category.slug === slug))
