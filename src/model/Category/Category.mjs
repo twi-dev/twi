@@ -13,16 +13,14 @@ Category.beforeCreate(async (category, options) => {
   category.order = count + 1
 })
 
-Category.afterDestroy(({id}, options) => Category.decrement(
-  "order",
+Category.afterDestroy(({id}, options) => Category.decrement("order", {
+  ...options,
 
-  {
-    ...options,
-
-    where: {
+  where: {
+    id: {
       [op.gt]: id
     }
   }
-))
+}))
 
 export default Category

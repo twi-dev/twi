@@ -41,8 +41,7 @@ const schema = {
   },
   order: {
     type: t.INTEGER.UNSIGNED,
-    allowNull: false,
-    unique: true
+    allowNull: false
   }
 }
 

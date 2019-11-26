@@ -2,7 +2,7 @@ import Chapter from "model/Chapter/Chapter"
 
 const hooks = {
   /**
-   * Removed associated chapters in paranoid mode.
+   * Remove associated chapters in paranoid mode.
    */
   async beforeDestroy(story, options) {
     const {_modelOptions: modelOptions} = story
