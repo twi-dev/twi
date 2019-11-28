@@ -7,7 +7,7 @@ const resolve = {
   type: TRefreshToken,
   handler: logOut,
   required: true,
-  description: "Destroy current user's session."
+  description: "Destroys current user's session."
 }
 
 const args = {

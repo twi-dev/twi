@@ -7,7 +7,7 @@ const resolve = {
   type: TAuthTokens,
   required: true,
   handler: logIn,
-  description: "Create a new session for user found by given credentials."
+  description: "Creates a new session for user found by given credentials."
 }
 
 const user = [TAuthLogInInput, true]

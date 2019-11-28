@@ -6,7 +6,8 @@ import update from "api/resolve/mutation/story/update"
 const resolve = {
   type: TStory,
   required: true,
-  handler: update
+  handler: update,
+  description: "Updates a story associated with given ID."
 }
 
 const args = {

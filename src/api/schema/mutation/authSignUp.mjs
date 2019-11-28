@@ -7,7 +7,7 @@ const resolve = {
   type: TAuthTokens,
   required: true,
   handler: signUp,
-  description: "Create a new user with basic information."
+  description: "Creates a new user account filled with minimal information."
 }
 
 const args = {

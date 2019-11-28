@@ -7,7 +7,8 @@ const resolve = {
   type: TAuthTokens,
   required: true,
   handler: refresh,
-  description: "Refresh tokens pair for the further authorizations."
+  description: "Refreshes tokens for the further authorizations "
+    + "and returns the new pair."
 }
 
 const args = {

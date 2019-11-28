@@ -6,7 +6,8 @@ import create from "api/resolve/mutation/story/create"
 const resolve = {
   type: TStory,
   handler: create,
-  required: true
+  required: true,
+  description: "Creates a new story."
 }
 
 const args = {

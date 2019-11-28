@@ -6,7 +6,7 @@ const resolve = {
   type: TBoolean,
   required: true,
   handler: retry,
-  description: "Send email comfirmation message again."
+  description: "Executes account confirmation retry."
 }
 
 export {resolve}

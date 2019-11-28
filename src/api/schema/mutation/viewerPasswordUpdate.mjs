@@ -5,7 +5,9 @@ import TViewer from "api/type/user/TViewer"
 const resolve = {
   type: TViewer,
   required: true,
-  handler: update
+  handler: update,
+  description: "Updates user's password. This operation requires user "
+    + "to prove their old password first."
 }
 
 const args = {

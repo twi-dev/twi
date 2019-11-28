@@ -11,13 +11,13 @@ import Session from "model/Session"
 const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
   const {client} = ctx.state
 
-  const email = await get(args.hash)
+  const id = await get(args.hash)
 
-  if (!email) {
+  if (!id) {
     throw new BadRequest("Can't active a user: Bad token signature.")
   }
 
-  let user = await User.findOne({where: {email}}, {transaction})
+  let user = await User.findByPk(id, {transaction})
 
   if (!user) {
     throw new BadRequest("There's no user with such email.")

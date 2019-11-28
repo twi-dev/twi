@@ -5,7 +5,8 @@ import remove from "api/resolve/mutation/story/remove"
 const resolve = {
   type: TInt,
   required: true,
-  handler: remove
+  handler: remove,
+  description: "Removes a story associated with given ID."
 }
 
 const args = {

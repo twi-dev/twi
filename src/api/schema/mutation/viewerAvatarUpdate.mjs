@@ -5,7 +5,8 @@ import TFile from "api/type/common/TFile"
 const resolve = {
   type: TFile,
   required: true,
-  handler: update
+  handler: update,
+  description: "Adds/Updates user's avatar."
 }
 
 const args = {
