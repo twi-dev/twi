@@ -6,7 +6,7 @@ import {
 
 import Type from "parasprite/Type"
 
-import words from "core/helper/string/concatWords"
+import words from "lib/helper/string/concatWords"
 
 import TDates from "api/type/common/TDates"
 
