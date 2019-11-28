@@ -14,13 +14,13 @@ const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
   const id = await get(args.hash)
 
   if (!id) {
-    throw new BadRequest("Can't active a user: Bad token signature.")
+    throw new BadRequest("Can't activate a user: Bad token signature.")
   }
 
   let user = await User.findByPk(id, {transaction})
 
   if (!user) {
-    throw new BadRequest("There's no user with such email.")
+    throw new BadRequest("There's no such user.")
   }
 
   user = await serial([
