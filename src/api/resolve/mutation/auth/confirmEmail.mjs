@@ -14,7 +14,7 @@ const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
   const id = await get(args.hash)
 
   if (!id) {
-    throw new BadRequest("Can't activate user: Bad token signature.")
+    throw new BadRequest("The user cannot be activated: Bad token signature.")
   }
 
   let user = await User.findByPk(id, {transaction})
