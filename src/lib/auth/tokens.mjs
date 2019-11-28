@@ -30,7 +30,7 @@ function add({email, id}) {
 /**
  * Returns user's identifier assigned with given token
  *
- * @param {string} hasj
+ * @param {string} hash
  *
  * @return {number}
  */
