@@ -16,7 +16,7 @@ const expire = ms("1d")
  *
  * @param {User} user
  *
- * @return {string}
+ * @return {Promise<string>}
  */
 function add({email, id}) {
   const payload = JSON.stringify({email, userId: id, now: Date.now()})
@@ -32,14 +32,14 @@ function add({email, id}) {
  *
  * @param {string} hash
  *
- * @return {number}
+ * @return {Promise<number>}
  */
 const get = hash => store.get(concat([prefix, hash], sep))
 
 /**
  * Removes a token from the store by associated hash
  *
- * @param {string} hash
+ * @param {Promise<string>} hash
  */
 const remove = hash => store.del(concat([prefix, hash], sep))
 
