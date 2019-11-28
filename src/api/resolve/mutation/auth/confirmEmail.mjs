@@ -26,7 +26,7 @@ const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
   user = await serial([
     () => remove(args.hash),
 
-    () => Session.destroy({where: {userId: user.id}}, {transaction}),
+    () => Session.destroy({where: {userId: user.id}, transaction}),
 
     () => user.update({status: User.statuses.active}, {transaction}),
 
