@@ -20,7 +20,7 @@ deploy
 /db
 /acl
 /api
-/core
+/lib
 /route
 /setup
 /model

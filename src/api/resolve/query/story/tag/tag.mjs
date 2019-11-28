@@ -1,6 +1,6 @@
 import {Op as op} from "sequelize"
 
-import bind from "core/helper/graphql/normalizeParams"
+import bind from "lib/helper/graphql/normalizeParams"
 
 import Tag from "model/Tag"
 

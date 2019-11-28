@@ -1,9 +1,9 @@
 import addMilliseconds from "date-fns/addMilliseconds"
 import ms from "ms"
 
-import config from "core/base/config"
+import config from "lib/base/config"
 
-import {sign} from "core/helper/wrapper/jwt"
+import {sign} from "lib/helper/wrapper/jwt"
 
 // TOGO: Move JWT tokens to the different thread
 const {accessToken, refreshToken} = config.jwt

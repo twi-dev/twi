@@ -1,5 +1,5 @@
-import bind from "core/helper/graphql/normalizeParams"
-import auth from "core/auth/checkUser"
+import bind from "lib/helper/graphql/normalizeParams"
+import auth from "lib/auth/checkUser"
 
 import User from "model/User"
 

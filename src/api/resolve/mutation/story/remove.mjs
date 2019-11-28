@@ -1,8 +1,8 @@
-import bind from "core/helper/graphql/normalizeParams"
-import Forbidden from "core/error/http/Forbidden"
-import NotFound from "core/error/http/NotFound"
-import auth from "core/auth/checkUser"
-import conn from "core/db/connection"
+import bind from "lib/helper/graphql/normalizeParams"
+import Forbidden from "lib/error/http/Forbidden"
+import NotFound from "lib/error/http/NotFound"
+import auth from "lib/auth/checkUser"
+import conn from "lib/db/connection"
 
 import Story from "model/Story"
 import Collaborator from "model/Collaborator"

@@ -1,4 +1,4 @@
-import bind from "core/helper/graphql/normalizeParams"
+import bind from "lib/helper/graphql/normalizeParams"
 
 import Collaborator from "model/Collaborator"
 

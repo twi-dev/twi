@@ -1,5 +1,5 @@
-import bind from "core/helper/graphql/normalizeParams"
-import NotFound from "core/error/http/NotFound"
+import bind from "lib/helper/graphql/normalizeParams"
+import NotFound from "lib/error/http/NotFound"
 
 import User from "model/User"
 

@@ -1,6 +1,6 @@
 import {Model, Op as op} from "sequelize"
 
-import createModel from "core/db/createModel"
+import createModel from "lib/db/createModel"
 
 import schema from "./schema"
 

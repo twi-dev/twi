@@ -1,6 +1,6 @@
 import {DataTypes as t} from "sequelize"
 
-import createSlug from "core/helper/util/createSlug"
+import createSlug from "lib/helper/util/createSlug"
 
 const schema = {
   id: {

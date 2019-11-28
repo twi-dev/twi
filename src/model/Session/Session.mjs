@@ -4,12 +4,12 @@ import {Model, Op as op} from "sequelize"
 
 import pick from "lodash/pick"
 
-import {verify} from "core/helper/wrapper/jwt"
+import {verify} from "lib/helper/wrapper/jwt"
 
-import Unauthorized from "core/error/http/Unauthorized"
-import objectFlat from "core/helper/object/flat"
-import createModel from "core/db/createModel"
-import config from "core/base/config"
+import Unauthorized from "lib/error/http/Unauthorized"
+import objectFlat from "lib/helper/object/flat"
+import createModel from "lib/db/createModel"
+import config from "lib/base/config"
 
 import schema from "./schema"
 

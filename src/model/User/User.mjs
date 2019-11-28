@@ -3,9 +3,9 @@ import {Model} from "sequelize"
 
 import freeze from "js-flock/deepFreeze"
 
-import createModel from "core/db/createModel"
-import readOnly from "core/helper/decorator/readOnly"
-import BadRequest from "core/error/http/BadRequest"
+import createModel from "lib/db/createModel"
+import readOnly from "lib/helper/decorator/readOnly"
+import BadRequest from "lib/error/http/BadRequest"
 
 import schema from "./schema"
 

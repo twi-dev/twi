@@ -1,7 +1,7 @@
 import {Model} from "sequelize"
 
-import createModel from "core/db/createModel"
-import toHtml from "core/md/toHtml"
+import createModel from "lib/db/createModel"
+import toHtml from "lib/md/toHtml"
 
 import indexes from "./indexes"
 import schema from "./schema"

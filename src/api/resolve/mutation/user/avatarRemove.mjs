@@ -1,8 +1,8 @@
-import bind from "core/helper/graphql/normalizeParams"
-import serial from "core/helper/array/runSerial"
-import NotFound from "core/error/http/NotFound"
-import auth from "core/auth/checkUser"
-import conn from "core/db/connection"
+import bind from "lib/helper/graphql/normalizeParams"
+import serial from "lib/helper/array/runSerial"
+import NotFound from "lib/error/http/NotFound"
+import auth from "lib/auth/checkUser"
+import conn from "lib/db/connection"
 
 import User from "model/User"
 import File from "model/File"

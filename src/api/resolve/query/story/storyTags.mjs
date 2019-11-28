@@ -1,9 +1,9 @@
 import {Model} from "sequelize"
 
-import bind from "core/helper/graphql/normalizeParams"
-import getPageInfo from "core/helper/graphql/getPageInfo"
-import parallel from "core/helper/array/runParallel"
-import toPage from "core/helper/graphql/toPage"
+import bind from "lib/helper/graphql/normalizeParams"
+import getPageInfo from "lib/helper/graphql/getPageInfo"
+import parallel from "lib/helper/array/runParallel"
+import toPage from "lib/helper/graphql/toPage"
 
 import Story from "model/Story"
 

@@ -11,10 +11,10 @@ import toObject from "object-deep-from-entries"
 import Router from "@koa/router"
 import ms from "ms"
 
-import log from "core/log"
-import config from "core/base/config"
-import schema from "core/graphql/schema"
-import formatError from "core/graphql/formatError"
+import log from "lib/log"
+import config from "lib/base/config"
+import schema from "lib/graphql/schema"
+import formatError from "lib/graphql/formatError"
 
 const {server, env} = config
 

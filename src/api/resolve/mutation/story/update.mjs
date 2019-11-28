@@ -3,12 +3,12 @@ import {permittedFieldsOf} from "@casl/ability/extra"
 import pick from "lodash/pick"
 import isEmpty from "lodash/isEmpty"
 
-import bind from "core/helper/graphql/normalizeParams"
-import auth from "core/auth/checkUser"
-import conn from "core/db/connection"
+import bind from "lib/helper/graphql/normalizeParams"
+import auth from "lib/auth/checkUser"
+import conn from "lib/db/connection"
 
-import NotFound from "core/error/http/NotFound"
-import Forbidden from "core/error/http/Forbidden"
+import NotFound from "lib/error/http/NotFound"
+import Forbidden from "lib/error/http/Forbidden"
 
 import Collaborator from "model/Collaborator"
 import Story from "model/Story"

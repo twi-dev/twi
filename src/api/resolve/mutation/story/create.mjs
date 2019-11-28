@@ -1,6 +1,6 @@
-import bind from "core/helper/graphql/normalizeParams"
-import Forbidden from "core/error/http/Forbidden"
-import auth from "core/auth/checkUser"
+import bind from "lib/helper/graphql/normalizeParams"
+import Forbidden from "lib/error/http/Forbidden"
+import auth from "lib/auth/checkUser"
 
 import Story from "model/Story"
 import getCommonAbilities from "acl/common"

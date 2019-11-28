@@ -1,6 +1,6 @@
 import {DataTypes as t} from "sequelize"
 
-import BadRequest from "core/error/http/BadRequest"
+import BadRequest from "lib/error/http/BadRequest"
 
 import isCorrect from "./util/validateLogin"
 import isReserved from "./util/isReserved"

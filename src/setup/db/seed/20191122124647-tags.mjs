@@ -5,8 +5,8 @@ import {Op as op} from "sequelize"
 
 import isEmpty from "lodash/isEmpty"
 
-import flat from "core/helper/array/flat"
-import waterfall from "core/helper/array/runWaterfall"
+import flat from "lib/helper/array/flat"
+import waterfall from "lib/helper/array/runWaterfall"
 
 import loadCategories from "setup/db/helper/loadCategories"
 import normalize from "setup/db/helper/normalizeTag"

@@ -1,9 +1,9 @@
-import bind from "core/helper/graphql/normalizeParams"
-import BadRequest from "core/error/http/BadRequest"
-import serial from "core/helper/array/runSerial"
-import conn from "core/db/connection"
+import bind from "lib/helper/graphql/normalizeParams"
+import BadRequest from "lib/error/http/BadRequest"
+import serial from "lib/helper/array/runSerial"
+import conn from "lib/db/connection"
 
-import {get, remove} from "core/auth/tokens"
+import {get, remove} from "lib/auth/tokens"
 
 import User from "model/User"
 import Session from "model/Session"

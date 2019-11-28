@@ -1,7 +1,7 @@
-import Unauthorized from "core/error/http/Unauthorized"
-import bind from "core/helper/graphql/normalizeParams"
-import auth from "core/auth/checkUser"
-import conn from "core/db/connection"
+import Unauthorized from "lib/error/http/Unauthorized"
+import bind from "lib/helper/graphql/normalizeParams"
+import auth from "lib/auth/checkUser"
+import conn from "lib/db/connection"
 
 import User from "model/User"
 import Session from "model/Session"

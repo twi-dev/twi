@@ -1,12 +1,12 @@
 import {format} from "url"
 
-import {add} from "core/auth/tokens"
+import {add} from "lib/auth/tokens"
 
-import concat from "core/helper/string/concatFromArray"
-import bind from "core/helper/graphql/normalizeParams"
-import auth from "core/auth/checkUser"
-import mail from "core/mail/transport"
-import config from "core/base/config"
+import concat from "lib/helper/string/concatFromArray"
+import bind from "lib/helper/graphql/normalizeParams"
+import auth from "lib/auth/checkUser"
+import mail from "lib/mail/transport"
+import config from "lib/base/config"
 
 import User from "model/User"
 

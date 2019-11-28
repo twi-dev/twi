@@ -2,8 +2,8 @@ import {Model} from "sequelize"
 
 import freeze from "js-flock/deepFreeze"
 
-import createModel from "core/db/createModel"
-import readOnly from "core/helper/decorator/readOnly"
+import createModel from "lib/db/createModel"
+import readOnly from "lib/helper/decorator/readOnly"
 
 import schema from "./schema"
 

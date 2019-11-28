@@ -2,13 +2,13 @@ import {format} from "url"
 
 import omit from "lodash/omit"
 
-import {add} from "core/auth/tokens"
+import {add} from "lib/auth/tokens"
 
-import concat from "core/helper/string/concatFromArray"
-import bind from "core/helper/graphql/normalizeParams"
-import mail from "core/mail/transport"
-import config from "core/base/config"
-import conn from "core/db/connection"
+import concat from "lib/helper/string/concatFromArray"
+import bind from "lib/helper/graphql/normalizeParams"
+import mail from "lib/mail/transport"
+import config from "lib/base/config"
+import conn from "lib/db/connection"
 
 import Session from "model/Session"
 import User from "model/User"

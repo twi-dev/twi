@@ -1,7 +1,7 @@
-import bind from "core/helper/graphql/normalizeParams"
-import NotFound from "core/error/http/NotFound"
-import auth from "core/auth/checkUser"
-import conn from "core/db/connection"
+import bind from "lib/helper/graphql/normalizeParams"
+import NotFound from "lib/error/http/NotFound"
+import auth from "lib/auth/checkUser"
+import conn from "lib/db/connection"
 
 import User from "model/User"
 import Contacts from "model/Contacts"
