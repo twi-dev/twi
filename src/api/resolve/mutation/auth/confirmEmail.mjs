@@ -30,7 +30,7 @@ const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
 
     () => user.update({status: User.statuses.active}, {transaction}),
 
-    () => user.reload({attributes: {exclude: ["password"]}}, {transaction})
+    () => user.reload({transaction})
   ])
 
   const tokens = await Session.sign({
