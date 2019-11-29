@@ -23,7 +23,7 @@ const TAuthSignUpInput = Input("AuthSignUpInput", "Basic user information.")
   .field({
     name: "password",
     type: TString,
-    description: "User's secured (or not :D) password.",
+    description: "User's password.",
     required: true
   })
   .field({
