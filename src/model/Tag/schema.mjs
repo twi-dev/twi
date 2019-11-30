@@ -19,11 +19,12 @@ const schema = {
       this.setDataValue("slug", createSlug(name))
     }
   },
-  description: t.STRING,
   slug: {
     type: t.STRING,
-    allowNull: false
-  }
+    allowNull: false,
+    unique: true
+  },
+  description: t.STRING
 }
 
 export default schema
