@@ -1,7 +1,5 @@
 import {Op as op} from "sequelize"
 
-import groupBy from "lodash/groupBy"
-
 import conn from "lib/db/connection"
 import auth from "lib/auth/checkUser"
 import NotFound from "lib/error/http/NotFound"
@@ -57,8 +55,6 @@ const tagsAdd = ({args, ctx}) => conn.transaction(async transaction => {
     ),
 
     () => [...tags, ...existent],
-
-    list => groupBy(list, "categoryId"),
 
     list => list.map(({id}) => id)
   ])
