@@ -1,4 +1,4 @@
-import objectIterator from "./objectIterator"
+import objectIterator from "./iterator"
 
 /**
  * Map given object with callback and return new one

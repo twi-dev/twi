@@ -1,4 +1,4 @@
-import objectIterator from "./objectIterator"
+import objectIterator from "./iterator"
 
 /**
  * Filter given object with predicate function
@@ -11,7 +11,7 @@ import objectIterator from "./objectIterator"
  *
  * @return {object} – filtered object
  */
-function filterObject(object, predicate, ctx) {
+function filter(object, predicate, ctx = null) {
   const res = {}
 
   for (const [key, value] of objectIterator(object).entries()) {
@@ -23,4 +23,4 @@ function filterObject(object, predicate, ctx) {
   return res
 }
 
-export default filterObject
+export default filter

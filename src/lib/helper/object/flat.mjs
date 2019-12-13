@@ -2,7 +2,7 @@ import isPlainObject from "lodash/isPlainObject"
 import capitalize from "lodash/capitalize"
 import camelCase from "camelcase"
 
-import iterator from "lib/helper/iterator/sync/objectIterator"
+import iterator from "./iterator"
 
 const isArray = Array.isArray
 

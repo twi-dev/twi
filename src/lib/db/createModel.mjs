@@ -7,7 +7,14 @@ const defaults = {
 }
 
 /**
- * Creates a new model using given schema and options
+ * Creates a new model using given schema and options.
+ * Implies a Model.init call to simplify models declaration.
+ * Also, enhances default options
+ *
+ * @param {object | Function} schema
+ * @param {object} options
+ *
+ * @return {Function} Target
  */
 const createModel = (schema, options = {}) => Target => (
   Target.init(isFunction(schema) ? schema(Target) : schema, {

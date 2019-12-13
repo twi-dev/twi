@@ -1,6 +1,6 @@
-import iterator from "./objectIterator"
+import iterator from "./iterator"
 
-function objFindKey(obj, predicate, ctx = null) {
+function findKey(obj, predicate, ctx = null) {
   for (const [key, value] of iterator.entries(obj)) {
     if (predicate.call(ctx, value, key, obj) === true) {
       return key
@@ -8,4 +8,4 @@ function objFindKey(obj, predicate, ctx = null) {
   }
 }
 
-export default objFindKey
+export default findKey

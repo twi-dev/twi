@@ -1,6 +1,6 @@
 import isPlainObject from "lodash/isPlainObject"
 
-import objectIterator from "./objectIterator"
+import objectIterator from "./iterator"
 
 const isArray = Array.isArray
 

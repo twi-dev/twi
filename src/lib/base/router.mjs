@@ -3,8 +3,7 @@ import {join} from "path"
 import Router from "@koa/router"
 import rd from "require-dir"
 
-import iterator from "lib/helper/iterator/sync/objectIterator"
-
+import iterator from "lib/helper/object/iterator"
 import NotAllowed from "lib/error/http/NotAllowed"
 import NotFound from "lib/error/http/NotFound"
 
