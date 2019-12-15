@@ -11,7 +11,7 @@ class Tag extends Model {
     return /:/.test(name)
   }
 
-  async create({name}, options) {
+  static async create({name}, options) {
     const tag = new Tag({name})
 
     if (!Tag.hasPrefix(name)) {
