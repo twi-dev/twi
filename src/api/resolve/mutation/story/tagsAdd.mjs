@@ -1,6 +1,6 @@
 import {Op as op} from "sequelize"
 
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 import auth from "lib/auth/checkUser"
 import NotFound from "lib/error/http/NotFound"
 import Forbidden from "lib/error/http/Forbidden"
@@ -15,7 +15,7 @@ import Tag from "model/Tag"
 
 // NOTE: Work in progress
 // TODO: Add categories assigning using prefixes
-const tagsAdd = ({args, ctx}) => conn.transaction(async transaction => {
+const tagsAdd = ({args, ctx}) => db.transaction(async transaction => {
   let {id: storyId, tags} = args.story
   const {user} = ctx.state
 

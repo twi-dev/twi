@@ -5,7 +5,7 @@ import isEmpty from "lodash/isEmpty"
 
 import bind from "lib/helper/graphql/normalizeParams"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import NotFound from "lib/error/http/NotFound"
 import Forbidden from "lib/error/http/Forbidden"
@@ -16,7 +16,7 @@ import Story from "model/Story"
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
 
-const update = ({args, ctx}) => conn.transaction(async transaction => {
+const update = ({args, ctx}) => db.transaction(async transaction => {
   const {user} = ctx.state
   let {id, ...fields} = args.story
 

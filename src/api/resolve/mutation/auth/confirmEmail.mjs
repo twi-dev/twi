@@ -1,14 +1,14 @@
 import bind from "lib/helper/graphql/normalizeParams"
 import BadRequest from "lib/error/http/BadRequest"
 import serial from "lib/helper/array/runSerial"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import {get, remove} from "lib/auth/tokens"
 
 import User from "model/User"
 import Session from "model/Session"
 
-const confirmEmail = ({args, ctx}) => conn.transaction(async transaction => {
+const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
 
   const id = await get(args.hash)

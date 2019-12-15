@@ -1,14 +1,14 @@
 import Unauthorized from "lib/error/http/Unauthorized"
 import bind from "lib/helper/graphql/normalizeParams"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import User from "model/User"
 import Session from "model/Session"
 
 const include = [{model: User, as: "user", required: true}]
 
-const logOut = ({args, ctx}) => conn.transaction(async transaction => {
+const logOut = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {refreshToken} = args
 

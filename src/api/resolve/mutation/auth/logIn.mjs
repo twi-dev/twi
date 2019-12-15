@@ -1,13 +1,13 @@
 import omit from "lodash/omit"
 
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 import bind from "lib/helper/graphql/normalizeParams"
 import Unauthorized from "lib/error/http/Unauthorized"
 
 import Session from "model/Session"
 import User from "model/User"
 
-const logIn = ({args, ctx}) => conn.transaction(async transaction => {
+const logIn = ({args, ctx}) => db.transaction(async transaction => {
   const {email, password} = args.user
   const {client} = ctx.state
 

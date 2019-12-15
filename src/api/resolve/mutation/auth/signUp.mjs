@@ -8,14 +8,14 @@ import concat from "lib/helper/string/concatFromArray"
 import bind from "lib/helper/graphql/normalizeParams"
 import mail from "lib/mail/transport"
 import config from "lib/base/config"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import Session from "model/Session"
 import User from "model/User"
 
 const {server} = config
 
-const signUp = ({args, ctx}) => conn.transaction(async transaction => {
+const signUp = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
 
   const user = await User.create(args.user, {transaction})

@@ -7,7 +7,7 @@ import bind from "lib/helper/graphql/normalizeParams"
 import Forbidden from "lib/error/http/Forbidden"
 import NotFound from "lib/error/http/NotFound"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import Story from "model/Story"
 import Chapter from "model/Chapter"
@@ -18,7 +18,7 @@ import getCommonAbilities from "acl/common"
 
 const include = [{model: Story, as: "story", required: true}]
 
-const chapterUpdate = ({args, ctx}) => conn.transaction(async transaction => {
+const chapterUpdate = ({args, ctx}) => db.transaction(async transaction => {
   const {user} = ctx.state
   let {id, ...fields} = args.chapter
 

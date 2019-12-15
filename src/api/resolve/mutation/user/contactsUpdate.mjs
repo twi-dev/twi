@@ -1,14 +1,14 @@
 import bind from "lib/helper/graphql/normalizeParams"
 import NotFound from "lib/error/http/NotFound"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import User from "model/User"
 import Contacts from "model/Contacts"
 
 const include = [{model: Contacts, as: "contacts"}]
 
-const avatarRemove = ({args, ctx}) => conn.transaction(async transaction => {
+const avatarRemove = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {contacts} = args
 

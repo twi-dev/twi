@@ -2,7 +2,7 @@ import bind from "lib/helper/graphql/normalizeParams"
 import Forbidden from "lib/error/http/Forbidden"
 import NotFound from "lib/error/http/NotFound"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import Story from "model/Story"
 import Chapter from "model/Chapter"
@@ -11,7 +11,7 @@ import Collaborator from "model/Collaborator"
 import getStoryAbilities from "acl/story"
 import getCommonAbilities from "acl/common"
 
-const chapterCreate = ({args, ctx}) => conn.transaction(async transaction => {
+const chapterCreate = ({args, ctx}) => db.transaction(async transaction => {
   const {user} = ctx.state
   const {id, chapter} = args.story
 

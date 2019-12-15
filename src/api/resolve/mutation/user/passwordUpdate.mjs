@@ -1,11 +1,11 @@
 import bind from "lib/helper/graphql/normalizeParams"
 import NotFound from "lib/error/http/NotFound"
 import auth from "lib/auth/checkUser"
-import conn from "lib/db/connection"
+import db from "lib/db/connection"
 
 import User from "model/User"
 
-const passwordUpdate = ({args, ctx}) => conn.transaction(async transaction => {
+const passwordUpdate = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {password} = args
 
