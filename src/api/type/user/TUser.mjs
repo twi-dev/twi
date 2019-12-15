@@ -14,31 +14,32 @@ const TUser = Type("User", "The user's public information.")
   .field({
     name: "id",
     type: TInt,
-    description: "User unique identifer at the system",
+    description: "User's numeric unique identifer.",
     required: true
   })
   .field({
     name: "login",
     type: TLogin,
-    description: "User login that represends his/her address",
+    description: "The login represends their page address.",
     required: true
   })
   .resolve({
     name: "dates",
     type: TUserDates,
-    description: "User registration dates",
+    description: "User's registration dates",
     required: true,
     noArgs: true,
     handler: dates
   })
   .field({
     name: "avatar",
-    type: TFile
+    type: TFile,
+    description: "User's profile page"
   })
   .resolve({
     name: "contacts",
     type: TUserContacts,
-    description: "User contact information.",
+    description: "User's contacts information.",
     noArgs: true,
     handler: contacts
   })

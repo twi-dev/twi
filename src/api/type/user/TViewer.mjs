@@ -16,19 +16,19 @@ const TViewer = Type({
   .field({
     name: "email",
     type: TEmail,
-    description: "Registration email.",
+    description: "Registration email (private).",
     required: true
   })
   .field({
     name: "role",
     type: TString,
-    description: "User role name",
+    description: "User'a role name",
     required: true
   })
   .field({
     name: "status",
     type: TString,
-    description: "User accoutn status",
+    description: "User's accout status",
     required: true
   })
   .resolve({
@@ -36,7 +36,8 @@ const TViewer = Type({
     type: TAuthSessionPage,
     required: true,
     noArgs: true,
-    handler: sessions
+    handler: sessions,
+    description: "User's active sessions list."
   })
 .end()
 

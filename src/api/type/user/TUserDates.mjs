@@ -10,7 +10,7 @@ const TUserDates = Type("UserDates", "User activity and registration dates.")
     type: TDateTime,
     noArgs: true,
     handler: serialize("registeredAt"),
-    description: "User registration time mark.",
+    description: "User's registration date and time.",
     required: true
   })
   .resolve({
@@ -18,14 +18,14 @@ const TUserDates = Type("UserDates", "User activity and registration dates.")
     type: TDateTime,
     noArgs: true,
     handler: serialize("lastVisited"),
-    description: "User last activity time mark."
+    description: "User's last activity date and time."
   })
   .resolve({
     name: "updatedAt",
     type: TDateTime,
     noArgs: true,
     handler: serialize("updatedAt"),
-    description: "User last activity time mark."
+    description: "The date and time of the last user's account update."
   })
 .end()
 
