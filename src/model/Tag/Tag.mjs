@@ -21,7 +21,7 @@ class Tag extends Model {
     const [prefix] = name.split(":")
     const Category = db.model("Category")
 
-    const category = await Category.findOne({prefix: `${prefix}:`})
+    const category = await Category.findOne({prefix})
 
     if (category) {
       tag.setCategory(category.id)

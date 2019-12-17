@@ -28,15 +28,9 @@ const schema = {
     comment: "Prefix that is used to match category to where a tag belongs.",
 
     set(prefix) {
-      if (!prefix) {
-        return undefined
+      if (prefix) {
+        this.setDataValue("prefix", prefix.replace(/:/g, ""))
       }
-
-      if (!prefix.endsWith(":")) {
-        prefix += ":"
-      }
-
-      this.setDataValue("prefix", prefix)
     }
   },
   order: {
