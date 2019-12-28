@@ -2,7 +2,7 @@ import {join} from "path"
 
 import {readFile} from "promise-fs"
 
-import waterfall from "core/helper/array/runWaterfall"
+import waterfall from "lib/helper/array/runWaterfall"
 
 import normalize from "setup/db/helper/normalizeCategory"
 

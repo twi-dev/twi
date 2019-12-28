@@ -1,6 +1,6 @@
 import isPlainObject from "lodash/isPlainObject"
 
-import createSlug from "core/helper/util/createSlug"
+import createSlug from "lib/helper/util/createSlug"
 
 /**
  * Assign common params both for category and tag
