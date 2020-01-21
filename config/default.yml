@@ -24,8 +24,8 @@ server:
   secure: false
 
 client:
-  host: null
-  port: null
+  host: localhost
+  port: 1339
   secure: false
 
 database:
