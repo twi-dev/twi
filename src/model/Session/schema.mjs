@@ -1,20 +1,16 @@
 import {DataTypes as t} from "sequelize"
 
 const schema = {
-  id: {
-    type: t.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true
-  },
-  userId: {
-    type: t.INTEGER.UNSIGNED,
-    allowNull: false
-  },
   hash: {
     type: t.CHAR(128),
     unique: true,
     allowNull: false,
-    comment: "SHA512 hash used as session's fingerprint"
+    primaryKey: true,
+    comment: "SHA512 session fingerprint"
+  },
+  userId: {
+    type: t.INTEGER.UNSIGNED,
+    allowNull: false
   },
   clientBrowserName: {
     type: t.STRING,

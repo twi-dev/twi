@@ -13,17 +13,15 @@ import db from "lib/db/connection"
 import Session from "model/Session"
 import User from "model/User"
 
-const {server} = config
+const {client} = config
 
 const signUp = ({args, ctx}) => db.transaction(async transaction => {
-  const {client} = ctx.state
-
   const user = await User.create(args.user, {transaction})
 
   const token = await add(user)
 
   const link = format({
-    host: server.url, pathname: concat(["/auth", "confirm", token], "/")
+    host: client.url, pathname: concat(["/auth", "confirm", token], "/")
   })
 
   await mail.send({
@@ -35,7 +33,8 @@ const signUp = ({args, ctx}) => db.transaction(async transaction => {
   })
 
   return Session.sign({
-    client, user: omit(user.toJSON(), "password")
+    client: ctx.state.client,
+    user: omit(user.toJSON(), "password")
   }, {transaction})
 })
 
