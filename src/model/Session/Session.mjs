@@ -69,9 +69,10 @@ class Session extends Model {
       signAccessToken({...user, id: this.userId}), signRefreshToken({hash})
     ])
 
-    return this.update({
-      ...client, hash, updatedAt: accessToken.signed
-    }, options).then(() => ({accessToken, refreshToken}))
+    const fields = {...client, hash, updatedAt: accessToken.signed}
+
+    return this.update(fields, options)
+      .then(() => ({accessToken, refreshToken}))
   }
 }
 
