@@ -8,10 +8,12 @@ import {get, remove} from "lib/auth/tokens"
 import User from "model/User"
 import Session from "model/Session"
 
+// TODO: Add session reassigning using given refreshToken
 const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
+  const {hash} = args
 
-  const id = await get(args.hash)
+  const id = await get(hash)
 
   if (!id) {
     throw new BadRequest("The user cannot be activated: Bad token signature.")
@@ -24,7 +26,7 @@ const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   }
 
   user = await serial([
-    () => remove(args.hash),
+    () => remove(hash),
 
     () => Session.destroy({where: {userId: user.id}, transaction}),
 
