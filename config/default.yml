@@ -19,6 +19,7 @@ cors:
   origin: "*"
 
 server:
+  useProxy: false
   host: localhost
   port: 2319
   secure: false

@@ -13,6 +13,8 @@ const {port} = config.server
 // Initialize Koa application
 const koa = new Koa()
 
+koa.proxy = Boolean(config.server.useProxy)
+
 // Add authorization and routes
 middlewares.push(router.allowedMethods(), router.routes())
 
