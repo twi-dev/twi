@@ -8,7 +8,6 @@ import {get, remove} from "lib/auth/tokens"
 import User from "model/User"
 import Session from "model/Session"
 
-// TODO: Add session reassigning using given refreshToken
 const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
   const {hash} = args
