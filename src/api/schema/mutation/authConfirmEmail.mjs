@@ -14,8 +14,7 @@ const resolve = {
 }
 
 const args = {
-  hash: [TString, true],
-  refreshToken: TString
+  hash: [TString, true]
 }
 
 export {resolve, args}
