@@ -39,7 +39,9 @@ const get = hash => store.get(concat([prefix, hash], sep))
 /**
  * Removes a token from the store by associated hash
  *
- * @param {Promise<string>} hash
+ * @param {string} hash
+ *
+ * @return {Promise<void>}
  */
 const remove = hash => store.del(concat([prefix, hash], sep))
 
