@@ -4,16 +4,24 @@
  * @param {Array<Promise<any>>} tasks
  * @param {any[]} [args = []] - a list of arguments to execute function with
  *
- * @return {Promise<any>}
+ * @return {Promise<any[]>}
  */
 function runSerial(tasks, args = []) {
-  const step = (prev, next) => Promise.resolve(prev).then(() => next(...args))
+  const step = (prev, next) => (
+    Promise.resolve(prev).then(async results => {
+      const result = await next(...args)
+
+      results.push(result)
+
+      return results
+    })
+  )
 
   if (tasks.length <= 1) {
-    return step(null, tasks[0])
+    return step([], tasks[0])
   }
 
-  return tasks.reduce(step, null)
+  return tasks.reduce(step, [])
 }
 
 export default runSerial
