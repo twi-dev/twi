@@ -1,5 +1,5 @@
 import bind from "lib/helper/graphql/normalizeParams"
-import serial from "lib/helper/array/runSerial"
+import waterfall from "lib/helper/array/runWaterfall"
 import NotFound from "lib/error/http/NotFound"
 import auth from "lib/auth/checkUser"
 import db from "lib/db/connection"
@@ -18,7 +18,7 @@ const avatarRemove = ({ctx}) => db.transaction(async transaction => {
     throw new NotFound("Can't find a user.")
   }
 
-  return serial([
+  return waterfall([
     () => user.avatar.destroy({transaction}),
 
     () => user.avatarRemove({transaction}),

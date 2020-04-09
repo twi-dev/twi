@@ -1,6 +1,6 @@
 import bind from "lib/helper/graphql/normalizeParams"
 import BadRequest from "lib/error/http/BadRequest"
-import serial from "lib/helper/array/runSerial"
+import waterfall from "lib/helper/array/runWaterfall"
 import db from "lib/db/connection"
 
 import {get, remove} from "lib/auth/tokens"
@@ -24,7 +24,7 @@ const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
     throw new BadRequest("There's no such user.")
   }
 
-  user = await serial([
+  user = await waterfall([
     () => remove(hash),
 
     () => Session.destroy({where: {userId: user.id}, transaction}),
