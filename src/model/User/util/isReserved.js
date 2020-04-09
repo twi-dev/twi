@@ -6,7 +6,7 @@ const reserved = [
 /**
  * Check if given login is reserved for internal usage.
  *
- * @param {string}
+ * @param {string} login
  *
  * @return {boolean}
  */

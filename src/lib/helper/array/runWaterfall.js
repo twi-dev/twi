@@ -1,7 +1,10 @@
 const {isArray} = Array
 
 /**
- * @private
+ * @param {Promise<any>} prev
+ * @param {(prevTaskResult: any) => any} next
+ *
+ * @api private
  */
 const step = (prev, next) => Promise.resolve(prev).then(res => next(res))
 
