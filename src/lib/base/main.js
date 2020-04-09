@@ -1,4 +1,4 @@
-import serial from "lib/helper/array/runSerial"
+import waterfall from "lib/helper/array/runWaterfall"
 import log from "lib/log"
 
 import db from "lib/base/database"
@@ -10,7 +10,7 @@ function onError(err) {
   process.exit(1)
 }
 
-const stop = () => serial([
+const stop = () => waterfall([
   server.close,
   db.disconnect,
   process.exit
@@ -29,4 +29,4 @@ function beforeExit() {
 process.on("beforeExit", beforeExit)
 
 // Run Twi's HTTP server
-serial([db.connect, server.start]).catch(onError)
+waterfall([db.connect, server.start]).catch(onError)
