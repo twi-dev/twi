@@ -21,6 +21,10 @@ module.exports = {
     }
   },
   "rules": {
+    "max-len": ["error", {
+      ignoreComments: true,
+      code: 80
+    }],
     indent: ["error", 2, {
       "MemberExpression": "off"
     }],

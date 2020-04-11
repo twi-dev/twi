@@ -5,6 +5,8 @@ const isArray = Array.isArray
  *
  * @param {any[]} array
  * @param {number} [depth = 1]
+ *
+ * @return {any[]}
  */
 function flat(array, depth = 1) {
   const walk = (prev, next) => (

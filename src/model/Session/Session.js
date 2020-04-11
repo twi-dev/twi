@@ -19,8 +19,18 @@ const {jwt} = config
 
 const serializeUser = user => pick(user, ["id", "role", "status"])
 
+/**
+ * @typedef {import("model/User").default} User
+ */
+
 @createModel(schema)
 class Session extends Model {
+  /**
+   * @param {Object} params
+   * @param {User} params.user
+   * @param {Object<string, any>} params.client
+   * @param {Object<string, any>} [options = {}]
+   */
   static async sign({user, client}, options) {
     client = objectFlat({client})
     user = serializeUser(user)
@@ -36,6 +46,14 @@ class Session extends Model {
       .then(() => ({accessToken, refreshToken}))
   }
 
+  /**
+   * @param {string} token
+   * @param {Object<string, any>} [options = {}]
+   *
+   * @public
+   * @static
+   * @method
+   */
   static async findByToken(token, options) {
     const {hash} = await verify(token, jwt.refreshToken.secret)
 
@@ -48,6 +66,20 @@ class Session extends Model {
     return session
   }
 
+  /**
+   * Removes all sessions associated with given userId, except the current
+   *
+   * @param {Object} params
+   * @param {string} params.token
+   * @param {number} params.userId
+   * @param {Object<string, any>} [options = {}]
+   *
+   * @param {Promise<boolean>}
+   *
+   * @public
+   * @static
+   * @method
+   */
   static async revokeAllButCurrent({token, userId}, options) {
     const {hash} = await verify(token, jwt.refreshToken.secret)
 
@@ -55,6 +87,12 @@ class Session extends Model {
       .then(() => true)
   }
 
+  /**
+   * @param {Object} params
+   * @param {User} params.user
+   * @param {Object<string, any>} params.client
+   * @param {Object<string, any>} options
+   */
   async refresh({user, client}, options) {
     client = objectFlat({client})
     user = serializeUser(user)

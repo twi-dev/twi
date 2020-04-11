@@ -2,9 +2,9 @@
  * Bind function to specified context
  *
  * @param {any} ctx
- * @param {function} fn
+ * @param {Function} fn
  *
- * @return function
+ * @return Function
  */
 const bind = (ctx, fn) => fn.bind(ctx)
 

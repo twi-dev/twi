@@ -7,6 +7,12 @@
  * @return {Promise<any[]>}
  */
 function runSerial(tasks, args = []) {
+  /**
+  * @param {Promise<any[]>} prev
+  * @param {(...args: any[]) => any} next
+  *
+  * @api private
+  */
   const step = (prev, next) => (
     Promise.resolve(prev).then(async results => {
       const result = await next(...args)

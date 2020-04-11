@@ -5,7 +5,7 @@
  * @param {any} ctx
  * @param {any[]} args
  *
- * @return Function
+ * @return {Function}
  */
 const selfInvokingClass = (Ctor, ctx, args) => new Ctor(...args)
 

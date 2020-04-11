@@ -2,6 +2,11 @@ import isNumber from "lodash/isNumber"
 
 const {isArray} = Array
 
+/**
+ * Transforms an instance's data to a pagination format
+ *
+ * @param {Function} fn
+ */
 const normalize = fn => (data = []) => {
   if (!isArray(data)) {
     return fn(data)

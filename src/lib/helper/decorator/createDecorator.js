@@ -4,7 +4,7 @@ import isFunction from "lodash/isFunction"
  * Creates decorator for a function, class or method
  * using given function as implementation
  *
- * @param {Function} decorator – decorator implementation
+ * @param {Function} decorator A decorator implementation
  *
  * @return {Function}
  */

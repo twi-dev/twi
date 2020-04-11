@@ -1,21 +1,21 @@
-import objectIterator from "./iterator"
+import iterator from "./iterator"
 
 /**
  * Filter given object with predicate function
  *
- * @param {object} object – any iterable plain object
- * @param {function} predicate – the function invoked per iteration.
+ * @param {Object<string, any>} object Any iterable plain object
+ * @param {(value: any, key: string, object: Object<string, any>) => boolean} predicate A function to call for each iteration.
  *   Should return boolean value.
  *
  * @param {any} ctx
  *
- * @return {object} – filtered object
+ * @return {Object<string, any>} filtered object
  */
 function filter(object, predicate, ctx = null) {
   const res = {}
 
-  for (const [key, value] of objectIterator(object).entries()) {
-    if (predicate.call(ctx, value, key, object) === true) {
+  for (const [key, value] of iterator(object).entries()) {
+    if (predicate.call(ctx, value, key, object)) {
       res[key] = value
     }
   }

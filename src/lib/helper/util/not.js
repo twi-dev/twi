@@ -3,7 +3,7 @@
  *
  * @param {boolean} value
  *
- * @retutn {value}
+ * @return {value}
  */
 const not = value => !value
 

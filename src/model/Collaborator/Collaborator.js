@@ -9,6 +9,19 @@ import schema from "./schema"
 
 @createModel(schema)
 class Collaborator extends Model {
+  /**
+   * @typedef {Object} CollaboratorRole
+   *
+   * @prop {"translate"} translate
+   * @prop {"write"} write
+   * @prop {"beta"} beta
+   * @prop {"art"} art
+   */
+  /**
+   * @type {CollaboratorRole}
+   *
+   * @static
+   */
   @readOnly static roles = freeze({
     translate: "translate",
     write: "write",

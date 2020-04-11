@@ -15,10 +15,24 @@ import schema from "./schema"
 
 const mask = "yyyy-MM-dd"
 
+/**
+ * @typedef {import("sequelize").CreateOptions} CreateOptions
+ * @typedef {import("sequelize").InstanceDestroyOptions} InstanceDestroyOptions
+ * @typedef {import("sequelize").InstanceUpdateOptions} InstanceUpdateOptions
+ */
+
 @createModel(schema)
 class File extends Model {
   @readOnly static root = join(__dirname, "..", "..", "static", "file")
 
+  /**
+   * Create a new File record in database
+   *
+   * @param {Object<string, any>} file
+   * @param {InstanceDestroyOptions} options
+   *
+   * @return {Promise<File>}
+   */
   static async create(file, options) {
     const path = join(format(new Date(), mask), file.filename)
     const hash = await calcHash(file.path, "sha512")
@@ -29,6 +43,14 @@ class File extends Model {
     return super.create({...file, hash, path}, options)
   }
 
+  /**
+   * Remove a File from database
+   *
+   * @param {number} id
+   * @param {InstanceDestroyOptions} options
+   *
+   * @return {Promise<void>}
+   */
   static async unlink(id, options) {
     const file = await this.findByPk(id)
 
@@ -39,6 +61,12 @@ class File extends Model {
     return file.unlink(options)
   }
 
+  /**
+   * @param {Object<string, any>} file
+   * @param {InstanceUpdateOptions} options
+   *
+   * @return {Promise<File>}
+   */
   async updateContent(file, options) {
     const path = join(format(new Date(), mask), file.filename)
     const hash = await calcHash(file.path, "sha512")
@@ -49,6 +77,9 @@ class File extends Model {
     return super.update({hash, path}, options)
   }
 
+  /**
+   * @param {InstanceDestroyOptions} options
+   */
   unlink(options) {
     return unlink(join(File.root, this.path)).then(() => this.destroy(options))
   }

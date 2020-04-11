@@ -25,14 +25,6 @@
     "report": "npm run cleanup && npm run make:test && nyc npm run test && nyc report -r=html && npm run cleanup && npm run make",
     "ci": "npm run make:test && nyc npm run test && nyc report -r=lcov && codecov"
   },
-  "ava": {
-    "files": [
-      "test/**/*.js",
-      "!test/**/__hook__/**",
-      "!test/**/__helper__/**",
-      "!test/helper/**"
-    ]
-  },
   "nyc": {
     "extension": [
       ".mjs"
