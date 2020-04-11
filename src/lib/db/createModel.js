@@ -11,10 +11,10 @@ const defaults = {
  * Implies a Model.init call to simplify models declaration.
  * Also, enhances default options
  *
- * @param {object | Function} schema
- * @param {object} options
+ * @param {Object<string, any> | Function} schema
+ * @param {Object<string, any>} options
  *
- * @return {Function} Target
+ * @return {(model: Function) => Function} Target
  */
 const createModel = (schema, options = {}) => Target => (
   Target.init(isFunction(schema) ? schema(Target) : schema, {
