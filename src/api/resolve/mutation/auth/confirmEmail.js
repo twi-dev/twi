@@ -25,11 +25,11 @@ const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   }
 
   user = await waterfall([
-    () => remove(hash),
-
     () => Session.destroy({where: {userId: user.id}, transaction}),
 
     () => user.update({status: User.statuses.active}, {transaction}),
+
+    () => remove(hash),
 
     () => user.reload({transaction})
   ])
