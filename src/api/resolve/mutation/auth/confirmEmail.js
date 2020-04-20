@@ -8,6 +8,17 @@ import {get, remove} from "lib/auth/tokens"
 import User from "model/User"
 import Session from "model/Session"
 
+/**
+ * @typedef {import("model/Session/util/signToken").AuthToken} AuthToken
+ */
+
+/**
+  * @param {Object} params
+  * @param {{hash: string}} params.args
+  * @param {import("koa").Context} params.ctx
+  *
+  * @return {Promise<AuthToken>}
+  */
 const confirmEmail = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
   const {hash} = args

@@ -17,13 +17,17 @@ const {accessToken, refreshToken} = config.jwt
  */
 
 /**
- * @typedef {Object} AuthAccessToken
+ * @typedef {Object} AuthAccessTokenBase
  *
  * @prop {Date} expires
  */
 
 /**
- * @typedef {AuthRefreshToken | AuthRefreshToken & AuthAccessToken} AuthToken
+  * @typedef {AuthRefreshToken & AuthAccessTokenBase} AuthAccessToken
+  */
+
+/**
+ * @typedef {AuthRefreshToken | AuthAccessToken} AuthToken
  */
 
 /**

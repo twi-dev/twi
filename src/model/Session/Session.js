@@ -20,6 +20,10 @@ const {jwt} = config
 const serializeUser = user => pick(user, ["id", "role", "status"])
 
 /**
+ * @typedef {import("model/Session/util/signToken").AuthToken} AuthToken
+ */
+
+/**
  * @typedef {import("model/User").default} User
  */
 
@@ -30,6 +34,12 @@ class Session extends Model {
    * @param {User} params.user
    * @param {Object<string, any>} params.client
    * @param {Object<string, any>} [options = {}]
+   *
+   * @return {AuthToken}
+   *
+   * @public
+   * @static
+   * @method
    */
   static async sign({user, client}, options) {
     client = objectFlat({client})
@@ -49,6 +59,8 @@ class Session extends Model {
   /**
    * @param {string} token
    * @param {Object<string, any>} [options = {}]
+   *
+   * @return {Session}
    *
    * @public
    * @static
@@ -74,7 +86,7 @@ class Session extends Model {
    * @param {number} params.userId
    * @param {Object<string, any>} [options = {}]
    *
-   * @param {Promise<boolean>}
+   * @param {Promise<number>}
    *
    * @public
    * @static
@@ -84,7 +96,6 @@ class Session extends Model {
     const {hash} = await verify(token, jwt.refreshToken.secret)
 
     return this.destroy({where: {userId, [op.ne]: {hash}}}, options)
-      .then(() => true)
   }
 
   /**
@@ -92,6 +103,12 @@ class Session extends Model {
    * @param {User} params.user
    * @param {Object<string, any>} params.client
    * @param {Object<string, any>} options
+   *
+   * @return {AuthToken}
+   *
+   * @public
+   * @static
+   * @method
    */
   async refresh({user, client}, options) {
     client = objectFlat({client})

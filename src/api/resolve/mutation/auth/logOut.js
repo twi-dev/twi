@@ -8,6 +8,13 @@ import Session from "model/Session"
 
 const include = [{model: User, as: "user", required: true}]
 
+/**
+ * @param {Object} params
+ * @param {{refreshToken: string}} params.args
+ * @param {import("koa").Context} params.ctx
+ *
+ * @return {Promise<string>}
+ */
 const logOut = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {refreshToken} = args

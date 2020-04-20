@@ -15,6 +15,25 @@ import User from "model/User"
 
 const {client} = config
 
+/**
+ * @typedef {import("model/Session/util/signToken").AuthToken} AuthToken
+ */
+
+/**
+ * @typedef {Object} UserSignupCredentials
+ *
+ * @prop {string} login
+ * @prop {string} email
+ * @prop {string} password
+ */
+
+/**
+ * @param {Object} params
+ * @param {UserSignupCredentials} params.args
+ * @param {import("koa").Context} params.ctx
+ *
+ * @return {AuthToken}
+ */
 const signUp = ({args, ctx}) => db.transaction(async transaction => {
   const user = await User.create(args.user, {transaction})
 

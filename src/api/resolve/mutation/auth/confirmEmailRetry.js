@@ -12,6 +12,12 @@ import User from "model/User"
 
 const {server} = config
 
+/**
+ * @param {Object} params
+ * @param {import("koa").Context} params.ctx
+ *
+ * @return {Promise<string>}
+ */
 async function confirmEmailRetry({ctx}) {
   const user = await User.findByPk(ctx.state.user.id)
   const token = await add(user)

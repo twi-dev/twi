@@ -8,6 +8,17 @@ import User from "model/User"
 const attributes = {exclude: ["password"]}
 const include = [{model: User, as: "user", required: true, attributes}]
 
+/**
+ * @typedef {import("model/Session/util/signToken").AuthToken} AuthToken
+ */
+
+/**
+ * @param {Object} params
+ * @param {{refreshToken: string}} params.args
+ * @param {import("koa").Context} params.ctx
+ *
+ * @return {Promise<AuthToken>}
+ */
 const refreshTokens = ({args, ctx}) => db.transaction(async transaction => {
   const {client} = ctx.state
   const {refreshToken} = args

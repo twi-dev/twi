@@ -9,6 +9,13 @@ import File from "model/File"
 
 const include = [{model: File, as: "avatar"}]
 
+/**
+ * @param {Object} params
+ * @param {{image: Object<string, any>}} params.args
+ * @param {import("koa").Context} params.ctx
+ *
+ * @return {Promise<File>}
+ */
 const avatarUpdate = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
   const {image} = args

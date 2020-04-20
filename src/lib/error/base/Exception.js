@@ -1,4 +1,8 @@
 class Exception extends Error {
+  /**
+   * @param {string} message
+   * @param {string} [code = "EXCEPTION"]
+   */
   constructor(message, code = "EXCEPTION") {
     super(message)
 
