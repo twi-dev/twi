@@ -28,6 +28,10 @@ class File extends Model {
   /**
    * Create a new File record in database
    *
+   * @public
+   * @static
+   * @method
+   *
    * @param {Object<string, any>} file
    * @param {InstanceDestroyOptions} options
    *
@@ -46,6 +50,10 @@ class File extends Model {
   /**
    * Remove a File from database
    *
+   * @public
+   * @static
+   * @method
+   *
    * @param {number} id
    * @param {InstanceDestroyOptions} options
    *
@@ -62,6 +70,9 @@ class File extends Model {
   }
 
   /**
+   * @public
+   * @method
+   *
    * @param {Object<string, any>} file
    * @param {InstanceUpdateOptions} options
    *
@@ -78,6 +89,9 @@ class File extends Model {
   }
 
   /**
+   * @public
+   * @method
+   *
    * @param {InstanceDestroyOptions} options
    */
   unlink(options) {

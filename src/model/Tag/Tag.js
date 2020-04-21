@@ -10,6 +10,10 @@ class Tag extends Model {
   /**
    * Check if given tag name has a prefix
    *
+   * @public
+   * @static
+   * @method
+   *
    * @param {string} name
    *
    * @return boolean
@@ -19,6 +23,10 @@ class Tag extends Model {
   }
 
   /**
+   * @public
+   * @static
+   * @method
+   *
    * @param {Object<[string], any>} options
    */
   static async create({name}, options) {

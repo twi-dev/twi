@@ -14,6 +14,10 @@ import schema from "./schema"
 @createModel(schema, {indexes, paranoid: true})
 class Chapter extends Model {
   /**
+   * @public
+   * @static
+   * @method
+   *
    * @param {Object} chapter
    * @param {string} chapter.content
    * @param {CreateOptions} options
@@ -39,6 +43,9 @@ class Chapter extends Model {
   }
 
   /**
+   * @public
+   * @method
+   *
    * @param {Object} params
    * @param {string} params.content
    * @param {InstanceUpdateOptions} options

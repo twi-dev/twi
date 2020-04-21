@@ -18,9 +18,11 @@ class Collaborator extends Model {
    * @prop {"art"} art
    */
   /**
-   * @type {CollaboratorRole}
-   *
+   * @public
    * @static
+   * @prop
+   *
+   * @type {CollaboratorRole}
    */
   @readOnly static roles = freeze({
     translate: "translate",

@@ -22,6 +22,10 @@ class User extends Model {
   /**
    * User account status
    *
+   * @public
+   * @static
+   * @prop
+   *
    * @type {UserStatus}
    */
   @readOnly static statuses = freeze({
@@ -45,6 +49,10 @@ class User extends Model {
   /**
    * Available user roles
    *
+   * @public
+   * @static
+   * @prop
+   *
    * @type {UserRole}
    */
   @readOnly static roles = freeze({
@@ -60,6 +68,10 @@ class User extends Model {
   /**
    * Find a user by given login
    *
+   * @public
+   * @static
+   * @method
+   *
    * @param {string} login
    * @param {Object<string, any>} options
    *
@@ -71,6 +83,10 @@ class User extends Model {
 
   /**
    * Create a new user and save it to the database
+   *
+   * @public
+   * @static
+   * @method
    *
    * @param {Object<string, any>} user
    * @param {Object<string, any>} [options = {}]
@@ -92,6 +108,9 @@ class User extends Model {
   /**
    * Compare user's pasword hash with given string
    *
+   * @public
+   * @method
+   *
    * @param {string} string a string to compare password with
    *
    * @return {Promise<boolean>} "true" when given string equals user's password
@@ -100,6 +119,9 @@ class User extends Model {
 
   /**
    * Updates user's avatar
+   *
+   * @public
+   * @method
    *
    * @param {number} avatarId and ID of a file representing user's avatar
    * @param {Object<string, any>} options
@@ -110,6 +132,9 @@ class User extends Model {
 
   /**
    * Remove user's avatar
+   *
+   * @public
+   * @method
    *
    * @param {Object<string, any>} options
    */
