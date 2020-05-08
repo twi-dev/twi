@@ -21,16 +21,9 @@ const createModel = (schema, options = {}) => Target => (
     ...defaults,
     ...options,
 
-    hooks: do {
-      if (isFunction(options.hooks)) {
-        // Allow to pass hooks as a single function that returns the object
-        options.hooks(Target, options)
-      } else if (options.hooks != null) {
-        // Ignore this rule since it's false-positive
-        // eslint-disable-next-line no-unused-expressions
-        options.hooks
-      }
-    },
+    hooks: isFunction(options.hooks)
+      ? options.hooks(Target, options)
+      : options.hooks,
 
     sequelize: options.sequelize ?? sequelize,
     tableName: options.tableName ?? Target.tableName

@@ -10,13 +10,13 @@ const TFile = Type("File")
   .field({
     name: "id",
     type: TInt,
-    require: true
+    required: true
   })
   // TODO: Add a resolver to convert file path to URL
   .field({
     name: "path",
     type: TString,
-    require: true
+    required: true
   })
   .field({
     name: "mime",
