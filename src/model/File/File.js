@@ -1,101 +1,106 @@
 import {join} from "path"
 
-import {unlink} from "promise-fs"
+import {nanoid} from "nanoid/async"
+import {stat, unlink, readFile, outputFile} from "fs-extra"
 import {Model} from "sequelize"
 
 import format from "date-fns/format"
 
 import createModel from "lib/db/createModel"
-import BadRequest from "lib/error/http/BadRequest"
 import readOnly from "lib/helper/decorator/readOnly"
+import waterfall from "lib/helper/array/runWaterfall"
+import calcFileHash from "lib/helper/util/calcFileHash"
 
-import calcHash from "./util/calcHash"
-import saveFile from "./util/saveFile"
 import schema from "./schema"
 
 const mask = "yyyy-MM-dd"
 
+const getSize = path => stat(path).then(({size}) => size)
+
+const getPath = (dest, ext) => nanoid().then(prefix => join(
+  dest, `${prefix}-${format(Date.now(), mask)}${ext}`
+))
+
 /**
  * @typedef {import("sequelize").CreateOptions} CreateOptions
- * @typedef {import("sequelize").InstanceDestroyOptions} InstanceDestroyOptions
- * @typedef {import("sequelize").InstanceUpdateOptions} InstanceUpdateOptions
  */
 
-@createModel(schema)
+/**
+ * @typedef {import("sequelize").UpdateOptions} UpdateOptions
+ */
+
+/**
+ * @typedef {import("sequelize").DestroyOptions} DestroyOptions
+ */
+
+/**
+ * @typedef {Object} FileInput
+ *
+ * @property {string} dest
+ * @property {string} path
+ * @property {string} mime
+ * @property {string} hash
+ * @property {number} size
+ */
+
+@createModel(schema, {paranoid: true})
 class File extends Model {
-  @readOnly static root = join(__dirname, "..", "..", "static", "file")
-
   /**
-   * Create a new File record in database
-   *
    * @public
    * @static
-   * @method
+   * @property
    *
-   * @param {Object<string, any>} file
-   * @param {InstanceDestroyOptions} options
-   *
-   * @return {Promise<File>}
+   * @type {string}
    */
-  static async create(file, options) {
-    const path = join(format(new Date(), mask), file.filename)
-    const hash = await calcHash(file.path, "sha512")
-    const dest = join(File.root, path)
+  @readOnly static root = join(__dirname, "..", "..", "static");
 
-    await saveFile(file.path, dest)
+  /**
+   * @param {Object} params
+   * @param {string} params.dest File destination directory
+   * @param {FileInput} params.file
+   * @param {CreateOptions} [options = {}]
+   */
+  static async create({dest, file}, options = {}) {
+    const path = await getPath(dest, file.extname)
+    const filename = join(File.root, path)
+    const size = await getSize(filename)
 
-    return super.create({...file, hash, path}, options)
+    await readFile(file.path).then(content => outputFile(filename, content))
+
+    const hash = await calcFileHash(filename, "sha512")
+
+    return super.create({...file, path, hash, size}, options)
   }
 
   /**
-   * Remove a File from database
-   *
-   * @public
-   * @static
-   * @method
-   *
-   * @param {number} id
-   * @param {InstanceDestroyOptions} options
-   *
-   * @return {Promise<void>}
+   * @param {Object} params
+   * @param {string} params.dest File destination directory
+   * @param {FileInput} params.file
+   * @param {UpdateOptions} [options = {}]
    */
-  static async unlink(id, options) {
-    const file = await this.findByPk(id)
+  async updateContent({dest, file}, options = {}) {
+    const path = await getPath(dest, file.extname)
+    const filename = join(File.root, path)
+    const size = await getSize(filename)
 
-    if (!file) {
-      throw new BadRequest("There's no such file.")
-    }
+    return waterfall([
+      () => readFile(file.path),
 
-    return file.unlink(options)
+      content => outputFile(filename, content),
+
+      () => unlink(join(File.root, this.path)),
+
+      () => calcFileHash(filename, "sha512"),
+
+      hash => super.update({...file, path, hash, size}, options),
+    ])
   }
 
   /**
-   * @public
-   * @method
-   *
-   * @param {Object<string, any>} file
-   * @param {InstanceUpdateOptions} options
-   *
-   * @return {Promise<File>}
+   * @param {DestroyOptions} [options = {}]
    */
-  async updateContent(file, options) {
-    const path = join(format(new Date(), mask), file.filename)
-    const hash = await calcHash(file.path, "sha512")
-    const dest = join(File.root, path)
-
-    await saveFile(file.path, dest)
-
-    return super.update({hash, path}, options)
-  }
-
-  /**
-   * @public
-   * @method
-   *
-   * @param {InstanceDestroyOptions} options
-   */
-  unlink(options) {
-    return unlink(join(File.root, this.path)).then(() => this.destroy(options))
+  async unlink(options = {}) {
+    return unlink(join(File.root, this.path)).then(() => super.destroy(options))
   }
 }
 

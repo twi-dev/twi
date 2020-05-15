@@ -7,7 +7,7 @@ const TFileInput = Input({
   description: "Represends a file type for multipart resolvers."
 })
   .field({
-    name: "filrname",
+    name: "filename",
     type: TString,
     required: true
   })
