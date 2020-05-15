@@ -36,7 +36,8 @@ const getPath = (dest, ext) => nanoid().then(prefix => join(
 /**
  * @typedef {Object} FileInput
  *
- * @property {string} dest
+ * @property {string} filename
+ * @property {string} extname
  * @property {string} path
  * @property {string} mime
  * @property {string} hash
