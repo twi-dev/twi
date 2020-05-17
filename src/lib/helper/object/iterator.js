@@ -1,4 +1,3 @@
-import invariant from "@octetstream/invariant"
 import isObject from "lodash/isObject"
 
 import proxy from "lib/helper/decorator/proxy"
