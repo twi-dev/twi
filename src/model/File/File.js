@@ -1,21 +1,20 @@
 import {join} from "path"
 
 import {nanoid} from "nanoid/async"
-import {stat, unlink, readFile, outputFile} from "fs-extra"
+import {unlink, readFile, outputFile} from "fs-extra"
 import {Model} from "sequelize"
 
 import format from "date-fns/format"
 
 import createModel from "lib/db/createModel"
 import readOnly from "lib/helper/decorator/readOnly"
-import waterfall from "lib/helper/array/runWaterfall"
 import calcFileHash from "lib/helper/util/calcFileHash"
+import waterfall from "lib/helper/array/runWaterfall"
+import getSize from "lib/helper/util/getFileSize"
 
 import schema from "./schema"
 
 const mask = "yyyy-MM-dd"
-
-const getSize = path => stat(path).then(({size}) => size)
 
 const getPath = (dest, ext) => nanoid().then(prefix => join(
   dest, `${prefix}-${format(Date.now(), mask)}${ext}`
