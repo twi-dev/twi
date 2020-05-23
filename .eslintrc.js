@@ -1,15 +1,15 @@
 const {join} = require("path")
 
 module.exports = {
-  "parser": "babel-eslint",
-  "plugins": [
+  parser: "babel-eslint",
+  plugins: [
     "ava"
   ],
-  "extends": [
+  extends: [
     "@octetstream",
     "plugin:ava/recommended"
   ],
-  "settings": {
+  settings: {
     "import/resolver": {
       "babel-module": {
         cwd: __dirname,
@@ -20,17 +20,17 @@ module.exports = {
       }
     }
   },
-  "rules": {
+  rules: {
     "max-len": ["error", {
       ignoreComments: true,
       code: 80
     }],
     indent: ["error", 2, {
-      "MemberExpression": "off"
+      MemberExpression: "off"
     }],
     // TODO: Don't forget to move this rule to my personal shared config.
     "prefer-const": ["error", {
-      "destructuring": "all"
+      destructuring: "all"
     }],
     "no-constant-condition": ["error", {
       checkLoops: false
