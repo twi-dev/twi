@@ -41,7 +41,7 @@
     "@octetstream/invariant": "1.2.0",
     "@octetstream/promisify": "2.0.2",
     "@sindresorhus/slugify": "1.0.0",
-    "apollo-server-koa": "2.13.1",
+    "apollo-server-koa": "2.14.2",
     "bcrypt": "4.0.1",
     "bull": "3.14.0",
     "camelcase": "6.0.0",
