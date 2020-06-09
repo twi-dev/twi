@@ -55,7 +55,7 @@
     "graphql-custom-types": "1.5.1",
     "graphql-fields-list": "2.1.3",
     "graphql-iso-date": "3.6.1",
-    "graphql-playground-html": "1.6.19",
+    "graphql-playground-html": "1.6.22",
     "graphql-subscriptions": "1.1.0",
     "ioredis": "4.17.1",
     "js-flock": "3.14.0",
