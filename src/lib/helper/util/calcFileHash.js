@@ -2,8 +2,7 @@ import {createReadStream} from "fs"
 import {createHash} from "crypto"
 
 /**
- * Calculate hash based on a file content.
- * The file will be read from given path.
+ * Generate cache from a file's content
  *
  * @param {string} filename
  * @param {string} algorithm
@@ -11,14 +10,15 @@ import {createHash} from "crypto"
  *
  * @return {string}
  */
-async function calcHash(filename, algorithm, options) {
+async function calcFileHash(filename, algorithm, options = {}) {
   const hash = createHash(algorithm, options)
+  const stream = createReadStream(filename)
 
-  for await (const chunk of createReadStream(filename)) {
+  for await (const chunk of stream) {
     hash.update(chunk)
   }
 
   return hash.digest("hex")
 }
 
-export default calcHash
+export default calcFileHash
