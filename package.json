@@ -28,6 +28,7 @@
     "bull": "3.20.0",
     "camelcase": "6.2.0",
     "chalk": "4.1.0",
+    "cors": "^2.8.5",
     "dataloader": "2.0.0",
     "date-fns": "2.16.1",
     "debug": "4.3.1",
@@ -72,6 +73,7 @@
     "subscriptions-transport-ws": "0.9.18",
     "then-busboy": "5.0.0-beta.2",
     "threads": "1.6.3",
+    "type-is": "^1.6.18",
     "ua-parser-js": "0.7.23",
     "validate.js": "0.13.1"
   },
