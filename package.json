@@ -19,10 +19,12 @@
     "migration:exec:undo": "sequelize --options-path .sequelizerc.js db:migrate:undo"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.7",
     "@casl/ability": "5.2.1",
     "@octetstream/invariant": "1.2.0",
     "@octetstream/promisify": "2.0.2",
     "@sindresorhus/slugify": "1.1.0",
+    "apollo-link-form-data": "^1.1.0",
     "apollo-server-micro": "^2.19.1",
     "bcrypt": "5.0.0",
     "bull": "3.20.0",
@@ -42,6 +44,7 @@
     "graphql-playground-html": "1.6.29",
     "graphql-subscriptions": "1.1.0",
     "ioredis": "4.19.4",
+    "isomorphic-fetch": "^3.0.0",
     "js-flock": "3.14.0",
     "js-yaml": "4.0.0",
     "jsonwebtoken": "8.5.1",
