@@ -52,6 +52,7 @@ module.exports = {
         name: storyTagStoryFkName,
         type: "foreign key",
         fields: ["story_id"],
+        onDelete: "cascade",
         references: {
           table: "stories",
           field: "id"
@@ -67,6 +68,7 @@ module.exports = {
         name: storyTagFkName,
         type: "foreign key",
         fields: ["tag_id"],
+        onDelete: "cascade",
         references: {
           table: "tags",
           field: "id"

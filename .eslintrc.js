@@ -10,7 +10,7 @@ module.exports = {
     "react"
   ],
   extends: [
-    // "airbnb",
+    "airbnb",
     "@octetstream"
   ],
   settings: {

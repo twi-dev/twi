@@ -75,6 +75,7 @@ module.exports = {
         name: userFkName,
         type: "foreign key",
         fields: ["user_id"],
+        onDelete: "cascade",
         references: {
           table: "users",
           field: "id"
