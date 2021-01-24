@@ -1,16 +1,24 @@
-import Sequelize from "sequelize"
+import {Sequelize} from "sequelize"
 
-import config from "lib/base/config"
+import isEmpty from "lodash/isEmpty"
+import omitBy from "lodash/omitBy"
 
 const {
-  name: database, user: username, pass: password, ...options
-} = config.database
+  DB_HOST: host,
+  DB_PORT: port,
+  DB_USER: username,
+  DB_PASSWORD: password,
+  DB_NAME: database,
+  DB_DIALECT: dialect
+} = process.env
 
-/**
- * @const
- *
- * @type {import("sequelize").Sequelize}
- */
-const connection = new Sequelize({...options, database, username, password})
+const connection = new Sequelize(omitBy({
+  dialect,
+  host,
+  port,
+  database,
+  username,
+  password
+}, isEmpty))
 
 export default connection
