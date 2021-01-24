@@ -1,7 +1,7 @@
 import {Model} from "sequelize"
 
-import createModel from "lib/db/createModel"
-import db from "lib/db/connection"
+import createModel from "server/lib/db/createModel"
+import db from "server/lib/db/connection"
 
 import schema from "./schema"
 

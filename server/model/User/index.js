@@ -1,5 +1,4 @@
-import Contacts from "../Contacts"
-import File from "../File"
+import File from "server/model/File"
 
 import User from "./User"
 
@@ -10,8 +9,5 @@ User.belongsTo(File, {
   onDelete: "cascade",
   hooks: true
 })
-
-User.hasOne(Contacts, {foreignKey: "userId", as: "contacts"})
-Contacts.belongsTo(User, {foreignKey: "userId", onDelete: "cascade"})
 
 export default User

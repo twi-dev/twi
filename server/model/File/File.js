@@ -6,11 +6,11 @@ import {Model} from "sequelize"
 
 import format from "date-fns/format"
 
-import createModel from "lib/db/createModel"
-import readOnly from "lib/helper/decorator/readOnly"
-import calcFileHash from "lib/helper/util/calcFileHash"
-import waterfall from "lib/helper/array/runWaterfall"
-import getSize from "lib/helper/util/getFileSize"
+import createModel from "server/lib/db/createModel"
+import readOnly from "server/lib/helper/decorator/readOnly"
+import calcFileHash from "server/lib/helper/util/calcFileHash"
+import waterfall from "server/lib/helper/array/runWaterfall"
+import getSize from "server/lib/helper/util/getFileSize"
 
 import schema from "./schema"
 

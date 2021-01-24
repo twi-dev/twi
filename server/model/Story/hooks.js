@@ -1,4 +1,4 @@
-import Chapter from "model/Chapter/Chapter"
+import Chapter from "server/model/Chapter/Chapter"
 
 const hooks = {
   /**

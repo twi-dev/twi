@@ -1,4 +1,4 @@
-import User from "model/User/User"
+import User from "server/model/User/User"
 
 import Session from "./Session"
 

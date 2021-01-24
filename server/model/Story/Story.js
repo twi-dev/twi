@@ -1,6 +1,6 @@
 import {Model} from "sequelize"
 
-import createModel from "lib/db/createModel"
+import createModel from "server/lib/db/createModel"
 
 import schema from "./schema"
 import hooks from "./hooks"
@@ -25,24 +25,6 @@ class Story extends Model {
    */
   get isRemoved() {
     return Boolean(this.deletedAt)
-  }
-
-  /**
-   * Check if the Story has given user
-   *
-   * @public
-   * @method
-   *
-   * @param {import("../User").default} user
-   *
-   * @return {boolean}
-   */
-  hasPublisher(user) {
-    if (!user) {
-      return false
-    }
-
-    return this.userId === Number(user.id)
   }
 }
 

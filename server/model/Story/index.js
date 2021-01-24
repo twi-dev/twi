@@ -1,10 +1,9 @@
-import Collaborator from "model/Collaborator"
-import Chapter from "model/Chapter"
-import User from "model/User"
-import File from "model/File"
-import Tag from "model/Tag"
+import Chapter from "server/model/Chapter"
+import User from "server/model/User"
+import File from "server/model/File"
+import Tag from "server/model/Tag"
 
-import StoryTags from "model/StoryTags"
+import StoryTags from "server/model/StoryTags"
 
 import Story from "./Story"
 
@@ -25,9 +24,6 @@ Chapter.belongsTo(Story, {
   onDelete: "cascade",
   as: "story"
 })
-
-Story.hasMany(Collaborator, {foreignKey: "storyId"})
-Collaborator.belongsTo(Story, {foreignKey: "storyId", onDelete: "cascade"})
 
 Story.belongsToMany(Tag, {
   as: "tags",

@@ -1,4 +1,4 @@
-import Category from "model/Category"
+import Category from "server/model/Category"
 
 import Tag from "./Tag"
 
