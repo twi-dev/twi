@@ -1,22 +1,23 @@
-const {join} = require("path")
-
 module.exports = {
   parser: "babel-eslint",
+  parserOptions: {
+    ecmaFeatures: {
+      modules: true,
+      jsx: true
+    }
+  },
   plugins: [
-    "ava"
+    "react"
   ],
   extends: [
-    "@octetstream",
-    "plugin:ava/recommended"
+    // "airbnb",
+    "@octetstream"
   ],
   settings: {
     "import/resolver": {
       "babel-module": {
         cwd: __dirname,
-        root: ["src"],
-        alias: {
-          "package.json": join(__dirname, "package.json")
-        }
+        root: ["."],
       }
     }
   },
@@ -26,7 +27,7 @@ module.exports = {
       code: 80
     }],
     indent: ["error", 2, {
-      MemberExpression: "off"
+      SwitchCase: 1
     }],
     // TODO: Don't forget to move this rule to my personal shared config.
     "prefer-const": ["error", {
@@ -37,7 +38,25 @@ module.exports = {
     }],
 
     "operator-linebreak": ["error", "before"],
+    "func-names": ["error", "always", {
+      generators: "never"
+    }],
 
-    "ava/no-ignored-test-files": 0
+    "react/react-in-jsx-scope": 0,
+    "react/static-property-placement": ["error", "static public field"],
+    "react/state-in-constructor": 0,
+    "react/button-has-type": 0,
+    "react/destructuring-assignment": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/jsx-fragments": ["error", "element"],
+    "react/prop-types": ["error", {skipUndeclared: true}],
+
+    // ! Disable this rule because Next.js <Link> component can't deal with it
+    // ! See: https://github.com/vercel/next.js/issues/5533
+    "jsx-a11y/anchor-is-valid": 0,
+
+    // TODO: Remove this rule after I update my own eslint config
+    "import/no-cycle": ["error", {maxDepth: Infinity}],
   }
 }

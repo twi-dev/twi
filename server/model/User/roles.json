@@ -1,0 +1,9 @@
+{
+  "super": "super",
+  "developer": "developer",
+  "admin": "admin",
+  "moderator": "moderator",
+  "support": "support",
+  "tech": "tech",
+  "user": "user"
+}

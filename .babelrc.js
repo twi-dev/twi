@@ -1,33 +1,17 @@
-const {join} = require("path")
-
 module.exports = {
+  presets: ["next/babel"],
   plugins: [
-    ["module-resolver", {
-      cwd: __dirname,
-      root: ["src"],
-      alias: {
-        "package.json": join(__dirname, "package.json")
-      }
-    }],
-    "@babel/transform-runtime",
-    ["@babel/proposal-decorators", {
-      legacy: true
-    }],
-    ["@babel/proposal-class-properties", {
-      loose: true
-    }],
-    "@babel/proposal-partial-application",
-    "@babel/proposal-nullish-coalescing-operator",
-    "@babel/proposal-optional-catch-binding",
-    "@babel/proposal-optional-chaining",
-    "@babel/proposal-export-namespace-from",
-    "@babel/proposal-export-default-from",
+    "@babel/plugin-transform-runtime",
     "@babel/proposal-do-expressions",
+    "@babel/proposal-nullish-coalescing-operator",
+    "@babel/proposal-optional-chaining",
+    "@babel/proposal-logical-assignment-operators",
+    "@babel/plugin-proposal-optional-catch-binding",
     ["@babel/proposal-pipeline-operator", {
       proposal: "minimal"
     }],
-    ["@babel/transform-modules-commonjs", {
-      mjsStrictNamespace: false
-    }],
+    ["@babel/proposal-decorators", {
+      legacy: true
+    }]
   ]
 }

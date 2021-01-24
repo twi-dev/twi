@@ -1,8 +1,8 @@
-const {join} = require("path")
+const {resolve} = require("path")
 
 module.exports = {
-  config: join(__dirname, "setup", "db", "config.js"),
-  "models-path": join(__dirname, "model"),
-  "seeders-path": join(__dirname, "setup", "db", "seed"),
-  "migrations-path": join(__dirname, "setup", "db", "migration")
+  config: "migration/config.js",
+  "models-path": resolve("model"),
+  "seeders-path": resolve("migration", "seed"),
+  "migrations-path": resolve("migration", "schema")
 }

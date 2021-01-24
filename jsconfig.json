@@ -1,20 +1,10 @@
 {
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
     "noImplicitAny": false,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "checkJs": true,
     "baseUrl": ".",
-    "paths": {
-      "*": [
-        "src/*"
-      ]
-    }
+    "jsx": "preserve"
   }
 }

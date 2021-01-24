@@ -1,57 +1,40 @@
-# Junks and runtime things
-.nyc_output
-.dockerignore
-.npmignore
-npm-debug.log
-yarn-error.log
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# NYC
+/.nyc_output
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
 .DS_Store
-*.rdb
-*.doc
-*.docx
-*.odt
-*.map
-*.old.js
-*.old.mjs
+*.pem
 
-# Main
-node_modules
-deploy
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-/db
-/acl
-/api
-/lib
-/route
-/setup
-/model
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.user.local
 
-# Static content (styles, images, script etc)
-/static/assets/img/**/*.svg
-/static/assets/js
-/static/assets/css
+# vercel
+.vercel
 
-# Tests runtime stuff and code coverage
-coverage
-
-/test/**/*.js
-/test/**/*.jsx
-/test/**/*.map
-
-!src/test/**/*.js
-!src/test/**/*.jsx
-
-# Configs rules
-/config/**/*.yml
-
-!/config/default.yml
-
-# An old codebase
-*.old
-*-old
-
-.*.dockerfile
-test.js
-cli/**/*.js
-
-# Ignore npm's lockfile in favour of Yarn
-package-lock.json
+/config
