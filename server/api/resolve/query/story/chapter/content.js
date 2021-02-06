@@ -9,6 +9,8 @@ const representations = {
 }
 
 /**
+ * Returns chapter's content representation depending on given type.
+ * Defaults to "markdown"
  *
  * @param {import("server/model/Chapter").default & {content: string}} chapter
  * @param {{as: "markdown" | "html" | "text"}} args
