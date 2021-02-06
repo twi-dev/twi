@@ -1,7 +1,6 @@
 import {Model} from "sequelize"
 
 import createModel from "server/lib/db/createModel"
-import toHtml from "server/lib/md/toHtml"
 
 import indexes from "./indexes"
 import schema from "./schema"
@@ -25,8 +24,7 @@ class Chapter extends Model {
    * @return {Promise<Chapter>}
    */
   static async create({content, ...chapter}, options) {
-    [chapter.contentMd, chapter.contentHtml] = [content, await toHtml(content)]
-
+    // TODO: Sanitizw the chapter's content
     // Automatically generate a title if there's no such thing
     if (!chapter.title) {
       chapter.title = `Chapter ${chapter.order}`
@@ -53,11 +51,11 @@ class Chapter extends Model {
    * @return {Promise<Chapter>}
    */
   async update({content, ...chapter}, options) {
-    if (chapter.content) {
-      [chapter.contentMd, chapter.contentHtml] = [
-        content, await toHtml(content)
-      ]
-    }
+    // if (chapter.content) {
+    //   [chapter.contentMd, chapter.contentHtml] = [
+    //     content, await toHtml(content)
+    //   ]
+    // }
 
     return super.update(chapter, options)
   }

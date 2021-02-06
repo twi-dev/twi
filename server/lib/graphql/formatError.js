@@ -1,7 +1,7 @@
 import omit from "lodash/omit"
 
-import log from "lib/log"
-import HttpException from "lib/error/http/HttpException"
+import log from "server/lib/log"
+import HttpException from "server/lib/error/http/HttpException"
 
 let defaults = new HttpException()
 

@@ -1,4 +1,4 @@
-import flat from "lib/helper/array/flat"
+import flat from "server/lib/helper/array/flat"
 
 const concatFromArray = (strings, sep = "") => flat(strings).join(sep)
 

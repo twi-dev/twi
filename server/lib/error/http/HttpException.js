@@ -1,4 +1,4 @@
-import Exception from "lib/error/base/Exception"
+import Exception from "server/lib/error/base/Exception"
 
 class HttpException extends Exception {
   constructor(message, code = "HTTP_EXCEPTION") {

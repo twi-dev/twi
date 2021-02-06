@@ -1,4 +1,4 @@
-import create from "lib/helper/decorator/createDecorator"
+import create from "server/lib/helper/decorator/createDecorator"
 
 /**
  * @typedef {import("koa")} Koa

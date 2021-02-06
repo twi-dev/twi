@@ -1,8 +1,8 @@
 import isFunction from "lodash/isFunction"
 
-import getType from "lib/helper/util/getType"
+import getType from "server/lib/helper/util/getType"
 
-const isArray = Array.isArray
+const {isArray} = Array
 
 function isListOf(list, predicate, ctx = null) {
   if (!isArray(list)) {

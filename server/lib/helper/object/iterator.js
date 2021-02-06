@@ -1,7 +1,7 @@
 import isObject from "lodash/isObject"
 
-import proxy from "lib/helper/decorator/proxy"
-import apply from "lib/helper/proxy/selfInvokingClass"
+import proxy from "server/lib/helper/decorator/proxy"
+import apply from "server/lib/helper/proxy/selfInvokingClass"
 
 @proxy({apply})
 class ObjectIterator {

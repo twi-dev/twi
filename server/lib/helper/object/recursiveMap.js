@@ -2,7 +2,7 @@ import isPlainObject from "lodash/isPlainObject"
 
 import objectIterator from "./iterator"
 
-const isArray = Array.isArray
+const {isArray} = Array
 
 /**
  * Iterate given object recursively

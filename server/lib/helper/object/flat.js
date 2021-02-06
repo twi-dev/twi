@@ -4,7 +4,7 @@ import camelCase from "camelcase"
 
 import iterator from "./iterator"
 
-const isArray = Array.isArray
+const {isArray} = Array
 
 function flat(object) {
   const entries = []
