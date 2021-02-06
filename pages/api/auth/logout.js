@@ -6,12 +6,19 @@ import session from "server/middleware/session"
 import client from "server/middleware/client"
 import cors from "server/middleware/cors"
 
+/** @type {import("next").PageConfig} */
 export const config = {
   api: {
     externalResolver: true
   }
 }
 
+/**
+ * @param {import("next").NextApiRequest} req
+ * @param {import("next").NextApiResponse} res
+ *
+ * @return {Promise<void>}
+ */
 async function logout(req, res) {
   if (!req.session.user) {
     throw createError(401)
@@ -19,7 +26,7 @@ async function logout(req, res) {
 
   await req.session.destroy()
 
-  res.send(JSON.stringify({message: "OK", errors: null}))
+  res.status(200).json({success: true, error: null})
 }
 
 const handler = nc({onError})

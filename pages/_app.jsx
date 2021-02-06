@@ -2,8 +2,10 @@ import {Toaster} from "react-hot-toast"
 import {Fragment} from "react"
 
 import "style/common.css"
+import "style/spacing.css"
 
 import Title from "component/Title"
+import PageLayout from "layout/Page"
 import PageError from "component/Error/PageError"
 
 /**
@@ -18,11 +20,13 @@ const Application = ({Component, pageProps}) => {
     <Fragment>
       <Title title="Twilight's Library" />
 
-      <PageError error={error}>
-        <Component {...props} />
+      <PageLayout>
+        <PageError error={error}>
+          <Component {...props} />
 
-        <Toaster position="bottom-center" />
-      </PageError>
+          <Toaster position="bottom-center" />
+        </PageError>
+      </PageLayout>
     </Fragment>
   )
 }

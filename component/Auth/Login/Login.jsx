@@ -8,41 +8,52 @@ import api from "lib/rest/api"
 import Button from "component/Button"
 import Input from "component/Input"
 
-/** @type {React.FC} */
-const Login = () => {
+import Title from "../Title"
+import Container from "../Container"
+import Fields from "../Fields"
+
+/** @type {React.FC<{compact?: boolean}>} */
+const Login = ({compact}) => {
   const {register, handleSubmit: handle} = useForm()
 
   const router = useRouter()
 
   /**
-   * @param {{email: string, password: string}} credentials
+   * @param {{username: string, password: string}} credentials
+   *
+   * @return {Promise<void>}
    */
   const submit = credentials => api.post("/auth/login", credentials)
     .then(() => router.push("/"))
     .catch(error => {
       console.error(error)
-      toast.error("Authentication failed.")
+      toast.error("Can't log in")
     })
 
   return (
-    <div>
+    <Container>
       <form onSubmit={handle(submit)}>
-        <Input
-          ref={register}
-          name="email"
-          placeholder="Email"
-        />
+        <Title title="Login" compact={compact} />
 
-        <Input
-          ref={register}
-          type="password"
-          name="password"
-          placeholder="Password"
-        />
+        <Fields compact={compact}>
+          <Input
+            ref={register}
+            type="email"
+            name="username"
+            placeholder="Email or username"
+          />
 
-        <Button type="submit">Submit</Button>
+          <Input
+            ref={register}
+            type="password"
+            name="password"
+            placeholder="Password"
+          />
+
+          <Button type="submit">Log in</Button>
+        </Fields>
       </form>
-    </div>
+    </Container>
   )
 }
 

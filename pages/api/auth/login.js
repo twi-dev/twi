@@ -19,8 +19,8 @@ export const config = {
 }
 
 /**
- * @param {import("http").IncomingMessage} req
- * @param {import("http").OutgoingMessage} res
+ * @param {import("next").NextApiRequest} req
+ * @param {import("next").NextApiResponse} res
  *
  * @return {Promise<void>}
  */
@@ -60,7 +60,7 @@ async function authenticate(req, res) {
     clientOsVersion: os.version
   })
 
-  res.send(JSON.stringify({message: "OK", error: null}))
+  res.status(200).json({success: true, error: null})
 }
 
 const handler = nc({onError})
