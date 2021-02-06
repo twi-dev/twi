@@ -1,12 +1,28 @@
-import {forwardRef} from "react"
+import {forwardRef, useMemo} from "react"
 
 import cn from "classnames"
 
-import {container} from "./button.module.css"
+import {container, primary} from "./button.module.css"
 
-/** @type {React.FC} */
-const Button = forwardRef(({className, ...props}, ref) => (
-  <button {...props} ref={ref} className={cn(container, className)} />
-))
+const variants = {primary}
+
+/** @type {React.FC<{variant: "primary" | "secondary"}>} */
+const Button = forwardRef(
+  ({className, variant: variantName, ...props}, ref) => {
+    const variant = useMemo(() => variants[variantName], [variantName])
+
+    return (
+      <button
+        {...props}
+        ref={ref}
+        className={cn(container, variant, className)}
+      />
+    )
+  }
+)
+
+Button.defaultProps = {
+  variant: "primary"
+}
 
 export default Button

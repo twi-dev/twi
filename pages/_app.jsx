@@ -1,8 +1,9 @@
 import {Toaster} from "react-hot-toast"
 import {Fragment} from "react"
 
-import "style/common.css"
+import "style/colors.css"
 import "style/spacing.css"
+import "style/common.css"
 
 import Title from "component/Title"
 import PageLayout from "layout/Page"

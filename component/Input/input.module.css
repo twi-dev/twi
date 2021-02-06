@@ -1,3 +1,5 @@
 .container {
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: var(--spacing-s);
+  border-radius: 0px;
+  border: 1px solid #eeeeee;
 }

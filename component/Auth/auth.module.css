@@ -13,7 +13,7 @@
 .fields {
   display: grid;
   grid-auto-flow: row;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-s);
 }
 
 @media screen and (width >= 1000px) {

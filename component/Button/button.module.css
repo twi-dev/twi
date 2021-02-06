@@ -1,4 +1,11 @@
 .container {
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: var(--spacing-s) var(--spacing-l);
   cursor: pointer;
+  border: 1px solid;
+}
+
+.primary {
+  background: var(--colors-interactive);
+  color: white;
+  border-color: var(--colors-interactive);
 }
