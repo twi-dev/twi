@@ -1,11 +1,19 @@
 import {spawn, Worker, Thread} from "threads"
 
-async function toHtml(md) {
+/**
+ * Compiles Markdown to HTML using remark and remark-html
+ *
+ * @param {string} text
+ *
+ * @return {Promise<string>}
+ */
+async function toHtml(text) {
   const convert = await spawn(new Worker("./convert"))
 
-  const html = await convert(md).then(({contents}) => contents)
+  /** @type {string} */
+  const result = await convert(text).then(({contents}) => contents)
 
-  return Thread.terminate(convert).then(() => html)
+  return Thread.terminate(convert).then(() => result)
 }
 
 export default toHtml

@@ -1,27 +1,36 @@
-import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
+import {
+  GraphQLObjectType as Output,
+  GraphQLNonNull as Required,
+  GraphQLString as TString,
+  GraphQLInt as TInt
+} from "graphql"
 
-import Type from "parasprite/Type"
+// eslint-disable-next-line max-len
+import TStoryChapterContentTypes from "server/api/input/story/TStoryChapterContentTypes"
 
-const TStoryChapter = Type({
+import content from "server/api/resolve/query/story/chapter/content"
+
+const TStoryChapter = new Output({
   name: "StoryChapter",
-  description: "Represends information about chapter"
+  description: "Represends information about chapter",
+  fields: {
+    id: {
+      type: new Required(TInt)
+    },
+    title: {
+      type: new Required(TString)
+    },
+    content: {
+      type: new Required(TString),
+      resolve: content,
+      args: {
+        as: {
+          type: TStoryChapterContentTypes,
+          defaultValue: "markdown"
+        }
+      }
+    }
+  }
 })
-  .field({
-    name: "id",
-    type: TInt,
-    required: true
-  })
-  .field({
-    name: "title",
-    type: TString,
-    required: true
-  })
-  .field({
-    name: "content",
-    type: TString,
-    required: true,
-    noArgs: true,
-  })
-.end()
 
 export default TStoryChapter
