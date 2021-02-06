@@ -1,3 +1,4 @@
+import {Toaster} from "react-hot-toast"
 import {Fragment} from "react"
 
 import "style/common.css"
@@ -19,6 +20,8 @@ const Application = ({Component, pageProps}) => {
 
       <PageError error={error}>
         <Component {...props} />
+
+        <Toaster position="bottom-center" />
       </PageError>
     </Fragment>
   )

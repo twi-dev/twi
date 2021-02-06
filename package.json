@@ -66,6 +66,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.15.1",
+    "react-hot-toast": "^1.0.2",
+    "redaxios": "^0.4.1",
     "remark": "13.0.0",
     "remark-html": "13.0.1",
     "sequelize": "6.4.0",
@@ -78,6 +80,7 @@
     "threads": "1.6.3",
     "type-is": "^1.6.18",
     "ua-parser-js": "0.7.23",
+    "urlcat": "^2.0.4",
     "validate.js": "0.13.1"
   },
   "devDependencies": {
