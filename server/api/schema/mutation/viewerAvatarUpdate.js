@@ -1,8 +1,8 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import update from "api/resolve/mutation/user/avatarUpdate"
-import TFileInput from "api/input/common/TFileInput"
-import TFile from "api/type/common/TFile"
+import update from "server/api/resolve/mutation/user/avatarUpdate"
+import TFileInput from "server/api/input/common/TFileInput"
+import TFile from "server/api/type/common/TFile"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

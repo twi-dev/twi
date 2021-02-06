@@ -2,8 +2,8 @@ import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 
 import Input from "parasprite/Input"
 
-import TFileInput from "api/input/common/TFileInput"
-import TStoryChapterInput from "api/input/story/TStoryChapterInput"
+import TFileInput from "server/api/input/common/TFileInput"
+import TStoryChapterInput from "server/api/input/story/TStoryChapterInput"
 
 const TStoryCreateInput = Input("StoryCreateInput")
   .field({

@@ -1,6 +1,6 @@
 import {GraphQLInt as TInt, GraphQLNonNull as Required} from "graphql"
 
-import remove from "api/resolve/mutation/story/chapterRemove"
+import remove from "server/api/resolve/mutation/story/chapterRemove"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

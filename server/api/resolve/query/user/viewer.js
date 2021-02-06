@@ -1,11 +1,7 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import auth from "lib/auth/checkUser"
+import bind from "server/lib/helper/graphql/normalizeParams"
 
-import Contacts from "model/Contacts"
-import User from "model/User"
+import User from "server/model/User"
 
-const include = [{model: Contacts, as: "contacts"}]
+const getViewer = ({ctx}) => User.findByPk(ctx.state.user.id)
 
-const getViewer = ({ctx}) => User.findByPk(ctx.state.user.id, {include})
-
-export default getViewer |> auth |> bind
+export default getViewer |> bind

@@ -1,14 +1,10 @@
-import {
-  GraphQLObjectType as Output,
-  GraphQLString as TString,
-  GraphQLNonNull as Required
-} from "graphql"
+import {GraphQLString as TString} from "graphql"
 import {GraphQLEmail as TEmail} from "graphql-custom-types"
 
 import Type from "parasprite/Type"
 
-import sessions from "api/resolve/query/auth/sessions"
-import TAuthSessionPage from "api/type/auth/TAuthSessionPage"
+import sessions from "server/api/resolve/query/auth/sessions"
+import TAuthSessionPage from "server/api/type/auth/TAuthSessionPage"
 
 import TUser from "./TUser"
 

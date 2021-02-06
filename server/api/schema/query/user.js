@@ -1,9 +1,9 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TUser from "api/type/user/TUser"
-import TLogin from "api/scalar/user/TLogin"
+import TUser from "server/api/type/user/TUser"
+import TLogin from "server/api/scalar/user/TLogin"
 
-import user from "api/resolve/query/user"
+import user from "server/api/resolve/query/user"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

@@ -1,8 +1,8 @@
 import {Op as op} from "sequelize"
 
-import bind from "lib/helper/graphql/normalizeParams"
+import bind from "server/lib/helper/graphql/normalizeParams"
 
-import Tag from "model/Tag"
+import Tag from "server/model/Tag"
 
 function getTag({args}) {
   const {id, slug} = args

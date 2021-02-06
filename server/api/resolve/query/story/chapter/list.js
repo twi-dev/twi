@@ -1,8 +1,8 @@
-import getPageInfo from "lib/helper/graphql/getPageInfo"
-import bind from "lib/helper/graphql/normalizeParams"
-import toPage from "lib/helper/graphql/toPage"
+import getPageInfo from "server/lib/helper/graphql/getPageInfo"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import toPage from "server/lib/helper/graphql/toPage"
 
-import Chapter from "model/Chapter"
+import Chapter from "server/model/Chapter"
 
 async function getChapters({parent: story, args}) {
   const storyId = story ? story.id : args.storyId

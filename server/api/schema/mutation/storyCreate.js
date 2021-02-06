@@ -1,9 +1,9 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TStoryCreateInput from "api/input/story/TStoryCreateInput"
-import TStory from "api/type/story/TStory"
+import TStoryCreateInput from "server/api/input/story/TStoryCreateInput"
+import TStory from "server/api/type/story/TStory"
 
-import create from "api/resolve/mutation/story/create"
+import create from "server/api/resolve/mutation/story/create"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

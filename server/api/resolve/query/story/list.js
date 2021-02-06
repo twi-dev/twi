@@ -1,10 +1,10 @@
-import getPageInfo from "lib/helper/graphql/getPageInfo"
-import bind from "lib/helper/graphql/normalizeParams"
-import toPage from "lib/helper/graphql/toPage"
+import getPageInfo from "server/lib/helper/graphql/getPageInfo"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import toPage from "server/lib/helper/graphql/toPage"
 
-import Story from "model/Story"
-import File from "model/File"
-import User from "model/User"
+import Story from "server/model/Story"
+import File from "server/model/File"
+import User from "server/model/User"
 
 const where = {isDraft: false, isFinished: true}
 

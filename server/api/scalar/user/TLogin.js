@@ -4,7 +4,7 @@ import {Kind} from "graphql/language"
 
 import validate from "server/model/User/util/validateLogin"
 
-const STRING = Kind.STRING
+const {STRING} = Kind
 
 function validateLogin(ast) {
   const {kind, value} = ast

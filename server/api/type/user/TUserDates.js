@@ -2,7 +2,7 @@ import {GraphQLDateTime as TDateTime} from "graphql-iso-date"
 
 import Type from "parasprite/Type"
 
-import serialize from "lib/helper/graphql/serializeDate"
+import serialize from "server/lib/helper/graphql/serializeDate"
 
 const TUserDates = Type("UserDates", "User activity and registration dates.")
   .resolve({

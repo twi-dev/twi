@@ -1,8 +1,8 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TSession from "api/type/auth/TAuthSession"
+import TSession from "server/api/type/auth/TAuthSession"
 
-import sessions from "api/resolve/query/auth/sessions"
+import sessions from "server/api/resolve/query/auth/sessions"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

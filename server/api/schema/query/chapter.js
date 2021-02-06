@@ -1,10 +1,10 @@
 import {GraphQLInt as TInt, GraphQLNonNull as Required} from "graphql"
 
-import TChapterUnion from "api/type/story/TStoryChapterOrStoryChapterRemoved"
-import chapter from "api/resolve/query/story/chapter"
+import TChapter from "server/api/type/story/TStoryChapterOrStoryChapterRemoved"
+import chapter from "server/api/resolve/query/story/chapter"
 
 const resolve = {
-  type: TChapterUnion,
+  type: TChapter,
   handler: chapter,
   required: true
 }
@@ -22,7 +22,7 @@ export {resolve, args}
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {
-  type: new Required(TChapterUnion),
+  type: new Required(TChapter),
   resolve: chapter,
   args: {
     storyId: {

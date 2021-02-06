@@ -1,7 +1,7 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import NotFound from "lib/error/http/NotFound"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import NotFound from "server/lib/error/http/NotFound"
 
-import User from "model/User"
+import User from "server/model/User"
 
 async function getUser({args}) {
   const user = await User.findByLogin(args.login, {

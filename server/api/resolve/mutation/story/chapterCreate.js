@@ -1,15 +1,13 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import Forbidden from "lib/error/http/Forbidden"
-import NotFound from "lib/error/http/NotFound"
-import auth from "lib/auth/checkUser"
-import db from "lib/db/connection"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import Forbidden from "server/lib/error/http/Forbidden"
+import NotFound from "server/lib/error/http/NotFound"
+import db from "server/lib/db/connection"
 
-import Story from "model/Story"
-import Chapter from "model/Chapter"
-import Collaborator from "model/Collaborator"
+import Story from "server/model/Story"
+import Chapter from "server/model/Chapter"
 
-import getStoryAbilities from "acl/story"
-import getCommonAbilities from "acl/common"
+import getStoryAbilities from "server/acl/story"
+import getCommonAbilities from "server/acl/common"
 
 const chapterCreate = ({args, ctx}) => db.transaction(async transaction => {
   const {user} = ctx.state
@@ -21,12 +19,8 @@ const chapterCreate = ({args, ctx}) => db.transaction(async transaction => {
     throw new NotFound("Cannot find requested story.")
   }
 
-  const collaborator = await Collaborator.findOne({
-    where: {userId: user.id, storyId: story.id}
-  })
-
   const aclCommon = getCommonAbilities(user)
-  const aclStory = getStoryAbilities({user, collaborator})
+  const aclStory = getStoryAbilities({user})
 
   if (
     aclCommon.cannot("update", story) || (
@@ -45,4 +39,4 @@ const chapterCreate = ({args, ctx}) => db.transaction(async transaction => {
   return Chapter.create(chapter, {transaction})
 })
 
-export default chapterCreate |> auth |> bind
+export default chapterCreate |> bind

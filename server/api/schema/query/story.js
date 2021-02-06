@@ -1,8 +1,8 @@
 import {GraphQLInt as TInt, GraphQLNonNull as Required} from "graphql"
 
-import TStoryOrStoryRemoved from "api/type/story/TStoryOrStoryRemoved"
+import TStoryOrStoryRemoved from "server/api/type/story/TStoryOrStoryRemoved"
 
-import story from "api/resolve/query/story/story"
+import story from "server/api/resolve/query/story/story"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

@@ -1,11 +1,10 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import waterfall from "lib/helper/array/runWaterfall"
-import NotFound from "lib/error/http/NotFound"
-import auth from "lib/auth/checkUser"
-import db from "lib/db/connection"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import waterfall from "server/lib/helper/array/runWaterfall"
+import NotFound from "server/lib/error/http/NotFound"
+import db from "server/lib/db/connection"
 
-import User from "model/User"
-import File from "model/File"
+import User from "server/model/User"
+import File from "server/model/File"
 
 const include = [{model: File, as: "avatar"}]
 
@@ -37,4 +36,4 @@ const avatarUpdate = ({args, ctx}) => db.transaction(async transaction => {
   ])
 })
 
-export default avatarUpdate |> auth |> bind
+export default avatarUpdate |> bind

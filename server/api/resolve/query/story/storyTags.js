@@ -1,11 +1,11 @@
 import {Model} from "sequelize"
 
-import bind from "lib/helper/graphql/normalizeParams"
-import getPageInfo from "lib/helper/graphql/getPageInfo"
-import parallel from "lib/helper/array/runParallel"
-import toPage from "lib/helper/graphql/toPage"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import getPageInfo from "server/lib/helper/graphql/getPageInfo"
+import parallel from "server/lib/helper/array/runParallel"
+import toPage from "server/lib/helper/graphql/toPage"
 
-import Story from "model/Story"
+import Story from "server/model/Story"
 
 async function getTags({parent: story, args}) {
   if (!(story instanceof Model)) {

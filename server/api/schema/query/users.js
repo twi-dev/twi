@@ -1,8 +1,8 @@
 import {GraphQLInt as TInt, GraphQLNonNull as Required} from "graphql"
 
-import TUserPage from "api/type/user/TUserPage"
+import TUserPage from "server/api/type/user/TUserPage"
 
-import list from "api/resolve/query/user/list"
+import list from "server/api/resolve/query/user/list"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {

@@ -1,9 +1,8 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import NotFound from "lib/error/http/NotFound"
-import auth from "lib/auth/checkUser"
-import db from "lib/db/connection"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import NotFound from "server/lib/error/http/NotFound"
+import db from "server/lib/db/connection"
 
-import User from "model/User"
+import User from "server/model/User"
 
 const passwordUpdate = ({args, ctx}) => db.transaction(async transaction => {
   const {user: viewer} = ctx.state
@@ -19,4 +18,4 @@ const passwordUpdate = ({args, ctx}) => db.transaction(async transaction => {
     .then(() => user.reload({transaction}))
 })
 
-export default passwordUpdate |> auth |> bind
+export default passwordUpdate |> bind

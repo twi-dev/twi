@@ -1,8 +1,8 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TStoryChapterUpdateInput from "api/input/story/TStoryChapterUpdateInput"
-import update from "api/resolve/mutation/story/chapterUpdate"
-import TChapter from "api/type/story/TStoryChapter"
+import TChapterUpdate from "server/api/input/story/TStoryChapterUpdateInput"
+import update from "server/api/resolve/mutation/story/chapterUpdate"
+import TChapter from "server/api/type/story/TStoryChapter"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {
@@ -10,7 +10,7 @@ const field = {
   resolve: update,
   args: {
     story: {
-      type: new Required(TStoryChapterUpdateInput)
+      type: new Required(TChapterUpdate)
     }
   }
 }

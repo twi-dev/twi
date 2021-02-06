@@ -1,9 +1,9 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import NotFound from "lib/error/http/NotFound"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import NotFound from "server/lib/error/http/NotFound"
 
-import Story from "model/Story"
+import Story from "server/model/Story"
 
-import getStoryAbilities from "acl/story"
+import getStoryAbilities from "server/acl/story"
 
 async function getStory({args, ctx}) {
   const {user} = ctx.state

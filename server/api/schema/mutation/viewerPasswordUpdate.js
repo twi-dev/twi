@@ -1,8 +1,8 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TUserPasswordUpdateInput from "api/input/user/TUserPasswordUpdateInput"
-import update from "api/resolve/mutation/user/passwordUpdate"
-import TViewer from "api/type/user/TViewer"
+import TPasswordUpdate from "server/api/input/user/TUserPasswordUpdateInput"
+import update from "server/api/resolve/mutation/user/passwordUpdate"
+import TViewer from "server/api/type/user/TViewer"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {
@@ -12,7 +12,7 @@ const field = {
     + "to prove their old password first.",
   args: {
     password: {
-      type: new Required(TUserPasswordUpdateInput)
+      type: new Required(TPasswordUpdate)
     }
   }
 }

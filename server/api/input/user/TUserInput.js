@@ -3,10 +3,10 @@ import {GraphQLString as TString} from "graphql"
 
 import Input from "parasprite/Input"
 
-import TLogin from "api/scalar/user/TLogin"
+import TLogin from "server/api/scalar/user/TLogin"
 
-import TFileInput from "api/input/common/TFileInput"
-import TContactsInput from "api/input/user/TContactsInput"
+import TFileInput from "server/api/input/common/TFileInput"
+import TContactsInput from "server/api/input/user/TContactsInput"
 
 const TUserInput = Input("UserInput", "Basic user information.")
   .field({

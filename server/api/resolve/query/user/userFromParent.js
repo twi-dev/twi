@@ -1,4 +1,4 @@
-import bind from "lib/helper/graphql/normalizeParams"
+import bind from "server/lib/helper/graphql/normalizeParams"
 
 const getUserFromParent = parent => parent.getUser()
 

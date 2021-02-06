@@ -1,9 +1,9 @@
 import {GraphQLNonNull as Required} from "graphql"
 
-import TStoryChapterCreate from "api/input/story/TStoryChapterCreateInput"
-import TChapter from "api/type/story/TStoryChapter"
+import TChapterCreate from "server/api/input/story/TStoryChapterCreateInput"
+import TChapter from "server/api/type/story/TStoryChapter"
 
-import create from "api/resolve/mutation/story/chapterCreate"
+import create from "server/api/resolve/mutation/story/chapterCreate"
 
 /** @type {import("graphql").GraphQLFieldConfig} */
 const field = {
@@ -11,7 +11,7 @@ const field = {
   resolve: create,
   args: {
     story: {
-      type: new Required(TStoryChapterCreate)
+      type: new Required(TChapterCreate)
     }
   }
 }

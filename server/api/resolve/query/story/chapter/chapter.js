@@ -1,11 +1,11 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import NotFound from "lib/error/http/NotFound"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import NotFound from "server/lib/error/http/NotFound"
 
-import Story from "model/Story"
-import Chapter from "model/Chapter"
+import Story from "server/model/Story"
+import Chapter from "server/model/Chapter"
 
-import getStoryAbilities from "acl/story"
-import getChapterAbilities from "acl/chapter"
+import getStoryAbilities from "server/acl/story"
+import getChapterAbilities from "server/acl/chapter"
 
 const include = [{model: Story, as: "story", required: true, paranoid: false}]
 

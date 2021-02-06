@@ -1,8 +1,8 @@
-import getPageInfo from "lib/helper/graphql/getPageInfo"
-import bind from "lib/helper/graphql/normalizeParams"
-import toPage from "lib/helper/graphql/toPage"
+import getPageInfo from "server/lib/helper/graphql/getPageInfo"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import toPage from "server/lib/helper/graphql/toPage"
 
-import Tag from "model/Tag"
+import Tag from "server/model/Tag"
 
 async function getTags({args}) {
   const pageInfo = getPageInfo(args)
