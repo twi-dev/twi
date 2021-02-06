@@ -21,7 +21,7 @@ const NotFoundError = () => (
           <div>There are no books out there, princess!</div>
           <div>
             <Link href="/">
-              <a>Go back to the home page?</a>
+              <a>Should we go back to the home page?</a>
             </Link>
           </div>
         </div>

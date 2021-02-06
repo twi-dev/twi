@@ -21,15 +21,17 @@
 
 .message {
   padding: 20px 0 0;
-  font-size: 105%;
+  font-size: 1em;
 }
 
 .code {
   font-size: 270%;
+  font-weight: bold;
 
   &::before {
     overflow: hidden;
     content: "···";
+    font-weight: normal;
     display: flex;
     font-size: 80%;
     color: #653089;
