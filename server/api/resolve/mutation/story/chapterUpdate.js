@@ -3,18 +3,16 @@ import {permittedFieldsOf} from "@casl/ability/extra"
 import pick from "lodash/pick"
 import isEmpty from "lodash/isEmpty"
 
-import bind from "lib/helper/graphql/normalizeParams"
-import Forbidden from "lib/error/http/Forbidden"
-import NotFound from "lib/error/http/NotFound"
-import auth from "lib/auth/checkUser"
-import db from "lib/db/connection"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import Forbidden from "server/lib/error/http/Forbidden"
+import NotFound from "server/lib/error/http/NotFound"
+import db from "server/lib/db/connection"
 
-import Story from "model/Story"
-import Chapter from "model/Chapter"
-import Collaborator from "model/Collaborator"
+import Story from "server/model/Story"
+import Chapter from "server/model/Chapter"
 
-import getChapterAbilities from "acl/chapter"
-import getCommonAbilities from "acl/common"
+import getChapterAbilities from "server/acl/chapter"
+import getCommonAbilities from "server/acl/common"
 
 const include = [{model: Story, as: "story", required: true}]
 
@@ -28,12 +26,8 @@ const chapterUpdate = ({args, ctx}) => db.transaction(async transaction => {
     throw new NotFound("Can't find requested chapter.")
   }
 
-  const collaborator = await Collaborator.findOne({
-    where: {userId: user.id, storyId: chapter.story.id}
-  })
-
   const aclCommon = getCommonAbilities(user)
-  const aclChapter = getChapterAbilities({user, collaborator})
+  const aclChapter = getChapterAbilities({user})
 
   if (
     aclCommon.cannot("update", chapter) || aclChapter.cannot("update", chapter)
@@ -51,4 +45,4 @@ const chapterUpdate = ({args, ctx}) => db.transaction(async transaction => {
     .then(() => chapter.reload({transaction}))
 })
 
-export default chapterUpdate |> auth |> bind
+export default chapterUpdate |> bind

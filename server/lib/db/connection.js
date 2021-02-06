@@ -4,12 +4,12 @@ import isEmpty from "lodash/isEmpty"
 import omitBy from "lodash/omitBy"
 
 const {
-  DB_HOST: host,
-  DB_PORT: port,
-  DB_USER: username,
-  DB_PASSWORD: password,
-  DB_NAME: database,
-  DB_DIALECT: dialect
+  DATABASE_HOST: host,
+  DATABASE_PORT: port,
+  DATABASE_USER: username,
+  DATABASE_PASSWORD: password,
+  DATABASE_NAME: database,
+  DATABASE_DIALECT: dialect
 } = process.env
 
 const connection = new Sequelize(omitBy({

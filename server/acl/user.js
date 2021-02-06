@@ -1,6 +1,6 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
-import User from "model/User"
+import User from "server/model/User"
 
 const {roles} = User
 

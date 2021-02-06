@@ -3,9 +3,6 @@ import {GraphQLEmail as TEmail} from "graphql-custom-types"
 
 import Type from "parasprite/Type"
 
-import sessions from "server/api/resolve/query/auth/sessions"
-import TAuthSessionPage from "server/api/type/auth/TAuthSessionPage"
-
 import TUser from "./TUser"
 
 const TViewer = Type({
@@ -30,14 +27,6 @@ const TViewer = Type({
     type: TString,
     description: "User's accout status",
     required: true
-  })
-  .resolve({
-    name: "sessions",
-    type: TAuthSessionPage,
-    required: true,
-    noArgs: true,
-    handler: sessions,
-    description: "User's active sessions list."
   })
 .end()
 

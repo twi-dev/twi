@@ -6,13 +6,13 @@ import {
 
 import Type from "parasprite/Type"
 
-import TUser from "api/type/user/TUser"
-import TDates from "api/type/common/TDates"
-import TStoryTagPage from "api/type/story/TStoryTagPage"
+import TUser from "server/api/type/user/TUser"
+import TDates from "server/api/type/common/TDates"
+import TStoryTagPage from "server/api/type/story/TStoryTagPage"
 
-import publisher from "api/resolve/query/story/publisher"
-import tags from "api/resolve/query/story/storyTags"
-import dates from "api/resolve/query/common/dates"
+import publisher from "server/api/resolve/query/story/publisher"
+import tags from "server/api/resolve/query/story/storyTags"
+import dates from "server/api/resolve/query/common/dates"
 
 const TStoryRemoved = Type("StoryRemoved")
   .field({

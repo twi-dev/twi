@@ -6,14 +6,14 @@ import {
 
 import Type from "parasprite/Type"
 
-import words from "lib/helper/string/concatWords"
+import words from "server/lib/helper/string/concatWords"
 
-import TDates from "api/type/common/TDates"
+import TDates from "server/api/type/common/TDates"
 
-import TUser from "api/type/user/TUser"
+import TUser from "server/api/type/user/TUser"
 
-import publisher from "api/resolve/query/story/publisher"
-import dates from "api/resolve/query/common/dates"
+import publisher from "server/api/resolve/query/story/publisher"
+import dates from "server/api/resolve/query/common/dates"
 
 const TStoryMinimal = Type({
   name: "StoryMinimal",

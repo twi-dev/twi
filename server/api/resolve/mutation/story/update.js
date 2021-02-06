@@ -3,18 +3,16 @@ import {permittedFieldsOf} from "@casl/ability/extra"
 import pick from "lodash/pick"
 import isEmpty from "lodash/isEmpty"
 
-import bind from "lib/helper/graphql/normalizeParams"
-import auth from "lib/auth/checkUser"
-import db from "lib/db/connection"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import db from "server/lib/db/connection"
 
-import NotFound from "lib/error/http/NotFound"
-import Forbidden from "lib/error/http/Forbidden"
+import NotFound from "server/lib/error/http/NotFound"
+import Forbidden from "server/lib/error/http/Forbidden"
 
-import Collaborator from "model/Collaborator"
-import Story from "model/Story"
+import Story from "server/model/Story"
 
-import getStoryAbilities from "acl/story"
-import getCommonAbilities from "acl/common"
+import getStoryAbilities from "server/acl/story"
+import getCommonAbilities from "server/acl/common"
 
 const update = ({args, ctx}) => db.transaction(async transaction => {
   const {user} = ctx.state
@@ -26,12 +24,8 @@ const update = ({args, ctx}) => db.transaction(async transaction => {
     throw new NotFound("Can't find requested story.")
   }
 
-  const collaborator = await Collaborator.findOne({
-    where: {userId: user.id, storyId: story.id}
-  })
-
   const aclCommon = getCommonAbilities(user)
-  const aclStory = getStoryAbilities({user, collaborator})
+  const aclStory = getStoryAbilities({user})
 
   if (aclStory.cannot("update", story) || aclCommon.cannot("update", story)) {
     throw new Forbidden("You can't update the story.")
@@ -47,4 +41,4 @@ const update = ({args, ctx}) => db.transaction(async transaction => {
     .then(() => story.reload({transaction}))
 })
 
-export default update |> auth |> bind
+export default update |> bind

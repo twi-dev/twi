@@ -1,12 +1,10 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
-import Collaborator from "model/Collaborator"
-import Chapter from "model/Chapter"
-import Story from "model/Story"
-import User from "model/User"
+import Story from "server/model/Story"
+import User from "server/model/User"
 
-const getStoryAbilities = members => Builder.define((allow, forbid) => {
-  const {user, collaborator} = members
+const getStoryAbilities = members => Builder.define(allow => {
+  const {user} = members
 
   // Drafted or unfinished stories avaialable to read only by the story's
   // publisher.
@@ -32,26 +30,6 @@ const getStoryAbilities = members => Builder.define((allow, forbid) => {
       // so we need to forbid of managing only ones he doesn't owns
       {userId: {$ne: user.id}}
     )
-  }
-
-  if (!collaborator) {
-    return undefined
-  }
-
-  // Collaborators must be able to update some story fields
-  if (collaborator.role === Collaborator.roles.writer) {
-    allow(["read", "update"], Story)
-    forbid("update", Story, ["isDraft", "isFinished"])
-
-    // Writers can also create a new chapter
-    allow("create", Chapter)
-
-    return undefined
-  }
-
-  // Artists can update story's cover, but can't remove that
-  if (collaborator.role === Collaborator.roles.art) {
-    allow("update", Story, ["cover", "coverId"])
   }
 })
 

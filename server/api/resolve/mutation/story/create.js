@@ -1,9 +1,8 @@
-import bind from "lib/helper/graphql/normalizeParams"
-import Forbidden from "lib/error/http/Forbidden"
-import auth from "lib/auth/checkUser"
+import bind from "server/lib/helper/graphql/normalizeParams"
+import Forbidden from "server/lib/error/http/Forbidden"
 
-import Story from "model/Story"
-import getCommonAbilities from "acl/common"
+import Story from "server/model/Story"
+import getCommonAbilities from "server/acl/common"
 
 async function storyCreate({args, ctx}) {
   const {user} = ctx.state
@@ -20,4 +19,4 @@ async function storyCreate({args, ctx}) {
   return Story.create(story)
 }
 
-export default storyCreate |> auth |> bind
+export default storyCreate |> bind

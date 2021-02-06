@@ -1,6 +1,6 @@
 import {AbilityBuilder as Builder} from "@casl/ability"
 
-import File from "model/File"
+import File from "server/model/File"
 
 const getFileAbilities = user => Builder.define(allow => {
   allow("read", File)

@@ -2,9 +2,6 @@ import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
 
 import Type from "parasprite/Type"
 
-import TStoryChapterContent from "api/type/story/TStoryChapterContent"
-import content from "api/resolve/query/story/chapter/content"
-
 const TStoryChapter = Type({
   name: "StoryChapter",
   description: "Represends information about chapter"
@@ -19,12 +16,11 @@ const TStoryChapter = Type({
     type: TString,
     required: true
   })
-  .resolve({
+  .field({
     name: "content",
-    type: TStoryChapterContent,
+    type: TString,
     required: true,
     noArgs: true,
-    handler: content
   })
 .end()
 

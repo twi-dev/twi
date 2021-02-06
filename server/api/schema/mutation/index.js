@@ -9,7 +9,6 @@ import storyRemove from "server/api/schema/mutation/storyRemove"
 import storyUpdate from "server/api/schema/mutation/storyUpdate"
 import viewerAvatarRemove from "server/api/schema/mutation/viewerAvatarRemove"
 import viewerAvatarUpdate from "server/api/schema/mutation/viewerAvatarUpdate"
-import viewerContactsUpdate from "server/api/schema/mutation/viewerContactsUpdate"
 import viewerPasswordUpdate from "server/api/schema/mutation/viewerPasswordUpdate"
 /* eslint-enable max-len */
 
@@ -24,7 +23,6 @@ const TMutation = new Output({
     storyUpdate,
     viewerAvatarRemove,
     viewerAvatarUpdate,
-    viewerContactsUpdate,
     viewerPasswordUpdate
   }
 })

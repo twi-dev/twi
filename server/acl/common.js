@@ -2,7 +2,7 @@ import {AbilityBuilder as Builder} from "@casl/ability"
 
 import isEmpty from "lodash/isEmpty"
 
-import User from "model/User"
+import User from "server/model/User"
 
 const {statuses, roles} = User
 

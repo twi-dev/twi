@@ -1,17 +1,16 @@
 import {Op as op} from "sequelize"
 
-import db from "lib/db/connection"
-import auth from "lib/auth/checkUser"
-import NotFound from "lib/error/http/NotFound"
-import Forbidden from "lib/error/http/Forbidden"
-import waterfall from "lib/helper/array/runWaterfall"
-import bind from "lib/helper/graphql/normalizeParams"
+import db from "server/lib/db/connection"
+import NotFound from "server/lib/error/http/NotFound"
+import Forbidden from "server/lib/error/http/Forbidden"
+import waterfall from "server/lib/helper/array/runWaterfall"
+import bind from "server/lib/helper/graphql/normalizeParams"
 
-import getCommonAbilities from "acl/common"
+import getCommonAbilities from "server/acl/common"
 
-import StoryTags from "model/StoryTags"
-import Story from "model/Story"
-import Tag from "model/Tag"
+import StoryTags from "server/model/StoryTags"
+import Story from "server/model/Story"
+import Tag from "server/model/Tag"
 
 // NOTE: Work in progress
 // TODO: Add categories assigning using prefixes
@@ -60,4 +59,4 @@ const tagsAdd = ({args, ctx}) => db.transaction(async transaction => {
   ])
 })
 
-export default tagsAdd |> auth |> bind
+export default tagsAdd |> bind

@@ -2,9 +2,9 @@ import {GraphQLInt as TInt, GraphQLString as TString} from "graphql"
 
 import Type from "parasprite/Type"
 
-import TDates from "api/type/common/TDates"
+import TDates from "server/api/type/common/TDates"
 
-import dates from "api/resolve/query/common/dates"
+import dates from "server/api/resolve/query/common/dates"
 
 const TFile = Type("File")
   .field({

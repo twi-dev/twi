@@ -2,7 +2,7 @@ import {GraphQLInt as TInt, GraphQLString as TString} from "graphql"
 
 import Type from "parasprite/Type"
 
-import TDates from "api/type/common/TDates"
+import TDates from "server/api/type/common/TDates"
 
 const TStoryTagCategoryMinimal = Type("StoryTagCategoryMinimal")
   .field({

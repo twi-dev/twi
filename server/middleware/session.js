@@ -1,5 +1,3 @@
-import {parse} from "url"
-
 import {nanoid} from "nanoid"
 
 import session from "express-session"
@@ -25,7 +23,7 @@ const middleware = session({
   cookie: {
     maxAge: ms("1y"),
     sameSite: "lax",
-    domain: parse(process.env.NEXT_PUBLIC_SERVER).hostname
+    domain: process.env.NEXT_PUBLIC_SERVER_HOST
   }
 })
 

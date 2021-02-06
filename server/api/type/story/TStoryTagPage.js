@@ -1,4 +1,4 @@
-import createPageType from "api/type/abstract/createPageType"
+import createPageType from "server/api/type/abstract/createPageType"
 
 import TStoryTag from "./TStoryTag"
 
