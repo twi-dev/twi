@@ -1,39 +1,33 @@
-import {GraphQLString as TString, GraphQLInt as TInt} from "graphql"
-
-import Input from "parasprite/Input"
+import {
+  GraphQLInputObjectType as Input,
+  GraphQLNonNull as Required,
+  GraphQLInt as TInt,
+  GraphQLString as TString,
+  GraphQLList as List
+} from "graphql"
 
 import TFileInput from "server/api/input/common/TFileInput"
 import TStoryChapterInput from "server/api/input/story/TStoryChapterInput"
 
-const TStoryCreateInput = Input("StoryCreateInput")
-  .field({
-    name: "title",
-    type: TString,
-    required: true
-  })
-  .field({
-    name: "description",
-    type: TString,
-    required: true
-  })
-  .field({
-    name: "cover",
-    type: TFileInput
-  })
-  .field({
-    name: "characters",
-    type: [TInt, true],
-    deprecate: "Use Tags intead of this field."
-  })
-  .field({
-    name: "genres",
-    type: [TInt, true],
-    deprecate: "Use Tags intead of this field."
-  })
-  .field({
-    name: "chapters",
-    type: [TStoryChapterInput, true]
-  })
-.end()
+const TStoryCreateInput = new Input({
+  name: "StoryCreateInput",
+  fields: {
+    title: {
+      type: new Required(TString)
+    },
+    description: {
+      type: new Required(TString)
+    },
+    cover: {
+      type: TFileInput
+    },
+    tags: {
+      type: new List(new Required(TInt))
+    },
+    chapters: {
+      type: new List(new Required(TStoryChapterInput))
+    }
+  }
+})
 
 export default TStoryCreateInput

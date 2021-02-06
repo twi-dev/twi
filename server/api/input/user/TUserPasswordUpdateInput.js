@@ -1,18 +1,19 @@
-import {GraphQLString as TString} from "graphql"
+import {
+  GraphQLInputObjectType as Input,
+  GraphQLNonNull as Required,
+  GraphQLString as TString
+} from "graphql"
 
-import Input from "parasprite/Input"
-
-const TUserPasswordUpdateInput = Input("UserPasswordUpdateInput")
-  .field({
-    name: "old",
-    type: TString,
-    required: true
-  })
-  .field({
-    name: "new",
-    type: TString,
-    required: true
-  })
-.end()
+const TUserPasswordUpdateInput = new Input({
+  name: "UserPasswordUpdateInput",
+  fields: {
+    old: {
+      type: new Required(TString)
+    },
+    new: {
+      type: new Required(TString)
+    }
+  }
+})
 
 export default TUserPasswordUpdateInput

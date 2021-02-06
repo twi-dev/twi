@@ -1,12 +1,30 @@
-import Enum from "parasprite/Enum"
+import {GraphQLEnumType as Enum} from "graphql"
 
-const TUserRole = Enum("UserRole")
-  .value("DEVELOPER", "developer")
-  .value("MODERATOR", "moderator")
-  .value("SUPPORT", "support")
-  .value("ADMIN", "admin")
-  .value("TECH", "TECH")
-  .value("USER", "user")
-.end()
+const TUserRolesInput = new Enum({
+  name: "UserRolesInput",
+  values: {
+    super: {
+      value: "super"
+    },
+    developer: {
+      value: "developer"
+    },
+    admin: {
+      value: "admin"
+    },
+    moderator: {
+      value: "moderator"
+    },
+    support: {
+      value: "support"
+    },
+    tech: {
+      value: "tech"
+    },
+    user: {
+      value: "user"
+    }
+  }
+})
 
-export default TUserRole
+export default TUserRolesInput

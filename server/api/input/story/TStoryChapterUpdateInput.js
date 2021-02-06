@@ -1,16 +1,23 @@
-import {GraphQLString as TString} from "graphql"
+import {
+  GraphQLInputObjectType as Input,
+  GraphQLNonNull as Required,
+  GraphQLInt as TInt,
+  GraphQLString as TString
+} from "graphql"
 
-import Input from "parasprite/Input"
-
-const TStoryChapterUpdateInput = Input("StoryChapterUpdateInput")
-  .field({
-    name: "title",
-    type: TString
-  })
-  .field({
-    name: "content",
-    type: TString
-  })
-.end()
+const TStoryChapterUpdateInput = new Input({
+  name: "StoryChapterUpdateInput",
+  fields: {
+    id: {
+      type: new Required(TInt)
+    },
+    title: {
+      type: TString
+    },
+    content: {
+      type: TString
+    }
+  }
+})
 
 export default TStoryChapterUpdateInput
