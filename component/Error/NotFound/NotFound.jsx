@@ -1,36 +1,34 @@
 import {Fragment} from "react"
 
+import Link from "next/link"
+
 import Title from "component/Title"
 
 import {
-  container,
-  content,
-  message,
-  status
+  container, content, image, message, code
 } from "./not-found.module.css"
 
-// TODO: Improve page design
-/**
- * @type {React.FC}
- */
-const NotFound = () => (
+const NotFoundError = () => (
   <Fragment>
-    <Title title="Page not found" />
+    <Title title="Oops..." />
 
     <div className={container}>
       <div className={content}>
+        <div className={image}>
+          <img src="/not-found-error.svg" alt="" />
+        </div>
         <div className={message}>
-          <h1 className={status}>
-            404
-          </h1>
-
+          <div>There are no books out there, princess!</div>
           <div>
-            This page could not be found.
+            <Link href="/">
+              <a>Go back to the home page?</a>
+            </Link>
           </div>
         </div>
+        <div className={code}>404</div>
       </div>
     </div>
   </Fragment>
 )
 
-export default NotFound
+export default NotFoundError
