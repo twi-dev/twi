@@ -6,7 +6,7 @@ import Story from "server/model/Story"
 import getStoryAbilities from "server/acl/story"
 
 async function getStory({args, ctx}) {
-  const {user} = ctx.state
+  const {user} = ctx.req.session
 
   const story = await Story.findByPk(args.id, {paranoid: false})
 

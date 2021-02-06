@@ -1,8 +1,8 @@
-import {AbilityBuilder as Builder} from "@casl/ability"
+import {defineAbility} from "@casl/ability"
 
 import File from "server/model/File"
 
-const getFileAbilities = user => Builder.define(allow => {
+const getFileAbilities = user => defineAbility(allow => {
   allow("read", File)
 
   allow("manage", File, {userId: user.id})

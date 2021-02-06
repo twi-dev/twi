@@ -1,8 +1,8 @@
-import {AbilityBuilder as Builder} from "@casl/ability"
+import {defineAbility} from "@casl/ability"
 
 import Chapter from "server/model/Chapter"
 
-const getChapterAbilities = members => Builder.define((allow, forbid) => {
+const getChapterAbilities = members => defineAbility((allow, forbid) => {
   const {user} = members
 
   // Drafted or unfinished stories avaialable to read only by the story's

@@ -1,10 +1,10 @@
-import {AbilityBuilder as Builder} from "@casl/ability"
+import {defineAbility} from "@casl/ability"
 
 import User from "server/model/User"
 
 const {roles} = User
 
-const getUserAbilities = user => Builder.define((allow, forbid) => {
+const getUserAbilities = user => defineAbility((allow, forbid) => {
   allow("read", User)
 
   // Moderators must be able to update users status, so they can ban/unban them

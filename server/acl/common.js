@@ -1,4 +1,4 @@
-import {AbilityBuilder as Builder} from "@casl/ability"
+import {defineAbility} from "@casl/ability"
 
 import isEmpty from "lodash/isEmpty"
 
@@ -6,7 +6,7 @@ import User from "server/model/User"
 
 const {statuses, roles} = User
 
-const getCommonUserAbilities = user => Builder.define(allow => {
+const getCommonUserAbilities = user => defineAbility(allow => {
   allow("read", "all")
 
   if (isEmpty(user)) {

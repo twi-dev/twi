@@ -9,11 +9,12 @@ import Story from "./Story"
 
 // Associations
 Story.belongsTo(User, {
-  foreignKey: "userId",
+  foreignKey: "publisherId",
   onDelete: "cascade",
   as: "publisher"
 })
-User.hasMany(Story, {foreignKey: "userId"})
+
+User.hasMany(Story, {foreignKey: "publisherId"})
 
 File.hasMany(Story, {foreignKey: "coverId"})
 Story.belongsTo(File, {foreignKey: "coverId", as: "cover", onDelete: "cascade"})
