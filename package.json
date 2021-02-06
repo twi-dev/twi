@@ -65,7 +65,7 @@
     "promise-fs": "2.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-hook-form": "^6.14.1",
+    "react-hook-form": "^6.15.1",
     "remark": "13.0.0",
     "remark-html": "13.0.1",
     "sequelize": "6.4.0",
