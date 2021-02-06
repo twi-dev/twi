@@ -1,6 +1,6 @@
-import isPlainObject from "lodash/isPlainObject"
+const isPlainObject = require("lodash/isPlainObject")
 
-import createSlug from "lib/helper/util/createSlug"
+const createSlug = require("./createSlug")
 
 /**
  * Assign common params both for category and tag
@@ -22,4 +22,4 @@ function normalizeCategoryOrTag(value) {
   }
 }
 
-export default normalizeCategoryOrTag
+module.exports = normalizeCategoryOrTag

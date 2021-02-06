@@ -11,6 +11,7 @@ import waterfall from "lib/helper/array/runWaterfall"
 import loadCategories from "setup/db/helper/loadCategories"
 import normalize from "setup/db/helper/normalizeTag"
 
+// TODO: Rewrite this migration
 async function loadTag(category) {
   let tags = []
 

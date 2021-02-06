@@ -3,7 +3,7 @@ import last from "lodash/last"
 
 import {Op as op} from "sequelize"
 
-import load from "setup/db/helper/loadCategories"
+import load from "../helper/loadCategories"
 
 const up = q => q.sequelize.transaction(async transaction => {
   let categories = await load()

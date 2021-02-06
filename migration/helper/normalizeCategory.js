@@ -1,6 +1,6 @@
-import isString from "lodash/isString"
+const isString = require("lodash/isString")
 
-import normalize from "./normalizeCategoryOrTag"
+const normalize = require("./normalizeCategoryOrTag")
 
 function normalizeCategory(category) {
   if (isString(category)) {
