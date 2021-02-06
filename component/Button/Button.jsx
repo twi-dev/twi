@@ -6,7 +6,7 @@ import {container, primary} from "./button.module.css"
 
 const variants = {primary}
 
-/** @type {React.FC<{variant: "primary" | "secondary"}>} */
+/** @type {React.FC<React.HTMLAttributes<HTMLButtonElement> & {variant: "primary" | "secondary"}>} */
 const Button = forwardRef(
   ({className, variant: variantName, ...props}, ref) => {
     const variant = useMemo(() => variants[variantName], [variantName])

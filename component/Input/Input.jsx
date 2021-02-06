@@ -4,7 +4,7 @@ import cn from "classnames"
 
 import {container} from "./input.module.css"
 
-/** @type {React.FC} */
+/** @type {React.FC<React.HTMLAttributes<HTMLInputElement>} */
 const Input = forwardRef(({className, ...props}, ref) => (
   <input {...props} ref={ref} className={cn(container, className)} />
 ))
