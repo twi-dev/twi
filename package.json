@@ -71,6 +71,7 @@
     "redaxios": "^0.4.1",
     "remark": "13.0.0",
     "remark-html": "13.0.1",
+    "require-dir": "^1.2.0",
     "sequelize": "6.5.0",
     "sharp": "0.27.1",
     "sprintf-js": "1.1.2",
