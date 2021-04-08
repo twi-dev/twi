@@ -1,5 +1,5 @@
+import {Resolver, Mutation, Arg, Ctx, Authorized, ID} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
-import {Resolver, Arg, Ctx, Authorized} from "type-graphql"
 import {Context} from "koa"
 
 import UserRepo from "repo/User"
@@ -10,7 +10,7 @@ import LogInInput from "api/input/auth/LogIn"
 import SignUpInput from "api/input/auth/SignUp"
 
 @Resolver()
-class Auth {
+class AuthResolver {
   @InjectRepository()
   private _userRepo: UserRepo
 
@@ -47,6 +47,16 @@ class Auth {
 
     return user
   }
+
+  @Mutation(() => ID)
+  @Authorized()
+  authLogOut(@Ctx() ctx: Context): number {
+    const userId: number = ctx.session.userId
+
+    ctx.session = null
+
+    return userId
+  }
 }
 
-export default Auth
+export default AuthResolver
