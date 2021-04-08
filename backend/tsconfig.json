@@ -24,6 +24,7 @@
     ]
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "env.d.ts"
   ]
 }
