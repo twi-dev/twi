@@ -23,7 +23,7 @@ export class Tag extends SoftRemovableEntity {
   slug!: string
 
   @Field({nullable: true})
-  @Column()
+  @Column({type: "text"})
   description?: string
 }
 
