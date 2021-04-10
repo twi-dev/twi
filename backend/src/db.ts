@@ -12,14 +12,14 @@ export const connect = async (): Promise<Connection> => {
     return getConnection(connectionName)
   } catch {
     const connection: Connection = await createConnection({
-      entities: [resolve("lib", "entity", "*.ts")],
+      entities: [resolve(process.env.SERVER_ROOT, "entity", "*.ts")],
       name: connectionName,
-      type: process.env.DB_DIALECT as any, // TODO: Fix typings for connection type
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10) || null,
-      username: process.env.DB_USER || null,
-      password: process.env.DB_PASSWORD || null,
-      database: process.env.DB_NAME,
+      type: process.env.DATABASE_DRIVER as any, // TODO: Fix typings for connection type
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT, 10) || null,
+      username: process.env.DATABASE_USER || null,
+      password: process.env.DATABASE_PASSWORD || null,
+      database: process.env.DATABASE_NAME,
       synchronize: process.env.NODE_ENV !== "production",
       logging: true
     })

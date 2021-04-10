@@ -4,7 +4,7 @@ import {GraphQLSchema} from "graphql"
 import {buildSchemaSync} from "type-graphql"
 
 const schema: GraphQLSchema = buildSchemaSync({
-  resolvers: [resolve("lib", "api", "resolver", "*.ts")]
+  resolvers: [resolve(process.env.SERVER_ROOT, "api", "resolver", "*.ts")]
 })
 
 export default schema
