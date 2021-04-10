@@ -12,7 +12,7 @@ export const connect = async (): Promise<Connection> => {
     return getConnection(connectionName)
   } catch {
     const connection: Connection = await createConnection({
-      entities: [resolve("src", "entity", "*.ts")],
+      entities: [resolve("lib", "entity", "*.ts")],
       name: connectionName,
       type: process.env.DB_DIALECT as any, // TODO: Fix typings for connection type
       host: process.env.DB_HOST,

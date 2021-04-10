@@ -31,6 +31,9 @@ export class Story extends SoftRemovableEntity {
   @Column()
   description!: string
 
+  @Column({update: false})
+  slug: string
+
   @Column({default: true})
   isDraft!: boolean
 

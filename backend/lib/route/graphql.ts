@@ -18,7 +18,7 @@ const router = new Router()
 const middleware = server.getMiddleware({cors: false, path})
 
 router
-  .get(path, middleware)
-  .post(path, middleware)
+  .get("/", middleware)
+  .post("/", middleware)
 
 export default router

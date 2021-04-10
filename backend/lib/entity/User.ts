@@ -1,7 +1,7 @@
 import {ObjectType, Field, registerEnumType} from "type-graphql"
 import {Entity, Column, OneToOne, JoinColumn} from "typeorm"
 import {IsEmail, Matches} from "class-validator"
-import {compare} from "bcrypt"
+import {verify} from "argon2"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
@@ -64,6 +64,6 @@ export class User extends SoftRemovableEntity {
    * @param password A password to compare with
    */
   comparePassword(password: string): Promise<boolean> {
-    return compare(password, this.password)
+    return verify(this.password, password)
   }
 }

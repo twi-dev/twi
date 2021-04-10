@@ -35,9 +35,7 @@ class AuthResolver {
     @Arg("credentials", () => LogInInput)
     {username, password}: LogInInput
   ): Promise<User> {
-    const user = await this._userRepo.findOne({
-      where: [{login: username}, {email: username}]
-    })
+    const user = await this._userRepo.findByEmailOrLogin(username)
 
     if (!user || !(await user.comparePassword(password))) {
       ctx.throw(401)
@@ -49,7 +47,7 @@ class AuthResolver {
   }
 
   @Mutation(() => ID)
-  @Authorized()
+  // @Authorized()
   authLogOut(@Ctx() ctx: Context): number {
     const userId: number = ctx.session.userId
 
