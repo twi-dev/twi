@@ -8,7 +8,7 @@ import waterfall from "helper/array/waterfall"
 
 import getRouter from "router"
 
-let server: Server | null = null
+let server: Server = null
 let isWaitingForListening = false
 
 async function init(): Promise<Koa> {
