@@ -1,6 +1,5 @@
 import {createServer, Server} from "http"
 
-import Router from "@koa/router"
 import cors from "@koa/cors"
 
 import Koa from "koa"
