@@ -4,7 +4,7 @@ import {Service} from "typedi"
 import {File} from "entity/File"
 
 @Service()
-@EntityRepository()
+@EntityRepository(File)
 class FileRepo extends Repository<File> {}
 
 export default FileRepo

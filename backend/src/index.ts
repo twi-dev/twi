@@ -6,7 +6,7 @@ import {connect, disconnect} from "./db"
 import {start, stop} from "./server"
 
 const exit = (code: number = 0) => waterfall([disconnect, stop])
-  .then(() => { process.exitCode = code })
+  .then(() => { process.exit(code) })
   .catch((error: Error) => {
     console.error(error)
 

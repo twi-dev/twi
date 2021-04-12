@@ -10,10 +10,13 @@ import session from "middleware/session"
 import getRouter from "router"
 
 let server: Server = null
-let isWaitingForListening = false
 
 async function init(): Promise<Koa> {
   const koa = new Koa()
+
+  koa.proxy = process.env.SERVER_TRUST_PROXY === "true"
+
+  koa.keys = [process.env.SERVER_AUTH_SESSION_SECRET]
 
   const router = await getRouter()
 
@@ -46,10 +49,8 @@ export const stop = () => new Promise<void>((resolve, reject) => {
     return resolve()
   }
 
-  if (!server.listening && !isWaitingForListening) {
-    isWaitingForListening = true
-
-    return server.once("listening", () => server.close(fulfill))
+  if (!server.listening) {
+    return resolve()
   }
 
   server.close(fulfill)

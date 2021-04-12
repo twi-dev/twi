@@ -1,31 +1,43 @@
 import {Repository, EntityRepository, DeepPartial} from "typeorm"
 import {Service} from "typedi"
 
-import {Story} from "entity/Story"
+import Story from "entity/Story"
 
 @Service()
-@EntityRepository()
+@EntityRepository(Story)
 export class StoryRepo extends Repository<Story> {
   async createAndSave(
     publisherId: number,
     story: DeepPartial<Story>
   ): Promise<Story> {
-    story.publisherId = publisherId
-    story.createdAt = new Date()
+    // Set dates for Post manually because we need the creating date in slug
+    const now = new Date()
 
-    return this.save(this.create(story))
+    return this.save(this.create({
+      ...story,
+
+      publisherId: publisherId,
+      slug: story.title,
+      createdAt: now,
+      updatedAt: now
+    }))
   }
 
+  /**
+   * Finds the first row that matches given `id` or `slug`
+   *
+   * @param idOrSlug `id` or `slug` to search a row by
+   */
   findByIdOrSlug(idOrSlug: number | string): Promise<Story> {
     return this.findOne({
       where: [
         {
           isDraft: false,
-          id: idOrSlug
+          id: Number(idOrSlug)
         },
         {
           isDraft: false,
-          slug: idOrSlug
+          slug: String(idOrSlug)
         }
       ]
     })

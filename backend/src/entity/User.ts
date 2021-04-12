@@ -34,7 +34,6 @@ export class User extends SoftRemovableEntity {
   @Matches(LOGIN_PATTERN)
   login!: string
 
-  @Field()
   @Column({unique: true})
   @IsEmail()
   email!: string
@@ -67,3 +66,5 @@ export class User extends SoftRemovableEntity {
     return verify(this.password, password)
   }
 }
+
+export default User

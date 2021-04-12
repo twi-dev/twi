@@ -50,6 +50,6 @@ declare namespace NodeJS {
     /**
      * Server-wide secret key
      */
-    readonly AUTH_SESSION_SECRET: string
+    readonly SERVER_AUTH_SESSION_SECRET: string
   }
 }

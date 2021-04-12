@@ -26,3 +26,5 @@ export class File extends SoftRemovableEntity {
   @Column({unsigned: true})
   size!: number
 }
+
+export default File

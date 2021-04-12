@@ -3,17 +3,19 @@ import {InjectRepository} from "typeorm-typedi-extensions"
 import {Context} from "koa"
 
 import UserRepo from "repo/User"
-
-import {User} from "entity/User"
+import User from "entity/User"
 
 import LogInInput from "api/input/auth/LogIn"
 import SignUpInput from "api/input/auth/SignUp"
+
+import Viewer from "api/type/user/Viewer"
 
 @Resolver()
 class AuthResolver {
   @InjectRepository()
   private _userRepo: UserRepo
 
+  @Mutation(() => Viewer)
   async authSignUp(
     @Ctx()
     ctx: Context,
@@ -28,6 +30,7 @@ class AuthResolver {
     return created
   }
 
+  @Mutation(() => Viewer)
   async authLogIn(
     @Ctx()
     ctx: Context,
@@ -43,11 +46,13 @@ class AuthResolver {
 
     ctx.session.userId = user.id
 
+    console.log(ctx.session)
+
     return user
   }
 
   @Mutation(() => ID)
-  // @Authorized()
+  @Authorized()
   authLogOut(@Ctx() ctx: Context): number {
     const userId: number = ctx.session.userId
 

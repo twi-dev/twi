@@ -4,7 +4,7 @@ import {Service} from "typedi"
 import {Tag} from "entity/Tag"
 
 @Service()
-@EntityRepository()
+@EntityRepository(Tag)
 class TagRepo extends Repository<Tag> {}
 
 export default TagRepo
