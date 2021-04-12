@@ -13,7 +13,7 @@ import Viewer from "api/type/user/Viewer"
 @Resolver()
 class AuthResolver {
   @InjectRepository()
-  private _userRepo: UserRepo
+  private _userRepo!: UserRepo
 
   @Mutation(() => Viewer)
   async authSignUp(

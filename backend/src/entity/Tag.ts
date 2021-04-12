@@ -3,7 +3,7 @@ import {ObjectType, Field} from "type-graphql"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import {Category} from "./Category"
+import Category from "./Category"
 
 @ObjectType()
 @Entity()

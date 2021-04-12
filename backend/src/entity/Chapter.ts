@@ -3,7 +3,7 @@ import {ObjectType, Field} from "type-graphql"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import {Story} from "./Story"
+import Story from "./Story"
 
 @ObjectType()
 @Entity()

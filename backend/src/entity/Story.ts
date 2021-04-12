@@ -46,8 +46,9 @@ export class Story extends SoftRemovableEntity {
   }
 
   set slug(value: string) {
-    this._slug =
-      `${format(this.createdAt, SLUG_DATE_MASK)}/${createSlug(value)}`
+    const formatted = format(this.createdAt, SLUG_DATE_MASK)
+
+    this._slug = `${formatted}/${createSlug(value)}`
   }
 
   @Field()

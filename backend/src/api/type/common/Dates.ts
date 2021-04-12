@@ -8,7 +8,7 @@ class Dates {
   @Field()
   updatedAt!: Date
 
-  @Field({ nullable: true })
+  @Field({nullable: true})
   deletedAt?: Date
 }
 

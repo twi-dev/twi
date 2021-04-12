@@ -26,10 +26,10 @@ import StoryAddInput from "api/input/story/Add"
 @Resolver(() => Story)
 class StoryResolver {
   @InjectRepository()
-  private _storyRepo: StoryRepo
+  private _storyRepo!: StoryRepo
 
   @InjectRepository()
-  private _userRepo: UserRepo
+  private _userRepo!: UserRepo
 
   @FieldResolver(() => User)
   async publisher(@Root() {publisher, publisherId}: Story): Promise<User> {

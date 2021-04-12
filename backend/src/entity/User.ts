@@ -5,7 +5,7 @@ import {verify} from "argon2"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import {File} from "./File"
+import File from "./File"
 
 export enum UserRoles {
   ROOT = "root",

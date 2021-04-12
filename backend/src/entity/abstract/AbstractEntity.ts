@@ -17,7 +17,7 @@ abstract class AbstractEntity {
   createdAt!: Date
 
   @UpdateDateColumn()
-  updatedAt: Date
+  updatedAt!: Date
 
   @Field(() => Dates)
   get dates(): Dates {

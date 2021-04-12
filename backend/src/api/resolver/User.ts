@@ -10,7 +10,7 @@ import Viewer from "api/type/user/Viewer"
 @Resolver()
 class UserResolver {
   @InjectRepository()
-  private _userRepo: UserRepo
+  private _userRepo!: UserRepo
 
   @Query(() => Viewer)
   @Authorized()

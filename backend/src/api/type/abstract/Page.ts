@@ -18,13 +18,13 @@ export abstract class Page<T extends object> {
    * Returns the number of the total rows in the list
    */
   @Field(() => Int)
-  readonly count: number
+  readonly count!: number
 
   @Field(() => Int)
-  readonly limit: number
+  readonly limit!: number
 
   @Field(() => Int)
-  readonly offset: number
+  readonly offset!: number
 
   /**
    * Returns the number of the current page

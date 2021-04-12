@@ -7,14 +7,14 @@ import {LOGIN_PATTERN} from "entity/User"
 class AuthSignUpInput {
   @Field()
   @IsEmail()
-  email: string
+  email!: string
 
   @Field()
   @Matches(LOGIN_PATTERN)
-  login: string
+  login!: string
 
   @Field()
-  password: string
+  password!: string
 }
 
 export default AuthSignUpInput

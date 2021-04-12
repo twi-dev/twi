@@ -9,7 +9,7 @@ import waterfall from "helper/array/waterfall"
 import session from "middleware/session"
 import getRouter from "router"
 
-let server: Server = null
+let server: Server | null = null
 
 async function init(): Promise<Koa> {
   const koa = new Koa()
@@ -34,7 +34,7 @@ const run = (koa: Koa) => new Promise<Server>((resolve, reject) => {
 
   server
     .once("error", reject)
-    .listen(process.env.SERVER_PORT, () => resolve(server))
+    .listen(process.env.SERVER_PORT, () => resolve(server as Server))
 })
 
 export const start = () => waterfall([init, run])
