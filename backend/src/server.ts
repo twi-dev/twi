@@ -6,6 +6,7 @@ import Koa from "koa"
 
 import waterfall from "helper/array/waterfall"
 
+import session from "middleware/session"
 import getRouter from "router"
 
 let server: Server = null
@@ -18,6 +19,7 @@ async function init(): Promise<Koa> {
 
   koa
     .use(cors())
+    .use(session)
     .use(router.allowedMethods())
     .use(router.routes())
 
