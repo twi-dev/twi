@@ -19,7 +19,7 @@ import NotFound from "api/middleware/NotFound"
 @Resolver()
 class ChapterResolver {
   @InjectRepository()
-  private _chapterRepo: ChapterRepo
+  private _chapterRepo!: ChapterRepo
 
   @Query(() => Chapter)
   @UseMiddleware(NotFound)
