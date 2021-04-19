@@ -28,7 +28,7 @@ export class Chapter extends SoftRemovableEntity {
 
   @Field()
   @Column({type: "mediumtext"})
-  content!: string
+  text!: string
 
   @Field()
   @Column({default: true})
