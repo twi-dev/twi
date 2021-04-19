@@ -8,20 +8,23 @@ import {
   Arg,
   Args,
   Root,
-  Authorized
+  Authorized,
+  UseMiddleware
 } from "type-graphql"
 import {Context} from "koa"
 
-import StoryRepo from "repo/Story"
-import UserRepo from "repo/User"
+import {StoryRepo} from "repo/Story"
+import {UserRepo} from "repo/User"
 
-import Story from "entity/Story"
-import User from "entity/User"
+import {Story} from "entity/Story"
+import {User} from "entity/User"
 
 import {StoryPage, StoryPageParams} from "api/type/story/StoryPage"
 
 import PageArgs from "api/args/PageArgs"
 import StoryAddInput from "api/input/story/Add"
+
+import NotFound from "api/middleware/NotFound"
 
 @Resolver(() => Story)
 class StoryResolver {
@@ -51,18 +54,13 @@ class StoryResolver {
     return {rows, count, page, limit, offset}
   }
 
-  @Query(() => Story)
-  async story(@Ctx() ctx: Context, @Arg("slug") slug: string): Promise<Story> {
-    const post = await this._storyRepo.findOne({where: {slug, isDraft: false}})
-
-    if (!post) {
-      ctx.throw(404)
-    }
-
-    return post
+  @Query(() => Story, {description: "Finds a story by given id or slug"})
+  @UseMiddleware(NotFound)
+  async story(@Arg("idOrSlug") idOrSlug: string): Promise<Story> {
+    return this._storyRepo.findByIdOrSlug(idOrSlug)
   }
 
-  @Mutation(() => Story)
+  @Mutation(() => Story, {description: "Creates a new story"})
   @Authorized()
   async storyAdd(
     @Ctx() ctx: Context,

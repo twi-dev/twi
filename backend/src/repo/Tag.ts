@@ -5,6 +5,6 @@ import {Tag} from "entity/Tag"
 
 @Service()
 @EntityRepository(Tag)
-class TagRepo extends Repository<Tag> {}
+export class TagRepo extends Repository<Tag> {}
 
 export default TagRepo

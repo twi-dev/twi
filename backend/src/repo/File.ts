@@ -5,6 +5,6 @@ import {File} from "entity/File"
 
 @Service()
 @EntityRepository(File)
-class FileRepo extends Repository<File> {}
+export class FileRepo extends Repository<File> {}
 
 export default FileRepo
