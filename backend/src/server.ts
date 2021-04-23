@@ -14,9 +14,9 @@ let server: Server | null = null
 async function init(): Promise<Koa> {
   const koa = new Koa()
 
-  koa.proxy = process.env.SERVER_TRUST_PROXY === "true"
+  koa.proxy = process.env.SERVER_TRUST_PROXY! === "true"
 
-  koa.keys = [process.env.SERVER_AUTH_SESSION_SECRET]
+  koa.keys = process.env.SERVER_AUTH_SESSION_SECRET!.split(" ")
 
   const router = await getRouter()
 
@@ -34,7 +34,7 @@ const run = (koa: Koa) => new Promise<Server>((resolve, reject) => {
 
   server
     .once("error", reject)
-    .listen(process.env.SERVER_PORT, () => resolve(server as Server))
+    .listen(parseInt(process.env.SERVER_PORT!, 10), () => resolve(server!))
 })
 
 export const start = () => waterfall([init, run]).then(() => {

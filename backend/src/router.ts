@@ -5,7 +5,7 @@ import Router from "@koa/router"
 
 import interop from "helper/util/interopRequireDefault"
 
-const ROUTES_ROOT = resolve(process.env.SERVER_ROOT, "route")
+const ROUTES_ROOT = resolve(process.env.SERVER_ROOT!, "route")
 
 /**
  * Creates a new Router instance with the routes read from `/route` directory.

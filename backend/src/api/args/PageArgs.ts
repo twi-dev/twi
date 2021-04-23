@@ -5,11 +5,11 @@ import {Min} from "class-validator"
 class PageArgs {
   @Field(() => Int, {defaultValue: 1})
   @Min(0)
-  page?: number
+  page!: number
 
   @Field(() => Int, {defaultValue: 10})
   @Min(0)
-  limit?: number
+  limit!: number
 
   get offset(): number {
     return this.limit * (this.page - 1)

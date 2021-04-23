@@ -29,7 +29,7 @@ class ChapterResolver {
 
     @Arg("storyId", () => ID)
     storyId: string
-  ): Promise<Chapter> {
+  ): Promise<Chapter | undefined> {
     return this._chapterRepo.findOne({where: {isDraft: false, storyId, id}})
   }
 

@@ -1,38 +1,31 @@
-import {resolve} from "path"
-
 import {createConnection, getConnection, useContainer, Connection} from "typeorm"
 import {Container} from "typeorm-typedi-extensions"
 
 useContainer(Container)
 
-const connectionName = "default"
-
 export const connect = async (): Promise<Connection> => {
   try {
-    return getConnection(connectionName)
+    return getConnection()
   } catch {
-    const connection: Connection = await createConnection({
-      entities: [resolve(process.env.SERVER_ROOT, "entity", "*.ts")],
-      subscribers: [resolve(process.env.SERVER_ROOT, "subscriber", "*.ts")],
-      name: connectionName,
-      type: process.env.DATABASE_DRIVER as any, // TODO: Fix typings for connection type
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT, 10) || null,
-      username: process.env.DATABASE_USER || null,
-      password: process.env.DATABASE_PASSWORD || null,
-      database: process.env.DATABASE_NAME,
+    return createConnection({
+      type: process.env.DATABASE_DRIVER! as "mysql",
+      host: process.env.DATABASE_HOST || undefined,
+      port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
+      database: process.env.DATABASE_NAME!,
+      username: process.env.DATABASE_USER || undefined,
+      password: process.env.DATABASE_PASSWORD || undefined,
+      subscribers: [process.env.DATABASE_SUBSCRIBERS!],
+      entities: [process.env.DATABASE_ENTITIES!],
       synchronize: process.env.NODE_ENV !== "production",
-      logging: true
-    })
-
-    return connection
+      logging: true,
+    });
   }
 }
 
-export const disconnect = (): Promise<void> => {
-  const connection: Connection = getConnection(connectionName)
+export const disconnect = async (): Promise<void> => {
+  const connection: Connection = getConnection()
 
   if (connection.isConnected) {
-    return connection.close()
+    await connection.close()
   }
 }

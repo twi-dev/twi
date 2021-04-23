@@ -7,7 +7,7 @@ import {Container} from "typeorm-typedi-extensions"
 import authChecker from "auth/checker"
 
 const schema: GraphQLSchema = buildSchemaSync({
-  resolvers: [resolve(process.env.SERVER_ROOT, "api", "resolver", "*.ts")],
+  resolvers: [process.env.GRAPHQL_RESOLVERS as string],
   container: Container,
   authChecker
 })

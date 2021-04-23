@@ -38,7 +38,9 @@ class StoryResolver {
   private _userRepo!: UserRepo
 
   @FieldResolver(() => User)
-  async publisher(@Root() {publisher, publisherId}: Story): Promise<User> {
+  async publisher(
+    @Root() {publisher, publisherId}: Story
+  ): Promise<User | undefined> {
     if (!publisher) {
       return this._userRepo.findOne(publisherId)
     }
@@ -59,7 +61,7 @@ class StoryResolver {
 
   @Query(() => Story, {description: "Finds a story by given id or slug"})
   @UseMiddleware(NotFound)
-  async story(@Arg("idOrSlug") idOrSlug: string): Promise<Story> {
+  async story(@Arg("idOrSlug") idOrSlug: string): Promise<Story | undefined> {
     return this._storyRepo.findByIdOrSlug(idOrSlug)
   }
 

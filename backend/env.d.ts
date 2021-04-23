@@ -2,6 +2,8 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
+    readonly NODE_ENV: "development" | "production" | "test"
+
     /**
      * Server root directory. The default value depends on the environment. Please don't change this manually.
      */
@@ -32,6 +34,8 @@ declare namespace NodeJS {
      */
     readonly DATABASE_HOST: string
 
+    readonly DATABASE_PORT: string
+
     /**
      * Name of a user to use in database connection
      */
@@ -47,9 +51,15 @@ declare namespace NodeJS {
      */
     readonly DATABASE_NAME: string
 
+    readonly DATABASE_ENTITIES: string
+
+    readonly DATABASE_SUBSCRIBERS: string
+
     /**
      * Server-wide secret key
      */
     readonly SERVER_AUTH_SESSION_SECRET: string
+
+    readonly GRAPHQL_RESOLVERS: string
   }
 }

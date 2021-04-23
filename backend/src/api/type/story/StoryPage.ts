@@ -9,7 +9,7 @@ export type StoryPageParams = PageParams<Story>
 @ObjectType()
 export class StoryPage extends Page<Story> {
   @Field(() => [Story], {nullable: "items"})
-  list(@Root() {rows = []}: StoryPageParams): Story[] {
+  list(@Root() {rows}: StoryPageParams): Story[] {
     return rows
   }
 }

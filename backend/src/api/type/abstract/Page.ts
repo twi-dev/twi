@@ -20,6 +20,9 @@ export abstract class Page<T extends object> {
   @Field(() => Int)
   readonly count!: number
 
+  /**
+   * Returns per-page entities limit
+   */
   @Field(() => Int)
   readonly limit!: number
 
@@ -58,6 +61,9 @@ export abstract class Page<T extends object> {
     return 1
   }
 
+  /**
+   * Returns the list of entities
+   */
   abstract list(root: PageParams<T>): T[]
 }
 

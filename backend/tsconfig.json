@@ -9,7 +9,7 @@
     "isolatedModules": false,
     "noEmit": false,
     "outDir": "lib",
-    "strict": false,
+    "strict": true,
     "lib": [
       "ESNext"
     ],

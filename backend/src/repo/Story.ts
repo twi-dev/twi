@@ -27,7 +27,7 @@ export class StoryRepo extends Repository<Story> {
    *
    * @param idOrSlug `id` or `slug` to search a row by
    */
-  findByIdOrSlug(idOrSlug: number | string): Promise<Story> {
+  findByIdOrSlug(idOrSlug: number | string): Promise<Story | undefined> {
     return this.findOne({
       where: [
         {

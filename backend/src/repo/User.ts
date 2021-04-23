@@ -16,13 +16,15 @@ const hashPassword = (password: string) => hash(password, {
 @EntityRepository(User)
 export class UserRepo extends Repository<User> {
   async createAndSave(user: DeepPartial<User>): Promise<User> {
-    user.password = await hashPassword(user.password)
+    user.password = await hashPassword(user.password!)
 
     return this.save(this.create(user))
   }
 
-  findByEmailOrLogin(emailOrLogin: string): Promise<User> {
-    return this.findOne({where: [{email: emailOrLogin}, {login: emailOrLogin}]})
+  findByEmailOrLogin(emailOrLogin: string): Promise<User | undefined> {
+    return this.findOne({
+      where: [{email: emailOrLogin}, {login: emailOrLogin}]
+    })
   }
 }
 
