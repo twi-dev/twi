@@ -3,7 +3,7 @@ import {Entity, Column} from "typeorm"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-@ObjectType({simpleResolvers: true})
+@ObjectType()
 @Entity()
 export class File extends SoftRemovableEntity {
   @Field()
