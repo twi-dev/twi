@@ -1,10 +1,9 @@
-import {InputType, Field, ID} from "type-graphql"
+import {InputType, Field} from "type-graphql"
+
+import Node from "api/input/common/Node"
 
 @InputType()
-class StoryUpdateInput {
-  @Field(() => ID)
-  id!: number
-
+class StoryUpdateInput extends Node {
   @Field({nullable: true})
   title?: string
 

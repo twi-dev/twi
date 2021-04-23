@@ -85,6 +85,13 @@ export class Story extends SoftRemovableEntity {
       this.isFinished = false
     }
   }
+
+  @BeforeUpdate()
+  updateChaptersCount() {
+    if (this.chaptersCount < 0) {
+      this.chaptersCount = 0
+    }
+  }
 }
 
 export default Story

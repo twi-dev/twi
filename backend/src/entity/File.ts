@@ -12,7 +12,7 @@ export class File extends SoftRemovableEntity {
 
   @Field()
   @Column()
-  basename!: string
+  name!: string
 
   @Field()
   @Column({type: "char", length: 128})
