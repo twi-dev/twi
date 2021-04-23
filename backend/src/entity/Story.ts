@@ -1,6 +1,13 @@
-import {Entity, Column, OneToOne, ManyToOne, JoinColumn} from "typeorm"
 import {ObjectType, Field} from "type-graphql"
 import {format} from "date-fns"
+import {
+  Entity,
+  Column,
+  OneToOne,
+  ManyToOne,
+  JoinColumn,
+  BeforeUpdate
+} from "typeorm"
 
 import createSlug from "helper/util/createSlug"
 
@@ -14,7 +21,9 @@ const SLUG_DATE_MASK = "yyyy/MM/dd"
 @ObjectType()
 @Entity()
 export class Story extends SoftRemovableEntity {
-  private _slug: string
+  #slug!: string
+
+  #title!: string
 
   @Column({unsigned: true})
   publisherId!: number
@@ -33,22 +42,29 @@ export class Story extends SoftRemovableEntity {
 
   @Field()
   @Column()
-  title!: string
+  get title(): string {
+    return this.#title
+  }
+
+  set title(value: string) {
+    this.slug = value
+    this.#title = value
+  }
 
   @Field()
   @Column({type: "text"})
   description!: string
 
   @Field()
-  @Column({update: false, unique: true})
+  @Column({unique: true})
   get slug(): string {
-    return this._slug
+    return this.#slug
   }
 
   set slug(value: string) {
     const formatted = format(this.createdAt, SLUG_DATE_MASK)
 
-    this._slug = `${formatted}/${createSlug(value)}`
+    this.#slug = `${formatted}/${createSlug(value)}`
   }
 
   @Field()
@@ -62,6 +78,13 @@ export class Story extends SoftRemovableEntity {
   @Field()
   @Column({type: "tinyint", unsigned: true, default: 0})
   chaptersCount!: number
+
+  @BeforeUpdate()
+  updateIsFinished() {
+    if (this.isFinished === true && this.chaptersCount < 1) {
+      this.isFinished = false
+    }
+  }
 }
 
 export default Story

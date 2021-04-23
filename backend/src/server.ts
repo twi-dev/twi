@@ -37,7 +37,12 @@ const run = (koa: Koa) => new Promise<Server>((resolve, reject) => {
     .listen(process.env.SERVER_PORT, () => resolve(server as Server))
 })
 
-export const start = () => waterfall([init, run])
+export const start = () => waterfall([init, run]).then(() => {
+  const address = `http://localhost:${process.env.SERVER_PORT}`
+
+  console.log(`Server is running on ${address}`)
+  console.log(`GraphiQL is mounted on ${address}/graphql`)
+})
 
 /**
  * Gracefully stops the server

@@ -17,7 +17,6 @@ export class StoryRepo extends Repository<Story> {
       ...story,
 
       publisherId: publisherId,
-      slug: story.title,
       createdAt: now,
       updatedAt: now
     }))

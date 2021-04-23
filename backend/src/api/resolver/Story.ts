@@ -9,9 +9,11 @@ import {
   Args,
   Root,
   Authorized,
-  UseMiddleware
+  UseMiddleware,
+  ID
 } from "type-graphql"
 import {Context} from "koa"
+import {set} from "lodash"
 
 import {StoryRepo} from "repo/Story"
 import {UserRepo} from "repo/User"
@@ -23,6 +25,7 @@ import {StoryPage, StoryPageParams} from "api/type/story/StoryPage"
 
 import PageArgs from "api/args/PageArgs"
 import StoryAddInput from "api/input/story/Add"
+import StoryUpdateInput from "api/input/story/Update"
 
 import NotFound from "api/middleware/NotFound"
 
@@ -69,6 +72,44 @@ class StoryResolver {
     const {userId} = ctx.session
 
     return this._storyRepo.createAndSave(userId, story)
+  }
+
+  @Mutation(() => Story)
+  @Authorized()
+  async storyUpdate(
+    @Ctx()
+    ctx: Context,
+
+    @Arg("story")
+    {id, ...fields}: StoryUpdateInput
+  ): Promise<Story> {
+    const story = await this._storyRepo.findOne(id)
+
+    if (!story) {
+      ctx.throw(400)
+    }
+
+    Object.entries(fields).map(([key, value]) => set(story, key, value))
+
+    return this._storyRepo.save(story)
+  }
+
+  @Mutation(() => ID)
+  @Authorized()
+  async storyRemove(
+      @Ctx()
+      ctx: Context,
+
+      @Arg("storyId")
+      storyId: number
+    ): Promise<number> {
+    const story = await this._storyRepo.findOne(storyId)
+
+    if (!story) {
+      ctx.throw(400)
+    }
+
+    return this._storyRepo.softRemove(story).then(() => storyId)
   }
 }
 

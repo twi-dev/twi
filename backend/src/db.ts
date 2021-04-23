@@ -13,6 +13,7 @@ export const connect = async (): Promise<Connection> => {
   } catch {
     const connection: Connection = await createConnection({
       entities: [resolve(process.env.SERVER_ROOT, "entity", "*.ts")],
+      subscribers: [resolve(process.env.SERVER_ROOT, "subscriber", "*.ts")],
       name: connectionName,
       type: process.env.DATABASE_DRIVER as any, // TODO: Fix typings for connection type
       host: process.env.DATABASE_HOST,

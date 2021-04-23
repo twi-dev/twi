@@ -25,7 +25,7 @@ class ChapterResolver {
   @UseMiddleware(NotFound)
   chapter(
     @Arg("id", () => ID)
-    id: string,
+    id: number,
 
     @Arg("storyId", () => ID)
     storyId: string
