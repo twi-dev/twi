@@ -1,6 +1,6 @@
-import {GraphQLSchema} from "graphql"
-import {buildSchemaSync} from "type-graphql"
 import {Container} from "typeorm-typedi-extensions"
+import {buildSchemaSync} from "type-graphql"
+import {GraphQLSchema} from "graphql"
 
 import authChecker from "auth/checker"
 
