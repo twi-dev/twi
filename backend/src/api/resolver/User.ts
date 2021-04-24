@@ -44,6 +44,7 @@ class UserResolver {
 
   @Query(() => Viewer, {description: "Finds currently logged in user"})
   @Authorized()
+  @UseMiddleware(NotFound)
   viewer(@Ctx() ctx: Context): Promise<User | undefined> {
     return this._userRepo.findOne(ctx.session.userId)
   }
