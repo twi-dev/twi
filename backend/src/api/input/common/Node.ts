@@ -1,7 +1,7 @@
 import {InputType, Field, ID} from "type-graphql"
 
 @InputType({isAbstract: true})
-class NodeInput {
+abstract class NodeInput {
   @Field(() => ID)
   id!: number
 }
