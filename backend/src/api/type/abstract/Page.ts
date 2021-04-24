@@ -26,6 +26,9 @@ export abstract class Page<T extends object> {
   @Field(() => Int)
   readonly limit!: number
 
+  /**
+   * List offset
+   */
   @Field(() => Int)
   readonly offset!: number
 
@@ -33,7 +36,7 @@ export abstract class Page<T extends object> {
    * Returns the number of the current page
    */
   @Field(() => Int)
-  current(@Root() {page = 1}: PageParams<T>): number {
+  current(@Root() {page}: PageParams<T>): number {
     return page
   }
 
