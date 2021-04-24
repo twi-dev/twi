@@ -3,6 +3,7 @@
 # dependencies
 node_modules
 
+# plug-n-play
 /.pnp
 .pnp.js
 
