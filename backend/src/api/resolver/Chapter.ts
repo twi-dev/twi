@@ -11,18 +11,19 @@ import {
   Ctx
 } from "type-graphql"
 import {Context} from "koa"
+import {set} from "lodash"
 
 import {ChapterPage, ChapterPageParams} from "api/type/chapter/ChapterPage"
 import {ChapterRepo} from "repo/Chapter"
 import {StoryRepo} from "repo/Story"
 
-import {User} from "entity/User"
+// import {User} from "entity/User"
 import {Chapter} from "entity/Chapter"
 
 import ChapterPageArgs from "api/args/ChapterPageArgs"
 
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
-// import UpdateInput from "api/input/chapter/Update"
+import UpdateInput from "api/input/chapter/Update"
 
 import NotFound from "api/middleware/NotFound"
 import GetViewer from "api/middleware/GetViewer"
@@ -80,9 +81,45 @@ class ChapterResolver {
     return this._chapterRepo.createAndSave(story.id, chapter)
   }
 
-  async chapterUpdate() {}
+  @Mutation(() => Chapter)
+  @Authorized()
+  @UseMiddleware(GetViewer)
+  async chapterUpdate(
+    @Ctx()
+    ctx: Context,
 
-  async chapterRemove() {}
+    @Arg("chapter")
+    {id, ...fields}: UpdateInput
+  ): Promise<Chapter> {
+    const chapter = await this._chapterRepo.findOne(id)
+
+    if (!chapter) {
+      ctx.throw(401)
+    }
+
+    Object.entries(fields).forEach(([key, value]) => set(chapter, key, value))
+
+    return this._chapterRepo.save(chapter)
+  }
+
+  @Mutation(() => ID)
+  @Authorized()
+  @UseMiddleware(GetViewer)
+  async chapterRemove(
+    @Ctx()
+    ctx: Context,
+
+    @Arg("chapterId", () => ID)
+    chapterId: number
+  ): Promise<number> {
+    const chapter = await this._chapterRepo.findOne(chapterId)
+
+    if (!chapter) {
+      ctx.throw(400)
+    }
+
+    return this._chapterRepo.softRemove(chapter).then(() => chapterId)
+  }
 }
 
 export default ChapterResolver

@@ -91,7 +91,7 @@ class StoryResolver {
       ctx.throw(400)
     }
 
-    Object.entries(fields).map(([key, value]) => set(story, key, value))
+    Object.entries(fields).forEach(([key, value]) => set(story, key, value))
 
     return this._storyRepo.save(story)
   }
