@@ -71,8 +71,6 @@ class ChapterResolver {
     @Arg("story")
     {id, chapter}: StoryChapterAddInput
   ): Promise<Chapter> {
-    const {viewer} = ctx.state as {viewer: User}
-
     const story = await this._storyRepo.findOne(id)
 
     if (!story) {
