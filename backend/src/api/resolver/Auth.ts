@@ -46,8 +46,6 @@ class AuthResolver {
 
     ctx.session.userId = user.id
 
-    console.log(ctx.session)
-
     return user
   }
 
