@@ -1,14 +1,29 @@
 import {ObjectType, Field, Root, Int} from "type-graphql"
 
 export interface PageParams<T extends object> {
+  /**
+   * Returns per-page entities limit
+   */
   limit: number
 
+  /**
+   * List offset
+   */
   offset: number
 
+  /**
+   * Current page number
+   */
   page: number
 
+  /**
+   * The number of the total rows in the list
+   */
   count: number
 
+  /**
+   * The list of entities
+   */
   rows: T[]
 }
 
