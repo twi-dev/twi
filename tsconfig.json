@@ -10,7 +10,8 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "importHelpers": true
   },
   "exclude": [
     "node_modules"
