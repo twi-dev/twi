@@ -4,8 +4,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background: var(--colors-background);
-  color: var(--colors-text);
+  background: var(--colors-background, white);
+  color: var(--colors-text, black);
   transition: background-color 0s ease-out, color 200ms ease-out 0ms;
   /* font-size: 20px; */
   font-size: 14px;

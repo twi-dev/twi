@@ -2,6 +2,8 @@ import {Toaster} from "react-hot-toast"
 import {AppProps} from "next/app"
 import {FC} from "preact/compat"
 
+import "style/common.css"
+
 import Title from "component/Title"
 import PageError from "component/Error/Page"
 
