@@ -1,4 +1,3 @@
-/* eslint-disable strict */
 (() => {
   "use strict"
 
@@ -29,4 +28,3 @@
 
   setDarkMode(matchMedia("(prefers-color-scheme: dark)"))
 })()
-/* eslint-enable strict */

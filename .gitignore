@@ -43,4 +43,6 @@ package-lock.json
 # vercel
 .vercel
 
+lib
+
 /config
