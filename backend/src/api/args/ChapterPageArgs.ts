@@ -4,8 +4,16 @@ import PageArgs from "./PageArgs"
 
 @ArgsType()
 class ChapterPageArgs extends PageArgs {
+  #storyId!: number
+
+  set storyId(value: string | number) {
+    this.#storyId = Number(value)
+  }
+
   @Field(() => ID)
-  storyId!: string
+  get storyId(): number {
+    return this.#storyId
+  }
 }
 
 export default ChapterPageArgs
