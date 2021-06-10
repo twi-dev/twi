@@ -2,9 +2,7 @@ import {parse, Body} from "then-busboy"
 import {Middleware} from "koa"
 
 const multipart: Middleware = async (ctx, next) => {
-  if (
-    ctx.get("content-type") !== "multipart/form-data" || ctx.method !== "post"
-  ) {
+  if (!ctx.is("multipart/form-data") || ctx.method.toLowerCase() !== "post") {
     return next()
   }
 

@@ -8,7 +8,8 @@ import {
   UseMiddleware
 } from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
-import {Context} from "koa"
+import {ParameterizedContext} from "koa"
+import {BodyFile} from "then-busboy"
 
 import {User} from "entity/User"
 import {UserRepo} from "repo/User"
@@ -19,6 +20,8 @@ import PageArgs from "api/args/PageArgs"
 import Viewer from "api/type/user/Viewer"
 
 import NotFound from "api/middleware/NotFound"
+
+type Context = ParameterizedContext<{viewer: User}>
 
 @Resolver()
 class UserResolver {

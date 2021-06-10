@@ -2,7 +2,7 @@ import {GraphQLScalarType as Scalar, GraphQLError} from "graphql"
 import {isBodyFile, BodyFile} from "then-busboy"
 
 const File = new Scalar({
-  name: "File",
+  name: "FileInput",
   description: "The `File` scalar type is the representation of "
     + "spec-compatible files from browsers",
 
