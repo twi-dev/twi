@@ -9,7 +9,6 @@ import {
 } from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
-import {BodyFile} from "then-busboy"
 
 import {User} from "entity/User"
 import {UserRepo} from "repo/User"
