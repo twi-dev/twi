@@ -1,13 +1,13 @@
 import {InputType, Field} from "type-graphql"
 import {BodyFile} from "then-busboy"
 
-import File from "api/scalar/common/File"
+import FileInput from "api/scalar/common/FileInput"
 
 import Node from "./Node"
 
 @InputType()
 class FileNodeInput extends Node {
-  @Field(() => File)
+  @Field(() => FileInput)
   file!: BodyFile
 }
 
