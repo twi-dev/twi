@@ -31,15 +31,24 @@ export class Story extends SoftRemovableEntity {
   @Column({unsigned: true, nullable: true})
   coverId?: number
 
+  /**
+   * The user who published the story.
+   */
   @Field(() => User)
   @ManyToOne(() => User, {onDelete: "CASCADE", eager: true})
   publisher!: User
 
+  /**
+   * Story cover.
+   */
   @Field(() => File, {nullable: true})
   @OneToOne(() => User, {eager: true})
   @JoinColumn()
   cover?: File
 
+  /**
+   * Story title.
+   */
   @Field()
   @Column()
   get title(): string {
@@ -51,10 +60,16 @@ export class Story extends SoftRemovableEntity {
     this.#title = value
   }
 
+  /**
+   * Story description.
+   */
   @Field()
   @Column({type: "text"})
   description!: string
 
+  /**
+   * The unique human-readable identifier of the story.
+   */
   @Field()
   @Column({unique: true})
   get slug(): string {
@@ -67,10 +82,18 @@ export class Story extends SoftRemovableEntity {
     this.#slug = `${formatted}/${createSlug(value)}`
   }
 
+  /**
+   * Indicates if the story has been available for everyone to read when value is set to false.
+   * Otherwise it will only available for owner and collaborators.
+   */
   @Field()
   @Column({default: true})
   isDraft!: boolean
 
+  /**
+   * Indicates if the story finished.
+   * It must have at least one chapter to be marked as finished.
+   */
   @Field()
   @Column({default: false})
   isFinished!: boolean

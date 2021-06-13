@@ -34,17 +34,29 @@ export class User extends SoftRemovableEntity {
   @Matches(LOGIN_PATTERN)
   login!: string
 
+  /**
+   * User email address.
+   */
   @Column({unique: true})
   @IsEmail()
   email!: string
 
+  /**
+   * User password.
+   */
   @Column()
   password!: string
 
+  /**
+   * Indicates which role user were assigned to.
+   */
   @Field(() => String)
   @Column({type: "enum", enum: UserRoles, default: UserRoles.REGULAR})
   role!: UserRoles
 
+  /**
+   * Indecates user's account status.
+   */
   @Field(() => String)
   @Column({type: "enum", enum: UserStatuses, default: UserStatuses.INACTIVE})
   status!: UserStatuses
@@ -52,6 +64,10 @@ export class User extends SoftRemovableEntity {
   @Column({unsigned: true, nullable: true})
   avatarId?: number
 
+
+  /**
+   * User avatar.
+   */
   @Field(() => File, {nullable: true})
   @OneToOne(() => File, {eager: true})
   @JoinColumn()
