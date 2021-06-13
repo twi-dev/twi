@@ -1,7 +1,7 @@
 import {InputType, Field} from "type-graphql"
 import {BodyFile} from "then-busboy"
 
-import FileInput from "api/scalar/common/FileInput"
+import FileInput from "api/input/common/FileInput"
 
 import Node from "./Node"
 
