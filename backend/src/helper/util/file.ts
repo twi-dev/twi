@@ -1,8 +1,24 @@
 import {resolve, isAbsolute} from "path"
-import {createReadStream} from "fs"
 import {createHash} from "crypto"
+import {Readable} from "stream"
 
-import {outputFile, unlink, readFile as read, WriteFileOptions} from "fs-extra"
+import {
+  unlink,
+  outputFile as w,
+  readFile as r,
+  ensureDir,
+  WriteFileOptions,
+  createReadStream,
+  createWriteStream
+} from "fs-extra"
+
+import pipe from "./pipe"
+
+const ROOT = resolve("static")
+
+const normalizePath = (path: string): string => (
+  isAbsolute(path) ? path : resolve(ROOT, path)
+)
 
 export type FileHashAlgorithms = "sha256" | "sha512" | "md5"
 
@@ -17,12 +33,6 @@ export interface WriteFileResult {
    */
   hash: string
 }
-
-const ROOT = resolve("static")
-
-const normalizePath = (path: string): string => (
-  isAbsolute(path) ? path : resolve(ROOT, path)
-)
 
 /**
  * Creates a hash from file contents.
@@ -46,11 +56,20 @@ export async function createHashFromPath(
 export async function writeFile(
   path: string,
   data: unknown,
-  options: WriteFileOptions
+  options?: WriteFileOptions
 ): Promise<WriteFileResult> {
   path = normalizePath(path)
 
-  await outputFile(path, data, options)
+  if (typeof (data as object)[Symbol.asyncIterator] === "function") {
+    data = Readable.from(data as AsyncIterableIterator<unknown>)
+  }
+
+  if (data instanceof Readable) {
+    await ensureDir(path)
+    await pipe(data, createWriteStream(path))
+  } else {
+    await w(path, data, options)
+  }
 
   const hash = await createHashFromPath(path)
 
@@ -59,4 +78,4 @@ export async function writeFile(
 
 export const removeFile = (path: string) => unlink(normalizePath(path))
 
-export const readFile = (path: string) => read(normalizePath(path))
+export const readFile = (path: string) => r(normalizePath(path))
