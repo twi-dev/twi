@@ -16,15 +16,19 @@ import pipe from "./pipe"
 
 const ROOT = resolve("static")
 
-const normalizePath = (path: string): string => (
+export const pathToAbsolute = (path: string): string => (
   isAbsolute(path) ? path : resolve(ROOT, path)
 )
+
+export const pathToRelative = (path: string) => path
+  .replace(ROOT, "")
+  .replace(/^(\/)?/, "")
 
 export type FileHashAlgorithms = "sha256" | "sha512" | "md5"
 
 export interface WriteFileResult {
   /**
-   * Absolute path to the file
+   * Relative path to the file
    */
   path: string,
 
@@ -43,7 +47,7 @@ export async function createHashFromPath(
 ): Promise<string> {
   const hash = createHash(algorithm)
 
-  for await (const chunk of createReadStream(normalizePath(path))) {
+  for await (const chunk of createReadStream(pathToAbsolute(path))) {
     hash.update(chunk)
   }
 
@@ -58,7 +62,7 @@ export async function writeFile(
   data: unknown,
   options?: WriteFileOptions
 ): Promise<WriteFileResult> {
-  path = normalizePath(path)
+  path = pathToAbsolute(path)
 
   if (typeof (data as object)[Symbol.asyncIterator] === "function") {
     data = Readable.from(data as AsyncIterableIterator<unknown>)
@@ -73,9 +77,9 @@ export async function writeFile(
 
   const hash = await createHashFromPath(path)
 
-  return {hash, path}
+  return {hash, path: pathToRelative(path)}
 }
 
-export const removeFile = (path: string) => unlink(normalizePath(path))
+export const removeFile = (path: string) => unlink(pathToAbsolute(path))
 
-export const readFile = (path: string) => r(normalizePath(path))
+export const readFile = (path: string) => r(pathToAbsolute(path))
