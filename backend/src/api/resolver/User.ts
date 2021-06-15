@@ -12,7 +12,7 @@ import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {BodyFile} from "then-busboy"
 
-import {writeFile} from "helper/util/file"
+import {writeFile, removeFile} from "helper/util/file"
 
 import {User} from "entity/User"
 import {UserRepo} from "repo/User"
@@ -64,7 +64,7 @@ class UserResolver {
   @Mutation(() => User)
   @Authorized()
   @UseMiddleware(GetViewer)
-  async userUpdateAvatar(
+  async userAvatarUpdate(
     @Ctx()
     ctx: Context,
 
@@ -80,6 +80,23 @@ class UserResolver {
     })
 
     viewer.avatar = avatar
+
+    return this._userRepo.save(viewer)
+  }
+
+  @Mutation(() => User)
+  @Authorized()
+  @UseMiddleware(GetViewer)
+  async userAvatarRemove(@Ctx() ctx: Context) {
+    const {viewer} = ctx.state
+
+    if (!viewer.avatar) {
+      return viewer
+    }
+
+    await this._fileRepo.remove(viewer.avatar)
+
+    viewer.avatar = null
 
     return this._userRepo.save(viewer)
   }

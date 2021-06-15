@@ -62,8 +62,7 @@ export class User extends SoftRemovableEntity {
   status!: UserStatuses
 
   @Column({unsigned: true, nullable: true})
-  avatarId?: number
-
+  avatarId!: number | null
 
   /**
    * User avatar.
@@ -71,7 +70,7 @@ export class User extends SoftRemovableEntity {
   @Field(() => File, {nullable: true})
   @OneToOne(() => File, {eager: true})
   @JoinColumn()
-  avatar?: File
+  avatar!: File | null
 
   /**
    * Checks if given password is valid for the user
