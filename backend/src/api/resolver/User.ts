@@ -6,6 +6,7 @@ import {
   Ctx,
   Args,
   Arg,
+  ID,
   UseMiddleware
 } from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
@@ -14,6 +15,7 @@ import {BodyFile} from "then-busboy"
 
 import {writeFile, removeFile} from "helper/util/file"
 
+import {File} from "entity/File";
 import {User} from "entity/User"
 import {UserRepo} from "repo/User"
 import {FileRepo} from "repo/File"
@@ -61,7 +63,7 @@ class UserResolver {
     return this._userRepo.findOne(ctx.session.userId)
   }
 
-  @Mutation(() => User)
+  @Mutation(() => File)
   @Authorized()
   @UseMiddleware(GetViewer)
   async userAvatarUpdate(
@@ -70,35 +72,52 @@ class UserResolver {
 
     @Arg("image", () => FileInput)
     image: BodyFile
-  ): Promise<User> {
+  ): Promise<File> {
     const {viewer} = ctx.state
 
-    const {path, hash} = await writeFile("user/avatar", image.stream())
+    const {
+      path,
+      hash
+    } = await writeFile(`user/avatar/${image.name}`, image.stream())
 
     const avatar = await this._fileRepo.createAndSave({
-      ...image, hash, path, mime: image.type
+      hash,
+      path,
+      mime: image.type,
+      name: image.name,
+      size: image.size
     })
+
+    const prevAvatar = viewer.avatar
 
     viewer.avatar = avatar
 
-    return this._userRepo.save(viewer)
+    await this._userRepo.save(viewer)
+
+    if (prevAvatar) {
+      await removeFile(prevAvatar.path)
+    }
+
+    return avatar
   }
 
-  @Mutation(() => User)
+  @Mutation(() => ID, {nullable: true})
   @Authorized()
   @UseMiddleware(GetViewer)
-  async userAvatarRemove(@Ctx() ctx: Context) {
+  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | undefined> {
     const {viewer} = ctx.state
 
     if (!viewer.avatar) {
-      return viewer
+      return undefined
     }
+
+    const {id} = viewer.avatar
 
     await this._fileRepo.remove(viewer.avatar)
 
-    viewer.avatar = null
+    await removeFile(viewer.avatar.path)
 
-    return this._userRepo.save(viewer)
+    return id
   }
 }
 

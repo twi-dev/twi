@@ -1,14 +1,16 @@
 import {createServer, Server} from "http"
 
-import cors from "@koa/cors"
-
 import Koa from "koa"
+import cors from "@koa/cors"
+import serve from "koa-static"
 
 import waterfall from "helper/array/waterfall"
 
 import multipart from "middleware/multipart"
 import session from "middleware/session"
 import getRouter from "router"
+
+import {ROOT} from "helper/util/file"
 
 let server: Server | null = null
 
@@ -23,6 +25,7 @@ async function init(): Promise<Koa> {
 
   koa
     .use(cors())
+    .use(serve(ROOT))
     .use(session)
     .use(multipart)
     .use(router.allowedMethods())

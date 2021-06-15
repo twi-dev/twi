@@ -1,4 +1,4 @@
-import {resolve, isAbsolute} from "path"
+import {resolve, basename, extname, isAbsolute} from "path"
 import {createHash} from "crypto"
 import {Readable} from "stream"
 
@@ -11,10 +11,11 @@ import {
   createReadStream,
   createWriteStream
 } from "fs-extra"
+import {nanoid} from "nanoid/async"
 
 import pipe from "./pipe"
 
-const ROOT = resolve("static")
+export const ROOT = resolve("static")
 
 export const pathToAbsolute = (path: string): string => (
   isAbsolute(path) ? path : resolve(ROOT, path)
@@ -64,12 +65,19 @@ export async function writeFile(
 ): Promise<WriteFileResult> {
   path = pathToAbsolute(path)
 
+  const name = basename(path)
+  const ext = extname(name)
+  const dir = path.replace(name, "")
+
+  // Change filename no make sure it is unique
+  path = resolve(dir, `${await nanoid()}${ext}`)
+
   if (typeof (data as object)[Symbol.asyncIterator] === "function") {
     data = Readable.from(data as AsyncIterableIterator<unknown>)
   }
 
   if (data instanceof Readable) {
-    await ensureDir(path)
+    await ensureDir(path.replace(basename(path), ""))
     await pipe(data, createWriteStream(path))
   } else {
     await w(path, data, options)

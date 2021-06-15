@@ -11,6 +11,7 @@ specifiers:
   '@types/koa': 2.13.3
   '@types/koa-redis': 4.0.0
   '@types/koa-session-minimal': 3.0.5
+  '@types/koa-static': ^4.0.1
   '@types/koa__cors': 3.0.2
   '@types/koa__router': 8.0.4
   '@types/lodash': 4.14.170
@@ -27,9 +28,11 @@ specifiers:
   koa: 2.13.1
   koa-redis: 4.0.1
   koa-session-minimal: 4.0.1
+  koa-static: ^5.0.0
   lodash: 4.17.21
   ms: 2.1.3
   mysql2: 2.2.5
+  nanoid: ^3.1.23
   reflect-metadata: 0.1.13
   then-busboy: 5.0.0-beta.6
   ts-node: 10.0.0
@@ -58,9 +61,11 @@ dependencies:
   koa: 2.13.1
   koa-redis: 4.0.1
   koa-session-minimal: 4.0.1
+  koa-static: 5.0.0
   lodash: 4.17.21
   ms: 2.1.3
   mysql2: 2.2.5
+  nanoid: 3.1.23
   reflect-metadata: 0.1.13
   then-busboy: 5.0.0-beta.6
   tslib: 2.3.0
@@ -76,6 +81,7 @@ devDependencies:
   '@types/koa': 2.13.3
   '@types/koa-redis': 4.0.0
   '@types/koa-session-minimal': 3.0.5
+  '@types/koa-static': 4.0.1
   '@types/koa__cors': 3.0.2
   '@types/koa__router': 8.0.4
   '@types/lodash': 4.14.170
@@ -416,6 +422,12 @@ packages:
       '@types/redis': 2.8.28
     dev: true
 
+  /@types/koa-send/4.1.2:
+    resolution: {integrity: sha512-rfqKIv9bFds39Jxvsp8o3YJLnEQVPVriYA14AuO2OY65IHh/4UX4U/iMs5L0wATpcRmm1bbe0BNk23TRwx3VQQ==}
+    dependencies:
+      '@types/koa': 2.13.3
+    dev: true
+
   /@types/koa-session-minimal/3.0.5:
     resolution: {integrity: sha512-ITslxknV7uxrt2gksn30YMPaZ2+NeawQIEFYboFUSbDUJHE0DEAvTBLYD5ooMJvyiJ5rlbTZnlCOMExfLANrPw==}
     dependencies:
@@ -428,6 +440,13 @@ packages:
     dependencies:
       '@types/cookies': 0.7.6
       '@types/koa': 2.13.1
+    dev: true
+
+  /@types/koa-static/4.0.1:
+    resolution: {integrity: sha512-SSpct5fEcAeRkBHa3RiwCIRfDHcD1cZRhwRF///ZfvRt8KhoqRrhK6wpDlYPk/vWHVFE9hPGqh68bhzsHkir4w==}
+    dependencies:
+      '@types/koa': 2.13.3
+      '@types/koa-send': 4.1.2
     dev: true
 
   /@types/koa/2.13.1:
@@ -1203,6 +1222,12 @@ packages:
       ms: 2.0.0
     dev: false
 
+  /debug/3.2.7:
+    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    dependencies:
+      ms: 2.1.3
+    dev: false
+
   /debug/4.3.1:
     resolution: {integrity: sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==}
     engines: {node: '>=6.0'}
@@ -1865,6 +1890,16 @@ packages:
       http-errors: 1.7.3
     dev: false
 
+  /http-errors/1.6.3:
+    resolution: {integrity: sha1-i1VoC7S+KDoLW/TqLjhYC+HZMg0=}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      depd: 1.1.2
+      inherits: 2.0.3
+      setprototypeof: 1.1.0
+      statuses: 1.5.0
+    dev: false
+
   /http-errors/1.7.3:
     resolution: {integrity: sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==}
     engines: {node: '>= 0.6'}
@@ -1950,6 +1985,10 @@ packages:
     dependencies:
       once: 1.4.0
       wrappy: 1.0.2
+
+  /inherits/2.0.3:
+    resolution: {integrity: sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=}
+    dev: false
 
   /inherits/2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -2256,6 +2295,17 @@ packages:
       - supports-color
     dev: false
 
+  /koa-send/5.0.1:
+    resolution: {integrity: sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ==}
+    engines: {node: '>= 8'}
+    dependencies:
+      debug: 4.3.1
+      http-errors: 1.8.0
+      resolve-path: 1.4.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /koa-session-minimal/4.0.1:
     resolution: {integrity: sha512-bFPYscrdCHXFdzbaf6vPgZrNuLtPDQFCgL9IJVfjDYXc5xOHP8Pd19deY9kJWiFwYjj1naJRO5RuCY0GthnmFA==}
     engines: {node: '>= 8'}
@@ -2263,6 +2313,16 @@ packages:
       co: 4.6.0
       deep-equal: 2.0.5
       uid-safe: 2.1.5
+    dev: false
+
+  /koa-static/5.0.0:
+    resolution: {integrity: sha512-UqyYyH5YEXaJrf9S8E23GoJFQZXkBVJ9zYYMPGz919MSX1KuvAcycIuS0ci150HCoPf4XQVhQ84Qf8xRPWxFaQ==}
+    engines: {node: '>= 7.6.0'}
+    dependencies:
+      debug: 3.2.7
+      koa-send: 5.0.1
+    transitivePeerDependencies:
+      - supports-color
     dev: false
 
   /koa/2.13.1:
@@ -2909,6 +2969,14 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /resolve-path/1.4.0:
+    resolution: {integrity: sha1-xL2p9e+y/OZSR4c6s2u02DT+Fvc=}
+    engines: {node: '>= 0.8'}
+    dependencies:
+      http-errors: 1.6.3
+      path-is-absolute: 1.0.1
+    dev: false
+
   /resolve/1.20.0:
     resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==}
     dependencies:
@@ -2973,6 +3041,10 @@ packages:
 
   /set-blocking/2.0.0:
     resolution: {integrity: sha1-BF+XgtARrppoA93TgrJDkrPYkPc=}
+    dev: false
+
+  /setprototypeof/1.1.0:
+    resolution: {integrity: sha512-BvE/TwpZX4FXExxOxZyRGQQv651MSwmWKZGqvmPcRIjDqWub67kTKuIMx43cZZrS/cBBzwBcNDWoFxt2XEFIpQ==}
     dev: false
 
   /setprototypeof/1.1.1:

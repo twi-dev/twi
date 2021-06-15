@@ -9,10 +9,10 @@ import Category from "./Category"
 @Entity()
 export class Tag extends SoftRemovableEntity {
   @Column({unsigned: true})
-  categoryId?: string
+  categoryId!: number
 
   @ManyToOne(() => Category, {eager: true})
-  category?: Category
+  category!: Category
 
   @Field()
   @Column()
