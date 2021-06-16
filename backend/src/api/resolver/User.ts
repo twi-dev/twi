@@ -1,3 +1,5 @@
+import {Readable} from "stream"
+
 import {
   Resolver,
   Query,
@@ -13,6 +15,8 @@ import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {BodyFile} from "then-busboy"
 import {set} from "lodash"
+
+import sharp from "sharp"
 
 import {writeFile, removeFile} from "helper/util/file"
 
@@ -75,11 +79,14 @@ class UserResolver {
     image: BodyFile
   ): Promise<File> {
     const {viewer} = ctx.state
+    const {name, size, type: mime} = image
 
-    const {
-      path,
-      hash
-    } = await writeFile(`user/${viewer.id}/avatar/${image.name}`, image.stream())
+    const {path, hash} = await writeFile(
+      `user/${viewer.id}/avatar/${image.name}`,
+
+      // TODO: I should probably measure image resolution first
+      Readable.from(image.stream()).pipe(sharp().resize(180).png())
+    )
 
     // Update existent avatar
     if (viewer.avatar) {
@@ -87,13 +94,7 @@ class UserResolver {
       const {path: oldPath} = avatar
 
       Object
-        .entries(({
-          path,
-          hash,
-          size: image.size,
-          mime: image.type,
-          name: image.name
-        } as File))
+        .entries(({path, hash, size, mime, name} as File))
         .forEach(([name, value]) => set(avatar, name, value))
 
       const updated =  this._fileRepo.save(viewer.avatar)
@@ -104,11 +105,7 @@ class UserResolver {
     }
 
     const avatar = await this._fileRepo.createAndSave({
-      hash,
-      path,
-      mime: image.type,
-      name: image.name,
-      size: image.size
+      hash, path, mime, name, size
     })
 
     viewer.avatar = avatar
