@@ -12,6 +12,7 @@ import {
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {BodyFile} from "then-busboy"
+import {set} from "lodash"
 
 import {writeFile, removeFile} from "helper/util/file"
 
@@ -85,11 +86,15 @@ class UserResolver {
       const {avatar} = viewer
       const {path: oldPath} = avatar
 
-      avatar.path = path
-      avatar.hash = hash
-      avatar.size = image.size
-      avatar.name = image.name
-      avatar.mime = image.type
+      Object
+        .entries(({
+          path,
+          hash,
+          size: image.size,
+          mime: image.type,
+          name: image.name
+        } as File))
+        .forEach(([name, value]) => set(avatar, name, value))
 
       const updated =  this._fileRepo.save(viewer.avatar)
 
