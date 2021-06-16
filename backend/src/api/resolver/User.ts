@@ -80,6 +80,24 @@ class UserResolver {
       hash
     } = await writeFile(`user/${viewer.id}/avatar/${image.name}`, image.stream())
 
+    // Update existent avatar
+    if (viewer.avatar) {
+      const {avatar} = viewer
+      const {path: oldPath} = avatar
+
+      avatar.path = path
+      avatar.hash = hash
+      avatar.size = image.size
+      avatar.name = image.name
+      avatar.mime = image.type
+
+      const updated =  this._fileRepo.save(viewer.avatar)
+
+      await removeFile(oldPath)
+
+      return updated
+    }
+
     const avatar = await this._fileRepo.createAndSave({
       hash,
       path,
@@ -88,15 +106,9 @@ class UserResolver {
       size: image.size
     })
 
-    const prevAvatar = viewer.avatar
-
     viewer.avatar = avatar
 
     await this._userRepo.save(viewer)
-
-    if (prevAvatar) {
-      await removeFile(prevAvatar.path)
-    }
 
     return avatar
   }
