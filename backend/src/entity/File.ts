@@ -1,7 +1,11 @@
+import {resolve} from "path"
 import {URL} from "url"
 
+import {stat} from "fs-extra"
 import {Field, ObjectType, Int} from "type-graphql"
 import {Entity, Column} from "typeorm"
+
+import {ROOT} from "helper/util/file"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
@@ -40,8 +44,9 @@ export class File extends SoftRemovableEntity {
    * File size in bytes
    */
   @Field(() => Int)
-  @Column({unsigned: true})
-  size!: number
+  async size(): Promise<number> {
+    return stat(resolve(ROOT, this.path)).then(({size}) => size)
+  }
 
   @Field(() => String)
   get url(): string {

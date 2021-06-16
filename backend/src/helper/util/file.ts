@@ -9,7 +9,8 @@ import {
   ensureDir,
   WriteFileOptions,
   createReadStream,
-  createWriteStream
+  createWriteStream,
+  stat
 } from "fs-extra"
 import {nanoid} from "nanoid/async"
 
@@ -36,7 +37,12 @@ export interface WriteFileResult {
   /**
    * SHA 512 hash of the file content
    */
-  hash: string
+  hash: string,
+
+  /**
+   * File size in bytes
+   */
+  size: number
 }
 
 /**
@@ -84,8 +90,9 @@ export async function writeFile(
   }
 
   const hash = await createHashFromPath(path)
+  const {size} = await stat(path)
 
-  return {hash, path: pathToRelative(path)}
+  return {hash, size, path: pathToRelative(path)}
 }
 
 export const removeFile = (path: string) => unlink(pathToAbsolute(path))

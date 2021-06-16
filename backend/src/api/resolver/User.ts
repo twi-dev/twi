@@ -79,9 +79,9 @@ class UserResolver {
     image: BodyFile
   ): Promise<File> {
     const {viewer} = ctx.state
-    const {name, size, type: mime} = image
+    const {name, type: mime} = image
 
-    const {path, hash} = await writeFile(
+    const {path, hash, size} = await writeFile(
       `user/${viewer.id}/avatar/${image.name}`,
 
       // TODO: I should probably measure image resolution first
@@ -94,7 +94,7 @@ class UserResolver {
       const {path: oldPath} = avatar
 
       Object
-        .entries(({path, hash, size, mime, name} as File))
+        .entries(({path, hash, mime, name}))
         .forEach(([name, value]) => set(avatar, name, value))
 
       const updated =  this._fileRepo.save(viewer.avatar)
