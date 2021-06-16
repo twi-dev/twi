@@ -78,7 +78,7 @@ class UserResolver {
     const {
       path,
       hash
-    } = await writeFile(`user/avatar/${image.name}`, image.stream())
+    } = await writeFile(`user/${viewer.id}/avatar/${image.name}`, image.stream())
 
     const avatar = await this._fileRepo.createAndSave({
       hash,
