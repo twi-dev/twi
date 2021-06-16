@@ -16,14 +16,14 @@ import {nanoid} from "nanoid/async"
 
 import pipe from "./pipe"
 
-export const ROOT = resolve("static")
+export const FILES_ROOT = resolve("static")
 
 export const pathToAbsolute = (path: string): string => (
-  isAbsolute(path) ? path : resolve(ROOT, path)
+  isAbsolute(path) ? path : resolve(FILES_ROOT, path)
 )
 
 export const pathToRelative = (path: string) => path
-  .replace(ROOT, "")
+  .replace(FILES_ROOT, "")
   .replace(/^(\/)?/, "")
 
 export type FileHashAlgorithms = "sha256" | "sha512" | "md5"

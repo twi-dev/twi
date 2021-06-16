@@ -5,7 +5,7 @@ import {stat} from "fs-extra"
 import {Field, ObjectType, Int} from "type-graphql"
 import {Entity, Column} from "typeorm"
 
-import {ROOT} from "helper/util/file"
+import {FILES_ROOT} from "helper/util/file"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
@@ -45,7 +45,7 @@ export class File extends SoftRemovableEntity {
    */
   @Field(() => Int)
   async size(): Promise<number> {
-    return stat(resolve(ROOT, this.path)).then(({size}) => size)
+    return stat(resolve(FILES_ROOT, this.path)).then(({size}) => size)
   }
 
   @Field(() => String)
