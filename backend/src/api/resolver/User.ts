@@ -18,7 +18,7 @@ import {set} from "lodash"
 
 import sharp from "sharp"
 
-import {writeFile, removeFile} from "helper/util/file"
+import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
 import {File} from "entity/File";
 import {User} from "entity/User"
@@ -81,7 +81,7 @@ class UserResolver {
     const {viewer} = ctx.state
     const {name, type: mime} = image
 
-    const {path, hash, size} = await writeFile(
+    const {path, hash, size}: WriteFileResult = await writeFile(
       `user/${viewer.id}/avatar/${image.name}`,
 
       // TODO: I should probably measure image resolution first
@@ -97,14 +97,14 @@ class UserResolver {
         .entries(({path, hash, mime, name}))
         .forEach(([name, value]) => set(avatar, name, value))
 
-      const updated =  this._fileRepo.save(viewer.avatar)
+      const updated: File = await this._fileRepo.save(viewer.avatar)
 
       await removeFile(oldPath)
 
       return updated
     }
 
-    const avatar = await this._fileRepo.createAndSave({
+    const avatar: File = await this._fileRepo.createAndSave({
       hash, path, mime, name, size
     })
 
@@ -121,6 +121,7 @@ class UserResolver {
   async userAvatarRemove(@Ctx() ctx: Context): Promise<number | undefined> {
     const {viewer} = ctx.state
 
+    // Do nothing if user has no avatar
     if (!viewer.avatar) {
       return undefined
     }
