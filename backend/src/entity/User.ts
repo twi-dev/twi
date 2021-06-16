@@ -68,7 +68,7 @@ export class User extends SoftRemovableEntity {
    * User avatar.
    */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => File, {eager: true})
+  @OneToOne(() => File, {eager: true, onDelete: "SET NULL"})
   @JoinColumn()
   avatar?: File
 

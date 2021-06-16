@@ -123,11 +123,10 @@ class UserResolver {
       return undefined
     }
 
-    const {id} = viewer.avatar
+    const {id, path} = viewer.avatar
 
     await this._fileRepo.remove(viewer.avatar)
-
-    await removeFile(viewer.avatar.path)
+    await removeFile(path)
 
     return id
   }
