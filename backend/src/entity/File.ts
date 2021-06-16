@@ -1,3 +1,5 @@
+import {URL} from "url"
+
 import {Field, ObjectType, Int} from "type-graphql"
 import {Entity, Column} from "typeorm"
 
@@ -10,7 +12,6 @@ export class File extends SoftRemovableEntity {
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.
    */
-  @Field()
   @Column({unique: true})
   path!: string
 
@@ -41,6 +42,11 @@ export class File extends SoftRemovableEntity {
   @Field(() => Int)
   @Column({unsigned: true})
   size!: number
+
+  @Field(() => String)
+  get url(): string {
+    return new URL(this.path, process.env.SERVER_ADDRESS).toString()
+  }
 }
 
 export default File

@@ -17,7 +17,7 @@ declare namespace NodeJS {
     /**
      * Server address
      */
-    readonly SERVER_ADRESS: string
+    readonly SERVER_ADDRESS: string
 
     /**
      * Web client address
