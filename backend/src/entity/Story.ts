@@ -43,7 +43,7 @@ export class Story extends SoftRemovableEntity {
    * Story cover.
    */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => User, {eager: true})
+  @OneToOne(() => User, {eager: true, onDelete: "SET NULL"})
   @JoinColumn()
   cover?: File
 
