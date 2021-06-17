@@ -81,8 +81,8 @@ class UserResolver {
     const {viewer} = ctx.state
     const {name, type: mime} = image
 
-    const {path, hash, size}: WriteFileResult = await writeFile(
-      `user/${viewer.id}/avatar/${image.name}`,
+    const {path, hash}: WriteFileResult = await writeFile(
+      `user/${viewer.id}/avatar/${name}`,
 
       // TODO: I should probably measure image resolution first
       Readable.from(image.stream()).pipe(sharp().resize(180).png())
@@ -95,9 +95,9 @@ class UserResolver {
 
       Object
         .entries(({path, hash, mime, name}))
-        .forEach(([name, value]) => set(avatar, name, value))
+        .forEach(([key, value]) => set(avatar, key, value))
 
-      const updated: File = await this._fileRepo.save(viewer.avatar)
+      const updated: File = await this._fileRepo.save(avatar)
 
       await removeFile(oldPath)
 
@@ -105,7 +105,7 @@ class UserResolver {
     }
 
     const avatar: File = await this._fileRepo.createAndSave({
-      hash, path, mime, name, size
+      hash, path, mime, name
     })
 
     viewer.avatar = avatar
@@ -118,12 +118,12 @@ class UserResolver {
   @Mutation(() => ID, {nullable: true})
   @Authorized()
   @UseMiddleware(GetViewer)
-  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | undefined> {
+  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | null> {
     const {viewer} = ctx.state
 
     // Do nothing if user has no avatar
     if (!viewer.avatar) {
-      return undefined
+      return null
     }
 
     const {id, path} = viewer.avatar

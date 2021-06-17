@@ -1,3 +1,5 @@
+import {join} from "path"
+
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {
   FieldResolver,
@@ -12,22 +14,30 @@ import {
   UseMiddleware,
   ID
 } from "type-graphql"
-import {Context} from "koa"
+import {ParameterizedContext} from "koa"
 import {set} from "lodash"
 
 import {StoryRepo} from "repo/Story"
 import {UserRepo} from "repo/User"
+import {FileRepo} from "repo/File"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"
+import {File} from "entity/File"
+
+import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
 import {StoryPage, StoryPageParams} from "api/type/story/StoryPage"
 
 import PageArgs from "api/args/PageArgs"
 import StoryAddInput from "api/input/story/Add"
 import StoryUpdateInput from "api/input/story/Update"
+import FileNodeInput from "api/input/common/FileNode"
 
 import NotFound from "api/middleware/NotFound"
+import GetViewer from "api/middleware/GetViewer"
+
+type Context = ParameterizedContext<{viewer: User}>
 
 @Resolver(() => Story)
 class StoryResolver {
@@ -36,6 +46,9 @@ class StoryResolver {
 
   @InjectRepository()
   private _userRepo!: UserRepo
+
+  @InjectRepository()
+  private _fileRepo!: FileRepo
 
   @FieldResolver(() => User)
   async publisher(
@@ -102,7 +115,7 @@ class StoryResolver {
       @Ctx()
       ctx: Context,
 
-      @Arg("storyId")
+      @Arg("storyId", () => ID)
       storyId: number
     ): Promise<number> {
     const story = await this._storyRepo.findOne(storyId)
@@ -112,6 +125,88 @@ class StoryResolver {
     }
 
     return this._storyRepo.softRemove(story).then(() => storyId)
+  }
+
+  @Mutation(() => File)
+  @Authorized()
+  @UseMiddleware([GetViewer, NotFound])
+  async storyCoverUpdate(
+    @Ctx()
+    ctx: Context,
+
+    @Arg("story")
+    {id, file}: FileNodeInput
+  ): Promise<File | undefined> {
+    // TODO: Check for user's permissions
+    const {name, type: mime} = file
+
+    const story = await this._storyRepo.findOne(id)
+
+    if (!story) {
+      return undefined
+    }
+
+    const {path, hash}: WriteFileResult = await writeFile(
+      join("story", String(story.id), "cover", name),
+
+      file.stream()
+    )
+
+    if (story.cover) {
+      const {cover} = story
+      const {path: oldPath} = cover
+
+      Object
+        .entries(({path, hash, mime, name}))
+        .forEach(([key, value]) => set(cover, key, value))
+
+      const updated: File = await this._fileRepo.save(cover)
+
+      await removeFile(oldPath)
+
+      return updated
+    }
+
+    const cover: File = await this._fileRepo.createAndSave({
+      hash, path, mime, name
+    })
+
+    story.cover = cover
+
+    await this._storyRepo.save(story)
+
+    return cover
+  }
+
+  @Mutation(() => ID, {nullable: true})
+  @Authorized()
+  @UseMiddleware([GetViewer, NotFound])
+  async storyCoverRemove(
+    @Ctx()
+    ctx: Context,
+
+    @Arg("storyId", () => ID)
+    storyId: number
+  ): Promise<number | null | undefined> {
+    // TODO: Check user's permissions
+    const story = await this._storyRepo.findOne(storyId)
+
+    // Report unexistent story to NotFount middleware
+    if (!story) {
+      return undefined
+    }
+
+    // Do nothing and return `null` if the story has no cover
+    if (!story.cover) {
+      return null
+    }
+
+    const {id, path} = story.cover
+
+    await this._fileRepo.remove(story.cover)
+    await removeFile(path)
+
+    return id
   }
 }
 
