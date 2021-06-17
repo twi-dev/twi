@@ -131,9 +131,6 @@ class StoryResolver {
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
   async storyCoverUpdate(
-    @Ctx()
-    ctx: Context,
-
     @Arg("story")
     {id, file}: FileNodeInput
   ): Promise<File | undefined> {
@@ -182,9 +179,6 @@ class StoryResolver {
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
   async storyCoverRemove(
-    @Ctx()
-    ctx: Context,
-
     @Arg("storyId", () => ID)
     storyId: number
   ): Promise<number | null | undefined> {
