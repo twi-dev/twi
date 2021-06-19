@@ -8,7 +8,7 @@ export const connect = async (): Promise<Connection> => {
     return getConnection()
   } catch {
     return createConnection({
-      type: process.env.DATABASE_DRIVER! as "mysql",
+      type: process.env.DATABASE_DRIVER! as any,
       host: process.env.DATABASE_HOST || undefined,
       port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
       database: process.env.DATABASE_NAME!,
