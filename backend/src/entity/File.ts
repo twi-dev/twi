@@ -1,11 +1,7 @@
-import {resolve} from "path"
 import {URL} from "url"
 
-import {stat} from "fs-extra"
 import {Field, ObjectType, Int} from "type-graphql"
 import {Entity, Column} from "typeorm"
-
-import {FILES_ROOT} from "helper/util/file"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
