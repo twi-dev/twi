@@ -17,8 +17,8 @@ export const connect = async (): Promise<Connection> => {
       subscribers: [process.env.DATABASE_SUBSCRIBERS!],
       entities: [process.env.DATABASE_ENTITIES!],
       synchronize: process.env.NODE_ENV !== "production",
-      logging: true,
-    });
+      logging: true
+    })
   }
 }
 

@@ -84,7 +84,7 @@ class StoryResolver {
     @Ctx() ctx: Context,
     @Arg("story", () => StoryAddInput) story: Story
   ): Promise<Story> {
-    const {userId} = ctx.session
+    const {userId} = ctx.session!
 
     return this._storyRepo.createAndSave(userId, story)
   }

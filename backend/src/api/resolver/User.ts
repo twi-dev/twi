@@ -65,7 +65,7 @@ class UserResolver {
   @Authorized()
   @UseMiddleware(NotFound)
   viewer(@Ctx() ctx: Context): Promise<User | undefined> {
-    return this._userRepo.findOne(ctx.session.userId)
+    return this._userRepo.findOne(ctx.session!.userId)
   }
 
   @Mutation(() => File)
