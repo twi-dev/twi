@@ -23,6 +23,7 @@ importers:
       '@types/sharp': ^0.28.3
       '@typescript-eslint/eslint-plugin': ^4.28.0
       '@typescript-eslint/parser': ^4.28.0
+      '@zoltu/typescript-transformer-append-js-extension': ^1.0.1
       apollo-server-koa: 2.25.2
       argon2: 0.28.2
       class-validator: 0.13.1
@@ -96,6 +97,7 @@ importers:
       '@types/sharp': 0.28.3
       '@typescript-eslint/eslint-plugin': 4.28.0_4ec1e0eca7c6e4115e1e7a13008fdec2
       '@typescript-eslint/parser': 4.28.0_eslint@7.29.0+typescript@4.3.4
+      '@zoltu/typescript-transformer-append-js-extension': 1.0.1
       eslint: 7.29.0
       ts-node: 10.0.0_83f53b0a0c5616d3fa00ed4e30b9ce1b
       ts-node-dev: 1.1.6_typescript@4.3.4
@@ -2878,6 +2880,10 @@ packages:
     dependencies:
       tslib: 1.14.1
     dev: false
+
+  /@zoltu/typescript-transformer-append-js-extension/1.0.1:
+    resolution: {integrity: sha512-7Lp30MtJO7YHZW19yJWhkuJrf+Y78COHopeZli7fiWrbIRvodsSXZIa7cFX/c4PFwFJt55N/7Pp/t6VH0fwBVQ==}
+    dev: true
 
   /abbrev/1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}

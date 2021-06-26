@@ -17,9 +17,9 @@ import {
 import {ParameterizedContext} from "koa"
 import {set} from "lodash"
 
-import {StoryRepo} from "repo/Story"
-import {UserRepo} from "repo/User"
-import {FileRepo} from "repo/File"
+import {StoryRepo} from "repo/Story.repo"
+import {UserRepo} from "repo/User.repo"
+import {FileRepo} from "repo/File.repo"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"

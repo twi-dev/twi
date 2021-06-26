@@ -10,14 +10,14 @@ import {
   Authorized,
   Ctx
 } from "type-graphql"
-import {Context} from "koa"
+import {ParameterizedContext} from "koa"
 import {set} from "lodash"
 
 import {ChapterPage, ChapterPageParams} from "api/type/chapter/ChapterPage"
-import {ChapterRepo} from "repo/Chapter"
-import {StoryRepo} from "repo/Story"
+import {ChapterRepo} from "repo/Chapter.repo"
+import {StoryRepo} from "repo/Story.repo"
 
-// import {User} from "entity/User"
+import {User} from "entity/User"
 import {Chapter} from "entity/Chapter"
 
 import ChapterPageArgs from "api/args/ChapterPageArgs"
@@ -27,6 +27,8 @@ import UpdateInput from "api/input/chapter/Update"
 
 import NotFound from "api/middleware/NotFound"
 import GetViewer from "api/middleware/GetViewer"
+
+type Context = ParameterizedContext<{viewer: User}>
 
 @Resolver()
 class ChapterResolver {
@@ -65,7 +67,7 @@ class ChapterResolver {
   @Mutation(() => Chapter)
   @Authorized()
   @UseMiddleware(GetViewer)
-  async chapterAdd(
+  async storyChapterAdd(
     @Ctx()
     ctx: Context,
 
@@ -84,7 +86,7 @@ class ChapterResolver {
   @Mutation(() => Chapter)
   @Authorized()
   @UseMiddleware(GetViewer)
-  async chapterUpdate(
+  async stoyryChapterUpdate(
     @Ctx()
     ctx: Context,
 
@@ -105,7 +107,7 @@ class ChapterResolver {
   @Mutation(() => ID)
   @Authorized()
   @UseMiddleware(GetViewer)
-  async chapterRemove(
+  async storyChapterRemove(
     @Ctx()
     ctx: Context,
 

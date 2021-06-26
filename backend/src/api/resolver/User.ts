@@ -22,8 +22,8 @@ import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
 import {File} from "entity/File";
 import {User} from "entity/User"
-import {UserRepo} from "repo/User"
-import {FileRepo} from "repo/File"
+import {UserRepo} from "repo/User.repo"
+import {FileRepo} from "repo/File.repo"
 
 import {UserPage, UserPageParams} from "api/type/user/UserPage"
 

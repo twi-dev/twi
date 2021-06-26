@@ -2,7 +2,7 @@ import {MiddlewareInterface, ResolverData, NextFn} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {Context} from "koa"
 
-import {UserRepo} from "repo/User"
+import {UserRepo} from "repo/User.repo"
 
 /**
  * Finds current user and adds onto request context
