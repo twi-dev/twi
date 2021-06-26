@@ -7,10 +7,14 @@ import {Chapter} from "entity/Chapter"
 @EntityRepository(Chapter)
 export class ChapterRepo extends Repository<Chapter> {
   async createAndSave(
-    storyId: number,
     chapter: DeepPartial<Chapter>
   ): Promise<Chapter> {
-    return this.save(this.create({...chapter, storyId}))
+    const created = this.create(chapter)
+
+    // Don't forget to increment chaptersCount first
+    created.order = created.story.chaptersCount
+
+    return this.save(created)
   }
 }
 

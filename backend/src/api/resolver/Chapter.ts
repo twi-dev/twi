@@ -72,15 +72,19 @@ class ChapterResolver {
     ctx: Context,
 
     @Arg("story")
-    {id, chapter}: StoryChapterAddInput
+    {id, chapter: fields}: StoryChapterAddInput
   ): Promise<Chapter> {
-    const story = await this._storyRepo.findOne(id)
+    let story = await this._storyRepo.findOne(id)
 
     if (!story) {
       ctx.throw(400)
     }
 
-    return this._chapterRepo.createAndSave(story.id, chapter)
+    await this._storyRepo.increment({id: story.id}, "chaptersCount", 1)
+
+    story = await this._storyRepo.findOne(story.id)
+
+    return this._chapterRepo.createAndSave({...fields, story})
   }
 
   @Mutation(() => Chapter)
@@ -120,7 +124,14 @@ class ChapterResolver {
       ctx.throw(400)
     }
 
-    return this._chapterRepo.softRemove(chapter).then(() => chapterId)
+    chapter.order = null
+
+    await Promise.all([
+      this._storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),
+      this._chapterRepo.softRemove(chapter)
+    ])
+
+    return chapterId
   }
 }
 

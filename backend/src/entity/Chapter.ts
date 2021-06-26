@@ -1,5 +1,5 @@
 import {Entity, Column, ManyToOne} from "typeorm"
-import {ObjectType, Field} from "type-graphql"
+import {ObjectType, Field, Int} from "type-graphql"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
@@ -14,16 +14,16 @@ export class Chapter extends SoftRemovableEntity {
   @ManyToOne(() => Story, {onDelete: "CASCADE", eager: true})
   story!: Story
 
-  @Field()
-  @Column({type: "tinyint", unsigned: true})
-  order!: number
+  @Field(() => Int)
+  @Column({type: "tinyint", unsigned: true, default: null})
+  order?: number | null
 
   @Field()
   @Column()
   title!: string
 
   @Field({nullable: true})
-  @Column({type: "text"})
+  @Column({type: "text", default: null})
   description?: string
 
   @Field()
