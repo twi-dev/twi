@@ -40,14 +40,6 @@ export class File extends SoftRemovableEntity {
   @Column()
   mime!: string
 
-  /**
-   * File size in bytes
-   */
-  @Field(() => Int)
-  async size(): Promise<number> {
-    return stat(resolve(FILES_ROOT, this.path)).then(({size}) => size)
-  }
-
   @Field(() => String)
   get url(): string {
     return new URL(this.path, process.env.SERVER_ADDRESS).toString()
