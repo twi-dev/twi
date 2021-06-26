@@ -1,6 +1,6 @@
 import {URL} from "url"
 
-import {Field, ObjectType, Int} from "type-graphql"
+import {Field, ObjectType} from "type-graphql"
 import {Entity, Column} from "typeorm"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
