@@ -15,6 +15,13 @@ class StoryUpdateInput extends Node {
 
   @Field({nullable: true})
   isFinished?: boolean
+
+  @Field(() => [String], {
+    nullable: true,
+    description: "Names of the tags to attach to the story. "
+      + "Note that the list will replace all attached tags."
+  })
+  tags?: string[]
 }
 
 export default StoryUpdateInput

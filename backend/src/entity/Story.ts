@@ -8,7 +8,7 @@ import {
   ManyToMany,
   JoinColumn,
   JoinTable,
-  BeforeUpdate
+  BeforeUpdate,
 } from "typeorm"
 
 import createSlug from "helper/util/createSlug"
@@ -53,7 +53,7 @@ export class Story extends SoftRemovableEntity {
    * List of the story tags
    */
   @Field(() => [Tag], {nullable: "items"})
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, {eager: true})
   @JoinTable()
   tags?: Tag[]
 

@@ -7,7 +7,6 @@ import {Story} from "entity/Story"
 @EntityRepository(Story)
 export class StoryRepo extends Repository<Story> {
   async createAndSave(
-    publisherId: number,
     story: DeepPartial<Story>
   ): Promise<Story> {
     // Set dates for Post manually because we need the creating date in slug
@@ -16,7 +15,6 @@ export class StoryRepo extends Repository<Story> {
     return this.save(this.create({
       ...story,
 
-      publisherId: publisherId,
       createdAt: now,
       updatedAt: now
     }))

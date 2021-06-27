@@ -7,6 +7,12 @@ class StoryAddInput {
 
   @Field({nullable: true})
   description?: string
+
+  @Field(() => [String], {
+    nullable: true,
+    description: "Names of the tags to attach to the story."
+  })
+  tags?: string[]
 }
 
 export default StoryAddInput

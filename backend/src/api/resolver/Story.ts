@@ -15,15 +15,17 @@ import {
   ID
 } from "type-graphql"
 import {ParameterizedContext} from "koa"
-import {set} from "lodash"
+import {set, isEmpty} from "lodash"
 
 import {StoryRepo} from "repo/Story.repo"
 import {UserRepo} from "repo/User.repo"
 import {FileRepo} from "repo/File.repo"
+import {TagRepo} from "repo/Tag.repo"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 import {File} from "entity/File"
+import {Tag} from "entity/Tag"
 
 import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
@@ -50,6 +52,9 @@ class StoryResolver {
   @InjectRepository()
   private _fileRepo!: FileRepo
 
+  @InjectRepository()
+  private _tagRepo!: TagRepo
+
   @FieldResolver(() => User)
   async publisher(
     @Root() {publisher, publisherId}: Story
@@ -59,6 +64,18 @@ class StoryResolver {
     }
 
     return publisher
+  }
+
+  @FieldResolver(() => [Tag], {nullable: "items"})
+  tags(
+    @Root()
+    {tags}: Story
+  ) {
+    if (isEmpty(tags)) {
+      return []
+    }
+
+    return tags
   }
 
   @Query(() => StoryPage)
@@ -80,13 +97,24 @@ class StoryResolver {
 
   @Mutation(() => Story, {description: "Creates a new story"})
   @Authorized()
+  @UseMiddleware(GetViewer)
   async storyAdd(
-    @Ctx() ctx: Context,
-    @Arg("story", () => StoryAddInput) story: Story
-  ): Promise<Story> {
-    const {userId} = ctx.session!
+    @Ctx()
+    ctx: Context,
 
-    return this._storyRepo.createAndSave(userId, story)
+    @Arg("story", () => StoryAddInput)
+    {tags, ...story}: StoryAddInput
+  ): Promise<Story> {
+    const {viewer} = ctx.state
+
+    let storyTags: Tag[] | undefined
+    if (tags) {
+      storyTags = await this._tagRepo.findOrCreateMany(tags)
+    }
+
+    return this._storyRepo.createAndSave({
+      ...story, tags: storyTags, publisher: viewer
+    })
   }
 
   @Mutation(() => Story)
@@ -96,7 +124,7 @@ class StoryResolver {
     ctx: Context,
 
     @Arg("story")
-    {id, ...fields}: StoryUpdateInput
+    {id, tags, ...fields}: StoryUpdateInput
   ): Promise<Story> {
     const story = await this._storyRepo.findOne(id)
 
@@ -105,6 +133,10 @@ class StoryResolver {
     }
 
     Object.entries(fields).forEach(([key, value]) => set(story, key, value))
+
+    if (tags) {
+      story.tags = await this._tagRepo.findOrCreateMany(tags)
+    }
 
     return this._storyRepo.save(story)
   }
