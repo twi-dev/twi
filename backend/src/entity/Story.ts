@@ -1,4 +1,4 @@
-import {ObjectType, Field} from "type-graphql"
+import {ObjectType, Field, Int} from "type-graphql"
 import {format} from "date-fns"
 import {
   Entity,
@@ -109,7 +109,7 @@ export class Story extends SoftRemovableEntity {
   @Column({default: false})
   isFinished!: boolean
 
-  @Field()
+  @Field(() => Int)
   @Column({type: "tinyint", unsigned: true, default: 0})
   chaptersCount!: number
 
