@@ -5,7 +5,7 @@ import {verify} from "argon2"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import File from "./File"
+import {File} from "./File"
 
 export enum UserRoles {
   ROOT = "root",
@@ -23,7 +23,6 @@ export enum UserStatuses {
 export const LOGIN_PATTERN = /^[a-z0-9_-]+$/i
 
 registerEnumType(UserRoles, {name: "UserRoles"})
-
 registerEnumType(UserStatuses, {name: "UserStatuses"})
 
 @ObjectType()
@@ -81,5 +80,3 @@ export class User extends SoftRemovableEntity {
     return verify(this.password, password)
   }
 }
-
-export default User

@@ -17,5 +17,3 @@ export class ChapterRepo extends Repository<Chapter> {
     return this.save(created)
   }
 }
-
-export default ChapterRepo

@@ -10,5 +10,3 @@ export class FileRepo extends Repository<File> {
     return this.save(this.create(file))
   }
 }
-
-export default FileRepo

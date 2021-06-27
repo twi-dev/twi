@@ -4,9 +4,10 @@ import {
   Entity,
   Column,
   OneToOne,
-  OneToMany,
   ManyToOne,
+  ManyToMany,
   JoinColumn,
+  JoinTable,
   BeforeUpdate
 } from "typeorm"
 
@@ -14,8 +15,9 @@ import createSlug from "helper/util/createSlug"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import User from "./User"
-import File from "./File"
+import {User} from "./User"
+import {File} from "./File"
+import {Tag} from "./Tag"
 
 const SLUG_DATE_MASK = "yyyy/MM/dd"
 
@@ -46,6 +48,14 @@ export class Story extends SoftRemovableEntity {
   @OneToOne(() => User, {eager: true, onDelete: "SET NULL"})
   @JoinColumn()
   cover?: File
+
+  /**
+   * List of the story tags
+   */
+  @Field(() => [Tag], {nullable: "items"})
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags?: Tag[]
 
   /**
    * Story title.
@@ -117,5 +127,3 @@ export class Story extends SoftRemovableEntity {
     }
   }
 }
-
-export default Story

@@ -17,5 +17,3 @@ export class Category extends SoftRemovableEntity {
   @Column({type: "tinyint", unsigned: true})
   order!: number
 }
-
-export default Category

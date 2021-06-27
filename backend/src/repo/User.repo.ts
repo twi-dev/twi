@@ -27,5 +27,3 @@ export class UserRepo extends Repository<User> {
     })
   }
 }
-
-export default UserRepo

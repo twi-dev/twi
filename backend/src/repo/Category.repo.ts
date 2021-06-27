@@ -5,6 +5,4 @@ import {Category} from "entity/Category"
 
 @Service()
 @EntityRepository(Category)
-export class CategoryRepo extends Repository<Category> {}
-
-export default CategoryRepo
+export class CategoryRepo extends Repository<Category> { }

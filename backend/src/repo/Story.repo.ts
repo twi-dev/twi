@@ -1,7 +1,7 @@
 import {Repository, EntityRepository, DeepPartial} from "typeorm"
 import {Service} from "typedi"
 
-import Story from "entity/Story"
+import {Story} from "entity/Story"
 
 @Service()
 @EntityRepository(Story)
@@ -42,5 +42,3 @@ export class StoryRepo extends Repository<Story> {
     })
   }
 }
-
-export default StoryRepo

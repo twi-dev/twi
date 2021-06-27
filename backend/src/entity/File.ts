@@ -41,5 +41,3 @@ export class File extends SoftRemovableEntity {
     return new URL(this.path, process.env.SERVER_ADDRESS).toString()
   }
 }
-
-export default File

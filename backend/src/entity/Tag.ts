@@ -3,16 +3,16 @@ import {ObjectType, Field} from "type-graphql"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import Category from "./Category"
+import {Category} from "./Category"
 
 @ObjectType()
 @Entity()
 export class Tag extends SoftRemovableEntity {
-  @Column({unsigned: true})
-  categoryId!: number
+  @Column({unsigned: true, nullable: true})
+  categoryId?: number
 
   @ManyToOne(() => Category, {eager: true})
-  category!: Category
+  category?: Category
 
   @Field()
   @Column()
@@ -26,5 +26,3 @@ export class Tag extends SoftRemovableEntity {
   @Column({type: "text"})
   description?: string
 }
-
-export default Tag

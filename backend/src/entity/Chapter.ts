@@ -3,7 +3,7 @@ import {ObjectType, Field, Int} from "type-graphql"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
-import Story from "./Story"
+import {Story} from "./Story"
 
 @ObjectType()
 @Entity()
@@ -34,5 +34,3 @@ export class Chapter extends SoftRemovableEntity {
   @Column({default: true})
   isDraft!: boolean
 }
-
-export default Chapter
