@@ -18,8 +18,9 @@ class StoryUpdateInput extends Node {
 
   @Field(() => [String], {
     nullable: true,
-    description: "Names of the tags to attach to the story. "
-      + "Note that the list will replace all attached tags."
+    description: "Names of the tags to add to the story. "
+      + "Please note that the tags from this list will replace those "
+      + "which were already added."
   })
   tags?: string[]
 }
