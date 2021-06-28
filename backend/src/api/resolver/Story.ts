@@ -136,6 +136,8 @@ class StoryResolver {
 
     if (tags) {
       story.tags = await this._tagRepo.findOrCreateMany(tags)
+    } else if (tags === null) {
+      story.tags = null
     }
 
     return this._storyRepo.save(story)
