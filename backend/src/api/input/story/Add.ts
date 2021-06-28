@@ -12,7 +12,7 @@ class StoryAddInput {
     nullable: true,
     description: "Names of the tags to add to the story."
   })
-  tags?: string[]
+  tags?: string[] | null
 }
 
 export default StoryAddInput

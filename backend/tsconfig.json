@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "src",
+    "paths": {},
     "target": "es2020",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -14,11 +15,6 @@
     "lib": [
       "ESNext"
     ],
-    "paths": {
-      "*": [
-        "*"
-      ]
-    },
     "plugins": [
       {
         "transform": "typescript-transform-paths"

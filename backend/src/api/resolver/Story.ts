@@ -107,7 +107,7 @@ class StoryResolver {
   ): Promise<Story> {
     const {viewer} = ctx.state
 
-    let storyTags: Tag[] | undefined
+    let storyTags: Tag[] | null = null
     if (tags) {
       storyTags = await this._tagRepo.findOrCreateMany(tags)
     }
@@ -217,7 +217,7 @@ class StoryResolver {
     // TODO: Check user's permissions
     const story = await this._storyRepo.findOne(storyId)
 
-    // Report unexistent story to NotFount middleware
+    // Report non-existent story to NotFount middleware
     if (!story) {
       return undefined
     }

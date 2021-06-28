@@ -22,7 +22,7 @@ class StoryUpdateInput extends Node {
       + "Please note that the tags from this list will replace those "
       + "which were already added."
   })
-  tags?: string[]
+  tags?: string[] | null
 }
 
 export default StoryUpdateInput

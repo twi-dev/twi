@@ -55,7 +55,7 @@ export class Story extends SoftRemovableEntity {
   @Field(() => [Tag], {nullable: "items"})
   @ManyToMany(() => Tag, {eager: true})
   @JoinTable()
-  tags?: Tag[]
+  tags?: Tag[] | null
 
   /**
    * Story title.
