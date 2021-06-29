@@ -1,8 +1,10 @@
+import {TypeormLoader} from "type-graphql-dataloader"
 import {ObjectType, Field, Int} from "type-graphql"
 import {
   Entity,
   Column,
   OneToOne,
+  OneToMany,
   ManyToOne,
   ManyToMany,
   JoinColumn,
@@ -11,6 +13,7 @@ import {
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
+import {Chapter} from "./Chapter"
 import {User} from "./User"
 import {File} from "./File"
 import {Tag} from "./Tag"
@@ -46,6 +49,14 @@ export class Story extends SoftRemovableEntity {
   @ManyToMany(() => Tag, {eager: true})
   @JoinTable()
   tags?: Tag[] | null
+
+  /**
+   * List of the chapters associated with the story
+   */
+  @Field(() => [Chapter], {nullable: "items"})
+  @OneToMany(() => Chapter, chapter => chapter.story)
+  @TypeormLoader()
+  chapters?: Chapter[]
 
   /**
    * Story title.

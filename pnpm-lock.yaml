@@ -48,6 +48,7 @@ importers:
       tslib: ^2.3.0
       ttypescript: 1.5.12
       type-graphql: 1.1.1
+      type-graphql-dataloader: ^0.4.0
       typedi: 0.10.0
       typeorm: 0.2.34
       typeorm-typedi-extensions: 0.4.1
@@ -78,6 +79,7 @@ importers:
       then-busboy: 5.0.0-beta.6
       tslib: 2.3.0
       type-graphql: 1.1.1_39030d905112aa1c59b146b3756f603a
+      type-graphql-dataloader: 0.4.0
       typedi: 0.10.0
       typeorm: 0.2.34
       typeorm-typedi-extensions: 0.4.1_typedi@0.10.0+typeorm@0.2.34
@@ -4283,7 +4285,6 @@ packages:
 
   /dataloader/2.0.0:
     resolution: {integrity: sha512-YzhyDAwA4TaQIhM5go+vCLmU0UikghC/t9DTQYZR2M/UvZ1MdOhPezSDZcjj9uqQJOMqjLcpWtyW2iNINdlatQ==}
-    dev: true
 
   /date-fns/1.30.1:
     resolution: {integrity: sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==}
@@ -9010,6 +9011,16 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /type-graphql-dataloader/0.4.0:
+    resolution: {integrity: sha512-C45+lca1cofjCrhenRQCb4mQrEyItdanfQZX3Z9eCOM3r4rDqJZdW0xYNScq6PXGgDWb3lwc7UEm6kzecDo5uA==}
+    dependencies:
+      dataloader: 2.0.0
+      lodash: 4.17.21
+      reflect-metadata: 0.1.13
+      typedi: 0.8.0
+      uuid: 8.3.2
+    dev: false
+
   /type-graphql/1.1.1_39030d905112aa1c59b146b3756f603a:
     resolution: {integrity: sha512-iOOWVn0ehCYMukmnXStbkRwFE9dcjt7/oDcBS1JyQZo9CbhlIll4lHHps54HMEk4A4c8bUPd+DjK8w1/ZrxB4A==}
     engines: {node: '>= 10.3'}
@@ -9040,6 +9051,10 @@ packages:
 
   /typedi/0.10.0:
     resolution: {integrity: sha512-v3UJF8xm68BBj6AF4oQML3ikrfK2c9EmZUyLOfShpJuItAqVBHWP/KtpGinkSsIiP6EZyyb6Z3NXyW9dgS9X1w==}
+    dev: false
+
+  /typedi/0.8.0:
+    resolution: {integrity: sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA==}
     dev: false
 
   /typeorm-typedi-extensions/0.4.1_typedi@0.10.0+typeorm@0.2.34:
