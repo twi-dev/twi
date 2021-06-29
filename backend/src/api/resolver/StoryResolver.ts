@@ -137,7 +137,7 @@ class StoryResolver {
 
     if (tags) {
       story.tags = await this._tagRepo.findOrCreateMany(tags)
-    } else if (tags === null) {
+    } else if (tags === null) { // Remove all tags from the story if "tags" parameter is null
       story.tags = null
     }
 
@@ -192,14 +192,14 @@ class StoryResolver {
         .entries(({path, hash, mime, name}))
         .forEach(([key, value]) => set(cover, key, value))
 
-      const updated: File = await this._fileRepo.save(cover)
+      const updated = await this._fileRepo.save(cover)
 
       await removeFile(oldPath)
 
       return updated
     }
 
-    const cover: File = await this._fileRepo.createAndSave({
+    const cover = await this._fileRepo.createAndSave({
       hash, path, mime, name
     })
 
