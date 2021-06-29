@@ -8,7 +8,10 @@ export type ChapterPageParams = PageParams<Chapter>
 
 @ObjectType()
 export class ChapterPage extends Page<Chapter> {
-  @Field(() => [Chapter], {nullable: "items"})
+  @Field(() => [Chapter], {
+    nullable: "items",
+    description: "Returns the list of chapters."
+  })
   list(@Root() {rows}: ChapterPageParams): Chapter[] {
     return rows
   }

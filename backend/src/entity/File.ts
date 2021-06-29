@@ -16,27 +16,32 @@ export class File extends SoftRemovableEntity {
   path!: string
 
   /**
-   * Name with extension
+   * File name with extension.
    */
-  @Field()
+  @Field({description: "File name with extension."})
   @Column()
   name!: string
 
   /**
-   * SHA 512 hash based on file's content
+   * SHA 512 hash based on file's content.
    */
-  @Field()
+  @Field({description: "SHA 512 hash based on file's content."})
   @Column({type: "char", length: 128})
   hash!: string
 
   /**
-   * MIME type of the file
+   * MIME type of the file.
    */
-  @Field()
+  @Field({description: "MIME type of the file."})
   @Column()
   mime!: string
 
-  @Field(() => String)
+  /**
+   * Full address of the file on static server.
+   */
+  @Field(() => String, {
+    description: "Full address of the file on static server."
+  })
   get url(): string {
     return new URL(this.path, process.env.SERVER_ADDRESS).toString()
   }

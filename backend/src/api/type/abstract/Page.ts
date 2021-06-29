@@ -30,35 +30,35 @@ export interface PageParams<T extends object> {
 @ObjectType({isAbstract: true})
 export abstract class Page<T extends object> {
   /**
-   * Returns the number of the total rows in the list
+   * Returns total amount of rows in the list.
    */
-  @Field(() => Int)
+  @Field(() => Int, {description: "Returns total amount of rows in the list."})
   readonly count!: number
 
   /**
-   * Returns per-page entities limit
+   * Returns per-page entities limit.
    */
-  @Field(() => Int)
+  @Field(() => Int, {description: "Returns per-page entities limit."})
   readonly limit!: number
 
   /**
-   * List offset
+   * List offset.
    */
-  @Field(() => Int)
+  @Field(() => Int, {description: "List offset."})
   readonly offset!: number
 
   /**
-   * Returns the number of the current page
+   * Returns the number of the current page.
    */
-  @Field(() => Int)
+  @Field(() => Int, {description: "Returns the number of the current page."})
   current(@Root() {page}: PageParams<T>): number {
     return page
   }
 
   /**
-   * Indicates whether the list has next page or not
+   * Indicates whether the list has next page or not.
    */
-  @Field(() => Boolean)
+  @Field(() => Boolean, {description: "Indicates if the list has next page."})
   hasNext(@Root() {limit, page, count}: PageParams<T>): boolean {
     if (limit != null && page != null && count != null) {
       return count - limit * page > 0
@@ -68,9 +68,9 @@ export abstract class Page<T extends object> {
   }
 
   /**
-   * Returns the number of the past page
+   * Returns the number of the last page.
    */
-  @Field(() => Int)
+  @Field(() => Int, {description: "Returns the number of the last page."})
   last(@Root() {limit, page, count}: PageParams<T>): number {
     if (limit != null && page != null && count != null) {
       return Math.ceil(count / (limit * page))
@@ -80,7 +80,7 @@ export abstract class Page<T extends object> {
   }
 
   /**
-   * Returns the list of entities
+   * Returns the list of entities.
    */
   abstract list(root: PageParams<T>): T[]
 }

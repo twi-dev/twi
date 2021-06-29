@@ -9,27 +9,46 @@ import {Story} from "./Story"
 @ObjectType()
 @Entity()
 export class Chapter extends SoftRemovableEntity {
-  @ManyToOne(() => Story, story => story.chapters, {nullable: false})
+  @ManyToOne(() => Story, (story) => story.chapters, {nullable: false})
   @TypeormLoader()
   story!: Story
 
-  @Field(() => Int)
+  /**
+   * Chapter number within the story.
+   *
+   * The value is only meant to be "null" when the chapter is unlisted or soft-removed.
+   */
+  @Field(() => Int, {description: "Chapter number within the story."})
   @Column({type: "tinyint", unsigned: true, default: null})
-  order?: number | null
+  order!: number | null
 
-  @Field()
+  /**
+   * Title of the chapter.
+   */
+  @Field({description: "Title of the chapter."})
   @Column()
   title!: string
 
-  @Field({nullable: true})
+  /**
+   * Chapter description.
+   */
+  @Field(() => String, {nullable: true, description: "Chapter description."})
   @Column({type: "text", default: null})
-  description?: string
+  description!: string | null
 
-  @Field()
+  /**
+   * Chapter text.
+   */
+  @Field({description: "Chapter text."})
   @Column({type: "mediumtext"})
   text!: string
 
-  @Field()
+  /**
+   * Indicates if the chapter is hidden from anyone to read.
+   */
+  @Field({
+    description: "Indicates if the chapter is hidden from anyone to read."
+  })
   @Column({default: true})
   isDraft!: boolean
 }

@@ -48,36 +48,35 @@ export class Story extends SoftRemovableEntity {
    * List of the chapters associated with the story
    */
   @Field(() => [Chapter], {nullable: "items"})
-  @OneToMany(() => Chapter, chapter => chapter.story)
+  @OneToMany(() => Chapter, (chapter) => chapter.story)
   @TypeormLoader()
   chapters!: Chapter[] | null
 
   /**
    * Story title.
    */
-  @Field()
+  @Field({description: "Story title."})
   @Column()
   title!: string
 
   /**
    * Story description.
    */
-  @Field()
+  @Field({description: "Story description."})
   @Column({type: "text"})
   description!: string
 
   /**
    * The unique human-readable identifier of the story.
    */
-  @Field()
+  @Field({description: "The unique human-readable identifier of the story."})
   @Column({unique: true})
   slug!: string
 
   /**
-   * Indicates if the story has been available for everyone to read when value is set to false.
-   * Otherwise it will only available for owner and collaborators.
+   * Indicates if the story is hidden from anyone to read.
    */
-  @Field()
+  @Field({description: "Indicates if the story is hidden from anyone to read."})
   @Column({default: true})
   isDraft!: boolean
 
@@ -85,7 +84,10 @@ export class Story extends SoftRemovableEntity {
    * Indicates if the story finished.
    * It must have at least one chapter to be marked as finished.
    */
-  @Field()
+  @Field({
+    description: "Indicates if the story is finished. "
+      + "It **must** have at least one chapter to be marked as finished."
+  })
   @Column({default: false})
   isFinished!: boolean
 

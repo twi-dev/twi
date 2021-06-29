@@ -8,7 +8,10 @@ export type UserPageParams = PageParams<User>
 
 @ObjectType()
 export class UserPage extends Page<User> {
-  @Field(() => [User], {nullable: "items"})
+  @Field(() => [User], {
+    nullable: "items",
+    description: "Returns the list of users."
+  })
   list(@Root() {rows}: UserPageParams): User[] {
     return rows
   }

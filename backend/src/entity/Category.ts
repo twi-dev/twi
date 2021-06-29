@@ -11,12 +11,15 @@ export class Category extends SoftRemovableEntity {
   @OneToMany(() => Tag, tag => tag.category)
   tags!: Tag[] | null
 
-  @Field()
+  /**
+   * Category name.
+   */
+  @Field({description: "Category name."})
   @Column()
   name!: string
 
-  @Column()
-  prefix?: string
+  @Column(() => String)
+  prefix!: string | null
 
   @Field(() => Int)
   @Column({type: "tinyint", unsigned: true})

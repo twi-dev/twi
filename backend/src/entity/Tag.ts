@@ -8,18 +8,27 @@ import {Category} from "./Category"
 @ObjectType()
 @Entity()
 export class Tag extends SoftRemovableEntity {
-  @ManyToOne(() => Category, category => category.tags, {nullable: true})
+  @ManyToOne(() => Category, (category) => category.tags, {nullable: true})
   category!: Category | null
 
-  @Field(() => String)
+  /**
+   * Name of the tag.
+   */
+  @Field({description: "Name of the tag."})
   @Column({unique: true})
   name!: string
 
-  @Field(() => String)
+  /**
+   * Unique human-readable ID of the tag.
+   */
+  @Field({description: "Unique human-readable ID of the tag."})
   @Column({unique: true})
   slug!: string
 
-  @Field({nullable: true})
+  /**
+   * Tag description.
+   */
+  @Field({nullable: true, description: "Tag description."})
   @Column({type: "text", nullable: true})
   description?: string
 }
