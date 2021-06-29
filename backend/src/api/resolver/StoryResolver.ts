@@ -47,24 +47,10 @@ class StoryResolver {
   private _storyRepo!: StoryRepo
 
   @InjectRepository()
-  private _userRepo!: UserRepo
-
-  @InjectRepository()
   private _fileRepo!: FileRepo
 
   @InjectRepository()
   private _tagRepo!: TagRepo
-
-  @FieldResolver(() => User)
-  async publisher(
-    @Root() {publisher, publisherId}: Story
-  ): Promise<User | undefined> {
-    if (!publisher) {
-      return this._userRepo.findOne(publisherId)
-    }
-
-    return publisher
-  }
 
   @FieldResolver(() => [Tag], {nullable: "items"})
   tags(

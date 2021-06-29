@@ -60,14 +60,11 @@ export class User extends SoftRemovableEntity {
   @Column({type: "enum", enum: UserStatuses, default: UserStatuses.INACTIVE})
   status!: UserStatuses
 
-  @Column({unsigned: true, nullable: true})
-  avatarId?: number
-
   /**
    * User avatar.
    */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => File, {eager: true, onDelete: "SET NULL"})
+  @OneToOne(() => File, {eager: true, onDelete: "SET NULL", nullable: true})
   @JoinColumn()
   avatar?: File
 

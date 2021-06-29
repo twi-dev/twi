@@ -8,11 +8,8 @@ import {Category} from "./Category"
 @ObjectType()
 @Entity()
 export class Tag extends SoftRemovableEntity {
-  @Column({unsigned: true, nullable: true})
-  categoryId?: number
-
-  @ManyToOne(() => Category, {eager: true, nullable: true})
-  category?: Category | null
+  @ManyToOne(() => Category, category => category.tags, {nullable: true})
+  category!: Category | null
 
   @Field(() => String)
   @Column({unique: true})

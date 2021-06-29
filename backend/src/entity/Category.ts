@@ -1,11 +1,16 @@
 import {ObjectType, Field, Int} from "type-graphql"
-import {Entity, Column} from "typeorm"
+import {Entity, Column, OneToMany} from "typeorm"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
+
+import {Tag} from "./Tag"
 
 @ObjectType()
 @Entity()
 export class Category extends SoftRemovableEntity {
+  @OneToMany(() => Tag, tag => tag.category)
+  tags!: Tag[] | null
+
   @Field()
   @Column()
   name!: string

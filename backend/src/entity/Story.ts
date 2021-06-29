@@ -1,5 +1,5 @@
 import {TypeormLoader} from "type-graphql-dataloader"
-import {ObjectType, Field, Int} from "type-graphql"
+import {ObjectType, Field} from "type-graphql"
 import {
   Entity,
   Column,
@@ -21,26 +21,20 @@ import {Tag} from "./Tag"
 @ObjectType()
 @Entity()
 export class Story extends SoftRemovableEntity {
-  @Column({unsigned: true})
-  publisherId!: number
-
-  @Column({unsigned: true, nullable: true})
-  coverId?: number
-
   /**
    * The user who published the story.
    */
   @Field(() => User)
-  @ManyToOne(() => User, {onDelete: "CASCADE", eager: true})
+  @ManyToOne(() => User, {onDelete: "CASCADE", eager: true, nullable: false})
   publisher!: User
 
   /**
    * Story cover.
    */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => User, {eager: true, onDelete: "SET NULL"})
+  @OneToOne(() => User, {eager: true, onDelete: "SET NULL", nullable: true})
   @JoinColumn()
-  cover?: File
+  cover!: File | null
 
   /**
    * List of the story tags
@@ -48,7 +42,7 @@ export class Story extends SoftRemovableEntity {
   @Field(() => [Tag], {nullable: "items"})
   @ManyToMany(() => Tag, {eager: true})
   @JoinTable()
-  tags?: Tag[] | null
+  tags!: Tag[] | null
 
   /**
    * List of the chapters associated with the story
@@ -56,7 +50,7 @@ export class Story extends SoftRemovableEntity {
   @Field(() => [Chapter], {nullable: "items"})
   @OneToMany(() => Chapter, chapter => chapter.story)
   @TypeormLoader()
-  chapters?: Chapter[]
+  chapters!: Chapter[] | null
 
   /**
    * Story title.
@@ -95,7 +89,6 @@ export class Story extends SoftRemovableEntity {
   @Column({default: false})
   isFinished!: boolean
 
-  @Field(() => Int)
   @Column({type: "tinyint", unsigned: true, default: 0})
   chaptersCount!: number
 }
