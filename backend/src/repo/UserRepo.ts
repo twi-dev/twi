@@ -7,7 +7,7 @@ import {Service} from "typedi"
 import {User} from "entity/User"
 
 // TODO: Tweak params later for better balance between time & security
-const hashPassword = (password: string) => hash(password, {
+export const hashPassword = (password: string) => hash(password, {
   type: argon2id,
   parallelism: cpus().length
 })
@@ -16,8 +16,7 @@ const hashPassword = (password: string) => hash(password, {
 @EntityRepository(User)
 export class UserRepo extends Repository<User> {
   async createAndSave(user: DeepPartial<User>): Promise<User> {
-    user.password = await hashPassword(user.password!)
-
+    // user.password = await hashPassword(user.password!)
     return this.save(this.create(user))
   }
 
