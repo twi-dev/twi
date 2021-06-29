@@ -2,7 +2,7 @@ import {Resolver, Mutation, Arg, Ctx, Authorized, ID} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {Context} from "koa"
 
-import {UserRepo} from "repo/User.repo"
+import {UserRepo} from "repo/UserRepo"
 import {User} from "entity/User"
 
 import LogInInput from "api/input/auth/LogIn"

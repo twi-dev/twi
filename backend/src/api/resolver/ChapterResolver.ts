@@ -14,8 +14,8 @@ import {ParameterizedContext} from "koa"
 import {set} from "lodash"
 
 import {ChapterPage, ChapterPageParams} from "api/type/chapter/ChapterPage"
-import {ChapterRepo} from "repo/Chapter.repo"
-import {StoryRepo} from "repo/Story.repo"
+import {ChapterRepo} from "repo/ChapterRepo"
+import {StoryRepo} from "repo/StoryRepo"
 
 import {User} from "entity/User"
 import {Chapter} from "entity/Chapter"

@@ -17,10 +17,10 @@ import {
 import {ParameterizedContext} from "koa"
 import {set, isEmpty} from "lodash"
 
-import {StoryRepo} from "repo/Story.repo"
-import {UserRepo} from "repo/User.repo"
-import {FileRepo} from "repo/File.repo"
-import {TagRepo} from "repo/Tag.repo"
+import {StoryRepo} from "repo/StoryRepo"
+import {UserRepo} from "repo/UserRepo"
+import {FileRepo} from "repo/FileRepo"
+import {TagRepo} from "repo/TagRepo"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"
