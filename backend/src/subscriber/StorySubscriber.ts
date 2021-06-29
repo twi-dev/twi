@@ -12,6 +12,9 @@ import create from "helper/util/createSlug"
 
 const SLUG_DATE_MASK = "yyyy/MM/dd"
 
+/**
+ * Creates a new slug for the story
+ */
 const createSlug = (date: number | Date, value: string) => (
   `${format(date, SLUG_DATE_MASK)}/${create(value)}`
 )

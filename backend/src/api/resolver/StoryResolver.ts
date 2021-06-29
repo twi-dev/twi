@@ -1,5 +1,6 @@
 import {join} from "path"
 
+import {DeepPartial} from "typeorm"
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {
   FieldResolver,
@@ -103,18 +104,19 @@ class StoryResolver {
     ctx: Context,
 
     @Arg("story", () => StoryAddInput)
-    {tags, ...story}: StoryAddInput
+    {tags, ...fields}: StoryAddInput
   ): Promise<Story> {
     const {viewer} = ctx.state
 
-    let storyTags: Tag[] | null = null
+    const story = this._storyRepo.create(fields)
+
+    story.publisher = viewer
+
     if (tags) {
-      storyTags = await this._tagRepo.findOrCreateMany(tags)
+      story.tags = await this._tagRepo.findOrCreateMany(tags)
     }
 
-    return this._storyRepo.createAndSave({
-      ...story, tags: storyTags, publisher: viewer
-    })
+    return this._storyRepo.save(story)
   }
 
   @Mutation(() => Story)

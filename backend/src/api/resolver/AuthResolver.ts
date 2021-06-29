@@ -23,7 +23,7 @@ class AuthResolver {
     @Arg("user", () => SignUpInput)
     user: LogInInput
   ): Promise<User> {
-    const created = await this._userRepo.createAndSave(user)
+    const created = await this._userRepo.save(user)
 
     ctx.session.userId = created.id
 
