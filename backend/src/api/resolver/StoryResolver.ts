@@ -1,6 +1,5 @@
 import {join} from "path"
 
-import {DeepPartial} from "typeorm"
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {
   FieldResolver,
