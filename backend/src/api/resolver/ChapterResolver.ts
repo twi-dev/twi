@@ -56,7 +56,9 @@ class ChapterResolver {
     })
   }
 
-  @Query(() => ChapterPage)
+  @Query(() => ChapterPage, {
+    description: "Returns list of the chapters by story ID."
+  })
   async chapters(
     @Args() {storyId, limit, offset, page}: ChapterPageArgs
   ): Promise<ChapterPageParams> {
@@ -70,7 +72,7 @@ class ChapterResolver {
     return {rows, count, limit, offset, page}
   }
 
-  @Mutation(() => Chapter)
+  @Mutation(() => Chapter, {description: "Creates a new chapter."})
   @Authorized()
   @UseMiddleware(GetViewer)
   async storyChapterAdd(
@@ -93,10 +95,10 @@ class ChapterResolver {
     return this._chapterRepo.createAndSave({...fields, story})
   }
 
-  @Mutation(() => Chapter)
+  @Mutation(() => Chapter, {description: "Update chapter with given ID."})
   @Authorized()
   @UseMiddleware(GetViewer)
-  async stoyryChapterUpdate(
+  async storyChapterUpdate(
     @Ctx()
     ctx: Context,
 
@@ -114,7 +116,7 @@ class ChapterResolver {
     return this._chapterRepo.save(chapter)
   }
 
-  @Mutation(() => ID)
+  @Mutation(() => ID, {description: "Remove chapter with given ID."})
   @Authorized()
   @UseMiddleware(GetViewer)
   async storyChapterRemove(
