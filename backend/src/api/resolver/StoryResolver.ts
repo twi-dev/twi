@@ -104,7 +104,7 @@ class StoryResolver {
     return this._storyRepo.save(story)
   }
 
-  @Mutation(() => Story)
+  @Mutation(() => Story, {description: "Updates story with given ID."})
   @Authorized()
   async storyUpdate(
     @Ctx()
@@ -130,7 +130,7 @@ class StoryResolver {
     return this._storyRepo.save(story)
   }
 
-  @Mutation(() => ID)
+  @Mutation(() => ID, {description: "Removed story with given ID."})
   @Authorized()
   async storyRemove(
       @Ctx()
@@ -148,7 +148,7 @@ class StoryResolver {
     return this._storyRepo.softRemove(story).then(() => storyId)
   }
 
-  @Mutation(() => File)
+  @Mutation(() => File, {description: "Updates story's cover."})
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
   async storyCoverUpdate(
@@ -196,7 +196,7 @@ class StoryResolver {
     return cover
   }
 
-  @Mutation(() => ID, {nullable: true})
+  @Mutation(() => ID, {nullable: true, description: "Removes story's cover."})
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
   async storyCoverRemove(

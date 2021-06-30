@@ -22,9 +22,9 @@ import {Tag} from "./Tag"
 @Entity()
 export class Story extends SoftRemovableEntity {
   /**
-   * The user who published the story.
+   * Returns the user who published the story.
    */
-  @Field(() => User)
+  @Field(() => User, {description: "Returns the user who published the story."})
   @ManyToOne(() => User, {onDelete: "CASCADE", eager: true, nullable: false})
   publisher!: User
 
@@ -37,9 +37,12 @@ export class Story extends SoftRemovableEntity {
   cover!: File | null
 
   /**
-   * List of the story tags
+   * List of the story tags,
    */
-  @Field(() => [Tag], {nullable: "items"})
+  @Field(() => [Tag], {
+    nullable: "items",
+    description: "List of the story tags,"
+  })
   @ManyToMany(() => Tag, {eager: true})
   @JoinTable()
   tags!: Tag[] | null
@@ -85,8 +88,9 @@ export class Story extends SoftRemovableEntity {
    * It must have at least one chapter to be marked as finished.
    */
   @Field({
-    description: "Indicates if the story is finished. "
-      + "It **must** have at least one chapter to be marked as finished."
+    description:
+      "Indicates if the story is finished. " +
+      "It **must** have at least one chapter to be marked as finished."
   })
   @Column({default: false})
   isFinished!: boolean

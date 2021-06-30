@@ -9,6 +9,9 @@ import {Story} from "./Story"
 @ObjectType()
 @Entity()
 export class Chapter extends SoftRemovableEntity {
+  @Column({unsigned: true, nullable: false})
+  storyId!: number
+
   @ManyToOne(() => Story, (story) => story.chapters, {nullable: false})
   @TypeormLoader()
   story!: Story

@@ -8,7 +8,8 @@ import {
   Arg,
   ID,
   Authorized,
-  Ctx
+  Ctx,
+  Int
 } from "type-graphql"
 import {ParameterizedContext} from "koa"
 import {set} from "lodash"
@@ -38,16 +39,21 @@ class ChapterResolver {
   @InjectRepository()
   private _storyRepo!: StoryRepo
 
-  @Query(() => Chapter)
+  @Query(() => Chapter, {
+    description: "Returns chapter by story ID and chapter number"
+  })
   @UseMiddleware(NotFound)
   chapter(
-    @Arg("id", () => ID)
-    id: number,
 
     @Arg("storyId", () => ID)
-    storyId: string
+    storyId: number,
+
+    @Arg("number", () => Int)
+    order: number,
   ): Promise<Chapter | undefined> {
-    return this._chapterRepo.findOne({where: {isDraft: false, storyId, id}})
+    return this._chapterRepo.findOne({
+      where: {isDraft: false, storyId, order}
+    })
   }
 
   @Query(() => ChapterPage)

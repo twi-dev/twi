@@ -53,7 +53,7 @@ class UserResolver {
     return {rows, count, page, limit, offset}
   }
 
-  @Query(() => User, {description: "Finds a user by their email or login"})
+  @Query(() => User, {description: "Returns a user by their email or login"})
   @UseMiddleware(NotFound)
   async user(
     @Arg("emailOrLogin") emailOrLogin: string
@@ -61,14 +61,14 @@ class UserResolver {
     return this._userRepo.findByEmailOrLogin(emailOrLogin)
   }
 
-  @Query(() => Viewer, {description: "Finds currently logged in user"})
+  @Query(() => Viewer, {description: "Returns currently logged-in user."})
   @Authorized()
   @UseMiddleware(NotFound)
   viewer(@Ctx() ctx: Context): Promise<User | undefined> {
     return this._userRepo.findOne(ctx.session!.userId)
   }
 
-  @Mutation(() => File)
+  @Mutation(() => File, {description: "Updates avatar of the logged-in user."})
   @Authorized()
   @UseMiddleware(GetViewer)
   async userAvatarUpdate(
@@ -115,7 +115,9 @@ class UserResolver {
     return avatar
   }
 
-  @Mutation(() => ID, {nullable: true})
+  @Mutation(() => ID, {
+    nullable: true, description: "Removes avatar of the logged-in user"
+  })
   @Authorized()
   @UseMiddleware(GetViewer)
   async userAvatarRemove(@Ctx() ctx: Context): Promise<number | null> {
