@@ -5,7 +5,7 @@ module.exports = {
   files: ["**/*.test.ts"],
   require: [
     "ts-node/register/transpile-only",
-    "reflect-metadata"
+    "reflect-metadata",
     "./src/config.ts"
   ]
 }
