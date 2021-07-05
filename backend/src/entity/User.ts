@@ -1,7 +1,6 @@
 import {ObjectType, Field, registerEnumType} from "type-graphql"
 import {Entity, Column, OneToOne, JoinColumn} from "typeorm"
 import {IsEmail, Matches} from "class-validator"
-import {verify} from "argon2"
 
 import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
 
