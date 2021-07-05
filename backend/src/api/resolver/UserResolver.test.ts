@@ -19,12 +19,16 @@ import UserResolver from "./UserResolver"
 
 const test = uTest as TestInterface<{schema: GraphQLSchema}>
 
-const users: User[] = createFakeUsers(1)
+const users: User[] = createFakeUsers(10)
 
 test.before(async t => {
   class FakeUserRepo {
     async findAndCount() {
       return [users, users.length]
+    }
+
+    async findOne(id: number) {
+      return users.find(user => user.id === id)
     }
 
     async findByEmailOrLogin(emailOrLogin: string) {
@@ -123,4 +127,27 @@ test("Resolves all users", async t => {
   })
 
   t.deepEqual(data!.users.list, expected)
+})
+
+test("Resolves current user based on session", async t => {
+  const {id, login} = users[0]
+
+  const {data} = await graphql({
+    schema: t.context.schema,
+    source: `
+      {
+        viewer {
+          id
+          login
+        }
+      }
+    `,
+    contextValue: {
+      session: {
+        userId: id
+      }
+    }
+  })
+
+  t.deepEqual(data!.viewer, {id: String(id), login})
 })
