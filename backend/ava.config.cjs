@@ -1,15 +1,17 @@
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = "test"
-}
-
 module.exports = {
+  failFast: true,
+  environmentVariables: {
+    NODE_ENV: "test",
+    TS_NODE_COMPILER: "ttypescript",
+    TS_NODE_PROJECT: "tsconfig.json"
+  },
   extensions: [
     "ts"
   ],
   files: ["**/*.test.ts"],
   require: [
-    "ts-node/register/transpile-only",
+    "ts-node/register",
     "reflect-metadata",
-    "./src/config.ts"
+    // "./src/config.ts"
   ]
 }

@@ -1,6 +1,7 @@
 import {join} from "path"
 
 import {InjectRepository} from "typeorm-typedi-extensions"
+import {Service} from "typedi";
 import {
   FieldResolver,
   Resolver,
@@ -18,7 +19,6 @@ import {ParameterizedContext} from "koa"
 import {set, isEmpty} from "lodash"
 
 import {StoryRepo} from "repo/StoryRepo"
-import {UserRepo} from "repo/UserRepo"
 import {FileRepo} from "repo/FileRepo"
 import {TagRepo} from "repo/TagRepo"
 
@@ -41,6 +41,7 @@ import GetViewer from "api/middleware/GetViewer"
 
 type Context = ParameterizedContext<{viewer: User}>
 
+@Service()
 @Resolver(() => Story)
 class StoryResolver {
   @InjectRepository()

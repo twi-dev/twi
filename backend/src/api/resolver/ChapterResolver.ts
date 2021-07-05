@@ -1,4 +1,5 @@
 import {InjectRepository} from "typeorm-typedi-extensions"
+import {Service} from "typedi"
 import {
   Resolver,
   Query,
@@ -31,6 +32,7 @@ import GetViewer from "api/middleware/GetViewer"
 
 type Context = ParameterizedContext<{viewer: User}>
 
+@Service()
 @Resolver()
 class ChapterResolver {
   @InjectRepository()

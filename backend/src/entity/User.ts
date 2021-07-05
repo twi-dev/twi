@@ -66,14 +66,14 @@ export class User extends SoftRemovableEntity {
   @Field(() => File, {nullable: true})
   @OneToOne(() => File, {eager: true, onDelete: "SET NULL", nullable: true})
   @JoinColumn()
-  avatar?: File
+  avatar!: File | null
 
   /**
    * Checks if given password is valid for the user
    *
    * @param password A password to compare with
    */
-  comparePassword(password: string): Promise<boolean> {
-    return verify(this.password, password)
-  }
+  // comparePassword(password: string): Promise<boolean> {
+  //   return verify(this.password, password)
+  // }
 }

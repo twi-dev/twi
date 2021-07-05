@@ -14,6 +14,7 @@ import {
 import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {BodyFile} from "then-busboy"
+import {Service} from "typedi"
 import {set} from "lodash"
 
 import sharp from "sharp"
@@ -36,6 +37,7 @@ import GetViewer from "api/middleware/GetViewer"
 
 type Context = ParameterizedContext<{viewer: User}>
 
+@Service()
 @Resolver()
 class UserResolver {
   @InjectRepository()

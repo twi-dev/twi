@@ -1,5 +1,6 @@
 import {Resolver, Mutation, Arg, Ctx, Authorized, ID} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
+import {Service} from "typedi"
 import {Context} from "koa"
 
 import {UserRepo} from "repo/UserRepo"
@@ -10,6 +11,7 @@ import SignUpInput from "api/input/auth/SignUp"
 
 import Viewer from "api/type/user/Viewer"
 
+@Service()
 @Resolver()
 class AuthResolver {
   @InjectRepository()
