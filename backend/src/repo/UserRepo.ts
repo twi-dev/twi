@@ -1,7 +1,7 @@
 import {cpus} from "os"
 
 import {Repository, EntityRepository, DeepPartial} from "typeorm"
-import {hash, argon2id} from "argon2"
+import {hash, verify, argon2id} from "argon2"
 import {Service} from "typedi"
 
 import {User} from "entity/User"
@@ -24,5 +24,14 @@ export class UserRepo extends Repository<User> {
     return this.findOne({
       where: [{email: emailOrLogin}, {login: emailOrLogin}]
     })
+  }
+
+  /**
+   * Checks if given password is valid for the user
+   *
+   * @param password A password to compare with
+   */
+  comparePassword(user: User, password: string): Promise<boolean> {
+    return verify(user.password, password)
   }
 }

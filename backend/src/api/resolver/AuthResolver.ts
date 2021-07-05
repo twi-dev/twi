@@ -42,7 +42,7 @@ class AuthResolver {
   ): Promise<User> {
     const user = await this._userRepo.findByEmailOrLogin(username)
 
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user || !(await this._userRepo.comparePassword(user, password))) {
       ctx.throw(401)
     }
 
