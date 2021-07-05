@@ -11,7 +11,7 @@ import Dates from "api/type/common/Dates"
 abstract class AbstractEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn({unsigned: true})
-  readonly id!: number
+  id!: number
 
   @CreateDateColumn()
   createdAt!: Date

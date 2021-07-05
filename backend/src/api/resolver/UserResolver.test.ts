@@ -1,70 +1,32 @@
-import test from "ava"
-
-import faker from "faker"
+import uTest, {TestInterface} from "ava"
 
 import {Container} from "typedi"
+import {buildSchema} from "type-graphql"
+import {graphql, GraphQLSchema} from "graphql"
 import {ConnectionManager} from "typeorm"
+import {pick} from "lodash"
 
-import {User, UserRoles, UserStatuses} from "entity/User"
+import {User} from "entity/User"
+
+import {UserRepo} from "repo/UserRepo"
+import {FileRepo} from "repo/FileRepo"
+
+import authChecker from "auth/checker"
+
+import createFakeUsers from "./__helper__/createFakeUsers"
 
 import UserResolver from "./UserResolver"
 
-const users: User[] = [
-  {
-    id: 1,
-    email: faker.internet.email(),
-    login: faker.internet.userName(),
-    password: faker.internet.password(),
-    role: UserRoles.REGULAR,
-    status: UserStatuses.ACTIVE,
-    avatar: null,
-    createdAt: new Date(faker.time.recent()),
-    updatedAt: new Date(faker.time.recent()),
-    get dates() {
-      return {
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-    }
-  },
-  {
-    id: 1,
-    email: faker.internet.email(),
-    login: faker.internet.userName(),
-    password: faker.internet.password(),
-    role: UserRoles.REGULAR,
-    status: UserStatuses.ACTIVE,
-    avatar: null,
-    createdAt: new Date(faker.time.recent()),
-    updatedAt: new Date(faker.time.recent()),
-    get dates() {
-      return {
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-    }
-  },
-  {
-    id: 1,
-    email: faker.internet.email(),
-    login: faker.internet.userName(),
-    password: faker.internet.password(),
-    role: UserRoles.REGULAR,
-    status: UserStatuses.ACTIVE,
-    avatar: null,
-    createdAt: new Date(faker.time.recent()),
-    updatedAt: new Date(faker.time.recent()),
-    get dates() {
-      return {
-        createdAt: this.createdAt,
-        updatedAt: this.updatedAt
-      }
-    }
-  }
-]
+const test = uTest as TestInterface<{schema: GraphQLSchema}>
 
-test.before(() => {
+const users: User[] = createFakeUsers(1)
+
+test.before(async t => {
   class FakeUserRepo {
+    async findAndCount() {
+      return [users, users.length]
+    }
+
     async findByEmailOrLogin(emailOrLogin: string) {
       return users.find(
         user => user.email === emailOrLogin || user.login === emailOrLogin
@@ -72,27 +34,93 @@ test.before(() => {
     }
   }
 
+  class NoopRepo {}
+
   Container.set(ConnectionManager, {
     has: () => true,
 
     get: () => ({
-      getCustomRepository() {
-        return new FakeUserRepo()
+      getCustomRepository(t: unknown) {
+        if (t === UserRepo) {
+          return new FakeUserRepo()
+        }
+
+        if (t === FileRepo) {
+          return new NoopRepo()
+        }
+
+        return undefined
       }
     })
+  })
+
+  t.context.schema = await buildSchema({
+    container: Container,
+    resolvers: [UserResolver],
+    authChecker
   })
 })
 
 test("Resolves a user by their email", async t => {
-  const [expected] = users
+  const {id, login, email} = pick<User>(users[0], ["id", "login", "email"])
 
-  const resolver = Container.get(UserResolver)
+  const {data} = await graphql({
+    schema: t.context.schema,
+    source: `
+      query GetUser($emailOrLogin: String!) {
+        user(emailOrLogin: $emailOrLogin) {
+          id
+          login
+        }
+      }
+    `,
+    variableValues: {
+      emailOrLogin: email
+    }
+  })
 
-  const actual = await resolver.user(expected.email)
-
-  t.deepEqual(actual, expected)
+  t.deepEqual(data!.user, {id: String(id), login})
 })
 
-// test("Resolves all users", async t => {
-//   const resolver = Container.get(UserResolver)
-// })
+test("Resolves a user by their login", async t => {
+  const {id, login} = pick<User>(users[0], ["id", "login"])
+
+  const {data} = await graphql({
+    schema: t.context.schema,
+    source: `
+      query GetUser($emailOrLogin: String!) {
+        user(emailOrLogin: $emailOrLogin) {
+          id
+          login
+        }
+      }
+    `,
+    variableValues: {
+      emailOrLogin: login
+    }
+  })
+
+  t.deepEqual(data!.user, {id: String(id), login})
+})
+
+test("Resolves all users", async t => {
+  const expected = users
+    .map(user => pick(user, ["id", "login"]))
+    .map(({id, login}) => ({id: String(id), login}))
+
+  const {data} = await graphql({
+    schema: t.context.schema,
+    source: `
+      {
+        users {
+          list {
+            id
+            login
+          }
+        }
+      }
+    `
+  })
+
+  t.deepEqual(data!.users.list, expected)
+})
