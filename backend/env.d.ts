@@ -25,15 +25,13 @@ declare namespace NodeJS {
     readonly CLIENT_ADDRESS: string
 
     /**
-     * Dataase driver name
-     */
-    readonly DATABASE_DRIVER: "mysql" | "postgres" | "sqlite"
-
-    /**
      * Database server hostname
      */
     readonly DATABASE_HOST: string
 
+    /**
+     * Database server port
+     */
     readonly DATABASE_PORT: string
 
     /**

@@ -8,14 +8,31 @@ import schema from "api/schema"
 import {User} from "entity/User"
 import {UserRepo} from "repo/UserRepo"
 
-import {connect, disconnect} from "db"
+import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import createFakeUsers from "./__helper__/createFakeUsers"
 
 const test = ava as TestInterface<{db: Connection, users: User[]}>
 
+const usersQuery = /* GraphQL */ `
+  query GetUsers($page: Int, $limit: Int) {
+    users(page: $page, limit: $limit) {
+      count
+      limit
+      offset
+      current
+      hasNext
+      last
+      list {
+        id
+        login
+      }
+    }
+  }
+`
+
 test.before(async t => {
-  const connection = await connect()
+  const connection = await setupConnection()
   const userRepo = connection.getCustomRepository(UserRepo)
 
   const users = createFakeUsers(10)
@@ -97,22 +114,7 @@ test("users query returns correct page frame format", async t => {
 
   const {data, errors} = await graphql({
     schema,
-    source: /* GraphQL */ `
-      {
-        users {
-          count
-          limit
-          offset
-          current
-          hasNext
-          last
-          list {
-            id
-            login
-          }
-        }
-      }
-    `
+    source: usersQuery
   })
 
   t.falsy(errors)
@@ -132,13 +134,7 @@ test("users query returns same limit values as in variables", async t => {
 
   const {data, errors} = await graphql({
     schema,
-    source: /* GraphQL */ `
-      query GetUsers($limit: Int) {
-        users(limit: $limit) {
-          limit
-        }
-      }
-    `,
+    source: usersQuery,
     variableValues: {
       limit: expected
     }
@@ -151,16 +147,11 @@ test("users query returns same limit values as in variables", async t => {
 
 test(
   "users query returns true in a hasNext field when there's more pages left",
+
   async t => {
     const {data, errors} = await graphql({
       schema,
-      source: /* GraphQL */ `
-        query GetUsers($limit: Int) {
-          users(limit: $limit) {
-            hasNext
-          }
-        }
-      `,
+      source: usersQuery,
       variableValues: {
         limit: 1
       }
@@ -172,9 +163,65 @@ test(
   }
 )
 
+test(
+  "The value of the last page in users query depends on rows count and limit",
+
+  async t => {
+    // You can find the formula description in `api/type/abstract/Page.ts#last` method
+    const limit = 5
+    const expected = Math.ceil(t.context.users.length / limit)
+
+    const {data, errors} = await graphql({
+      schema,
+      source: usersQuery,
+      variableValues: {
+        limit
+      }
+    })
+
+    t.falsy(errors)
+    t.is(data!.users.last, expected)
+  }
+)
+
+test(
+  "users query returns the same current page number as in variables",
+
+  async t => {
+    const expected = 3
+
+    const {data, errors} = await graphql({
+      schema,
+      source: usersQuery,
+      variableValues: {
+        limit: 2,
+        page: expected
+      }
+    })
+
+    t.falsy(errors)
+
+    t.is(data!.users.current, expected)
+  }
+)
+
+test(
+  "The count field in users query equals the total number of rows",
+
+  async t => {
+    const expected = await t.context.db.getCustomRepository(UserRepo).count()
+
+    const {data, errors} = await graphql({schema, source: usersQuery})
+
+    t.falsy(errors)
+
+    t.is(data!.users.count, expected)
+  }
+)
+
 test.after(async t => {
   const userRepo = t.context.db.getCustomRepository(UserRepo)
 
   await userRepo.remove(t.context.users)
-  await disconnect()
+  await cleanupConnection()
 })

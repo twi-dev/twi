@@ -5,7 +5,7 @@ import {graphql, GraphQLSchema} from "graphql"
 
 import faker from "faker"
 
-import {connect, disconnect} from "db"
+import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {UserRepo} from "repo/UserRepo"
 
@@ -19,7 +19,7 @@ import createFakeUsers from "./__helper__/createFakeUsers"
 const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
 
 test.before(async t => {
-  t.context.db = await connect()
+  t.context.db = await setupConnection()
 })
 
 test("authSignUp creates a new user", async t => {
@@ -179,5 +179,5 @@ test("authLogIn creates a session.", async t => {
 })
 
 test.after(async () => {
-  await disconnect()
+  await cleanupConnection()
 })

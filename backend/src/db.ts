@@ -13,10 +13,11 @@ interface ConnectOptions {
   synchronize?: boolean
   logging?: LoggerOptions
   dropSchema?: boolean
+  database?: string
 }
 
 export const connect = async (
-  {synchronize, logging, dropSchema}: ConnectOptions = {}
+  {synchronize, logging, dropSchema, database}: ConnectOptions = {}
 ): Promise<Connection> => {
   try {
     return getConnection()
@@ -25,7 +26,7 @@ export const connect = async (
       type: "mysql", // Gonna stick with MySQL, at least for now.
       host: process.env.DATABASE_HOST || undefined,
       port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
-      database: process.env.DATABASE_NAME!,
+      database: database || process.env.DATABASE_NAME!,
       username: process.env.DATABASE_USER || undefined,
       password: process.env.DATABASE_PASSWORD || undefined,
       subscribers: [process.env.DATABASE_SUBSCRIBERS!],
