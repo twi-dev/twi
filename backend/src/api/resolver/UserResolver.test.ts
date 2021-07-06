@@ -38,7 +38,7 @@ test.before(async t => {
     }
   }
 
-  class NoopRepo {}
+  class NoopRepo { }
 
   Container.set(ConnectionManager, {
     has: () => true,

@@ -7,12 +7,15 @@ import {User, UserStatuses, UserRoles} from "entity/User"
  *
  * @param amount An amount of users to create
  */
-function createFakeUsers(amount: number): User[] {
+function createFakeUsers(amount: number, generateId = true): User[] {
   return new Array(amount).fill(undefined).map<User>((_, index) => {
     const user = new User()
     const now = new Date()
 
-    user.id = index + 1
+    if (generateId) {
+      user.id = index + 1
+    }
+
     user.login = faker.internet.userName()
     user.email = faker.internet.email()
     user.password = faker.internet.password()

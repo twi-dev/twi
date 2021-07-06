@@ -12,6 +12,6 @@ module.exports = {
   require: [
     "ts-node/register",
     "reflect-metadata",
-    // "./src/config.ts"
+    "./src/config.ts"
   ]
 }
