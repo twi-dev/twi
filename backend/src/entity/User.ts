@@ -19,7 +19,7 @@ export enum UserStatuses {
   SUSPENDED = "suspended"
 }
 
-export const LOGIN_PATTERN = /^[a-z0-9_-]+$/i
+export const LOGIN_PATTERN = /^[a-z0-9._\-]+$/i
 
 registerEnumType(UserRoles, {name: "UserRoles"})
 registerEnumType(UserStatuses, {name: "UserStatuses"})

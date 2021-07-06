@@ -1,14 +1,28 @@
-import {createConnection, getConnection, useContainer, Connection} from "typeorm"
+import {
+  createConnection,
+  getConnection,
+  useContainer,
+  Connection,
+  LoggerOptions
+} from "typeorm"
 import {Container} from "typeorm-typedi-extensions"
 
 useContainer(Container)
 
-export const connect = async (): Promise<Connection> => {
+interface ConnectOptions {
+  synchronize?: boolean
+  logging?: LoggerOptions
+  dropSchema?: boolean
+}
+
+export const connect = async (
+  {synchronize, logging, dropSchema}: ConnectOptions = {}
+): Promise<Connection> => {
   try {
     return getConnection()
   } catch {
     return createConnection({
-      type: "mysql",
+      type: "mysql", // Gonna stick with MySQL, at least for now.
       host: process.env.DATABASE_HOST || undefined,
       port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
       database: process.env.DATABASE_NAME!,
@@ -16,8 +30,9 @@ export const connect = async (): Promise<Connection> => {
       password: process.env.DATABASE_PASSWORD || undefined,
       subscribers: [process.env.DATABASE_SUBSCRIBERS!],
       entities: [process.env.DATABASE_ENTITIES!],
-      synchronize: process.env.NODE_ENV !== "production",
-      logging: process.env.NODE_ENV !== "test"
+      synchronize: synchronize || process.env.NODE_ENV !== "production",
+      logging: logging || process.env.NODE_ENV !== "test",
+      dropSchema
     })
   }
 }

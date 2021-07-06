@@ -13,6 +13,8 @@
     "isolatedModules": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "__helper__",
+    "**/*.test.ts"
   ],
 }

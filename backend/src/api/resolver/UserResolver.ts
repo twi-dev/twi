@@ -49,7 +49,7 @@ class UserResolver {
   @Query(() => UserPage)
   async users(@Args() {limit, offset, page}: PageArgs): Promise<UserPageParams> {
     const [rows, count] = await this._userRepo.findAndCount({
-      skip: offset, take: limit, where: {isDraft: false}
+      skip: offset, take: limit
     })
 
     return {rows, count, page, limit, offset}

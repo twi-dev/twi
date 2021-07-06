@@ -3,7 +3,8 @@ module.exports = {
   environmentVariables: {
     NODE_ENV: "test",
     TS_NODE_COMPILER: "ttypescript",
-    TS_NODE_PROJECT: "tsconfig.json"
+    TS_NODE_PROJECT: "tsconfig.json",
+    TS_NODE_PREFER_TS_EXTS: "true"
   },
   extensions: [
     "ts"

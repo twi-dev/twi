@@ -1,9 +1,7 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
-import {buildSchema} from "type-graphql"
 import {graphql, GraphQLSchema} from "graphql"
-import {Container} from "typeorm-typedi-extensions"
 
 import faker from "faker"
 
@@ -11,9 +9,7 @@ import {connect, disconnect} from "db"
 
 import {UserRepo} from "repo/UserRepo"
 
-import authChecker from "auth/checker"
-import AuthResolver from "api/resolver/AuthResolver"
-import UserResolver from "api/resolver/UserResolver" // use it because GraphQL requires Query
+import schema from "api/schema"
 
 import AuthLogInInput from "api/input/auth/LogIn"
 import AuthSignUpInput from "api/input/auth/SignUp"
@@ -24,11 +20,6 @@ const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
 
 test.before(async t => {
   t.context.db = await connect()
-  t.context.schema = await buildSchema({
-    container: Container,
-    resolvers: [AuthResolver, UserResolver],
-    authChecker
-  })
 })
 
 test("authSignUp creates a new user", async t => {
@@ -40,9 +31,9 @@ test("authSignUp creates a new user", async t => {
     password: faker.internet.password(),
   }
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
       mutation AuthSignUp($user: AuthSignUpInput!) {
         authSignUp(user: $user) {
           id
@@ -58,6 +49,8 @@ test("authSignUp creates a new user", async t => {
       }
     }
   })
+
+  t.falsy(errors)
 
   const user = await userRepo.findOne(data!.authSignUp.id)
 
@@ -79,9 +72,9 @@ test("authSignUp sets up a session", async t => {
     userId: null
   }
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
       mutation AuthSignUp($user: AuthSignUpInput!) {
         authSignUp(user: $user) {
           id
@@ -95,6 +88,8 @@ test("authSignUp sets up a session", async t => {
       session
     }
   })
+
+  t.falsy(errors)
 
   const user = await userRepo.findOne(data!.authSignUp.id)
 
@@ -115,9 +110,9 @@ test("authLogIn returns logged in user.", async t => {
 
   await userRepo.save(user)
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
       mutation AuthLogIn($credentials: AuthLogInInput!) {
         authLogIn(credentials: $credentials) {
           id
@@ -135,6 +130,7 @@ test("authLogIn returns logged in user.", async t => {
     }
   })
 
+  t.falsy(errors)
   t.deepEqual(data!.authLogIn, {
     id: String(user.id),
     login: user.login
@@ -154,9 +150,10 @@ test("authLogIn creates a session.", async t => {
   const userRepo = t.context.db.getCustomRepository(UserRepo)
 
   await userRepo.save(user)
-  await graphql({
-    schema: t.context.schema,
-    source: `
+
+  const {errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
       mutation AuthLogIn($credentials: AuthLogInInput!) {
         authLogIn(credentials: $credentials) {
           id
@@ -175,6 +172,7 @@ test("authLogIn creates a session.", async t => {
     }
   })
 
+  t.falsy(errors)
   t.is(session.userId, user.id)
 
   await userRepo.remove(user)

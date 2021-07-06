@@ -1,122 +1,87 @@
-import uTest, {TestInterface} from "ava"
+import ava, {TestInterface} from "ava"
 
-import {Container} from "typedi"
-import {buildSchema} from "type-graphql"
-import {graphql, GraphQLSchema} from "graphql"
-import {ConnectionManager} from "typeorm"
-import {pick} from "lodash"
+import {Connection} from "typeorm"
+import {graphql} from "graphql"
+
+import schema from "api/schema"
 
 import {User} from "entity/User"
-
 import {UserRepo} from "repo/UserRepo"
-import {FileRepo} from "repo/FileRepo"
 
-import authChecker from "auth/checker"
+import {connect, disconnect} from "db"
 
 import createFakeUsers from "./__helper__/createFakeUsers"
 
-import UserResolver from "./UserResolver"
-
-const test = uTest as TestInterface<{schema: GraphQLSchema}>
-
-const users: User[] = createFakeUsers(10)
+const test = ava as TestInterface<{db: Connection, users: User[]}>
 
 test.before(async t => {
-  class FakeUserRepo {
-    async findAndCount() {
-      return [users, users.length]
-    }
+  const connection = await connect()
+  const userRepo = connection.getCustomRepository(UserRepo)
 
-    async findOne(id: number) {
-      return users.find(user => user.id === id)
-    }
+  const users = createFakeUsers(10)
 
-    async findByEmailOrLogin(emailOrLogin: string) {
-      return users.find(
-        user => user.email === emailOrLogin || user.login === emailOrLogin
-      )
-    }
-  }
-
-  class NoopRepo { }
-
-  Container.set(ConnectionManager, {
-    has: () => true,
-
-    get: () => ({
-      getCustomRepository(t: unknown) {
-        if (t === UserRepo) {
-          return new FakeUserRepo()
-        }
-
-        if (t === FileRepo) {
-          return new NoopRepo()
-        }
-
-        return undefined
-      }
-    })
-  })
-
-  t.context.schema = await buildSchema({
-    container: Container,
-    resolvers: [UserResolver],
-    authChecker
-  })
+  t.context.users = await userRepo.save(users)
+  t.context.db = connection
 })
 
-test("Resolves a user by their email", async t => {
-  const {id, login, email} = pick<User>(users[0], ["id", "login", "email"])
+test("user query returns a user by their email", async t => {
+  const [{id, email, login}] = t.context.users
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
-      query GetUser($emailOrLogin: String!) {
-        user(emailOrLogin: $emailOrLogin) {
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
+      query GetUser($email: String!) {
+        user(emailOrLogin: $email) {
           id
           login
         }
       }
     `,
     variableValues: {
-      emailOrLogin: email
+      email
     }
   })
 
+  t.falsy(errors)
   t.deepEqual(data!.user, {id: String(id), login})
 })
 
-test("Resolves a user by their login", async t => {
-  const {id, login} = pick<User>(users[0], ["id", "login"])
+test("user query returns a user by their login", async (t) => {
+  const [{id, login}] = t.context.users
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
-      query GetUser($emailOrLogin: String!) {
-        user(emailOrLogin: $emailOrLogin) {
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
+      query GetUser($login: String!) {
+        user(emailOrLogin: $login) {
           id
           login
         }
       }
     `,
     variableValues: {
-      emailOrLogin: login
+      login
     }
   })
 
+  t.falsy(errors)
   t.deepEqual(data!.user, {id: String(id), login})
 })
 
-test("Resolves all users", async t => {
-  const expected = users
-    .map(user => pick(user, ["id", "login"]))
-    .map(({id, login}) => ({id: String(id), login}))
+test("users query returns correct page frame format", async t => {
+  const users = t.context.users.map(({id, login}) => ({id: String(id), login}))
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
       {
         users {
+          count
+          limit
+          offset
+          current
+          hasNext
+          last
           list {
             id
             login
@@ -126,28 +91,66 @@ test("Resolves all users", async t => {
     `
   })
 
-  t.deepEqual(data!.users.list, expected)
+  t.falsy(errors)
+  t.deepEqual(data!.users, {
+    count: users.length,
+    limit: 10,
+    offset: 0,
+    current: 1,
+    hasNext: false,
+    last: 1,
+    list: users
+  })
 })
 
-test("Resolves current user based on session", async t => {
-  const {id, login} = users[0]
+test("users query returns same limit values as in variables", async t => {
+  const expected = 3
 
-  const {data} = await graphql({
-    schema: t.context.schema,
-    source: `
-      {
-        viewer {
-          id
-          login
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
+      query GetUsers($limit: Int) {
+        users(limit: $limit) {
+          limit
         }
       }
     `,
-    contextValue: {
-      session: {
-        userId: id
-      }
+    variableValues: {
+      limit: expected
     }
   })
 
-  t.deepEqual(data!.viewer, {id: String(id), login})
+  t.falsy(errors)
+
+  t.is(data!.users.limit, expected)
+})
+
+test(
+  "users query returns true in a hasNext field when there's more pages left",
+  async t => {
+    const {data, errors} = await graphql({
+      schema,
+      source: /* GraphQL */ `
+        query GetUsers($limit: Int) {
+          users(limit: $limit) {
+            hasNext
+          }
+        }
+      `,
+      variableValues: {
+        limit: 1
+      }
+    })
+
+    t.falsy(errors)
+
+    t.true(data!.users.hasNext)
+  }
+)
+
+test.after(async t => {
+  const userRepo = t.context.db.getCustomRepository(UserRepo)
+
+  await userRepo.remove(t.context.users)
+  await disconnect()
 })
