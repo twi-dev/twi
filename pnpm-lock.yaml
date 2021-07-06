@@ -45,7 +45,6 @@ importers:
       nanoid: 3.1.23
       reflect-metadata: 0.1.13
       sharp: 0.28.3
-      sql.js: ^1.5.0
       then-busboy: 5.0.0-beta.6
       ts-node: 10.0.0
       ts-node-dev: 1.1.8
@@ -80,7 +79,6 @@ importers:
       nanoid: 3.1.23
       reflect-metadata: 0.1.13
       sharp: 0.28.3
-      sql.js: 1.5.0
       then-busboy: 5.0.0-beta.6
       tslib: 2.3.0
       type-graphql: 1.1.1_39030d905112aa1c59b146b3756f603a
@@ -8881,10 +8879,6 @@ packages:
 
   /sprintf-js/1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
-
-  /sql.js/1.5.0:
-    resolution: {integrity: sha512-Qqr6HgX/hCDpLFWdN0BNoNpYQ2c1tOl1c3HGI0cshjaFSAWszKICuLZ9CyFUvRFPpEGW8RzHzwuXWWvXVGTKBg==}
-    dev: false
 
   /sqlstring/2.3.2:
     resolution: {integrity: sha512-vF4ZbYdKS8OnoJAWBmMxCQDkiEBkGQYU7UZPtL8flbDRSNkhaXvRJ279ZtI6M+zDaQovVU4tuRgzK5fVhvFAhg==}
