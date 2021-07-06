@@ -2,7 +2,9 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "src",
-    "paths": {},
+    "paths": {
+      "*": ["*"]
+    },
     "target": "es2020",
     "module": "commonjs",
     "moduleResolution": "node",
