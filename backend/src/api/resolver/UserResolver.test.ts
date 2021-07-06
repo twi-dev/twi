@@ -41,7 +41,7 @@ test.before(async t => {
   t.context.db = connection
 })
 
-test("user query returns a user by their email", async t => {
+test("user returns a user by their email", async t => {
   const [{id, email, login}] = t.context.users
 
   const {data, errors} = await graphql({
@@ -63,7 +63,7 @@ test("user query returns a user by their email", async t => {
   t.deepEqual(data!.user, {id: String(id), login})
 })
 
-test("user query returns a user by their login", async (t) => {
+test("user returns a user by their login", async (t) => {
   const [{id, login}] = t.context.users
 
   const {data, errors} = await graphql({
@@ -85,7 +85,7 @@ test("user query returns a user by their login", async (t) => {
   t.deepEqual(data!.user, {id: String(id), login})
 })
 
-test("viewer query returns loggen-in user", async t => {
+test("viewer returns loggen-in user", async t => {
   const [{id}] = t.context.users
 
   const {data, errors} = await graphql({
@@ -109,7 +109,7 @@ test("viewer query returns loggen-in user", async t => {
   t.is(data!.viewer.id, String(id))
 })
 
-test("users query returns correct page frame format", async t => {
+test("users returns correct page frame format", async t => {
   const users = t.context.users.map(({id, login}) => ({id: String(id), login}))
 
   const {data, errors} = await graphql({
@@ -129,7 +129,7 @@ test("users query returns correct page frame format", async t => {
   })
 })
 
-test("users query returns same limit values as in variables", async t => {
+test("users returns same limit values as in variables", async t => {
   const expected = 3
 
   const {data, errors} = await graphql({
@@ -146,7 +146,7 @@ test("users query returns same limit values as in variables", async t => {
 })
 
 test(
-  "users query returns true in a hasNext field when there's more pages left",
+  "users returns true in a hasNext field when there's more pages left",
 
   async t => {
     const {data, errors} = await graphql({
@@ -185,7 +185,7 @@ test(
 )
 
 test(
-  "users query returns the same current page number as in variables",
+  "users returns the same current page number as in variables",
 
   async t => {
     const expected = 3
@@ -206,7 +206,7 @@ test(
 )
 
 test(
-  "The count field in users query equals the total number of rows",
+  "The count field in users equals the total number of rows",
 
   async t => {
     const expected = await t.context.db.getCustomRepository(UserRepo).count()
@@ -218,6 +218,19 @@ test(
     t.is(data!.users.count, expected)
   }
 )
+
+test("users returns empty list when the page is out of range", async t => {
+  const {data, errors} = await graphql({
+    schema,
+    source: usersQuery,
+    variableValues: {
+      page: 2
+    }
+  })
+
+  t.falsy(errors)
+  t.deepEqual(data!.users.list, [])
+})
 
 test.after(async t => {
   const userRepo = t.context.db.getCustomRepository(UserRepo)

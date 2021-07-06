@@ -39,7 +39,7 @@ export async function setupConnection(): Promise<Connection> {
   await connection.end()
 
   // Create the actual connection
-  return connect({database: name})
+  return connect({database: name, synchronize: true})
 }
 
 /**
