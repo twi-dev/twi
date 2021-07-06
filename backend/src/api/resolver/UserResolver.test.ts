@@ -31,7 +31,7 @@ test("user query returns a user by their email", async t => {
     schema,
     source: /* GraphQL */ `
       query GetUser($email: String!) {
-        user(emailOrLogin: $email) {
+        user(username: $email) {
           id
           login
         }
@@ -53,7 +53,7 @@ test("user query returns a user by their login", async (t) => {
     schema,
     source: /* GraphQL */ `
       query GetUser($login: String!) {
-        user(emailOrLogin: $login) {
+        user(username: $login) {
           id
           login
         }
@@ -66,6 +66,30 @@ test("user query returns a user by their login", async (t) => {
 
   t.falsy(errors)
   t.deepEqual(data!.user, {id: String(id), login})
+})
+
+test("viewer query returns loggen-in user", async t => {
+  const [{id}] = t.context.users
+
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
+      {
+        viewer {
+          id
+        }
+      }
+    `,
+    contextValue: {
+      session: {
+        userId: id
+      }
+    }
+  })
+
+  t.falsy(errors)
+
+  t.is(data!.viewer.id, String(id))
 })
 
 test("users query returns correct page frame format", async t => {

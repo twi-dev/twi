@@ -58,9 +58,9 @@ class UserResolver {
   @Query(() => User, {description: "Returns a user by their email or login"})
   @UseMiddleware(NotFound)
   async user(
-    @Arg("emailOrLogin") emailOrLogin: string
+    @Arg("username") username: string
   ): Promise<User | undefined> {
-    return this._userRepo.findByEmailOrLogin(emailOrLogin)
+    return this._userRepo.findByEmailOrLogin(username)
   }
 
   @Query(() => Viewer, {description: "Returns currently logged-in user."})
