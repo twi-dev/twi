@@ -51,7 +51,7 @@ export class Story extends SoftRemovableEntity {
    * List of the chapters associated with the story
    */
   @Field(() => [Chapter], {nullable: "items"})
-  @OneToMany(() => Chapter, (chapter) => chapter.story)
+  @OneToMany(() => Chapter, chapter => chapter.story)
   @TypeormLoader()
   chapters!: Chapter[] | null
 

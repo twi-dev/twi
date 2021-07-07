@@ -8,7 +8,7 @@ import {Category} from "./Category"
 @ObjectType()
 @Entity()
 export class Tag extends SoftRemovableEntity {
-  @ManyToOne(() => Category, (category) => category.tags, {nullable: true})
+  @ManyToOne(() => Category, category => category.tags, {nullable: true})
   category!: Category | null
 
   /**
