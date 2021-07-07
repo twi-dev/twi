@@ -1,5 +1,7 @@
 import ava, {TestInterface} from "ava"
 
+import faker from "faker"
+
 import {Connection} from "typeorm"
 import {graphql} from "graphql"
 import {pick} from "lodash"
@@ -15,6 +17,7 @@ import {User} from "entity/User"
 
 import schema from "api/schema"
 import StoryAddInput from "api/input/story/Add"
+import StoryUpdateInput from "api/input/story/Update"
 
 import createFakeStories from "./__helper__/createFakeStories"
 import createFakeUsers from "./__helper__/createFakeUsers"
@@ -36,6 +39,18 @@ const storyAdd = /* GraphQL */ `
       publisher {
         id
       }
+    }
+  }
+`
+
+const storyUpdate = /* GraphQL */ `
+  mutation StoryUpdate($story: StoryUpdateInput!) {
+    storyUpdate(story: $story) {
+      id
+      title
+      description
+      isDraft
+      isFinished
     }
   }
 `
@@ -108,7 +123,6 @@ test("storyAdd has isDraft field set to true by default", async t => {
   })
 
   t.falsy(errors)
-
   t.true(data!.storyAdd.isDraft)
 })
 
@@ -133,8 +147,83 @@ test("storyAdd has isFinished field set to false by default", async (t) => {
   })
 
   t.falsy(errors)
-
   t.false(data!.storyAdd.isFinished)
+})
+
+test("storyUpdate allows to update title of the story", async t => {
+  const expected = faker.lorem.words(3)
+
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  story.publisher = user
+
+  const storyRepo = db.getCustomRepository(StoryRepo)
+
+  await storyRepo.save(story)
+
+  const input = {
+    id: story.id,
+    title: expected
+  }
+
+  const {data, errors} = await graphql({
+    schema,
+    source: storyUpdate,
+    variableValues: {
+      story: input
+    },
+    contextValue: {
+      session: {
+        userId: user.id
+      },
+      state: {}
+    }
+  })
+
+  t.falsy(errors)
+  t.is(data!.storyUpdate.title, expected)
+
+  await storyRepo.remove(story)
+})
+
+test("storyUpdate allows to update description of the story", async (t) => {
+  const expected = faker.lorem.paragraph()
+
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  story.publisher = user
+
+  const storyRepo = db.getCustomRepository(StoryRepo)
+
+  await storyRepo.save(story)
+
+  const input = {
+    id: story.id,
+    description: expected
+  }
+
+  const {data, errors} = await graphql({
+    schema,
+    source: storyUpdate,
+    variableValues: {
+      story: input
+    },
+    contextValue: {
+      session: {
+        userId: user.id
+      },
+      state: {}
+    }
+  })
+
+  t.falsy(errors)
+  t.is(data!.storyUpdate.description, expected)
+
+  await storyRepo.remove(story)
 })
 
 test.after(async () => {
