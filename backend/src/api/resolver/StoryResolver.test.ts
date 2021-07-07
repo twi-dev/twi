@@ -17,7 +17,6 @@ import {User} from "entity/User"
 
 import schema from "api/schema"
 import StoryAddInput from "api/input/story/Add"
-import StoryUpdateInput from "api/input/story/Update"
 
 import createFakeStories from "./__helper__/createFakeStories"
 import createFakeUsers from "./__helper__/createFakeUsers"
