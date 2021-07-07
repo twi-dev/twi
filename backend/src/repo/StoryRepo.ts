@@ -20,11 +20,11 @@ export class StoryRepo extends Repository<Story> {
       where: [
         {
           isDraft: false,
-          id: Number(idOrSlug)
+          id: idOrSlug as number
         },
         {
           isDraft: false,
-          slug: String(idOrSlug)
+          slug: idOrSlug as string
         }
       ]
     })

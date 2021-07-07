@@ -11,6 +11,7 @@ importers:
       '@types/bcrypt': 5.0.0
       '@types/faker': ^5.5.6
       '@types/fs-extra': 9.0.11
+      '@types/http-errors': ^1.8.1
       '@types/ioredis': 4.26.4
       '@types/koa': 2.13.3
       '@types/koa__cors': 3.0.2
@@ -34,6 +35,7 @@ importers:
       faker: 5.5.3
       fs-extra: 10.0.0
       graphql: 15.5.1
+      http-errors: ^1.8.0
       ioredis: 4.27.6
       koa: 2.13.1
       koa-redis: 4.0.1
@@ -68,6 +70,7 @@ importers:
       date-fns: 2.22.1
       fs-extra: 10.0.0
       graphql: 15.5.1
+      http-errors: 1.8.0
       ioredis: 4.27.6
       koa: 2.13.1
       koa-redis: 4.0.1
@@ -90,6 +93,7 @@ importers:
       '@types/bcrypt': 5.0.0
       '@types/faker': 5.5.6
       '@types/fs-extra': 9.0.11
+      '@types/http-errors': 1.8.1
       '@types/ioredis': 4.26.4
       '@types/koa': 2.13.3
       '@types/koa__cors': 3.0.2
@@ -2590,6 +2594,10 @@ packages:
 
   /@types/http-errors/1.8.0:
     resolution: {integrity: sha512-2aoSC4UUbHDj2uCsCxcG/vRMXey/m17bC7UwitVm5hn22nI8O8Y9iDpA76Orc+DWkQ4zZrOKEshCqR/jSuXAHA==}
+
+  /@types/http-errors/1.8.1:
+    resolution: {integrity: sha512-e+2rjEwK6KDaNOm5Aa9wNGgyS9oSZU/4pfSMMPYNOfjvFI0WVXm29+ITRFr6aKDvvKo7uU1jV68MW4ScsfDi7Q==}
+    dev: true
 
   /@types/http-proxy-agent/2.0.2:
     resolution: {integrity: sha512-2S6IuBRhqUnH1/AUx9k8KWtY3Esg4eqri946MnxTG5HwehF1S5mqLln8fcyMiuQkY72p2gH3W+rIPqp5li0LyQ==}
