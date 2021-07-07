@@ -28,7 +28,7 @@ const createConnection = () => mysql.createConnection({
 })
 
 /**
- * Creates a test database with unique name.
+ * Creates a test database with unique name and starts a new TypeORM connection.
  * Use it once per each individual test file in `test.before()` hook.
  *
  * @returns TypeORM Connection instance
@@ -46,10 +46,8 @@ export async function setupConnection(): Promise<Connection> {
 }
 
 /**
- * Removed a database created for this test file earlier
+ * Removed a database created for this test file earlier and closes the TypeORM connection.
  * Use it once per each individual test file in `test.after()` hook.
- *
- * @param name Database name
  */
 export async function cleanupConnection(): Promise<void> {
   if (!name) {
