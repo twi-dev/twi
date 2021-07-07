@@ -60,14 +60,13 @@ test("storyAdd creates a new story", async t => {
   const [{title, description}] = createFakeStories(1)
   const {user, db} = t.context
 
+  const input: StoryAddInput = {title, description}
+
   const {data, errors} = await graphql({
     schema,
     source: storyAdd,
     variableValues: {
-      story: {
-        title,
-        description
-      }
+      story: input
     },
     contextValue: {
       session: {
