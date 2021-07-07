@@ -1,12 +1,21 @@
 import {resolve} from "path"
 
 import {loadEnvConfig} from "@next/env"
-import {set} from "lodash"
+import {set, noop} from "lodash"
 
-loadEnvConfig(process.cwd(), process.env.NODE_ENV != "production")
+const PWD = process.cwd()
+const dev = process.env.NODE_ENV !== "production"
+
+loadEnvConfig(PWD, dev, {
+  // Silencing annoying logging from @next/env
+  /* c8 ignore next */
+  info: (process.env.NODE_ENV as string) === "debug" ? console.info : noop,
+  error: console.error,
+})
 
 const SERVER_ROOT = resolve(process.env.SERVER_ROOT as string)
 
+/* c8 ignore next 3 */
 const EXT = process.env.NODE_ENV === "production"
   ? ".js"
   : ".ts"
