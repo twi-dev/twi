@@ -13,7 +13,6 @@ import {UserRepo} from "repo/UserRepo"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"
-// import {Tag} from "entity/Tag"
 
 import schema from "api/schema"
 import StoryAddInput from "api/input/story/Add"
@@ -78,11 +77,7 @@ test("storyAdd creates a new story", async t => {
     variableValues: {
       story: input
     },
-    contextValue: createFakeContext({
-      session: {
-        userId: user.id
-      }
-    })
+    contextValue: createFakeContext({session: {userId: user.id}})
   })
 
   t.falsy(errors)
@@ -108,11 +103,7 @@ test("storyAdd has isDraft field set to true by default", async t => {
     variableValues: {
       story: input
     },
-    contextValue: createFakeContext({
-      session: {
-        userId: user.id
-      }
-    })
+    contextValue: createFakeContext({session: {userId: user.id}})
   })
 
   t.falsy(errors)
@@ -131,11 +122,7 @@ test("storyAdd has isFinished field set to false by default", async (t) => {
     variableValues: {
       story: input
     },
-    contextValue: createFakeContext({
-      session: {
-        userId: user.id
-      }
-    })
+    contextValue: createFakeContext({session: {userId: user.id}})
   })
 
   t.falsy(errors)
@@ -166,11 +153,7 @@ test("storyUpdate allows to update title of the story", async t => {
     variableValues: {
       story: input
     },
-    contextValue: createFakeContext({
-      session: {
-        userId: user.id
-      }
-    })
+    contextValue: createFakeContext({session: {userId: user.id}})
   })
 
   t.falsy(errors)
@@ -203,11 +186,7 @@ test("storyUpdate allows to update description of the story", async (t) => {
     variableValues: {
       story: input
     },
-    contextValue: createFakeContext({
-      session: {
-        userId: user.id
-      }
-    })
+    contextValue: createFakeContext({session: {userId: user.id}})
   })
 
   t.falsy(errors)
