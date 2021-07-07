@@ -195,6 +195,42 @@ test("storyUpdate allows to update description of the story", async (t) => {
   await storyRepo.remove(story)
 })
 
+test(
+  "storyUpdate will not update isFinished field when there's no chapters",
+
+  async t => {
+    const {user, db} = t.context
+
+    const [story] = createFakeStories(1)
+
+    story.publisher = user
+    story.isFinished = false
+
+    const storyRepo = db.getCustomRepository(StoryRepo)
+
+    await storyRepo.save(story)
+
+    const input = {
+      id: story.id,
+      isFinished: true
+    }
+
+    const {data, errors} = await graphql({
+      schema,
+      source: storyUpdate,
+      variableValues: {
+        story: input
+      },
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
+
+    t.falsy(errors)
+    t.false(data!.storyUpdate.isFinished)
+
+    await storyRepo.remove(story)
+  }
+)
+
 test.after(async () => {
   await cleanupConnection()
 })
