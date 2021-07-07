@@ -10,7 +10,9 @@
     "build": "ttsc",
     "dev": "ts-node-dev --log-error --prefer-ts-exts -C ttypescript --rs src",
     "start": "NODE_ENV=production node lib",
-    "cleanup": "rm -rf lib"
+    "cleanup": "rm -rf lib",
+    "test": "ava",
+    "coverage": "c8 npm test"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.0",
