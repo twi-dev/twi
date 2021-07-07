@@ -9,7 +9,7 @@ export type FakeState = Record<string, unknown>
 export interface FakeContext {
   session: FakeSession
   state: FakeState
-  throw: typeof createError
+  throw(...args: createError.UnknownError[]): never
 }
 
 export const CONTEXT_DEFAULTS: FakeContext = {
@@ -17,7 +17,9 @@ export const CONTEXT_DEFAULTS: FakeContext = {
     userId: null
   },
   state: {},
-  throw: createError
+  throw(...args): never {
+    throw createError(...args)
+  }
 }
 
 export const createFakeContext = (

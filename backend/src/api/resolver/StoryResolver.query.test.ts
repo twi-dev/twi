@@ -2,7 +2,6 @@ import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
 import {graphql} from "graphql"
-// import {pick} from "lodash"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
