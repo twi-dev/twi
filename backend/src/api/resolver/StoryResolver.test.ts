@@ -9,7 +9,7 @@ import {setupConnection, cleanupConnection} from "__helper__/database"
 import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
 
-// import {Story} from "entity/Story"
+import {Story} from "entity/Story"
 import {User} from "entity/User"
 // import {Tag} from "entity/Tag"
 
@@ -19,7 +19,11 @@ import StoryAddInput from "api/input/story/Add"
 import createFakeStories from "./__helper__/createFakeStories"
 import createFakeUsers from "./__helper__/createFakeUsers"
 
-const test = ava as TestInterface<{db: Connection, user: User}>
+const test = ava as TestInterface<{
+  db: Connection,
+  user: User,
+  stories: Story[]
+}>
 
 const storyAdd = /* GraphQL */ `
   mutation StoryAdd($story: StoryAddInput!) {
@@ -39,11 +43,17 @@ const storyAdd = /* GraphQL */ `
 test.before(async t => {
   const connection = await setupConnection()
   const userRepo = connection.getCustomRepository(UserRepo)
+  const storyRepo = connection.getCustomRepository(StoryRepo)
 
   const [user] = createFakeUsers(1)
 
+  const stories = createFakeStories(10)
+
+  stories.forEach(story => { story.publisher = user })
+
   t.context.db = connection
   t.context.user = await userRepo.save(user)
+  t.context.stories = await storyRepo.save(stories)
 })
 
 test("storyAdd creates a new story", async t => {
