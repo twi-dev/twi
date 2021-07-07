@@ -16,6 +16,9 @@ let name: string | null = null
 /**
  * Creates a new MySQL connection using mysql2 driver.
  * Not meant for usage outside of this module.
+ *
+ * **Important**: this function requires a user with database management access.
+ * You'll probably gonna need to create a user that can manage databases with names starting with twi-test__ name
  */
 const createConnection = () => mysql.createConnection({
   host: process.env.DATABASE_HOST || undefined,

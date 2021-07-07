@@ -1,5 +1,6 @@
 import ava, {TestInterface} from "ava"
 
+import {pick} from "lodash"
 import {Connection} from "typeorm"
 import {graphql, GraphQLSchema} from "graphql"
 
@@ -15,6 +16,8 @@ import AuthLogInInput from "api/input/auth/LogIn"
 import AuthSignUpInput from "api/input/auth/SignUp"
 
 import createFakeUsers from "./__helper__/createFakeUsers"
+
+import {createFakeContext} from "./__helper__/createFakeContext"
 
 const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
 
@@ -43,11 +46,7 @@ test("authSignUp creates a new user", async t => {
     variableValues: {
       user: input
     },
-    contextValue: {
-      session: {
-        userId: null
-      }
-    }
+    contextValue: createFakeContext()
   })
 
   t.falsy(errors)
@@ -55,6 +54,14 @@ test("authSignUp creates a new user", async t => {
   const user = await userRepo.findOne(data!.authSignUp.id)
 
   t.truthy(user)
+  t.deepEqual(
+    pick(user!, ["email", "login"]),
+
+    {
+      email: input.email,
+      login: input.login
+    }
+  )
 
   await userRepo.remove(user!)
 })
@@ -68,9 +75,7 @@ test("authSignUp sets up a session", async t => {
     password: faker.internet.password()
   }
 
-  const session = {
-    userId: null
-  }
+  const context = createFakeContext()
 
   const {data, errors} = await graphql({
     schema,
@@ -84,16 +89,15 @@ test("authSignUp sets up a session", async t => {
     variableValues: {
       user: input
     },
-    contextValue: {
-      session
-    }
+    contextValue: context
   })
 
   t.falsy(errors)
 
   const user = await userRepo.findOne(data!.authSignUp.id)
 
-  t.is(session.userId, user!.id)
+  t.truthy(user)
+  t.is(context.session.userId, user!.id)
 
   await userRepo.remove(user!)
 })
@@ -120,11 +124,7 @@ test("authLogIn returns logged in user.", async t => {
         }
       }
     `,
-    contextValue: {
-      session: {
-        userId: null
-      }
-    },
+    contextValue: createFakeContext(),
     variableValues: {
       credentials: input
     }
@@ -143,9 +143,7 @@ test("authLogIn creates a session.", async t => {
   const [user] = createFakeUsers(1, false)
   const {email, password} = user
 
-  const session = {
-    userId: null
-  }
+  const context = createFakeContext()
 
   const userRepo = t.context.db.getCustomRepository(UserRepo)
 
@@ -161,9 +159,7 @@ test("authLogIn creates a session.", async t => {
         }
       }
     `,
-    contextValue: {
-      session
-    },
+    contextValue: context,
     variableValues: {
       credentials: {
         username: email,
@@ -173,7 +169,7 @@ test("authLogIn creates a session.", async t => {
   })
 
   t.falsy(errors)
-  t.is(session.userId, user.id)
+  t.is(context.session.userId, user.id)
 
   await userRepo.remove(user)
 })
