@@ -1,7 +1,7 @@
 import {join} from "path"
 
 import {InjectRepository} from "typeorm-typedi-extensions"
-import {Service} from "typedi";
+import {Service} from "typedi"
 import {
   FieldResolver,
   Resolver,

@@ -59,17 +59,11 @@ const storyUpdate = /* GraphQL */ `
 test.before(async t => {
   const connection = await setupConnection()
   const userRepo = connection.getCustomRepository(UserRepo)
-  const storyRepo = connection.getCustomRepository(StoryRepo)
 
   const [user] = createFakeUsers(1)
 
-  const stories = createFakeStories(10)
-
-  stories.forEach(story => { story.publisher = user })
-
   t.context.db = connection
   t.context.user = await userRepo.save(user)
-  t.context.stories = await storyRepo.save(stories)
 })
 
 test("storyAdd creates a new story", async t => {
