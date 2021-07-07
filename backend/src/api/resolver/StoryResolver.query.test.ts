@@ -122,7 +122,14 @@ test("stories returns list of the stories in the page frame", async t => {
   })
 
   t.falsy(errors)
-  t.true("list" in data!.stories)
+  t.true(Array.isArray(data!.stories.list))
+
+  const [story] = data!.stories.list as Story[]
+
+  t.true("id" in story)
+  t.true("title" in story)
+  t.true("description" in story)
+  t.true("slug" in story)
 })
 
 test.after(async () => {
