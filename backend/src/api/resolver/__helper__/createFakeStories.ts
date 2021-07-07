@@ -2,7 +2,7 @@ import faker from "faker"
 
 import {Story} from "entity/Story"
 
-function createFakeStories(amount: number, generateId: boolean = true): Story[] {
+function createFakeStories(amount: number, generateId: boolean = false): Story[] {
   return new Array(amount).fill(undefined).map<Story>((_, index) => {
     const story = new Story()
 

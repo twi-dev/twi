@@ -174,6 +174,32 @@ test("authLogIn creates a session.", async t => {
   await userRepo.remove(user)
 })
 
+test("authLogOut destroys current session", async t => {
+  const [user] = createFakeUsers(1, false)
+
+  const userRepo = t.context.db.getCustomRepository(UserRepo)
+
+  await userRepo.save(user)
+
+  const context = createFakeContext({session: {userId: user.id}})
+
+  const {data, errors} = await graphql({
+    schema,
+    source: /* GraphQL */ `
+      mutation {
+        authLogOut
+      }
+    `,
+    contextValue: context
+  })
+
+  t.falsy(errors)
+  t.is(context.session, null)
+  t.is(data!.authLogOut, String(user.id))
+
+  await userRepo.remove(user)
+})
+
 test.after(async () => {
   await cleanupConnection()
 })

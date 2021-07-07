@@ -7,7 +7,7 @@ import {User, UserStatuses, UserRoles} from "entity/User"
  *
  * @param amount An amount of users to create
  */
-function createFakeUsers(amount: number, generateId = true): User[] {
+function createFakeUsers(amount: number, generateId = false): User[] {
   return new Array(amount).fill(undefined).map<User>((_, index) => {
     const user = new User()
     const now = new Date()
