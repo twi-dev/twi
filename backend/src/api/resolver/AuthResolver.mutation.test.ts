@@ -15,7 +15,7 @@ import schema from "api/schema"
 import AuthLogInInput from "api/input/auth/LogIn"
 import AuthSignUpInput from "api/input/auth/SignUp"
 
-import createFakeUsers from "./__helper__/createFakeUsers"
+import createFakeUsers from "__helper__/createFakeUsers"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
 

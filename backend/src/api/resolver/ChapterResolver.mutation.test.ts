@@ -15,9 +15,9 @@ import {User} from "entity/User"
 import schema from "api/schema"
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 
-import createFakeChapters from "./__helper__/createFakeChapters"
-import createFakeStories from "./__helper__/createFakeStories"
-import createFakeUsers from "./__helper__/createFakeUsers"
+import createFakeChapters from "__helper__/createFakeChapters"
+import createFakeStories from "__helper__/createFakeStories"
+import createFakeUsers from "__helper__/createFakeUsers"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
 

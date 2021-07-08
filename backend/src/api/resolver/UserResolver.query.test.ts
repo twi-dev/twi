@@ -10,7 +10,7 @@ import {UserRepo} from "repo/UserRepo"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
-import createFakeUsers from "./__helper__/createFakeUsers"
+import createFakeUsers from "__helper__/createFakeUsers"
 
 const test = ava as TestInterface<{db: Connection, users: User[]}>
 
