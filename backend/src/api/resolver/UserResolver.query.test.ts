@@ -121,6 +121,17 @@ test("viewer returns loggen-in user", async t => {
   t.is(Number(actual.id), id)
 })
 
+test("viewer result has the email field", async t => {
+  const [{id, email}] = t.context.users
+
+  const {viewer: actual} = await graphql<ViewerQueryResult>({
+    source: viewerQuery,
+    contextValue: createFakeContext({session: {userId: id}})
+  })
+
+  t.is(actual.email, email)
+})
+
 test("users returns correct page frame shape", async t => {
   const {users: actual} = await graphql<UsersQueryResult>({
     source: usersQuery
