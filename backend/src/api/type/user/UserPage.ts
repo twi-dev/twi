@@ -6,7 +6,7 @@ import {User} from "entity/User"
 
 export type UserPageParams = PageParams<User>
 
-export type UserPageResult = PageResult<UserPage>
+export type UserPageResult = PageResult<User>
 
 @ObjectType()
 export class UserPage extends Page<User> {

@@ -6,7 +6,7 @@ import {Chapter} from "entity/Chapter"
 
 export type ChapterPageParams = PageParams<Chapter>
 
-export type ChapterPageResult = PageResult<ChapterPage>
+export type ChapterPageResult = PageResult<Chapter>
 
 @ObjectType()
 export class ChapterPage extends Page<Chapter> {

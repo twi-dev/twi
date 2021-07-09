@@ -6,7 +6,7 @@ import {Story} from "entity/Story"
 
 export type StoryPageParams = PageParams<Story>
 
-export type StoryPageResult = PageResult<StoryPage>
+export type StoryPageResult = PageResult<Story>
 
 @ObjectType()
 export class StoryPage extends Page<Story> {

@@ -1,9 +1,10 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
-import {graphql} from "graphql"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
+
+import {StoryPageResult} from "api/type/story/StoryPage"
 
 import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
@@ -11,11 +12,10 @@ import {UserRepo} from "repo/UserRepo"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 
-import schema from "api/schema"
-
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
+import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
 const test = ava as TestInterface<{
@@ -24,8 +24,12 @@ const test = ava as TestInterface<{
   stories: Story[]
 }>
 
-interface StoryQueryInput {
+interface StoryQueryVariables {
   idOrSlug: string | number
+}
+
+interface StoryQueryResult {
+  story: Story
 }
 
 const stroyQuery = /* GraphQL */ `
@@ -40,6 +44,15 @@ const stroyQuery = /* GraphQL */ `
     }
   }
 `
+
+interface StoriesQueryVariables {
+  page?: number
+  limit?: number
+}
+
+interface StoriesQueryResult {
+  stories: StoryPageResult
+}
 
 const storiesQuery = /* GraphQL */ `
   query GetStories($page: Int, $limit: Int) {
@@ -85,46 +98,42 @@ test.before(async t => {
 test("story returns a story by slug", async t => {
   const [story] = t.context.stories
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    story: actual
+  } = await graphql<StoryQueryResult, StoryQueryVariables>({
     source: stroyQuery,
-    variableValues: {
-      idOrSlug: story.slug
-    } as StoryQueryInput,
+    variableValues: {idOrSlug: story.slug},
     contextValue: createFakeContext()
   })
 
-  t.falsy(errors)
-  t.is(data!.story.id, String(story.id))
+  t.is(Number(actual.id), story.id)
 })
 
 test("story returns a story by ID", async (t) => {
   const [story] = t.context.stories
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    story: actual
+  } = await graphql<StoryQueryResult, StoryQueryVariables>({
     source: stroyQuery,
-    variableValues: {
-      idOrSlug: String(story.id)
-    } as StoryQueryInput,
+    variableValues: {idOrSlug: String(story.id)},
     contextValue: createFakeContext()
   })
 
-  t.falsy(errors)
-  t.is(data!.story.id, String(story.id))
+  t.is(Number(actual.id), story.id)
 })
 
 test("stories returns list of the stories in the page frame", async t => {
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    stories: actual
+  } = await graphql<StoriesQueryResult, StoriesQueryVariables>({
     source: storiesQuery,
     contextValue: createFakeContext()
   })
 
-  t.falsy(errors)
-  t.true(Array.isArray(data!.stories.list))
+  t.true(Array.isArray(actual.list))
 
-  const [story] = data!.stories.list as Story[]
+  const [story] = actual.list
 
   t.true("id" in story)
   t.true("title" in story)
