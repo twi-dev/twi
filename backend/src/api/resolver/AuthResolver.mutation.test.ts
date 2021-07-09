@@ -2,6 +2,7 @@ import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
 import {GraphQLSchema} from "graphql"
+import {HttpError} from "http-errors"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
@@ -16,6 +17,8 @@ import createFakeUsers from "__helper__/createFakeUsers"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
 import {graphql} from "./__helper__/graphql"
+
+import OperationError from "./__helper__/OperationError"
 
 const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
 
@@ -124,6 +127,45 @@ test("authLogIn creates a session.", async t => {
   })
 
   t.is(context.session.userId, user.id)
+})
+
+test("authLogIn throws an error on incorrect password", async t => {
+  const [user] = createFakeUsers(1)
+
+  await t.context.db.getCustomRepository(UserRepo).save(user)
+
+  const trap = () => graphql<unknown, AuthLogInVariables>({
+    source: authLogIn,
+    variableValues: {
+      credentials: {username: user.email, password: "incorrect".repeat(3)}
+    }
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 401)
+})
+
+test("authLogIn throws an error on incorrect login", async t => {
+  const [user] = createFakeUsers(1)
+  const {password} = user
+
+  await t.context.db.getCustomRepository(UserRepo).save(user)
+
+  const trap = () => graphql<unknown, AuthLogInVariables>({
+    source: authLogIn,
+    variableValues: {
+      credentials: {username: "dummy-login".repeat(3), password}
+    }
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 401)
 })
 
 test("authLogOut destroys current session", async t => {

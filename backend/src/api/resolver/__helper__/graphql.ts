@@ -4,6 +4,8 @@ import schema from "api/schema"
 
 import {createFakeContext, FakeContext} from "./createFakeContext"
 
+import OperationError from "./OperationError"
+
 type UnknownObject = Record<string, unknown>
 
 type ArgsWithoutSchema = Omit<GraphQLArgs, "schema">
@@ -40,7 +42,7 @@ export async function graphql<
   })
 
   if (errors) {
-    throw errors
+    throw new OperationError(errors)
   }
 
   return data as TResult
