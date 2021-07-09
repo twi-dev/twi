@@ -1,10 +1,12 @@
 import {ObjectType, Root, Field} from "type-graphql"
 
-import {Page, PageParams} from "api/type/abstract/Page"
+import {Page, PageParams, PageResult} from "api/type/abstract/Page"
 
 import {Chapter} from "entity/Chapter"
 
 export type ChapterPageParams = PageParams<Chapter>
+
+export type ChapterPageResult = PageResult<ChapterPage>
 
 @ObjectType()
 export class ChapterPage extends Page<Chapter> {

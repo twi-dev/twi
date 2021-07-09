@@ -1,5 +1,7 @@
 import {ObjectType, Field, Root, Int} from "type-graphql"
 
+import UnwrapMethodsReturnType from "helper/type/UnwrapMethodsReturnType"
+
 export interface PageParams<T extends object> {
   /**
    * Returns per-page entities limit
@@ -26,6 +28,13 @@ export interface PageParams<T extends object> {
    */
   rows: T[]
 }
+
+/**
+ * This type alias reflect the Page result shape.
+ * Use it when you need just the shape.
+ */
+export type PageResult<T extends object> =
+  Readonly<UnwrapMethodsReturnType<Page<T>>>
 
 @ObjectType({isAbstract: true})
 export abstract class Page<T extends object> {

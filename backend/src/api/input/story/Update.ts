@@ -7,8 +7,8 @@ class StoryUpdateInput extends Node {
   @Field({nullable: true})
   title?: string
 
-  @Field({nullable: true})
-  description?: string
+  @Field(() => String, {nullable: true})
+  description?: string | null
 
   @Field({nullable: true})
   isDraft?: boolean

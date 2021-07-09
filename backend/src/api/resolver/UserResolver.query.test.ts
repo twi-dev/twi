@@ -3,10 +3,8 @@ import ava, {TestInterface} from "ava"
 import {Connection} from "typeorm"
 import {isBoolean, isNumber} from "lodash"
 
-import UnwrapMethodsReturnType from "helper/type/UnwrapMethodsReturnType"
-
 import {User, UserStatuses} from "entity/User"
-import {UserPage} from "api/type/user/UserPage"
+import {UserPageResult} from "api/type/user/UserPage"
 import {UserRepo} from "repo/UserRepo"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
@@ -37,7 +35,7 @@ interface UsersQueryVariables {
 }
 
 interface UsersQueryResult {
-  users: UnwrapMethodsReturnType<UserPage>
+  users: UserPageResult
 }
 
 const usersQuery = /* GraphQL */ `

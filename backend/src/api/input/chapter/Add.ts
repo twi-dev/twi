@@ -5,8 +5,8 @@ class ChapterAddInput {
   @Field()
   title!: string
 
-  @Field({nullable: true})
-  description?: string
+  @Field(() => String, {nullable: true})
+  description?: string | null
 
   @Field()
   text!: string

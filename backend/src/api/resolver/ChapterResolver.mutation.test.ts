@@ -1,18 +1,19 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
-import {graphql} from "graphql"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
-import {ChapterRepo} from "repo/ChapterRepo"
-import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
+import {StoryRepo} from "repo/StoryRepo"
+import {ChapterRepo} from "repo/ChapterRepo"
 
+import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 
 import schema from "api/schema"
+
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 import ChapterUpdateInput from "api/input/chapter/Update"
 
@@ -20,6 +21,7 @@ import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
+import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
 const test = ava as TestInterface<{
@@ -27,6 +29,14 @@ const test = ava as TestInterface<{
   user: User
   story: Story
 }>
+
+interface StoryChapterAddVariables {
+  story: Omit<StoryChapterAddInput, "#id">
+}
+
+interface StoryChapterAddResult {
+  storyChapterAdd: Chapter
+}
 
 const storyChapterAdd = /* GraphQL */ `
   mutation StoryChapterAdd($story: StoryChapterAddInput!) {
@@ -38,6 +48,14 @@ const storyChapterAdd = /* GraphQL */ `
     }
   }
 `
+
+interface StoryChapterUpdateVariables {
+  chapter: Omit<ChapterUpdateInput, "#id">
+}
+
+interface StoryChapterUpdateResult {
+  storyChapterUpdate: Chapter
+}
 
 const storyChapterUpdate = /* GraphQL */ `
   mutation StoryChapterUpdate($chapter: ChapterUpdateInput!) {
@@ -71,34 +89,27 @@ test("storyChapterAdd creates a new chapter", async t => {
 
   const [{title, description, text}] = createFakeChapters(1)
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    storyChapterAdd: actual
+  } = await graphql<StoryChapterAddResult, StoryChapterAddVariables>({
     source: storyChapterAdd,
     contextValue: createFakeContext({session: {userId: user.id}}),
     variableValues: {
       story: {
         id: story.id,
-        chapter: {
-          title,
-          description,
-          text
-        }
-      } as StoryChapterAddInput
+        chapter: {title, description, text}
+      }
     }
   })
 
-  t.falsy(errors)
-
-  const chapter = await db
-    .getCustomRepository(ChapterRepo)
-    .findOne(data!.storyChapterAdd.id)
+  const chapter = await db.getCustomRepository(ChapterRepo).findOne(actual.id)
 
   t.truthy(chapter)
 
-  t.is(data!.storyChapterAdd.id, String(chapter!.id))
-  t.is(data!.storyChapterAdd.title, chapter!.title)
-  t.is(data!.storyChapterAdd.description, chapter!.description)
-  t.is(data!.storyChapterAdd.text, chapter!.text)
+  t.is(Number(actual.id), chapter!.id)
+  t.is(actual.title, chapter!.title)
+  t.is(actual.description, chapter!.description)
+  t.is(actual.text, chapter!.text)
 })
 
 test("storyChapterUpdate updates a title", async t => {
@@ -110,19 +121,16 @@ test("storyChapterUpdate updates a title", async t => {
 
   await db.getCustomRepository(ChapterRepo).save(chapter)
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    storyChapterUpdate: actual
+  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
     source: storyChapterUpdate,
     contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {
-      chapter: {id: chapter.id, title} as ChapterUpdateInput
-    }
+    variableValues: {chapter: {id: chapter.id, title}}
   })
 
-  t.falsy(errors)
-
-  t.not(data!.storyChapterUpdate.title, chapter.title)
-  t.is(data!.storyChapterUpdate.title, title)
+  t.not(actual.title, chapter.title)
+  t.is(actual.title, title)
 })
 
 test("storyChapterUpdate updates a description", async t => {
@@ -134,19 +142,16 @@ test("storyChapterUpdate updates a description", async t => {
 
   await db.getCustomRepository(ChapterRepo).save(chapter)
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    storyChapterUpdate: actual
+  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
     source: storyChapterUpdate,
     contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {
-      chapter: {id: chapter.id, description} as ChapterUpdateInput
-    }
+    variableValues: {chapter: {id: chapter.id, description}}
   })
 
-  t.falsy(errors)
-
-  t.not(data!.storyChapterUpdate.description, chapter.description)
-  t.is(data!.storyChapterUpdate.description, description)
+  t.not(actual.description, chapter.description)
+  t.is(actual.description, description)
 })
 
 test("storyChapterUpdate updates a text", async t => {
@@ -158,19 +163,16 @@ test("storyChapterUpdate updates a text", async t => {
 
   await db.getCustomRepository(ChapterRepo).save(chapter)
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    storyChapterUpdate: actual
+  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
     source: storyChapterUpdate,
     contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {
-      chapter: {id: chapter.id, text} as ChapterUpdateInput
-    }
+    variableValues: {chapter: {id: chapter.id, text}}
   })
 
-  t.falsy(errors)
-
-  t.not(data!.storyChapterUpdate.text, chapter.text)
-  t.is(data!.storyChapterUpdate.text, text)
+  t.not(actual.text, chapter.text)
+  t.is(actual.text, text)
 })
 
 test.after(async () => {
