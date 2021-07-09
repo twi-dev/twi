@@ -7,7 +7,7 @@ import createFakeEntities from "./createFakeEntities"
 const createFakeChapters = (
   amount: number,
   generateId: boolean = false
-): Chapter[] => createFakeEntities<Chapter>(
+): Chapter[] => createFakeEntities(
   Chapter,
   amount,
 

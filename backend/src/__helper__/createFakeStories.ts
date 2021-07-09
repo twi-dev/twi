@@ -7,7 +7,7 @@ import createFakeEntities from "./createFakeEntities"
 const createFakeStories = (
   amount: number,
   generateId: boolean = false
-): Story[] => createFakeEntities<Story>(
+): Story[] => createFakeEntities(
   Story,
   amount,
 
