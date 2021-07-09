@@ -1,16 +1,13 @@
 import ava, {TestInterface} from "ava"
 
-import {pick} from "lodash"
 import {Connection} from "typeorm"
-import {graphql, GraphQLSchema} from "graphql"
-
-import faker from "faker"
+import {GraphQLSchema} from "graphql"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {UserRepo} from "repo/UserRepo"
 
-import schema from "api/schema"
+import {User} from "entity/User"
 
 import AuthLogInInput from "api/input/auth/LogIn"
 import AuthSignUpInput from "api/input/auth/SignUp"
@@ -18,173 +15,125 @@ import AuthSignUpInput from "api/input/auth/SignUp"
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
+import {graphql} from "./__helper__/graphql"
 
 const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
+
+interface AuthSignUpVariables {
+  user: AuthSignUpInput
+}
+
+interface AuthSignUpResult {
+  authSignUp: User
+}
+
+const authSignUp = /* GraphQL */ `
+  mutation AuthSignUp($user: AuthSignUpInput!) {
+    authSignUp(user: $user) {
+      id
+      email
+      login
+    }
+  }
+`
+
+interface AuthLogInVariables {
+  credentials: AuthLogInInput
+}
+
+interface AuthLogInResult {
+  authLogIn: User
+}
+
+const authLogIn = /* GraphQL */ `
+  mutation AuthLogIn($credentials: AuthLogInInput!) {
+    authLogIn(credentials: $credentials) {
+      id
+      email
+      login
+    }
+  }
+`
+
+interface AuthLogOutResult {
+  authLogOut: number
+}
 
 test.before(async t => {
   t.context.db = await setupConnection()
 })
 
 test("authSignUp creates a new user", async t => {
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
+  const [{email, login, password}] = createFakeUsers(1)
 
-  const input: AuthSignUpInput = {
-    email: faker.internet.email(),
-    login: faker.internet.userName(),
-    password: faker.internet.password(),
-  }
-
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      mutation AuthSignUp($user: AuthSignUpInput!) {
-        authSignUp(user: $user) {
-          id
-        }
-      }
-    `,
-    variableValues: {
-      user: input
-    },
-    contextValue: createFakeContext()
+  const {
+    authSignUp: actual
+  } = await graphql<AuthSignUpResult, AuthSignUpVariables>({
+    source: authSignUp,
+    variableValues: {user: {email, login, password}}
   })
 
-  t.falsy(errors)
-
-  const user = await userRepo.findOne(data!.authSignUp.id)
-
-  t.truthy(user)
-  t.deepEqual(
-    pick(user!, ["email", "login"]),
-
-    {
-      email: input.email,
-      login: input.login
-    }
-  )
-
-  await userRepo.remove(user!)
+  t.is(actual.email, email)
+  t.is(actual.login, login)
 })
 
 test("authSignUp sets up a session", async t => {
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
-
-  const input: AuthSignUpInput = {
-    email: faker.internet.email(),
-    login: faker.internet.userName(),
-    password: faker.internet.password()
-  }
+  const [{email, login, password}] = createFakeUsers(1)
 
   const context = createFakeContext()
 
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      mutation AuthSignUp($user: AuthSignUpInput!) {
-        authSignUp(user: $user) {
-          id
-        }
-      }
-    `,
-    variableValues: {
-      user: input
-    },
+  const {
+    authSignUp: actual
+  } = await graphql<AuthSignUpResult, AuthSignUpVariables>({
+    source: authSignUp,
+    variableValues: {user: {email, login, password}},
     contextValue: context
   })
 
-  t.falsy(errors)
-
-  const user = await userRepo.findOne(data!.authSignUp.id)
-
-  t.truthy(user)
-  t.is(context.session.userId, user!.id)
-
-  await userRepo.remove(user!)
+  t.is(Number(actual.id), context.session.userId)
 })
 
 test("authLogIn returns logged in user.", async t => {
-  const [user] = createFakeUsers(1, false)
+  const [user] = createFakeUsers(1)
+  const {email, password} = user
 
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
+  await t.context.db.getCustomRepository(UserRepo).save(user)
 
-  const input: AuthLogInInput = {
-    username: user.email,
-    password: user.password
-  }
-
-  await userRepo.save(user)
-
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      mutation AuthLogIn($credentials: AuthLogInInput!) {
-        authLogIn(credentials: $credentials) {
-          id
-          login
-        }
-      }
-    `,
-    contextValue: createFakeContext(),
-    variableValues: {
-      credentials: input
-    }
+  const {
+    authLogIn: actual
+  } = await graphql<AuthLogInResult, AuthLogInVariables>({
+    source: authLogIn,
+    variableValues: {credentials: {username: email, password}}
   })
 
-  t.falsy(errors)
-  t.deepEqual(data!.authLogIn, {
-    id: String(user.id),
-    login: user.login
-  })
-
-  await userRepo.remove(user)
+  t.is(Number(actual.id), user.id)
 })
 
 test("authLogIn creates a session.", async t => {
-  const [user] = createFakeUsers(1, false)
+  const [user] = createFakeUsers(1)
   const {email, password} = user
+
+  await t.context.db.getCustomRepository(UserRepo).save(user)
 
   const context = createFakeContext()
 
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
-
-  await userRepo.save(user)
-
-  const {errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      mutation AuthLogIn($credentials: AuthLogInInput!) {
-        authLogIn(credentials: $credentials) {
-          id
-          login
-        }
-      }
-    `,
+  await graphql<unknown, AuthLogInVariables>({
+    source: authLogIn,
     contextValue: context,
-    variableValues: {
-      credentials: {
-        username: email,
-        password
-      }
-    }
+    variableValues: {credentials: {username: email, password}}
   })
 
-  t.falsy(errors)
   t.is(context.session.userId, user.id)
-
-  await userRepo.remove(user)
 })
 
 test("authLogOut destroys current session", async t => {
-  const [user] = createFakeUsers(1, false)
+  const [user] = createFakeUsers(1)
 
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
-
-  await userRepo.save(user)
+  await t.context.db.getCustomRepository(UserRepo).save(user)
 
   const context = createFakeContext({session: {userId: user.id}})
 
-  const {data, errors} = await graphql({
-    schema,
+  const {authLogOut: actual} = await graphql<AuthLogOutResult>({
     source: /* GraphQL */ `
       mutation {
         authLogOut
@@ -193,11 +142,8 @@ test("authLogOut destroys current session", async t => {
     contextValue: context
   })
 
-  t.falsy(errors)
   t.is(context.session, null)
-  t.is(data!.authLogOut, String(user.id))
-
-  await userRepo.remove(user)
+  t.is(Number(actual), user.id)
 })
 
 test.after(async () => {
