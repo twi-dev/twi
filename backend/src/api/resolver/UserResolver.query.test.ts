@@ -18,6 +18,19 @@ import {graphql} from "./__helper__/graphql"
 
 const test = ava as TestInterface<{db: Connection, users: User[]}>
 
+interface ViewerQueryResult {
+  viewer: User
+}
+
+const viewerQuery = /* GraphQL */ `
+  query {
+    viewer {
+      id
+      email
+    }
+  }
+`
+
 interface UsersQueryVariables {
   page?: number
   limit?: number
@@ -100,8 +113,8 @@ test("user returns a user by their login", async (t) => {
 test("viewer returns loggen-in user", async t => {
   const [{id}] = t.context.users
 
-  const {viewer: actual} = await graphql<{viewer: User}>({
-    source: /* GraphQL */ ` { viewer { id } } `,
+  const {viewer: actual} = await graphql<ViewerQueryResult>({
+    source: viewerQuery,
     contextValue: createFakeContext({session: {userId: id}})
   })
 
