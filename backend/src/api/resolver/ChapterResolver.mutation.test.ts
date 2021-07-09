@@ -149,7 +149,7 @@ test("storyChapterUpdate updates a description", async t => {
   t.is(data!.storyChapterUpdate.description, description)
 })
 
-test("storyChapterUpdate updates a text", async (t) => {
+test("storyChapterUpdate updates a text", async t => {
   const {user, story, db} = t.context
 
   const [{text}, chapter] = createFakeChapters(2)
