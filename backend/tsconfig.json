@@ -30,5 +30,10 @@
   "include": [
     "src/**/*.ts",
     "env.d.ts"
-  ]
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }

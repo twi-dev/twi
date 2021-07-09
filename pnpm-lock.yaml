@@ -50,6 +50,7 @@ importers:
       then-busboy: 5.0.0-beta.6
       ts-node: 10.0.0
       ts-node-dev: 1.1.8
+      tsconfig-paths: ^3.10.1
       tslib: 2.3.0
       ttypescript: 1.5.12
       type-graphql: 1.1.1
@@ -113,6 +114,7 @@ importers:
       faker: 5.5.3
       ts-node: 10.0.0_488376d43314e2606bceb2872a37d0ef
       ts-node-dev: 1.1.8_typescript@4.3.5
+      tsconfig-paths: 3.10.1
       ttypescript: 1.5.12_ts-node@10.0.0+typescript@4.3.5
       typescript: 4.3.5
       typescript-transform-paths: 2.2.4_typescript@4.3.5
@@ -9447,6 +9449,14 @@ packages:
     dependencies:
       typescript: 4.3.4
     dev: false
+
+  /tsconfig-paths/3.10.1:
+    resolution: {integrity: sha512-rETidPDgCpltxF7MjBZlAFPUHv5aHH2MymyPvh+vEyWAED4Eb/WeMbsnD/JDr4OKPOA1TssDHgIcpTN5Kh0p6Q==}
+    dependencies:
+      json5: 2.2.0
+      minimist: 1.2.5
+      strip-bom: 3.0.0
+    dev: true
 
   /tsconfig/7.0.0:
     resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
