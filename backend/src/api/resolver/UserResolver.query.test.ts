@@ -1,18 +1,31 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
-import {graphql} from "graphql"
+import {isBoolean, isNumber} from "lodash"
 
-import schema from "api/schema"
+import UnwrapMethodsReturnType from "helper/type/UnwrapMethodsReturnType"
 
-import {User} from "entity/User"
+import {User, UserStatuses} from "entity/User"
+import {UserPage} from "api/type/user/UserPage"
 import {UserRepo} from "repo/UserRepo"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import createFakeUsers from "__helper__/createFakeUsers"
 
+import {createFakeContext} from "./__helper__/createFakeContext"
+import {graphql} from "./__helper__/graphql"
+
 const test = ava as TestInterface<{db: Connection, users: User[]}>
+
+interface UsersQueryVariables {
+  page?: number
+  limit?: number
+}
+
+interface UsersQueryResult {
+  users: UnwrapMethodsReturnType<UserPage>
+}
 
 const usersQuery = /* GraphQL */ `
   query GetUsers($page: Int, $limit: Int) {
@@ -31,135 +44,113 @@ const usersQuery = /* GraphQL */ `
   }
 `
 
+interface UserQueryVariables {
+  username: string
+}
+
+interface UserQueryResult {
+  user: User
+}
+
+const userQuery = /* GraphQL */ `
+  query GetUser($username: String!) {
+    user(username: $username) {
+      id
+      login
+    }
+  }
+`
+
 test.before(async t => {
   const connection = await setupConnection()
   const userRepo = connection.getCustomRepository(UserRepo)
 
   const users = createFakeUsers(10)
 
+  users.forEach(user => { user.status = UserStatuses.ACTIVE })
+
   t.context.users = await userRepo.save(users)
   t.context.db = connection
 })
 
 test("user returns a user by their email", async t => {
-  const [{id, email, login}] = t.context.users
+  const [{id, email}] = t.context.users
 
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      query GetUser($email: String!) {
-        user(username: $email) {
-          id
-          login
-        }
-      }
-    `,
+  const {user: actual} = await graphql<UserQueryResult, UserQueryVariables>({
+    source: userQuery,
     variableValues: {
-      email
+      username: email
     }
   })
 
-  t.falsy(errors)
-  t.deepEqual(data!.user, {id: String(id), login})
+  t.is(Number(actual.id), id)
 })
 
 test("user returns a user by their login", async (t) => {
   const [{id, login}] = t.context.users
 
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      query GetUser($login: String!) {
-        user(username: $login) {
-          id
-          login
-        }
-      }
-    `,
-    variableValues: {
-      login
-    }
+  const {user: actual} = await graphql<UserQueryResult, UserQueryVariables>({
+    source: userQuery,
+    variableValues: {username: login}
   })
 
-  t.falsy(errors)
-  t.deepEqual(data!.user, {id: String(id), login})
+  t.is(Number(actual.id), id)
 })
 
 test("viewer returns loggen-in user", async t => {
   const [{id}] = t.context.users
 
-  const {data, errors} = await graphql({
-    schema,
-    source: /* GraphQL */ `
-      {
-        viewer {
-          id
-        }
-      }
-    `,
-    contextValue: {
-      session: {
-        userId: id
-      }
-    }
+  const {viewer: actual} = await graphql<{viewer: User}>({
+    source: /* GraphQL */ ` { viewer { id } } `,
+    contextValue: createFakeContext({session: {userId: id}})
   })
 
-  t.falsy(errors)
-
-  t.is(data!.viewer.id, String(id))
+  t.is(Number(actual.id), id)
 })
 
-test("users returns correct page frame format", async t => {
-  const users = t.context.users.map(({id, login}) => ({id: String(id), login}))
-
-  const {data, errors} = await graphql({
-    schema,
+test("users returns correct page frame shape", async t => {
+  const {users: actual} = await graphql<UsersQueryResult>({
     source: usersQuery
   })
 
-  t.falsy(errors)
-  t.deepEqual(data!.users, {
-    count: users.length,
-    limit: 10,
-    offset: 0,
-    current: 1,
-    hasNext: false,
-    last: 1,
-    list: users
-  })
+  t.true(isNumber(actual.count))
+  t.true(isNumber(actual.limit))
+  t.true(isNumber(actual.offset))
+  t.true(isNumber(actual.current))
+  t.true(isBoolean(actual.hasNext))
+  t.true(isNumber(actual.last))
+  t.true(Array.isArray(actual.list))
 })
 
 test("users returns same limit values as in variables", async t => {
   const expected = 3
 
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    users: actual
+  } = await graphql<UsersQueryResult, UsersQueryVariables>({
     source: usersQuery,
     variableValues: {
       limit: expected
     }
   })
 
-  t.falsy(errors)
-
-  t.is(data!.users.limit, expected)
+  t.is(actual.limit, expected)
 })
 
 test(
   "users returns true in a hasNext field when there's more pages left",
 
   async t => {
-    const {data, errors} = await graphql({
-      schema,
+    const {
+      users: actual
+    } = await graphql<UsersQueryResult, UsersQueryVariables>({
       source: usersQuery,
       variableValues: {
         limit: 1
       }
     })
 
-    t.falsy(errors)
-
-    t.true(data!.users.hasNext)
+    t.true(actual.hasNext)
   }
 )
 
@@ -171,16 +162,16 @@ test(
     const limit = 5
     const expected = Math.ceil(t.context.users.length / limit)
 
-    const {data, errors} = await graphql({
-      schema,
+    const {
+      users: actual
+    } = await graphql<UsersQueryResult, UsersQueryVariables>({
       source: usersQuery,
       variableValues: {
         limit
       }
     })
 
-    t.falsy(errors)
-    t.is(data!.users.last, expected)
+    t.is(actual.last, expected)
   }
 )
 
@@ -190,8 +181,9 @@ test(
   async t => {
     const expected = 3
 
-    const {data, errors} = await graphql({
-      schema,
+    const {
+      users: actual
+    } = await graphql<UsersQueryResult, UsersQueryVariables>({
       source: usersQuery,
       variableValues: {
         limit: 2,
@@ -199,9 +191,7 @@ test(
       }
     })
 
-    t.falsy(errors)
-
-    t.is(data!.users.current, expected)
+    t.is(actual.current, expected)
   }
 )
 
@@ -211,30 +201,25 @@ test(
   async t => {
     const expected = await t.context.db.getCustomRepository(UserRepo).count()
 
-    const {data, errors} = await graphql({schema, source: usersQuery})
+    const {users: actual} = await graphql<UsersQueryResult>({
+      source: usersQuery
+    })
 
-    t.falsy(errors)
-
-    t.is(data!.users.count, expected)
+    t.is(actual.count, expected)
   }
 )
 
 test("users returns empty list when the page is out of range", async t => {
-  const {data, errors} = await graphql({
-    schema,
+  const {
+    users: actual
+  } = await graphql<UsersQueryResult, UsersQueryVariables>({
     source: usersQuery,
-    variableValues: {
-      page: 2
-    }
+    variableValues: {page: 2}
   })
 
-  t.falsy(errors)
-  t.deepEqual(data!.users.list, [])
+  t.deepEqual(actual.list, [])
 })
 
 test.after(async t => {
-  const userRepo = t.context.db.getCustomRepository(UserRepo)
-
-  await userRepo.remove(t.context.users)
   await cleanupConnection()
 })
