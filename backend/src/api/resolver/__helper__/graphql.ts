@@ -26,7 +26,7 @@ export interface Args<V, C, R> extends ArgsWithoutSchema {
  * @param args Arguments to execute graphql function with.
  */
 export async function graphql<
-  TResult = unknown,
+  TResult = UnknownObject,
   TVariables = UnknownObject,
   TContext extends FakeContext = FakeContext,
   TRoot = unknown
