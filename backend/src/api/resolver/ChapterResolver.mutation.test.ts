@@ -12,8 +12,6 @@ import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 
-import schema from "api/schema"
-
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 import ChapterUpdateInput from "api/input/chapter/Update"
 
@@ -129,7 +127,6 @@ test("storyChapterUpdate updates a title", async t => {
     variableValues: {chapter: {id: chapter.id, title}}
   })
 
-  t.not(actual.title, chapter.title)
   t.is(actual.title, title)
 })
 
@@ -150,7 +147,6 @@ test("storyChapterUpdate updates a description", async t => {
     variableValues: {chapter: {id: chapter.id, description}}
   })
 
-  t.not(actual.description, chapter.description)
   t.is(actual.description, description)
 })
 
@@ -171,7 +167,6 @@ test("storyChapterUpdate updates a text", async t => {
     variableValues: {chapter: {id: chapter.id, text}}
   })
 
-  t.not(actual.text, chapter.text)
   t.is(actual.text, text)
 })
 
