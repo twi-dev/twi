@@ -4,6 +4,7 @@ import faker from "faker"
 
 import {Connection} from "typeorm"
 
+import {ChapterRepo} from "repo/ChapterRepo"
 import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
 import {TagRepo} from "repo/TagRepo"
@@ -17,6 +18,7 @@ import StoryUpdateInput from "api/input/story/Update"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
+import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
@@ -305,6 +307,37 @@ test(
     })
 
     t.false(actual.isFinished)
+  }
+)
+
+test(
+  "storyUpdate will update isFinished field when there's story has chapters",
+
+  async t => {
+    const {user, db} = t.context
+
+    const [story] = createFakeStories(1)
+    const [chapter] = createFakeChapters(1)
+
+    story.publisher = user
+    story.isFinished = false
+    story.chaptersCount = 1
+
+    chapter.story = story
+    chapter.order = 1
+
+    await db.getCustomRepository(StoryRepo).save(story)
+    await db.getCustomRepository(ChapterRepo).save(chapter)
+
+    const {
+      storyUpdate: actual
+    } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+      source: storyUpdate,
+      variableValues: {story: {id: story.id, isFinished: true}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
+
+    t.true(actual.isFinished)
   }
 )
 
