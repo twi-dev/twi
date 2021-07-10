@@ -4,8 +4,6 @@ import {Connection} from "typeorm"
 import {GraphQLSchema} from "graphql"
 import {HttpError} from "http-errors"
 
-import {setupConnection, cleanupConnection} from "__helper__/database"
-
 import {UserRepo} from "repo/UserRepo"
 
 import {User} from "entity/User"
@@ -14,6 +12,8 @@ import AuthLogInInput from "api/input/auth/LogIn"
 import AuthSignUpInput from "api/input/auth/SignUp"
 
 import createFakeUsers from "__helper__/createFakeUsers"
+
+import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
 import {graphql} from "./__helper__/graphql"

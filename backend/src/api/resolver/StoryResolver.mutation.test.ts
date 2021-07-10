@@ -4,8 +4,6 @@ import faker from "faker"
 
 import {Connection} from "typeorm"
 
-import {setupConnection, cleanupConnection} from "__helper__/database"
-
 import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
 
@@ -14,6 +12,8 @@ import {User} from "entity/User"
 
 import StoryAddInput from "api/input/story/Add"
 import StoryUpdateInput from "api/input/story/Update"
+
+import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"

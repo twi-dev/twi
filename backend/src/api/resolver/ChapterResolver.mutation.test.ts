@@ -2,8 +2,6 @@ import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
 
-import {setupConnection, cleanupConnection} from "__helper__/database"
-
 import {UserRepo} from "repo/UserRepo"
 import {StoryRepo} from "repo/StoryRepo"
 import {ChapterRepo} from "repo/ChapterRepo"
@@ -11,6 +9,8 @@ import {ChapterRepo} from "repo/ChapterRepo"
 import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
+
+import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 import ChapterUpdateInput from "api/input/chapter/Update"

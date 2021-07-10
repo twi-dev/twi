@@ -2,8 +2,6 @@ import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
 
-import {setupConnection, cleanupConnection} from "__helper__/database"
-
 import {StoryPageResult} from "api/type/story/StoryPage"
 
 import {StoryRepo} from "repo/StoryRepo"
@@ -12,11 +10,13 @@ import {UserRepo} from "repo/UserRepo"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 
-import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
+import createFakeStories from "__helper__/createFakeStories"
 
-import {graphql} from "./__helper__/graphql"
+import {setupConnection, cleanupConnection} from "__helper__/database"
+
 import {createFakeContext} from "./__helper__/createFakeContext"
+import {graphql} from "./__helper__/graphql"
 
 const test = ava as TestInterface<{
   db: Connection
