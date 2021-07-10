@@ -6,9 +6,11 @@ import {Connection} from "typeorm"
 
 import {StoryRepo} from "repo/StoryRepo"
 import {UserRepo} from "repo/UserRepo"
+import {TagRepo} from "repo/TagRepo"
 
 import {Story} from "entity/Story"
 import {User} from "entity/User"
+import {Tag} from "entity/Tag"
 
 import StoryAddInput from "api/input/story/Add"
 import StoryUpdateInput from "api/input/story/Update"
@@ -71,6 +73,14 @@ const storyUpdate = /* GraphQL */ `
       description
       isDraft
       isFinished
+      publisher {
+        id
+      }
+      tags {
+        id
+        name
+        slug
+      }
     }
   }
 `
@@ -200,6 +210,77 @@ test("storyUpdate allows to update description of the story", async (t) => {
   })
 
   t.is(actual.description, expected)
+})
+
+test("storyUpdate resets tags when the tags argument is null", async t => {
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  const tags = [
+    "Sweetie Belle",
+    "Scootaloo",
+    "Apple Bloom",
+    "Adventure"
+  ].map<Tag>(name => {
+    const tag = new Tag()
+
+    tag.name = name
+
+    return tag
+  })
+
+  story.publisher = user
+  story.tags = tags
+
+  await db.getCustomRepository(TagRepo).save(tags)
+  await db.getCustomRepository(StoryRepo).save(story)
+
+  const {
+    storyUpdate: actual
+  } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+    source: storyUpdate,
+    variableValues: {story: {id: story.id, tags: null}},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  t.deepEqual(actual.tags, [])
+})
+
+test("storyUpdate allows to update tags", async t => {
+  const expected = ["Big Macintosh", "Sugar Belle", "Romance"]
+
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  const tags = [
+    "Big Macintosh",
+    "Marble Pie",
+    "Romance"
+  ].map<Tag>(name => {
+    const tag = new Tag()
+
+    tag.name = name
+
+    return tag
+  })
+
+  story.publisher = user
+  story.tags = tags
+
+  await db.getCustomRepository(TagRepo).save(tags)
+  await db.getCustomRepository(StoryRepo).save(story)
+
+  const {
+    storyUpdate: actual
+  } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+    source: storyUpdate,
+    variableValues: {story: {id: story.id, tags: expected}},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  t.deepEqual(actual.tags!.map(({name}) => name).sort(), expected.sort())
 })
 
 test(
