@@ -145,6 +145,26 @@ test("storyChapterUpdate updates a description", async t => {
   t.is(actual.description, description)
 })
 
+test("storyChapterUpdate removes description if set to null", async t => {
+  const {user, story, db} = t.context
+
+  const [chapter] = createFakeChapters(1)
+
+  chapter.story = story
+
+  await db.getCustomRepository(ChapterRepo).save(chapter)
+
+  const {
+    storyChapterUpdate: actual
+  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
+    source: storyChapterUpdate,
+    contextValue: createFakeContext({session: {userId: user.id}}),
+    variableValues: {chapter: {id: chapter.id, description: null}}
+  })
+
+  t.is(actual.description, null)
+})
+
 test("storyChapterUpdate updates a text", async t => {
   const {user, story, db} = t.context
 
