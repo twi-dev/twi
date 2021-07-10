@@ -99,7 +99,9 @@ test("storyAdd creates a new story", async t => {
 
   t.is(actual.title, title)
   t.is(actual.description, description)
-  t.is(actual.tags, null, "Tags must be null by default")
+  t.deepEqual(
+    actual.tags, [], "Tags must be resolved as an empty array by default"
+  )
 })
 
 test("storyAdd allows to assing tags to created story", async t => {
