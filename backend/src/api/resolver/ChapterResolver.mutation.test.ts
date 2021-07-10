@@ -83,7 +83,7 @@ test.before(async t => {
 })
 
 test("storyChapterAdd creates a new chapter", async t => {
-  const {user, story, db} = t.context
+  const {user, story} = t.context
 
   const [{title, description, text}] = createFakeChapters(1)
 
@@ -100,14 +100,9 @@ test("storyChapterAdd creates a new chapter", async t => {
     }
   })
 
-  const chapter = await db.getCustomRepository(ChapterRepo).findOne(actual.id)
-
-  t.truthy(chapter)
-
-  t.is(Number(actual.id), chapter!.id)
-  t.is(actual.title, chapter!.title)
-  t.is(actual.description, chapter!.description)
-  t.is(actual.text, chapter!.text)
+  t.is(actual.title, title)
+  t.is(actual.description, description)
+  t.is(actual.text, text)
 })
 
 test("storyChapterUpdate updates a title", async t => {
