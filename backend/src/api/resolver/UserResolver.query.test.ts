@@ -243,6 +243,6 @@ test("users returns empty list when the page is out of range", async t => {
   t.deepEqual(actual.list, [])
 })
 
-test.after(async () => {
+test.after.always(async () => {
   await cleanupConnection()
 })

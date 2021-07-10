@@ -341,6 +341,6 @@ test(
   }
 )
 
-test.after(async () => {
+test.after.always(async () => {
   await cleanupConnection()
 })

@@ -165,6 +165,6 @@ test("storyChapterUpdate updates a text", async t => {
   t.is(actual.text, text)
 })
 
-test.after(async () => {
+test.after.always(async () => {
   await cleanupConnection()
 })

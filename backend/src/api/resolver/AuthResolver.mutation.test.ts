@@ -184,6 +184,6 @@ test("authLogOut destroys current session", async t => {
   t.is(Number(actual), user.id)
 })
 
-test.after(async () => {
+test.after.always(async () => {
   await cleanupConnection()
 })

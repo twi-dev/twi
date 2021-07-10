@@ -141,6 +141,6 @@ test("stories returns list of the stories in the page frame", async t => {
   t.true("slug" in story)
 })
 
-test.after(async () => {
+test.after.always(async () => {
   await cleanupConnection()
 })
