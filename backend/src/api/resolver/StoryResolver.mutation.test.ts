@@ -137,11 +137,6 @@ test("storyUpdate allows to update title of the story", async t => {
 
   await db.getCustomRepository(StoryRepo).save(story)
 
-  const input = {
-    id: story.id,
-    title: expected
-  }
-
   const {
     storyUpdate: actual
   } = await graphql<StoryUpdateResult, StoryUpdateVariables>({

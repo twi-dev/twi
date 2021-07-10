@@ -120,7 +120,7 @@ test("authLogIn creates a session.", async t => {
 
   const context = createFakeContext()
 
-  await graphql<unknown, AuthLogInVariables>({
+  await graphql<{}, AuthLogInVariables>({
     source: authLogIn,
     contextValue: context,
     variableValues: {credentials: {username: email, password}}
@@ -134,7 +134,7 @@ test("authLogIn throws an error on incorrect password", async t => {
 
   await t.context.db.getCustomRepository(UserRepo).save(user)
 
-  const trap = () => graphql<unknown, AuthLogInVariables>({
+  const trap = () => graphql<{}, AuthLogInVariables>({
     source: authLogIn,
     variableValues: {
       credentials: {username: user.email, password: "incorrect".repeat(3)}
@@ -154,7 +154,7 @@ test("authLogIn throws an error on incorrect login", async t => {
 
   await t.context.db.getCustomRepository(UserRepo).save(user)
 
-  const trap = () => graphql<unknown, AuthLogInVariables>({
+  const trap = () => graphql<{}, AuthLogInVariables>({
     source: authLogIn,
     variableValues: {
       credentials: {username: "dummy-login".repeat(3), password}
