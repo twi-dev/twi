@@ -46,6 +46,11 @@ const storyAdd = /* GraphQL */ `
       publisher {
         id
       }
+      tags {
+        id
+        name
+        slug
+      }
     }
   }
 `
@@ -94,6 +99,31 @@ test("storyAdd creates a new story", async t => {
 
   t.is(actual.title, title)
   t.is(actual.description, description)
+  t.is(actual.tags, null, "Tags must be null by default")
+})
+
+test("storyAdd allows to assing tags to created story", async t => {
+  const [{title, description}] = createFakeStories(1)
+  const {user} = t.context
+
+  const expected = [
+    "Slice of Life",
+    "Sunset Shimmer",
+    "Twilight Sparkle",
+    "Princess Celestia"
+  ]
+
+  const {
+    storyAdd: actual
+  } = await graphql<StoryAddResult, StoryAddVariables>({
+    source: storyAdd,
+    variableValues: {story: {title, description, tags: expected}},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  // Sort tags here to make sure that arrays are deep equal
+  // because TypeORM may persist them in a wrong order
+  t.deepEqual(actual.tags!.map(({name}) => name).sort(), expected.sort())
 })
 
 test("storyAdd has isDraft field set to true by default", async t => {
