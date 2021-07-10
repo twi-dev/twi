@@ -180,8 +180,9 @@ test(
   "The value of the last page in users query depends on rows count and limit",
 
   async t => {
-    // You can find the formula description in `api/type/abstract/Page.ts#last` method
     const limit = 5
+
+    // You can find the formula description in `api/type/abstract/Page.ts#last` method
     const expected = Math.ceil(t.context.users.length / limit)
 
     const {
