@@ -155,7 +155,7 @@ test("chapters returns a list of chapters", async t => {
   t.true(isBoolean(chapter.isDraft))
 })
 
-test("chapter throws 404 error if there's not matched results", async t => {
+test("chapter throws 404 error if there are no matched results", async t => {
   const trap = (): Promise<never> => graphql<never, ChapterQueryVariables>({
     source: chapterQuery,
     variableValues: {
