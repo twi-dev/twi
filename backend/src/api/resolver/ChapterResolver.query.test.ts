@@ -1,20 +1,27 @@
 import ava, {TestInterface} from "ava"
+import {HttpError} from "http-errors"
 
 import {Connection} from "typeorm"
+import {isString, isBoolean} from "lodash"
 
-import {UserRepo} from "repo/UserRepo"
-import {StoryRepo} from "repo/StoryRepo"
 import {ChapterRepo} from "repo/ChapterRepo"
+import {StoryRepo} from "repo/StoryRepo"
+import {UserRepo} from "repo/UserRepo"
 
 import {User, UserStatuses} from "entity/User"
 import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
+
+import {ChapterPageResult} from "api/type/chapter/ChapterPage"
 
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
+
+import PageVariables from "./__helper__/PageVariables"
+import OperationError from "./__helper__/OperationError"
 
 import {graphql} from "./__helper__/graphql"
 
@@ -26,7 +33,7 @@ const test = ava as TestInterface<{
 }>
 
 interface ChapterQueryVariables {
-  storyId: number,
+  storyId: number
   number: number
 }
 
@@ -46,6 +53,34 @@ const chapterQuery = /* GraphQL */ `
         createdAt
         updatedAt
         deletedAt
+      }
+    }
+  }
+`
+
+interface ChaptersQueryVariables extends PageVariables {
+  storyId: number
+}
+
+interface ChaptersQueryResult {
+  chapters: ChapterPageResult
+}
+
+const chaptersQuery = /* GraphQL */ `
+  query GetChapters($storyId: ID!, $page: Int, $limit: Int) {
+    chapters(storyId: $storyId, page: $page, limit: $limit) {
+      count
+      limit
+      offset
+      current
+      hasNext
+      last
+      list {
+        id
+        title
+        description
+        text
+        isDraft
       }
     }
   }
@@ -100,6 +135,40 @@ test(
     t.is(Number(actual.id), id)
   }
 )
+
+test("chapters returns a list of chapters", async t => {
+  const {id} = t.context.story
+
+  const {
+    chapters: actual
+  } = await graphql<ChaptersQueryResult, ChaptersQueryVariables>({
+    source: chaptersQuery,
+    variableValues: {storyId: id}
+  })
+
+  const [chapter] = actual.list
+
+  t.false(Number.isNaN(Number(chapter.id)))
+  t.true(isString(chapter.title))
+  t.true(isString(chapter.description))
+  t.true(isString(chapter.description))
+  t.true(isBoolean(chapter.isDraft))
+})
+
+test("chapter throws 404 error if there's not matched results", async t => {
+  const trap = (): Promise<never> => graphql<never, ChapterQueryVariables>({
+    source: chapterQuery,
+    variableValues: {
+      storyId: 451,
+      number: 42
+    }
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 404)
+})
 
 test.after.always(async () => {
   await cleanupConnection()
