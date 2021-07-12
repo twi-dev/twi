@@ -16,7 +16,7 @@ class ChapterSubscriber implements EntitySubscriberInterface<Chapter> {
   beforeUpdate(event: UpdateEvent<Chapter>) {
     const {entity: chapter} = event
 
-    // Drafted chapters doesn't have their number
+    // Unlisted chapters doesn't have their number
     if (chapter.isDraft) {
       chapter.number = null
     }
