@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "build": "ttsc",
-    "dev": "ts-node-dev --log-error --prefer-ts-exts -C ttypescript --rs src",
+    "dev": "ts-node-dev --log-error -C ttypescript --rs src",
     "start": "NODE_ENV=production node lib",
     "cleanup": "npm exec rimraf \"lib/**/*.js\"",
     "test": "ava",

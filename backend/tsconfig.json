@@ -37,6 +37,7 @@
     "src/**/__helper__/**"
   ],
   "ts-node": {
+    "preferTsExts": true,
     "require": [
       "tsconfig-paths/register"
     ]
