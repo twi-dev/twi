@@ -1,12 +1,17 @@
 import {MiddlewareInterface, ResolverData, NextFn} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
-import {Context} from "koa"
+import {ParameterizedContext} from "koa"
+import {Service} from "typedi"
 
+import {User} from "entity/User"
 import {UserRepo} from "repo/UserRepo"
+
+type Context = ParameterizedContext<{viewer: User}>
 
 /**
  * Finds current user and adds onto request context
  */
+@Service()
 class GetViewer implements MiddlewareInterface<Context> {
   @InjectRepository()
   private _userRepo!: UserRepo

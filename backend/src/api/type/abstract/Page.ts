@@ -69,11 +69,7 @@ export abstract class Page<T extends object> {
    */
   @Field(() => Boolean, {description: "Indicates if the list has next page."})
   hasNext(@Root() {limit, page, count}: PageParams<T>): boolean {
-    if (limit != null && page != null && count != null) {
-      return count - limit * page > 0
-    }
-
-    return false
+    return count - limit * page > 0
   }
 
   /**
@@ -81,15 +77,11 @@ export abstract class Page<T extends object> {
    */
   @Field(() => Int, {description: "Returns the number of the last page."})
   last(@Root() {limit, page, count}: PageParams<T>): number {
-    if (limit != null && page != null && count != null) {
-      // The formula: `count / (limit * page)`
-      // Where the `count` is the number of all matched rows in database,
-      // the `limit` is the values of rows to display per page,
-      // and the `page` is the number of the current page.
-      return Math.ceil(count / (limit * page))
-    }
-
-    return 1
+    // The formula: `count / (limit * page)`
+    // Where the `count` is the number of all matched rows in database,
+    // the `limit` is the values of rows to display per page,
+    // and the `page` is the number of the current page.
+    return Math.ceil(count / (limit * page))
   }
 
   /**

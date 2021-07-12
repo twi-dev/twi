@@ -12,7 +12,8 @@
     "start": "NODE_ENV=production node lib",
     "cleanup": "rm -rf lib",
     "test": "ava",
-    "coverage": "c8 npm test"
+    "coverage": "c8 npm test",
+    "report:html": "c8 -r=html npm test"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.0",
