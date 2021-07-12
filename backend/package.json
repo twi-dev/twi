@@ -10,7 +10,7 @@
     "build": "ttsc",
     "dev": "ts-node-dev --log-error --prefer-ts-exts -C ttypescript --rs src",
     "start": "NODE_ENV=production node lib",
-    "cleanup": "rm -rf lib",
+    "cleanup": "npm exec rimraf \"lib/**/*.js\"",
     "test": "ava",
     "coverage": "c8 npm test",
     "report:html": "c8 -r=html npm test"
