@@ -324,7 +324,7 @@ test(
     story.chaptersCount = 1
 
     chapter.story = story
-    chapter.order = 1
+    chapter.number = 1
 
     await db.getCustomRepository(StoryRepo).save(story)
     await db.getCustomRepository(ChapterRepo).save(chapter)

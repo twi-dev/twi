@@ -12,9 +12,4 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": [
-    "node_modules",
-    "__helper__",
-    "src/**/*.test.ts",
-  ],
 }
