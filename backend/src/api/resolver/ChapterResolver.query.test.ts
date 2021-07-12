@@ -105,7 +105,7 @@ test.before(async t => {
     chapter.isDraft = false
 
     story.chaptersCount += 1
-    chapter.order = story.chaptersCount
+    chapter.number = story.chaptersCount
   })
 
   await connection.getCustomRepository(UserRepo).save(user)
@@ -123,13 +123,13 @@ test(
   "chapter returns chapter by story ID and its number within the story",
 
   async t => {
-    const [{id, order, story}] = t.context.chapters
+    const [{id, number, story}] = t.context.chapters
 
     const {
       chapter: actual
     } = await graphql<ChapterQueryResult, ChapterQueryVariables>({
       source: chapterQuery,
-      variableValues: {storyId: story.id, number: order!}
+      variableValues: {storyId: story.id, number: number!}
     })
 
     t.is(Number(actual.id), id)

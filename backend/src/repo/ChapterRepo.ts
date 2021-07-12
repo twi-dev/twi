@@ -12,7 +12,7 @@ export class ChapterRepo extends Repository<Chapter> {
     const created = this.create(chapter)
 
     // Don't forget to increment chaptersCount first
-    created.order = created.story.chaptersCount
+    created.number = created.story.chaptersCount
 
     return this.save(created)
   }

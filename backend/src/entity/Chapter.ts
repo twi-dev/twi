@@ -19,11 +19,11 @@ export class Chapter extends SoftRemovableEntity {
   /**
    * Chapter number within the story.
    *
-   * The value is only meant to be "null" when the chapter is unlisted or soft-removed.
+   * The value will be "null" when the chapter is unlisted or soft-removed.
    */
   @Field(() => Int, {description: "Chapter number within the story."})
   @Column({type: "tinyint", unsigned: true, default: null})
-  order!: number | null
+  number!: number | null
 
   /**
    * Title of the chapter.

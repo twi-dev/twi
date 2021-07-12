@@ -51,10 +51,10 @@ class ChapterResolver {
     storyId: number,
 
     @Arg("number", () => Int)
-    order: number,
+    number: number,
   ): Promise<Chapter | undefined> {
     return this._chapterRepo.findOne({
-      where: {isDraft: false, storyId, order}
+      where: {isDraft: false, storyId, number}
     })
   }
 
@@ -134,7 +134,7 @@ class ChapterResolver {
       ctx.throw(400)
     }
 
-    chapter.order = null
+    chapter.number = null
 
     await Promise.all([
       this._storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),
