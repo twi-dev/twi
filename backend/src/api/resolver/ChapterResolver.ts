@@ -110,7 +110,7 @@ class ChapterResolver {
     const chapter = await this._chapterRepo.findOne(id)
 
     if (!chapter) {
-      ctx.throw(401)
+      ctx.throw(400)
     }
 
     Object.entries(fields).forEach(([key, value]) => set(chapter, key, value))

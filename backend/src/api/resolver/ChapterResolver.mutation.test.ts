@@ -1,6 +1,7 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
+import {HttpError} from "http-errors"
 
 import {UserRepo} from "repo/UserRepo"
 import {StoryRepo} from "repo/StoryRepo"
@@ -14,6 +15,7 @@ import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 import ChapterUpdateInput from "api/input/chapter/Update"
+import OperationError from "./__helper__/OperationError"
 
 import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
@@ -66,6 +68,20 @@ const storyChapterUpdate = /* GraphQL */ `
   }
 `
 
+interface StoryChapterRemoveVariables {
+  chapterId: number
+}
+
+// interface StoryChapterRemoveResult {
+//   storyChapterRemove: number
+// }
+
+const storyChapterRemove = /* GraphQL */ `
+  mutation StoryChapterRemove($chapterId: ID!) {
+    storyChapterRemove(chapterId: $chapterId)
+  }
+`
+
 test.before(async t => {
   const connection = await setupConnection()
 
@@ -104,6 +120,27 @@ test("storyChapterAdd creates a new chapter", async t => {
   t.is(actual.description, description)
   t.is(actual.text, text)
 })
+
+test(
+  "storyChapterAdd throws an error when given story doesn't exists",
+
+  async t => {
+    const {user} = t.context
+
+    const [{title, description, text}] = createFakeChapters(1)
+
+    const trap = () => graphql<never, StoryChapterAddVariables>({
+      source: storyChapterAdd,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {story: {id: 1024, chapter: {title, description, text}}}
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 400)
+  }
+)
 
 test("storyChapterUpdate updates a title", async t => {
   const {user, story, db} = t.context
@@ -184,6 +221,46 @@ test("storyChapterUpdate updates a text", async t => {
 
   t.is(actual.text, text)
 })
+
+test(
+  "storyChapterUpdate throws an error when given chapter doesn't exists",
+
+  async t => {
+    const {user} = t.context
+
+    const [{text}] = createFakeChapters(1)
+
+    const trap = () => graphql<never, StoryChapterUpdateVariables>({
+      source: storyChapterUpdate,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {chapter: {id: 2048, text}}
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 400)
+  }
+)
+
+test(
+  "storyChapterRemove throws an error when can't find a chapter",
+
+  async t => {
+    const {user} = t.context
+
+    const trap = () => graphql<never, StoryChapterRemoveVariables>({
+      source: storyChapterRemove,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {chapterId: 2048}
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 400)
+  }
+)
 
 test.after.always(async () => {
   await cleanupConnection()
