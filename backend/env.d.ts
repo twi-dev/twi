@@ -2,7 +2,7 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly NODE_ENV: "development" | "production" | "test"
+    readonly NODE_ENV: "development" | "production" | "test" | "debug"
 
     /**
      * Server root directory. The default value depends on the environment. Please don't change this manually.
