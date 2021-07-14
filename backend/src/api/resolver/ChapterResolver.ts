@@ -134,7 +134,8 @@ class ChapterResolver {
       ctx.throw(400)
     }
 
-    chapter.number = null
+    // Remove next line, because it handled by ChapterSubscriber.
+    // chapter.number = null
 
     await Promise.all([
       this._storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),

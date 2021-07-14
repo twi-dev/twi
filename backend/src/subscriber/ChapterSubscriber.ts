@@ -4,9 +4,11 @@ import {
   UpdateEvent,
   RemoveEvent
 } from "typeorm"
+import {Service} from "typedi"
 
 import {Chapter} from "entity/Chapter"
 
+@Service()
 @EventSubscriber()
 class ChapterSubscriber implements EntitySubscriberInterface<Chapter> {
   listenTo() {

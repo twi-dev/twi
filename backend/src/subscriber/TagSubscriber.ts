@@ -1,9 +1,11 @@
 import {EventSubscriber, EntitySubscriberInterface, InsertEvent} from "typeorm"
+import {Service} from "typedi"
 
 import create from "helper/util/createSlug"
 
 import {Tag} from "entity/Tag"
 
+@Service()
 @EventSubscriber()
 export class TagSubscriber implements EntitySubscriberInterface<Tag> {
   listenTo() {

@@ -4,6 +4,7 @@ import {
   UpdateEvent,
   InsertEvent
 } from "typeorm"
+import {Service} from "typedi"
 import {format} from "date-fns"
 
 import {Story} from "entity/Story"
@@ -19,6 +20,7 @@ const createSlug = (date: number | Date, value: string) => (
   `${format(date, SLUG_DATE_MASK)}/${create(value)}`
 )
 
+@Service()
 @EventSubscriber()
 export class StorySubscriber implements EntitySubscriberInterface {
   listenTo() {
