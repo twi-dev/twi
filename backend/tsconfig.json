@@ -3,9 +3,7 @@
   "compilerOptions": {
     "incremental": true,
     "baseUrl": "src",
-    "paths": {
-      "*": ["*"]
-    },
+    "paths": {},
     "target": "es2020",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -17,24 +15,10 @@
     "strict": true,
     "lib": [
       "ESNext"
-    ],
-    "plugins": [
-      {
-        "transform": "typescript-transform-paths"
-      },
-      {
-        "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
-        "after": true
-      }
     ]
   },
   "include": [
-    "src/**/*.ts",
-    "env.d.ts"
-  ],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/**/__helper__/**"
+    "**/*.ts"
   ],
   "ts-node": {
     "preferTsExts": true,
