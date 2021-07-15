@@ -1,4 +1,5 @@
 import {InjectRepository} from "typeorm-typedi-extensions"
+import {Transaction, TransactionRepository} from "typeorm"
 import {Service} from "typedi"
 import {
   Resolver,
@@ -38,9 +39,6 @@ class ChapterResolver {
   @InjectRepository()
   private _chapterRepo!: ChapterRepo
 
-  @InjectRepository()
-  private _storyRepo!: StoryRepo
-
   @Query(() => Chapter, {
     description: "Returns chapter by story ID and chapter number"
   })
@@ -62,7 +60,8 @@ class ChapterResolver {
     description: "Returns list of the chapters by story ID."
   })
   async chapters(
-    @Args() {storyId, limit, offset, page}: ChapterPageArgs
+    @Args()
+    {storyId, limit, offset, page}: ChapterPageArgs
   ): Promise<ChapterPageParams> {
     const [rows, count] = await this._chapterRepo.findAndCount({
       where: {
@@ -77,37 +76,48 @@ class ChapterResolver {
   @Mutation(() => Chapter, {description: "Creates a new chapter."})
   @Authorized()
   @UseMiddleware(GetViewer)
+  @Transaction()
   async storyChapterAdd(
     @Ctx()
     ctx: Context,
 
     @Arg("story")
-    {id, chapter: fields}: StoryChapterAddInput
+    {id, chapter: fields}: StoryChapterAddInput,
+
+    @TransactionRepository()
+    storyRepo: StoryRepo,
+
+    @TransactionRepository()
+    chapterRepo: ChapterRepo
   ): Promise<Chapter> {
-    let story = await this._storyRepo.findOne(id)
+    let story = await storyRepo.findOne(id)
 
     if (!story) {
       ctx.throw(400)
     }
 
-    await this._storyRepo.increment({id: story.id}, "chaptersCount", 1)
+    await storyRepo.increment({id: story.id}, "chaptersCount", 1)
 
-    story = await this._storyRepo.findOne(story.id)
+    story = await storyRepo.findOne(story.id)
 
-    return this._chapterRepo.createAndSave({...fields, story})
+    return chapterRepo.createAndSave({...fields, story})
   }
 
   @Mutation(() => Chapter, {description: "Update chapter with given ID."})
   @Authorized()
   @UseMiddleware(GetViewer)
+  @Transaction()
   async storyChapterUpdate(
+    @Arg("chapter")
+    {id, ...fields}: UpdateInput,
+
     @Ctx()
     ctx: Context,
 
-    @Arg("chapter")
-    {id, ...fields}: UpdateInput
+    @TransactionRepository()
+    chapterRepo: ChapterRepo
   ): Promise<Chapter> {
-    const chapter = await this._chapterRepo.findOne(id)
+    const chapter = await chapterRepo.findOne(id, {relations: ["story"]})
 
     if (!chapter) {
       ctx.throw(400)
@@ -115,32 +125,34 @@ class ChapterResolver {
 
     Object.entries(fields).forEach(([key, value]) => set(chapter, key, value))
 
-    return this._chapterRepo.save(chapter)
+    return chapterRepo.save(chapter)
   }
 
   @Mutation(() => ID, {description: "Remove chapter with given ID."})
   @Authorized()
   @UseMiddleware(GetViewer)
+  @Transaction()
   async storyChapterRemove(
+    @Arg("chapterId", () => ID)
+    chapterId: number,
+
     @Ctx()
     ctx: Context,
 
-    @Arg("chapterId", () => ID)
-    chapterId: number
+    @TransactionRepository()
+    storyRepo: StoryRepo,
+
+    @TransactionRepository()
+    chapterRepo: ChapterRepo
   ): Promise<number> {
-    const chapter = await this._chapterRepo.findOne(chapterId)
+    const chapter = await chapterRepo.findOne(chapterId, {relations: ["story"]})
 
     if (!chapter) {
       ctx.throw(400)
     }
 
-    // Remove next line, because it handled by ChapterSubscriber.
-    // chapter.number = null
-
-    await Promise.all([
-      this._storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),
-      this._chapterRepo.softRemove(chapter)
-    ])
+    await storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),
+    await chapterRepo.softRemove(chapter)
 
     return chapterId
   }

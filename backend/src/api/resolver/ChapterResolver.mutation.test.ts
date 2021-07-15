@@ -72,9 +72,9 @@ interface StoryChapterRemoveVariables {
   chapterId: number
 }
 
-// interface StoryChapterRemoveResult {
-//   storyChapterRemove: number
-// }
+interface StoryChapterRemoveResult {
+  storyChapterRemove: number
+}
 
 const storyChapterRemove = /* GraphQL */ `
   mutation StoryChapterRemove($chapterId: ID!) {
@@ -242,6 +242,25 @@ test(
     t.is((originalError as HttpError).statusCode, 400)
   }
 )
+
+test("storyChapterRemove removes chapter by given ID", async t => {
+  const {user, story, db} = t.context
+  const [chapter] = createFakeChapters(1)
+
+  chapter.story = story
+
+  await db.getCustomRepository(ChapterRepo).save(chapter)
+
+  const {
+    storyChapterRemove: actual
+  } = await graphql<StoryChapterRemoveResult, StoryChapterRemoveVariables>({
+    source: storyChapterRemove,
+    contextValue: createFakeContext({session: {userId: user.id}}),
+    variableValues: {chapterId: chapter.id}
+  })
+
+  t.is(Number(actual), chapter.id)
+})
 
 test(
   "storyChapterRemove throws an error when can't find a chapter",
