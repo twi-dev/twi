@@ -11,7 +11,8 @@ import {
   ID,
   UseMiddleware
 } from "type-graphql"
-import {InjectRepository} from "typeorm-typedi-extensions"
+import {Connection, Transaction, TransactionRepository} from "typeorm"
+import {InjectConnection} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {BodyFile} from "then-busboy"
 import {Service} from "typedi"
@@ -40,15 +41,14 @@ type Context = ParameterizedContext<{viewer: User}>
 @Service()
 @Resolver()
 class UserResolver {
-  @InjectRepository()
-  private _userRepo!: UserRepo
-
-  @InjectRepository()
-  private _fileRepo!: FileRepo
+  @InjectConnection()
+  private _db!: Connection
 
   @Query(() => UserPage)
   async users(@Args() {limit, offset, page}: PageArgs): Promise<UserPageParams> {
-    const [rows, count] = await this._userRepo.findAndCount({
+    const userRepo = this._db.getCustomRepository(UserRepo)
+
+    const [rows, count] = await userRepo.findAndCount({
       skip: offset, take: limit
     })
 
@@ -58,27 +58,39 @@ class UserResolver {
   @Query(() => User, {description: "Returns a user by their email or login"})
   @UseMiddleware(NotFound)
   async user(
-    @Arg("username") username: string
+    @Arg("username")
+    username: string
   ): Promise<User | undefined> {
-    return this._userRepo.findByEmailOrLogin(username)
+    const userRepo = this._db.getCustomRepository(UserRepo)
+
+    return userRepo.findByEmailOrLogin(username)
   }
 
   @Query(() => Viewer, {description: "Returns currently logged-in user."})
   @Authorized()
   @UseMiddleware(NotFound)
   viewer(@Ctx() ctx: Context): Promise<User | undefined> {
-    return this._userRepo.findOne(ctx.session!.userId)
+    const userRepo = this._db.getCustomRepository(UserRepo)
+
+    return userRepo.findOne(ctx.session!.userId)
   }
 
   @Mutation(() => File, {description: "Updates avatar of the logged-in user."})
   @Authorized()
   @UseMiddleware(GetViewer)
+  @Transaction()
   async userAvatarUpdate(
+    @Arg("image", () => FileInput)
+    image: BodyFile,
+
     @Ctx()
     ctx: Context,
 
-    @Arg("image", () => FileInput)
-    image: BodyFile
+    @TransactionRepository()
+    userRepo: UserRepo,
+
+    @TransactionRepository()
+    fileRepo: FileRepo
   ): Promise<File> {
     const {viewer} = ctx.state
     const {name, type: mime} = image
@@ -99,20 +111,20 @@ class UserResolver {
         .entries(({path, hash, mime, name}))
         .forEach(([key, value]) => set(avatar, key, value))
 
-      const updated: File = await this._fileRepo.save(avatar)
+      const updated = await fileRepo.save(avatar)
 
       await removeFile(oldPath)
 
       return updated
     }
 
-    const avatar: File = await this._fileRepo.createAndSave({
+    const avatar = await fileRepo.createAndSave({
       hash, path, mime, name
     })
 
     viewer.avatar = avatar
 
-    await this._userRepo.save(viewer)
+    await userRepo.save(viewer)
 
     return avatar
   }
@@ -122,7 +134,14 @@ class UserResolver {
   })
   @Authorized()
   @UseMiddleware(GetViewer)
-  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | null> {
+  @Transaction()
+  async userAvatarRemove(
+    @Ctx()
+    ctx: Context,
+
+    @TransactionRepository()
+    fileRepo: FileRepo
+  ): Promise<number | null> {
     const {viewer} = ctx.state
 
     // Do nothing if user has no avatar
@@ -132,7 +151,7 @@ class UserResolver {
 
     const {id, path} = viewer.avatar
 
-    await this._fileRepo.remove(viewer.avatar)
+    await fileRepo.remove(viewer.avatar)
     await removeFile(path)
 
     return id
