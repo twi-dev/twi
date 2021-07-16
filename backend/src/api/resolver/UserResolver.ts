@@ -141,7 +141,8 @@ class UserResolver {
   }
 
   @Mutation(() => ID, {
-    nullable: true, description: "Removes avatar of the logged-in user"
+    nullable: true,
+    description: "Removes avatar of the logged-in user"
   })
   @Authorized()
   @UseMiddleware(GetViewer)
