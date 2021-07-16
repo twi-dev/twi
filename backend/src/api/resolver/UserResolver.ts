@@ -74,7 +74,7 @@ class UserResolver {
 
   @Query(() => Viewer, {description: "Returns currently logged-in user."})
   @Authorized()
-  async viewer(@Ctx() ctx: Context): Promise<User | undefined> {
+  async viewer(@Ctx() ctx: Context): Promise<User> {
     const userRepo = this._db.getCustomRepository(UserRepo)
 
     const viewer = await userRepo.findOne(ctx.session!.userId)

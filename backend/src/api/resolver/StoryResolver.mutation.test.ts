@@ -3,6 +3,7 @@ import ava, {TestInterface} from "ava"
 import faker from "faker"
 
 import {Connection} from "typeorm"
+import {HttpError} from "http-errors"
 
 import {ChapterRepo} from "repo/ChapterRepo"
 import {StoryRepo} from "repo/StoryRepo"
@@ -24,6 +25,8 @@ import createFakeUsers from "__helper__/createFakeUsers"
 
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
+
+import OperationError from "./__helper__/OperationError"
 
 const test = ava as TestInterface<{
   db: Connection,
@@ -84,6 +87,20 @@ const storyUpdate = /* GraphQL */ `
         slug
       }
     }
+  }
+`
+
+interface StoryRemoveVariables {
+  storyId: number
+}
+
+interface StoryRemoveResult {
+  storyRemove: number
+}
+
+const storyRemove = /* GraphQL */ `
+  mutation StoryRemove($storyId: ID!) {
+    storyRemove(storyId: $storyId)
   }
 `
 
@@ -340,6 +357,56 @@ test(
     t.true(actual.isFinished)
   }
 )
+
+test("storyUpdate throws an error when given story doesn't exists", async t => {
+  const {user} = t.context
+
+  const trap = () => graphql<never, StoryUpdateVariables>({
+    source: storyUpdate,
+    variableValues: {story: {id: 420, description: "Not goanna happen."}},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 400)
+})
+
+test("storyRemove removes given story", async t => {
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  story.publisher = user
+
+  await db.getCustomRepository(StoryRepo).save(story)
+
+  const {
+    storyRemove: actual
+  } = await graphql<StoryRemoveResult, StoryRemoveVariables>({
+    source: storyRemove,
+    variableValues: {storyId: story.id},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  t.is(Number(actual), story.id)
+})
+
+test("storyRemove throws an error when given story doesn't exists", async t => {
+  const {user} = t.context
+
+  const trap = () => graphql<never, StoryRemoveVariables>({
+    source: storyRemove,
+    variableValues: {storyId: 420},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 400)
+})
 
 test.after.always(async () => {
   await cleanupConnection()
