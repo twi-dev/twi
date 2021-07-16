@@ -74,11 +74,16 @@ class UserResolver {
 
   @Query(() => Viewer, {description: "Returns currently logged-in user."})
   @Authorized()
-  @UseMiddleware(NotFound)
-  viewer(@Ctx() ctx: Context): Promise<User | undefined> {
+  async viewer(@Ctx() ctx: Context): Promise<User | undefined> {
     const userRepo = this._db.getCustomRepository(UserRepo)
 
-    return userRepo.findOne(ctx.session!.userId)
+    const viewer = await userRepo.findOne(ctx.session!.userId)
+
+    if (!viewer) {
+      return ctx.throw(401)
+    }
+
+    return viewer
   }
 
   @Mutation(() => File, {description: "Updates avatar of the logged-in user."})

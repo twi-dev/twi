@@ -1,6 +1,7 @@
 import ava, {TestInterface} from "ava"
 
 import {Connection} from "typeorm"
+import {HttpError} from "http-errors"
 import {isBoolean, isNumber} from "lodash"
 
 import {User, UserStatuses} from "entity/User"
@@ -13,6 +14,8 @@ import createFakeUsers from "__helper__/createFakeUsers"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
 import {graphql} from "./__helper__/graphql"
+
+import OperationError from "./__helper__/OperationError"
 
 const test = ava as TestInterface<{db: Connection, users: User[]}>
 
@@ -128,6 +131,18 @@ test("viewer result has the email field", async t => {
   })
 
   t.is(actual.email, email)
+})
+
+test("viewer throws an error if current user was not found", async t => {
+  const trap = () => graphql<never>({
+    source: viewerQuery,
+    contextValue: createFakeContext({session: {userId: 42}})
+  })
+
+  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+  const [{originalError}] = graphQLErrors
+
+  t.is((originalError as HttpError).statusCode, 401)
 })
 
 test("users returns correct page frame shape", async t => {
