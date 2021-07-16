@@ -109,7 +109,7 @@ test("story returns a story by slug", async t => {
   t.is(Number(actual.id), story.id)
 })
 
-test("story returns a story by ID", async (t) => {
+test("story returns a story by ID", async t => {
   const [story] = t.context.stories
 
   const {

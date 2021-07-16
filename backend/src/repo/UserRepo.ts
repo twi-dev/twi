@@ -16,7 +16,6 @@ export const hashPassword = (password: string) => hash(password, {
 @EntityRepository(User)
 export class UserRepo extends Repository<User> {
   async createAndSave(user: DeepPartial<User>): Promise<User> {
-    // user.password = await hashPassword(user.password!)
     return this.save(this.create(user))
   }
 

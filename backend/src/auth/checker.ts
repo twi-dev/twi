@@ -1,11 +1,12 @@
 import {AuthChecker} from "type-graphql"
-import {Context} from "koa"
+
+import {BaseContext} from "app/context/BaseContext"
 
 /**
  * Auth checker for type-graphql
  */
-const authChecker: AuthChecker<Context> = ({context}) => {
-  if (!context.session.userId) {
+const authChecker: AuthChecker<BaseContext> = ({context}) => {
+  if (!context.session?.userId) {
     return false
   }
 

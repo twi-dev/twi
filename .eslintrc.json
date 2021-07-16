@@ -34,6 +34,17 @@
     "no-redeclare": 0,
     "no-dupe-class-members": 0,
     "lines-between-class-members": 0,
+    "indent": ["error", 2, {
+      // Turn this rules of because of bug in this rule when using with TS
+      // See: https://github.com/typescript-eslint/typescript-eslint/issues/1824
+      "FunctionExpression": {
+        "parameters": "off"
+      },
+      "FunctionDeclaration": {
+        "parameters": "off"
+      }
+    }],
+
     "@typescript-eslint/semi": 0,
     "@typescript-eslint/no-shadow": 0,
     "@typescript-eslint/quotes": [
@@ -44,6 +55,12 @@
       "error",
       "never"
     ],
-    "@typescript-eslint/comma-dangle": 0
+    "@typescript-eslint/comma-dangle": 0,
+    "@typescript-eslint/no-unused-expressions": 0,
+    "@typescript-eslint/indent": 0,
+
+    "import/no-unresolved": 0,
+    "import/no-cycle": 0,
+    "ava/use-test": 0
   }
 }

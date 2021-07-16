@@ -4,9 +4,13 @@ import {GraphQLSchema} from "graphql"
 
 import authChecker from "auth/checker"
 
+// import {WithContainer} from "app/context/WithContainer"
+
 const schema: GraphQLSchema = buildSchemaSync({
-  resolvers: [process.env.GRAPHQL_RESOLVERS!],
+  // container: ({context}: ResolverData<WithContainer>) => context.container,
+
   container: Container,
+  resolvers: [process.env.GRAPHQL_RESOLVERS!],
   authChecker
 })
 

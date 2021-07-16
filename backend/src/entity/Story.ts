@@ -89,8 +89,8 @@ export class Story extends SoftRemovableEntity {
    */
   @Field({
     description:
-      "Indicates if the story is finished. " +
-      "It **must** have at least one chapter to be marked as finished."
+      "Indicates if the story is finished. "
+        + "It **must** have at least one chapter to be marked as finished."
   })
   @Column({default: false})
   isFinished!: boolean

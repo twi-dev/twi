@@ -30,7 +30,7 @@ set(
   process.env,
   "DATABASE_SUBSCRIBERS",
   resolve(SERVER_ROOT, "subscriber", `*Subscriber${EXT}`)
-);
+)
 
 set(
   process.env,

@@ -1,8 +1,9 @@
 import {Resolver, Mutation, Arg, Ctx, Authorized, ID} from "type-graphql"
 import {InjectRepository} from "typeorm-typedi-extensions"
+import {ParameterizedContext, DefaultState} from "koa"
 import {Service} from "typedi"
-import {Context} from "koa"
 
+import {BaseContext} from "app/context/BaseContext"
 import {UserRepo} from "repo/UserRepo"
 import {User} from "entity/User"
 
@@ -10,6 +11,8 @@ import LogInInput from "api/input/auth/LogIn"
 import SignUpInput from "api/input/auth/SignUp"
 
 import Viewer from "api/type/user/Viewer"
+
+type Context = ParameterizedContext<DefaultState, BaseContext>
 
 @Service()
 @Resolver()
@@ -27,7 +30,7 @@ class AuthResolver {
   ): Promise<User> {
     const created = await this._userRepo.save(user)
 
-    ctx.session.userId = created.id
+    ctx.session!.userId = created.id
 
     return created
   }
@@ -46,15 +49,17 @@ class AuthResolver {
       ctx.throw(401)
     }
 
-    ctx.session.userId = user.id
+    ctx.session!.userId = user.id
 
     return user
   }
 
   @Mutation(() => ID)
   @Authorized()
-  authLogOut(@Ctx() ctx: Context): number {
-    const userId: number = ctx.session.userId
+  authLogOut(
+    @Ctx() ctx: Context
+  ): number {
+    const {userId} = ctx.session!
 
     ctx.session = null
 

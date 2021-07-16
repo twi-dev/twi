@@ -1,10 +1,10 @@
-type MaybePromise<T = any> = Promise<T> | T
+import MaybePromise from "helper/type/MaybePromise"
 
 interface Task {
-  (...args: any[]): MaybePromise
+  (...args: any[]): MaybePromise<unknown>
 }
 
-const step = (prev: MaybePromise, next: Task) => (
+const step = (prev: MaybePromise<unknown>, next: Task) => (
   Promise.resolve(prev).then(res => next(res))
 )
 

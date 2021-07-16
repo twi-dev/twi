@@ -34,11 +34,11 @@ export async function graphql<
   TRoot = unknown
 >(args: Args<TVariables, TContext, TRoot>): Promise<TResult> {
   const {data, errors} = await exec({
-     ...args,
+    ...args,
 
-     schema,
+    schema,
 
-     contextValue: args.contextValue || createFakeContext()
+    contextValue: args.contextValue || createFakeContext()
   })
 
   if (errors) {

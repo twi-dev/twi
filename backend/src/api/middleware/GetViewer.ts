@@ -3,10 +3,12 @@ import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext} from "koa"
 import {Service} from "typedi"
 
-import {User} from "entity/User"
 import {UserRepo} from "repo/UserRepo"
 
-type Context = ParameterizedContext<{viewer: User}>
+import {StateWithViewer} from "app/state/WithViewer"
+import {BaseContext} from "app/context/BaseContext"
+
+type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 /**
  * Finds current user and adds onto request context

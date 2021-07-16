@@ -11,9 +11,9 @@ const exit = (code: number = 0) => waterfall([disconnect, stop])
     console.error(error)
 
     process.exit(1)
-  })
+  });
 
-;["SIGTERM", "SIGINT"].forEach(signal => process.on(signal, () => exit()))
+["SIGTERM", "SIGINT"].forEach(signal => process.on(signal, () => exit()))
 
 waterfall([connect, start]).catch(error => {
   console.error(error)

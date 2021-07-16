@@ -15,7 +15,6 @@ import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import StoryChapterAddInput from "api/input/story/ChapterAdd"
 import ChapterUpdateInput from "api/input/chapter/Update"
-import OperationError from "./__helper__/OperationError"
 
 import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
@@ -23,6 +22,8 @@ import createFakeUsers from "__helper__/createFakeUsers"
 
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
+
+import OperationError from "./__helper__/OperationError"
 
 const test = ava as TestInterface<{
   db: Connection

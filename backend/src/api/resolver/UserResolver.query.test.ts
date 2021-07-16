@@ -97,7 +97,7 @@ test("user returns a user by their email", async t => {
   t.is(Number(actual.id), id)
 })
 
-test("user returns a user by their login", async (t) => {
+test("user returns a user by their login", async t => {
   const [{id, login}] = t.context.users
 
   const {user: actual} = await graphql<UserQueryResult, UserQueryVariables>({

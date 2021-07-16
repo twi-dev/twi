@@ -155,7 +155,7 @@ test("storyAdd has isDraft field set to true by default", async t => {
   t.true(actual.isDraft)
 })
 
-test("storyAdd has isFinished field set to false by default", async (t) => {
+test("storyAdd has isFinished field set to false by default", async t => {
   const [{title, description}] = createFakeStories(1)
   const {user} = t.context
 
@@ -192,7 +192,7 @@ test("storyUpdate allows to update title of the story", async t => {
   t.is(actual.title, expected)
 })
 
-test("storyUpdate allows to update description of the story", async (t) => {
+test("storyUpdate allows to update description of the story", async t => {
   const expected = faker.lorem.paragraph()
 
   const {user, db} = t.context

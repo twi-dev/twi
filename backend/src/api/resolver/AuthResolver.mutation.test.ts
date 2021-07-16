@@ -176,7 +176,11 @@ test("authLogOut destroys current session", async t => {
   const context = createFakeContext({session: {userId: user.id}})
 
   const {authLogOut: actual} = await graphql<AuthLogOutResult>({
-    source: /* GraphQL */ ` mutation { authLogOut } `,
+    source: /* GraphQL */ `
+      mutation {
+        authLogOut
+      }
+    `,
     contextValue: context
   })
 

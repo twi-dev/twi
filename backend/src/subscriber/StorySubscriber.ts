@@ -55,9 +55,9 @@ export class StorySubscriber implements EntitySubscriberInterface {
 
     // Make sure the story can't be marked as finished when it has no chapters
     if (
-      updated.includes("isFinished") &&
-      entity.isFinished === true &&
-      entity.chaptersCount < 1
+      updated.includes("isFinished")
+        && entity.isFinished === true
+        && entity.chaptersCount < 1
     ) {
       entity.isFinished = false
     }

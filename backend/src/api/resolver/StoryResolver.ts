@@ -24,11 +24,13 @@ import {FileRepo} from "repo/FileRepo"
 import {TagRepo} from "repo/TagRepo"
 
 import {Story} from "entity/Story"
-import {User} from "entity/User"
 import {File} from "entity/File"
 import {Tag} from "entity/Tag"
 
 import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
+
+import {BaseContext} from "app/context/BaseContext"
+import {StateWithViewer} from "app/state/WithViewer"
 
 import {StoryPage, StoryPageParams} from "api/type/story/StoryPage"
 
@@ -40,7 +42,7 @@ import FileNodeInput from "api/input/common/FileNode"
 import NotFound from "api/middleware/NotFound"
 import GetViewer from "api/middleware/GetViewer"
 
-type Context = ParameterizedContext<{viewer: User}>
+type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 @Service()
 @Resolver(() => Story)
@@ -151,15 +153,15 @@ class StoryResolver {
   @Authorized()
   @Transaction()
   async storyRemove(
-      @TransactionRepository()
-      storyRepo: StoryRepo,
+    @TransactionRepository()
+    storyRepo: StoryRepo,
 
-      @Ctx()
-      ctx: Context,
+    @Ctx()
+    ctx: Context,
 
-      @Arg("storyId", () => ID)
-      storyId: number
-    ): Promise<number> {
+    @Arg("storyId", () => ID)
+    storyId: number
+  ): Promise<number> {
     const story = await storyRepo.findOne(storyId)
 
     if (!story) {

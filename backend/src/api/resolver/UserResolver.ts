@@ -22,10 +22,13 @@ import sharp from "sharp"
 
 import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
-import {File} from "entity/File";
+import {File} from "entity/File"
 import {User} from "entity/User"
 import {UserRepo} from "repo/UserRepo"
 import {FileRepo} from "repo/FileRepo"
+
+import {BaseContext} from "app/context/BaseContext"
+import {StateWithViewer} from "app/state/WithViewer"
 
 import {UserPage, UserPageParams} from "api/type/user/UserPage"
 
@@ -36,7 +39,7 @@ import FileInput from "api/input/common/FileInput"
 import NotFound from "api/middleware/NotFound"
 import GetViewer from "api/middleware/GetViewer"
 
-type Context = ParameterizedContext<{viewer: User}>
+type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 @Service()
 @Resolver()
@@ -45,7 +48,10 @@ class UserResolver {
   private _db!: Connection
 
   @Query(() => UserPage)
-  async users(@Args() {limit, offset, page}: PageArgs): Promise<UserPageParams> {
+  async users(
+    @Args()
+    {limit, offset, page}: PageArgs
+  ): Promise<UserPageParams> {
     const userRepo = this._db.getCustomRepository(UserRepo)
 
     const [rows, count] = await userRepo.findAndCount({

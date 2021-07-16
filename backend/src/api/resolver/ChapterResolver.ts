@@ -16,11 +16,13 @@ import {
 import {ParameterizedContext} from "koa"
 import {set} from "lodash"
 
+import {StateWithViewer} from "app/state/WithViewer"
+import {BaseContext} from "app/context/BaseContext"
+
 import {ChapterPage, ChapterPageParams} from "api/type/chapter/ChapterPage"
 import {ChapterRepo} from "repo/ChapterRepo"
 import {StoryRepo} from "repo/StoryRepo"
 
-import {User} from "entity/User"
 import {Chapter} from "entity/Chapter"
 
 import ChapterPageArgs from "api/args/ChapterPageArgs"
@@ -31,7 +33,7 @@ import UpdateInput from "api/input/chapter/Update"
 import NotFound from "api/middleware/NotFound"
 import GetViewer from "api/middleware/GetViewer"
 
-type Context = ParameterizedContext<{viewer: User}>
+type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 @Service()
 @Resolver()
@@ -44,7 +46,6 @@ class ChapterResolver {
   })
   @UseMiddleware(NotFound)
   chapter(
-
     @Arg("storyId", () => ID)
     storyId: number,
 
@@ -151,7 +152,7 @@ class ChapterResolver {
       ctx.throw(400)
     }
 
-    await storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1),
+    await storyRepo.decrement({id: chapter.story.id}, "chaptersCount", 1)
     await chapterRepo.softRemove(chapter)
 
     return chapterId
