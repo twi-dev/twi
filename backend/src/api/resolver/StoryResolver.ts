@@ -91,17 +91,17 @@ class StoryResolver {
   @UseMiddleware(GetViewer)
   @Transaction()
   async storyAdd(
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    tagRepo: TagRepo,
+    @Arg("story", () => StoryAddInput)
+    {tags, ...fields}: StoryAddInput,
 
     @Ctx()
     ctx: Context,
 
-    @Arg("story", () => StoryAddInput)
-    {tags, ...fields}: StoryAddInput
+    @TransactionRepository()
+    storyRepo: StoryRepo,
+
+    @TransactionRepository()
+    tagRepo: TagRepo
   ): Promise<Story> {
     const {viewer} = ctx.state
 
@@ -120,17 +120,17 @@ class StoryResolver {
   @Authorized()
   @Transaction()
   async storyUpdate(
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    tagRepo: TagRepo,
+    @Arg("story")
+    {id, tags, ...fields}: StoryUpdateInput,
 
     @Ctx()
     ctx: Context,
 
-    @Arg("story")
-    {id, tags, ...fields}: StoryUpdateInput
+    @TransactionRepository()
+    storyRepo: StoryRepo,
+
+    @TransactionRepository()
+    tagRepo: TagRepo
   ): Promise<Story> {
     const story = await storyRepo.findOne(id)
 
@@ -153,14 +153,14 @@ class StoryResolver {
   @Authorized()
   @Transaction()
   async storyRemove(
-    @TransactionRepository()
-    storyRepo: StoryRepo,
+    @Arg("storyId", () => ID)
+    storyId: number,
 
     @Ctx()
     ctx: Context,
 
-    @Arg("storyId", () => ID)
-    storyId: number
+    @TransactionRepository()
+    storyRepo: StoryRepo
   ): Promise<number> {
     const story = await storyRepo.findOne(storyId)
 
@@ -176,14 +176,14 @@ class StoryResolver {
   @UseMiddleware([GetViewer, NotFound])
   @Transaction()
   async storyCoverUpdate(
+    @Arg("story")
+    {id, file}: FileNodeInput,
+
     @TransactionRepository()
     storyRepo: StoryRepo,
 
     @TransactionRepository()
-    fileRepo: FileRepo,
-
-    @Arg("story")
-    {id, file}: FileNodeInput
+    fileRepo: FileRepo
   ): Promise<File | undefined> {
     // TODO: Check for user's permissions
     const {name, type: mime} = file
@@ -231,14 +231,14 @@ class StoryResolver {
   @UseMiddleware([GetViewer, NotFound])
   @Transaction()
   async storyCoverRemove(
+    @Arg("storyId", () => ID)
+    storyId: number,
+
     @TransactionRepository()
     storyRepo: StoryRepo,
 
     @TransactionRepository()
-    fileRepo: FileRepo,
-
-    @Arg("storyId", () => ID)
-    storyId: number
+    fileRepo: FileRepo
   ): Promise<number | null | undefined> {
     // TODO: Check user's permissions
     const story = await storyRepo.findOne(storyId)

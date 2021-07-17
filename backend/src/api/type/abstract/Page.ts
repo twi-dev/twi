@@ -6,27 +6,27 @@ export interface PageParams<T extends object> {
   /**
    * Returns per-page entities limit
    */
-  limit: number
+  readonly limit: number
 
   /**
    * List offset
    */
-  offset: number
+  readonly offset: number
 
   /**
    * Current page number
    */
-  page: number
+  readonly page: number
 
   /**
    * The number of the total rows in the list
    */
-  count: number
+  readonly count: number
 
   /**
    * The list of entities
    */
-  rows: T[]
+  readonly rows: T[]
 }
 
 /**

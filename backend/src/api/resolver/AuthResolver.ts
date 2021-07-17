@@ -56,9 +56,7 @@ class AuthResolver {
 
   @Mutation(() => ID)
   @Authorized()
-  authLogOut(
-    @Ctx() ctx: Context
-  ): number {
+  authLogOut(@Ctx() ctx: Context): number {
     const {userId} = ctx.session!
 
     ctx.session = null

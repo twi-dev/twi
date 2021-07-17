@@ -79,11 +79,11 @@ class ChapterResolver {
   @UseMiddleware(GetViewer)
   @Transaction()
   async storyChapterAdd(
-    @Ctx()
-    ctx: Context,
-
     @Arg("story")
     {id, chapter: fields}: StoryChapterAddInput,
+
+    @Ctx()
+    ctx: Context,
 
     @TransactionRepository()
     storyRepo: StoryRepo,
