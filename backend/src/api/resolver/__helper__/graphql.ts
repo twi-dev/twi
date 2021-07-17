@@ -13,10 +13,14 @@ type ArgsWithoutSchema = Omit<GraphQLArgs, "schema">
 /**
  * GraphQL operation arguments.
  */
-export interface Args<V, C, R> extends ArgsWithoutSchema {
-  variableValues?: V
-  contextValue?: C
-  rootValue?: R
+export interface Args<
+  TVariables extends object = UnknownObject,
+  TContext extends FakeContext = FakeContext,
+  TRoot = unknown
+> extends ArgsWithoutSchema {
+  variableValues?: TVariables
+  contextValue?: TContext
+  rootValue?: TRoot
 }
 
 /**
