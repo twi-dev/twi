@@ -1,12 +1,12 @@
 import {DeleteDateColumn} from "typeorm"
 import {ObjectType, Field} from "type-graphql"
 
-import AbstractEntity from "entity/abstract/AbstractEntity"
+import {BaseEntityWithDates} from "entity/abstract/BaseEntityWithDates"
 
 import Dates from "api/type/common/Dates"
 
 @ObjectType({isAbstract: true})
-abstract class AbstractSoftRemovableEntity extends AbstractEntity {
+export abstract class BaseSoftRemovableEntity extends BaseEntityWithDates {
   @DeleteDateColumn()
   deletedAt?: Date
 
@@ -20,4 +20,4 @@ abstract class AbstractSoftRemovableEntity extends AbstractEntity {
   }
 }
 
-export default AbstractSoftRemovableEntity
+export default BaseSoftRemovableEntity

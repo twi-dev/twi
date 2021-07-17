@@ -6,7 +6,7 @@ import mysql from "mysql2/promise"
 
 import {connect, disconnect} from "db"
 
-const PREFIX = `twi-test__`
+const PREFIX = "twi-test__"
 
 const createSuffix = customAlphabet(urlAlphabet.replace(/[^a-z0-9]/ig, ""), 6)
 
@@ -50,7 +50,7 @@ export async function setupConnection(): Promise<Connection> {
  */
 export async function cleanupConnection(): Promise<void> {
   if (!name) {
-    throw new Error(`Database was not created. Run createDatabase hook first.`)
+    throw new Error("Database was not created. Run createDatabase hook first.")
   }
 
   const connection = await createNativeConnection()

@@ -2,7 +2,7 @@ import {ObjectType, Field, registerEnumType} from "type-graphql"
 import {Entity, Column, OneToOne, JoinColumn} from "typeorm"
 import {IsEmail, Matches} from "class-validator"
 
-import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
+import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
 
 import {File} from "./File"
 
@@ -26,7 +26,7 @@ registerEnumType(UserStatuses, {name: "UserStatuses"})
 
 @ObjectType()
 @Entity()
-export class User extends SoftRemovableEntity {
+export class User extends BaseSoftRemovableEntity {
   @Field()
   @Column({unique: true})
   @Matches(LOGIN_PATTERN)

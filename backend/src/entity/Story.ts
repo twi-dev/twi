@@ -11,7 +11,7 @@ import {
   JoinTable,
 } from "typeorm"
 
-import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
+import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
 
 import {Chapter} from "./Chapter"
 import {User} from "./User"
@@ -20,7 +20,7 @@ import {Tag} from "./Tag"
 
 @ObjectType()
 @Entity()
-export class Story extends SoftRemovableEntity {
+export class Story extends BaseSoftRemovableEntity {
   /**
    * Returns the user who published the story.
    */

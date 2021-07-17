@@ -3,11 +3,11 @@ import {URL} from "url"
 import {Field, ObjectType} from "type-graphql"
 import {Entity, Column} from "typeorm"
 
-import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
+import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
 
 @ObjectType()
 @Entity()
-export class File extends SoftRemovableEntity {
+export class File extends BaseSoftRemovableEntity {
   /**
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.

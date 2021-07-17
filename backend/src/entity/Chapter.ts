@@ -2,13 +2,13 @@ import {TypeormLoader} from "type-graphql-dataloader"
 import {ObjectType, Field, Int} from "type-graphql"
 import {Entity, Column, ManyToOne} from "typeorm"
 
-import SoftRemovableEntity from "entity/abstract/AbstractSoftRemovableEntity"
+import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
 
 import {Story} from "./Story"
 
 @ObjectType()
 @Entity()
-export class Chapter extends SoftRemovableEntity {
+export class Chapter extends BaseSoftRemovableEntity {
   @Column({unsigned: true, nullable: false})
   storyId!: number
 

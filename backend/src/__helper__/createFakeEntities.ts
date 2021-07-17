@@ -1,14 +1,14 @@
-import AbstractEntity from "entity/abstract/AbstractEntity"
+import {BaseEntity} from "entity/abstract/BaseEntity"
 
-interface CreateFakeEntitiesFunction<T extends AbstractEntity> {
+interface CreateFakeEntitiesFunction<T extends BaseEntity> {
   (entity: T): T | void
 }
 
-interface EntityConstructor<T extends AbstractEntity> {
+interface EntityConstructor<T extends BaseEntity> {
   new (): T
 }
 
-function createFakeEntities<T extends AbstractEntity>(
+function createFakeEntities<T extends BaseEntity>(
   Entity: EntityConstructor<T>,
   amount: number,
   cb: CreateFakeEntitiesFunction<T>,
