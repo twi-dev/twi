@@ -1,4 +1,4 @@
-# Twi API
+# twi
 
 Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Magic** community.
 
