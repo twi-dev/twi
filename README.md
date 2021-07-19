@@ -28,7 +28,6 @@ You also need:
 
 * Some server for mail service.
 * Any init system, like [systemd](https://github.com/systemd/systemd)
-* [Nodemon](https://github.com/remy/nodemon) for development.
 
 ## License
 
