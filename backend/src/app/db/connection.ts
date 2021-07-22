@@ -56,10 +56,12 @@ export async function connect({database}: ConnectOptions = {}) {
     context: () => storage.getStore()
   })
 
-  // const generator = orm.getSchemaGenerator()
+  // TODO: Remove this once I finish the MVP
+  if (process.env.NODE_ENV !== "production") {
+    const generator = orm.getSchemaGenerator()
 
-  // await generator.dropSchema()
-  // await generator.createSchema()
+    await generator.updateSchema(true, true, false)
+  }
 
   Container.set<MikroORM>(MikroORM, orm)
 

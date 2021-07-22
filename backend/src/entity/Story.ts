@@ -59,7 +59,7 @@ export class Story extends BaseEntitySoftRemovable {
   @Property()
   isFinished: boolean = false
 
-  @Property({columnType: "tinyint", unsigned: true})
+  @Property({type: "tinyint", unsigned: true})
   chaptersCount: number = 0
 
   constructor(title: string, description: string, tags?: Tag[]) {
