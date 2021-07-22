@@ -32,6 +32,7 @@ export class Story extends BaseEntitySoftRemovable {
   @OneToOne({entity: () => File, nullable: true, eager: true})
   cover!: File | null
 
+  @Field(() => [Chapter], {nullable: "items"})
   @OneToMany(() => Chapter, chapter => chapter.story)
   chapters = new Collection<Chapter, Story>(this)
 
