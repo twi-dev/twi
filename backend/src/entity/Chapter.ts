@@ -1,11 +1,24 @@
-import {Entity, Property, ManyToOne} from "@mikro-orm/core"
+import {Entity, Property, ManyToOne, Filter} from "@mikro-orm/core"
 import {ObjectType, Field, Int} from "type-graphql"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Story} from "./Story"
 
+export enum ChapterFilters {
+  PUBLISHED = "published",
+  UNLISTED = "unlisted"
+}
+
 @ObjectType()
 @Entity()
+@Filter<Chapter>({
+  name: ChapterFilters.PUBLISHED,
+  default: true,
+  args: false,
+
+  cond: (_, type) => type === "read" ? {isDraft: true} : {}
+})
+@Filter<Chapter>({name: ChapterFilters.UNLISTED, cond: {isDraft: true}})
 export class Chapter extends BaseEntitySoftRemovable {
   @ManyToOne(() => Story)
   story!: Story

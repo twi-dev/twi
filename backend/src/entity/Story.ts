@@ -1,5 +1,6 @@
 import {ObjectType, Field} from "type-graphql"
 import {
+  Filter,
   Entity,
   Property,
   ManyToOne,
@@ -19,8 +20,25 @@ import {User} from "./User"
 import {File} from "./File"
 import {Tag} from "./Tag"
 
+export enum StoryFilters {
+  PUBLISHED = "published",
+  UNLISTED = "unlisted",
+  FINISHED = "finished",
+  UNFINISHED = "unfinished"
+}
+
 @ObjectType()
 @Entity({customRepository: () => StoryRepo})
+@Filter<Story>({
+  name: StoryFilters.FINISHED,
+  default: true,
+  args: false,
+
+  cond: (_, type) => type === "read" ? {isDraft: false} : {}
+})
+@Filter<Story>({name: StoryFilters.UNLISTED, cond: {isDraft: true}})
+@Filter<Story>({name: StoryFilters.FINISHED, cond: {isFinished: true}})
+@Filter<Story>({name: StoryFilters.UNFINISHED, cond: {isFinished: false}})
 export class Story extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: StoryRepo
 

@@ -64,9 +64,7 @@ class StoryResolver {
   ): Promise<StoryPageParams> {
     const storyRepo = this._orm.em.getRepository(Story)
 
-    const [rows, count] = await storyRepo.findAndCount(
-      {isDraft: false}, {limit, offset}
-    )
+    const [rows, count] = await storyRepo.findAndCount({}, {limit, offset})
 
     return {rows, count, page, limit, offset}
   }
