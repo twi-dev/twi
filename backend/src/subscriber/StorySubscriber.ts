@@ -1,10 +1,4 @@
-import {
-  EventSubscriber,
-  EntitySubscriberInterface,
-  UpdateEvent,
-  InsertEvent
-} from "typeorm"
-import {Service} from "typedi"
+import {EventSubscriber, EventArgs, EntityName} from "@mikro-orm/core"
 import {format} from "date-fns"
 
 import {Story} from "entity/Story"
@@ -20,46 +14,39 @@ const createSlug = (date: number | Date, value: string) => (
   `${format(date, SLUG_DATE_MASK)}/${create(value)}`
 )
 
-@Service()
-@EventSubscriber()
-export class StorySubscriber implements EntitySubscriberInterface {
-  listenTo() {
-    return Story
+export class StorySubscriber implements EventSubscriber<Story> {
+  getSubscribedEntities(): Array<EntityName<Story>> {
+    return [Story]
   }
 
-  beforeInsert(event: InsertEvent<Story>) {
-    const {entity} = event
+  async beforeCreate(event: EventArgs<Story>) {
+    const {entity: story} = event
 
-    // Create a date manually
-    const now = new Date()
-
-    entity.createdAt = now
-    entity.updatedAt = now
-    entity.slug = createSlug(now, entity.title)
+    story.slug = createSlug(story.createdAt, story.title)
   }
 
-  beforeUpdate(event: UpdateEvent<Story>) {
-    const updated = event.updatedColumns.map(({propertyName}) => propertyName)
+  async beforeUpdate(event: EventArgs<Story>) {
+    const {changeSet, entity: story} = event
 
-    const {entity} = event
-
-    // Update the slug property of the story
-    if (updated.includes("title")) {
-      entity.slug = createSlug(entity.createdAt, entity.title)
+    if (!changeSet) {
+      return undefined
     }
 
-    // Make sure to keep chapters count positive. Just in case.
-    if (updated.includes("chaptersCount") && entity.chaptersCount < 0) {
-      entity.chaptersCount = 0
+    const {payload} = changeSet
+
+    // Update the slug property of the story
+    if (payload.title) {
+      story.title = createSlug(story.createdAt, story.title)
+    }
+
+    // Make sure chapters count is never negative
+    if (payload.chaptersCount && payload.chaptersCount < 0) {
+      story.chaptersCount = 0
     }
 
     // Make sure the story can't be marked as finished when it has no chapters
-    if (
-      updated.includes("isFinished")
-        && entity.isFinished === true
-        && entity.chaptersCount < 1
-    ) {
-      entity.isFinished = false
+    if (payload.isFinished === true && story.chaptersCount < 1) {
+      story.isFinished = false
     }
   }
 }

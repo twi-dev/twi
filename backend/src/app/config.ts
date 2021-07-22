@@ -13,7 +13,7 @@ loadEnvConfig(PWD, dev, {
   error: console.error,
 })
 
-const SERVER_ROOT = resolve(process.env.SERVER_ROOT as string)
+const SERVER_ROOT = resolve(dev ? "src" : "lib")
 
 /* c8 ignore next 3 */
 const EXT = process.env.NODE_ENV === "production"
@@ -30,6 +30,14 @@ set(
   process.env,
   "DATABASE_SUBSCRIBERS",
   resolve(SERVER_ROOT, "subscriber", `*Subscriber${EXT}`)
+)
+
+set(
+  process.env,
+
+  "DATABASE_REPOSITORY",
+
+  resolve(SERVER_ROOT, "repo", `*Repo${EXT}`)
 )
 
 set(

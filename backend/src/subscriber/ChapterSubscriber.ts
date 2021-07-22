@@ -1,36 +1,18 @@
-import {
-  EntitySubscriberInterface,
-  EventSubscriber,
-  UpdateEvent,
-  RemoveEvent
-} from "typeorm"
-import {Service} from "typedi"
+import {EventSubscriber, EventArgs, EntityName} from "@mikro-orm/core"
 
 import {Chapter} from "entity/Chapter"
 
-@Service()
-@EventSubscriber()
-class ChapterSubscriber implements EntitySubscriberInterface<Chapter> {
-  listenTo() {
-    return Chapter
+export class ChapterSubscriber implements EventSubscriber<Chapter> {
+  getSubscribedEntities(): Array<EntityName<Chapter>> {
+    return [Chapter]
   }
 
-  beforeUpdate(event: UpdateEvent<Chapter>) {
+  async beforeUpdate(event: EventArgs<Chapter>) {
     const {entity: chapter} = event
 
-    // Unlisted chapters doesn't have their number
-    if (chapter.isDraft) {
-      chapter.number = null
-    }
-  }
-
-  beforeRemove(event: RemoveEvent<Chapter>) {
-    const {entity: chapter} = event
-
-    if (chapter) {
+    // Unlisted chapters does not have their number.
+    if (chapter.isDraft === true) {
       chapter.number = null
     }
   }
 }
-
-export default ChapterSubscriber

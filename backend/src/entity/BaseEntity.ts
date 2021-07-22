@@ -1,9 +1,9 @@
 import {ObjectType, Field, ID} from "type-graphql"
-import {PrimaryGeneratedColumn} from "typeorm"
+import {PrimaryKey} from "@mikro-orm/core"
 
 @ObjectType({isAbstract: true})
 export abstract class BaseEntity {
   @Field(() => ID)
-  @PrimaryGeneratedColumn({type: "int", unsigned: true})
+  @PrimaryKey({unsigned: true})
   id!: number
 }

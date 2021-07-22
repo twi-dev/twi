@@ -53,6 +53,8 @@ declare namespace NodeJS {
 
     readonly DATABASE_SUBSCRIBERS: string
 
+    readonly DATABASE_REPOSITORY: string
+
     /**
      * Server-wide secret key
      */

@@ -1,9 +1,16 @@
 import {ObjectType, Field, registerEnumType} from "type-graphql"
-import {Entity, Column, OneToOne, JoinColumn} from "typeorm"
 import {IsEmail, Matches} from "class-validator"
+import {
+  Entity,
+  Property,
+  Enum,
+  OneToOne,
+  EntityRepositoryType
+} from "@mikro-orm/core"
 
-import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
+import {UserRepo} from "repo/UserRepo"
 
+import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {File} from "./File"
 
 export enum UserRoles {
@@ -25,45 +32,32 @@ registerEnumType(UserRoles, {name: "UserRoles"})
 registerEnumType(UserStatuses, {name: "UserStatuses"})
 
 @ObjectType()
-@Entity()
-export class User extends BaseSoftRemovableEntity {
+@Entity({customRepository: () => UserRepo})
+export class User extends BaseEntitySoftRemovable {
+  [EntityRepositoryType]?: UserRepo
+
   @Field()
-  @Column({unique: true})
+  @Property({unique: true})
   @Matches(LOGIN_PATTERN)
   login!: string
 
-  /**
-   * User email address.
-   */
-  @Column({unique: true})
+  @Field()
+  @Property({unique: true})
   @IsEmail()
   email!: string
 
-  /**
-   * User password.
-   */
-  @Column()
+  @Property()
   password!: string
 
-  /**
-   * Indicates which role user were assigned to.
-   */
   @Field(() => String)
-  @Column({type: "enum", enum: UserRoles, default: UserRoles.REGULAR})
-  role!: UserRoles
+  @Enum(() => UserRoles)
+  role: UserRoles = UserRoles.REGULAR
 
-  /**
-   * Indecates user's account status.
-   */
   @Field(() => String)
-  @Column({type: "enum", enum: UserStatuses, default: UserStatuses.INACTIVE})
-  status!: UserStatuses
+  @Enum(() => UserStatuses)
+  status: UserStatuses = UserStatuses.INACTIVE
 
-  /**
-   * User avatar.
-   */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => File, {eager: true, onDelete: "SET NULL", nullable: true})
-  @JoinColumn()
+  @OneToOne({entity: () => File, nullable: true, eager: true})
   avatar!: File | null
 }

@@ -1,12 +1,12 @@
 import {MiddlewareInterface, ResolverData, NextFn} from "type-graphql"
-import {InjectRepository} from "typeorm-typedi-extensions"
+import {MikroORM} from "@mikro-orm/core"
 import {ParameterizedContext} from "koa"
-import {Service} from "typedi"
-
-import {UserRepo} from "repo/UserRepo"
+import {Service, Inject} from "typedi"
 
 import {StateWithViewer} from "app/state/WithViewer"
 import {BaseContext} from "app/context/BaseContext"
+
+import {User} from "entity/User"
 
 type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
@@ -15,8 +15,8 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
  */
 @Service()
 class GetViewer implements MiddlewareInterface<Context> {
-  @InjectRepository()
-  private _userRepo!: UserRepo
+  @Inject()
+  private _orm!: MikroORM
 
   async use({context}: ResolverData<Context>, next: NextFn) {
     // Require user to be authorized first, just in case
@@ -24,9 +24,12 @@ class GetViewer implements MiddlewareInterface<Context> {
       return context.throw(401)
     }
 
-    const viewer = await this._userRepo.findOne(context.session.userId)
+    const userRepo = this._orm.em.getRepository(User)
+
+    const viewer = await userRepo.findOne(context.session.userId)
 
     // If there's no user, threat request as unauthorized
+    // c8 ignore next 3
     if (!viewer) {
       return context.throw(401, "Cant find current user.")
     }

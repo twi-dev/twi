@@ -1,10 +1,9 @@
 import {Resolver, Mutation, Arg, Ctx, Authorized, ID} from "type-graphql"
-import {InjectRepository} from "typeorm-typedi-extensions"
 import {ParameterizedContext, DefaultState} from "koa"
-import {Service} from "typedi"
+import {MikroORM} from "@mikro-orm/core"
+import {Service, Inject} from "typedi"
 
 import {BaseContext} from "app/context/BaseContext"
-import {UserRepo} from "repo/UserRepo"
 import {User} from "entity/User"
 
 import LogInInput from "api/input/auth/LogIn"
@@ -17,8 +16,8 @@ type Context = ParameterizedContext<DefaultState, BaseContext>
 @Service()
 @Resolver()
 class AuthResolver {
-  @InjectRepository()
-  private _userRepo!: UserRepo
+  @Inject()
+  private _orm!: MikroORM
 
   @Mutation(() => Viewer)
   async authSignUp(
@@ -26,13 +25,21 @@ class AuthResolver {
     ctx: Context,
 
     @Arg("user", () => SignUpInput)
-    user: LogInInput
+    {email, login, password}: SignUpInput
   ): Promise<User> {
-    const created = await this._userRepo.save(user)
+    const userRepo = this._orm.em.getRepository(User)
 
-    ctx.session!.userId = created.id
+    const user = new User()
 
-    return created
+    user.login = login
+    user.email = email
+    user.password = password
+
+    await userRepo.persistAndFlush(user)
+
+    ctx.session!.userId = user.id
+
+    return user
   }
 
   @Mutation(() => Viewer)
@@ -43,9 +50,11 @@ class AuthResolver {
     @Arg("credentials", () => LogInInput)
     {username, password}: LogInInput
   ): Promise<User> {
-    const user = await this._userRepo.findByEmailOrLogin(username)
+    const userRepo = this._orm.em.getRepository(User)
 
-    if (!user || !(await this._userRepo.comparePassword(user, password))) {
+    const user = await userRepo.findOneByEmailOrLogin(username)
+
+    if (!user || !(await userRepo.comparePassword(user, password))) {
       ctx.throw(401)
     }
 

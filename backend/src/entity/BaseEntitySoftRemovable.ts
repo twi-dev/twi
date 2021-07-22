@@ -1,13 +1,14 @@
-import {DeleteDateColumn} from "typeorm"
 import {ObjectType, Field} from "type-graphql"
-
-import {BaseEntityWithDates} from "entity/abstract/BaseEntityWithDates"
+import {Property} from "@mikro-orm/core"
 
 import Dates from "api/type/common/Dates"
 
+import {BaseEntityWithDates} from "./BaseEntityWithDates"
+
 @ObjectType({isAbstract: true})
-export abstract class BaseSoftRemovableEntity extends BaseEntityWithDates {
-  @DeleteDateColumn()
+export abstract class BaseEntitySoftRemovable extends BaseEntityWithDates {
+  @Field(() => Date, {nullable: true})
+  @Property({type: Date, nullable: true})
   deletedAt?: Date
 
   @Field(() => Dates)
@@ -19,5 +20,3 @@ export abstract class BaseSoftRemovableEntity extends BaseEntityWithDates {
     }
   }
 }
-
-export default BaseSoftRemovableEntity

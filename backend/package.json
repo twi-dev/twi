@@ -53,6 +53,10 @@
   "dependencies": {
     "@koa/cors": "3.1.0",
     "@koa/router": "10.0.0",
+    "@mikro-orm/cli": "^4.5.7",
+    "@mikro-orm/core": "^4.5.7",
+    "@mikro-orm/mysql": "^4.5.7",
+    "@mikro-orm/reflection": "^4.5.7",
     "@next/env": "11.0.1",
     "@sindresorhus/slugify": "1.1.0",
     "apollo-server-koa": "2.25.2",
@@ -61,6 +65,7 @@
     "class-validator": "0.13.1",
     "date-fns": "2.22.1",
     "fs-extra": "10.0.0",
+    "globby": "^11.0.4",
     "graphql": "15.5.1",
     "http-errors": "1.8.0",
     "ioredis": "4.27.6",

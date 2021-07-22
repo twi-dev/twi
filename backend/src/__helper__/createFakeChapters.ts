@@ -1,6 +1,6 @@
 import faker from "faker"
 
-import {Chapter} from "entity/Chapter"
+import {Chapter} from "entity.old/Chapter"
 
 import createFakeEntities from "./createFakeEntities"
 

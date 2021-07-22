@@ -1,30 +1,24 @@
-import {Repository, EntityRepository, DeepPartial} from "typeorm"
+import {EntityRepository} from "@mikro-orm/mysql"
 import {Service} from "typedi"
 
 import {Story} from "entity/Story"
 
 @Service()
-@EntityRepository(Story)
-export class StoryRepo extends Repository<Story> {
-  async createAndSave(story: DeepPartial<Story>): Promise<Story> {
-    return this.save(this.create(story))
-  }
-
+export class StoryRepo extends EntityRepository<Story> {
   /**
-   * Finds the first row that matches given `id` or `slug`
+   * Finds the first story that matches given `id` or `slug`
    *
    * @param idOrSlug `id` or `slug` to search a row by
    */
-  findByIdOrSlug(idOrSlug: number | string): Promise<Story | undefined> {
+  async findOneByIdOrSlug(idOrSlug: string | number) {
     return this.findOne({
-      where: [
+      $or: [
         {
-          isDraft: false,
-          id: idOrSlug as number
+          id: idOrSlug,
+          isDraft: false // TODO: Add filter to get only listed stories
         },
         {
-          isDraft: false,
-          slug: idOrSlug as string
+          slug: idOrSlug
         }
       ]
     })

@@ -1,34 +1,43 @@
-import {Entity, Column, ManyToOne} from "typeorm"
 import {ObjectType, Field} from "type-graphql"
+import {
+  Entity,
+  Property,
+  ManyToOne,
+  EntityRepositoryType
+} from "@mikro-orm/core"
 
-import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
+import createSlug from "helper/util/createSlug"
 
+import {TagRepo} from "repo/TagRepo"
+
+import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Category} from "./Category"
 
 @ObjectType()
-@Entity()
-export class Tag extends BaseSoftRemovableEntity {
-  @ManyToOne(() => Category, category => category.tags, {nullable: true})
+@Entity({customRepository: () => TagRepo})
+export class Tag extends BaseEntitySoftRemovable {
+  [EntityRepositoryType]: TagRepo
+
+  @ManyToOne(() => Category, {nullable: true})
   category!: Category | null
 
-  /**
-   * Name of the tag.
-   */
-  @Field({description: "Name of the tag."})
-  @Column({unique: true})
+  @Field()
+  @Property({unique: true})
   name!: string
 
-  /**
-   * Unique human-readable ID of the tag.
-   */
-  @Field({description: "Unique human-readable ID of the tag."})
-  @Column({unique: true})
+  @Field()
+  @Property({unique: true})
   slug!: string
 
-  /**
-   * Tag description.
-   */
-  @Field({nullable: true, description: "Tag description."})
-  @Column({type: "text", nullable: true})
-  description?: string
+  @Field(() => String, {nullable: true})
+  @Property({columnType: "text", nullable: true})
+  description!: string | null
+
+  constructor(name: string, description: string | null = null) {
+    super()
+
+    this.name = name
+    this.slug = createSlug(name)
+    this.description = description
+  }
 }

@@ -1,100 +1,75 @@
-import {TypeormLoader} from "type-graphql-dataloader"
 import {ObjectType, Field} from "type-graphql"
 import {
   Entity,
-  Column,
-  OneToOne,
-  OneToMany,
+  Property,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
+  Collection,
+  EntityRepositoryType
+} from "@mikro-orm/core"
+import {isEmpty} from "lodash"
 
-import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
+import {StoryRepo} from "repo/StoryRepo"
 
+import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Chapter} from "./Chapter"
 import {User} from "./User"
 import {File} from "./File"
 import {Tag} from "./Tag"
 
 @ObjectType()
-@Entity()
-export class Story extends BaseSoftRemovableEntity {
-  /**
-   * Returns the user who published the story.
-   */
-  @Field(() => User, {description: "Returns the user who published the story."})
-  @ManyToOne(() => User, {onDelete: "CASCADE", eager: true, nullable: false})
+@Entity({customRepository: () => StoryRepo})
+export class Story extends BaseEntitySoftRemovable {
+  [EntityRepositoryType]: StoryRepo
+
+  @Field(() => User)
+  @ManyToOne({eager: true, nullable: false})
   publisher!: User
 
-  /**
-   * Story cover.
-   */
   @Field(() => File, {nullable: true})
-  @OneToOne(() => User, {eager: true, onDelete: "SET NULL", nullable: true})
-  @JoinColumn()
+  @OneToOne({entity: () => File, nullable: true, eager: true})
   cover!: File | null
 
-  /**
-   * List of the story tags,
-   */
-  @Field(() => [Tag], {
-    nullable: "items",
-    description: "List of the story tags,"
-  })
-  @ManyToMany(() => Tag, {eager: true})
-  @JoinTable()
-  tags!: Tag[] | null
-
-  /**
-   * List of the chapters associated with the story
-   */
-  @Field(() => [Chapter], {nullable: "items"})
   @OneToMany(() => Chapter, chapter => chapter.story)
-  @TypeormLoader()
-  chapters!: Chapter[] | null
+  chapters = new Collection<Chapter, Story>(this)
 
-  /**
-   * Story title.
-   */
-  @Field({description: "Story title."})
-  @Column()
+  @Field(() => [Tag], {nullable: "items"})
+  @ManyToMany(() => Tag, undefined, {eager: true})
+  tags = new Collection<Tag, Story>(this)
+
+  @Field()
+  @Property()
   title!: string
 
-  /**
-   * Story description.
-   */
-  @Field({description: "Story description."})
-  @Column({type: "text"})
+  @Field()
+  @Property()
   description!: string
 
-  /**
-   * The unique human-readable identifier of the story.
-   */
-  @Field({description: "The unique human-readable identifier of the story."})
-  @Column({unique: true})
+  @Field()
+  @Property({unique: true})
   slug!: string
 
-  /**
-   * Indicates if the story is hidden from anyone to read.
-   */
-  @Field({description: "Indicates if the story is hidden from anyone to read."})
-  @Column({default: true})
-  isDraft!: boolean
+  @Field(() => Boolean)
+  @Property()
+  isDraft: boolean = true
 
-  /**
-   * Indicates if the story finished.
-   * It must have at least one chapter to be marked as finished.
-   */
-  @Field({
-    description:
-      "Indicates if the story is finished. "
-        + "It **must** have at least one chapter to be marked as finished."
-  })
-  @Column({default: false})
-  isFinished!: boolean
+  @Field(() => Boolean)
+  @Property()
+  isFinished: boolean = false
 
-  @Column({type: "tinyint", unsigned: true, default: 0})
-  chaptersCount!: number
+  @Property({columnType: "tinyint", unsigned: true})
+  chaptersCount: number = 0
+
+  constructor(title: string, description: string, tags?: Tag[]) {
+    super()
+
+    this.title = title
+    this.description = description
+
+    if (Array.isArray(tags) && !isEmpty(tags)) {
+      this.tags.set(tags)
+    }
+  }
 }

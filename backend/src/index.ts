@@ -1,9 +1,9 @@
-import "config"
+import "app/config"
 
 import waterfall from "helper/array/waterfall"
 
-import {connect, disconnect} from "./db"
-import {start, stop} from "./server"
+import {connect, disconnect} from "app/db/connection"
+import {start, stop} from "app/server"
 
 const exit = (code: number = 0) => waterfall([disconnect, stop])
   .then(() => { process.exit(code) })

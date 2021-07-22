@@ -1,5 +1,5 @@
 import {resolve, basename, extname} from "path"
-import {opendir} from "fs/promises"
+import {opendir} from "fs-extra"
 
 import Router from "@koa/router"
 

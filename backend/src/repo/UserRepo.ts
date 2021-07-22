@@ -1,36 +1,35 @@
 import {cpus} from "os"
 
-import {Repository, EntityRepository, DeepPartial} from "typeorm"
+import {EntityRepository} from "@mikro-orm/mysql"
 import {hash, verify, argon2id} from "argon2"
 import {Service} from "typedi"
 
 import {User} from "entity/User"
 
-// TODO: Tweak params later for better balance between time & security
+/**
+ * Hash user password using argon2
+ */
 export const hashPassword = (password: string) => hash(password, {
   type: argon2id,
   parallelism: cpus().length
 })
 
 @Service()
-@EntityRepository(User)
-export class UserRepo extends Repository<User> {
-  async createAndSave(user: DeepPartial<User>): Promise<User> {
-    return this.save(this.create(user))
-  }
-
-  findByEmailOrLogin(emailOrLogin: string): Promise<User | undefined> {
-    return this.findOne({
-      where: [{email: emailOrLogin}, {login: emailOrLogin}]
-    })
+export class UserRepo extends EntityRepository<User> {
+  /**
+   * Finds a user by their email or login
+   */
+  async findOneByEmailOrLogin(emailOrLogin: string) {
+    return this.findOne({$or: [{login: emailOrLogin}, {email: emailOrLogin}]})
   }
 
   /**
    * Checks if given password is valid for the user
    *
-   * @param password A password to compare with
+   * @param user A user to check the password for
+   * @param password A password to verify
    */
-  comparePassword(user: User, password: string): Promise<boolean> {
+  async comparePassword(user: User, password: string): Promise<boolean> {
     return verify(user.password, password)
   }
 }

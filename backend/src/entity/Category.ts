@@ -1,27 +1,24 @@
-import {ObjectType, Field, Int} from "type-graphql"
-import {Entity, Column, OneToMany} from "typeorm"
+import {Entity, Property, Collection, OneToMany} from "@mikro-orm/core"
+import {ObjectType, Field} from "type-graphql"
 
-import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
-
+import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Tag} from "./Tag"
 
 @ObjectType()
 @Entity()
-export class Category extends BaseSoftRemovableEntity {
+export class Category extends BaseEntitySoftRemovable {
   @OneToMany(() => Tag, tag => tag.category)
-  tags!: Tag[] | null
+  tags = new Collection<Tag, Category>(this)
 
-  /**
-   * Category name.
-   */
-  @Field({description: "Category name."})
-  @Column()
+  @Field()
+  @Property({unique: true})
   name!: string
 
-  @Column(() => String)
-  prefix!: string | null
+  @Field()
+  @Property({unique: true})
+  prefix!: string
 
-  @Field(() => Int)
-  @Column({type: "tinyint", unsigned: true})
+  @Field()
+  @Property({columnType: "smallint", unsigned: true})
   order!: number
 }

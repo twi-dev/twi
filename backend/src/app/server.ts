@@ -6,9 +6,10 @@ import serve from "koa-static"
 
 import waterfall from "helper/array/waterfall"
 
+import ormContext from "middleware/ormContext"
 import multipart from "middleware/multipart"
 import session from "middleware/session"
-import getRouter from "router"
+import getRouter from "app/router"
 
 import {FILES_ROOT} from "helper/util/file"
 
@@ -26,6 +27,7 @@ async function init(): Promise<Koa> {
   koa
     .use(cors())
     .use(serve(FILES_ROOT))
+    .use(ormContext)
     .use(session)
     .use(multipart)
     .use(router.allowedMethods())

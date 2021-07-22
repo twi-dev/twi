@@ -1,4 +1,4 @@
-import {BaseEntity} from "entity/abstract/BaseEntity"
+import {BaseEntity} from "entity/BaseEntity"
 
 interface CreateFakeEntitiesFunction<T extends BaseEntity> {
   (entity: T): T | void

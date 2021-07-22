@@ -1,48 +1,79 @@
 import {URL} from "url"
 
-import {Field, ObjectType} from "type-graphql"
-import {Entity, Column} from "typeorm"
+import {Entity, Property} from "@mikro-orm/core"
+import {ObjectType, Field} from "type-graphql"
 
-import {BaseSoftRemovableEntity} from "entity/abstract/BaseSoftRemovableEntity"
+import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 
-@ObjectType()
-@Entity()
-export class File extends BaseSoftRemovableEntity {
+export interface FileInterface {
   /**
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.
    */
-  @Column({unique: true})
-  path!: string
+  key: string
 
   /**
    * File name with extension.
    */
-  @Field({description: "File name with extension."})
-  @Column()
+  name: string
+
+  /**
+   * SHA 512 hash based on file's content.
+   */
+  hash: string
+
+  /**
+   * MIME type of the file.
+   */
+  mime: string
+}
+
+@ObjectType()
+@Entity()
+export class File extends BaseEntitySoftRemovable implements FileInterface {
+  /**
+   * Relative path to the file on a disk or its key in remote storage.
+   * Must be unique.
+   */
+  @Field()
+  @Property({unique: true})
+  key!: string
+
+  /**
+   * File name with extension.
+   */
+  @Field()
+  @Property()
   name!: string
 
   /**
    * SHA 512 hash based on file's content.
    */
-  @Field({description: "SHA 512 hash based on file's content."})
-  @Column({type: "char", length: 128})
+  @Field()
+  @Property({columnType: "char(128)"})
   hash!: string
 
   /**
    * MIME type of the file.
    */
-  @Field({description: "MIME type of the file."})
-  @Column()
+  @Field()
+  @Property()
   mime!: string
+
+  constructor(file: FileInterface) {
+    super()
+
+    this.key = file.key
+    this.name = file.name
+    this.hash = file.hash
+    this.mime = file.mime
+  }
 
   /**
    * Full address of the file on static server.
    */
-  @Field(() => String, {
-    description: "Full address of the file on static server."
-  })
+  @Field(() => String)
   get url(): string {
-    return new URL(this.path, process.env.SERVER_ADDRESS).toString()
+    return new URL(this.key, process.env.SERVER_ADDRESS).toString()
   }
 }

@@ -1,8 +1,7 @@
 import {join} from "path"
 
-import {InjectConnection} from "typeorm-typedi-extensions"
-import {Connection, TransactionRepository, Transaction} from "typeorm"
-import {Service} from "typedi"
+import {MikroORM, wrap} from "@mikro-orm/core"
+import {Service, Inject} from "typedi"
 import {
   FieldResolver,
   Resolver,
@@ -17,11 +16,7 @@ import {
   ID
 } from "type-graphql"
 import {ParameterizedContext} from "koa"
-import {set, isEmpty} from "lodash"
-
-import {StoryRepo} from "repo/StoryRepo"
-import {FileRepo} from "repo/FileRepo"
-import {TagRepo} from "repo/TagRepo"
+import {isEmpty} from "lodash"
 
 import {Story} from "entity/Story"
 import {File} from "entity/File"
@@ -47,8 +42,8 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
 @Service()
 @Resolver(() => Story)
 class StoryResolver {
-  @InjectConnection()
-  private _db!: Connection
+  @Inject()
+  private _orm!: MikroORM
 
   @FieldResolver(() => [Tag], {nullable: "items"})
   tags(
@@ -67,11 +62,11 @@ class StoryResolver {
     @Args()
     {limit, page, offset}: PageArgs
   ): Promise<StoryPageParams> {
-    const storyRepo = this._db.getCustomRepository(StoryRepo)
+    const storyRepo = this._orm.em.getRepository(Story)
 
-    const [rows, count] = await storyRepo.findAndCount({
-      skip: offset, take: limit, where: {isDraft: false}
-    })
+    const [rows, count] = await storyRepo.findAndCount(
+      {isDraft: false}, {limit, offset}
+    )
 
     return {rows, count, page, limit, offset}
   }
@@ -80,113 +75,103 @@ class StoryResolver {
   @UseMiddleware(NotFound)
   async story(
     @Arg("idOrSlug") idOrSlug: string
-  ): Promise<Story | undefined> {
-    const storyRepo = this._db.getCustomRepository(StoryRepo)
+  ): Promise<Story | null> {
+    const storyRepo = this._orm.em.getRepository(Story)
 
-    return storyRepo.findByIdOrSlug(idOrSlug)
+    return storyRepo.findOneByIdOrSlug(idOrSlug)
   }
 
   @Mutation(() => Story, {description: "Creates a new story"})
   @Authorized()
   @UseMiddleware(GetViewer)
-  @Transaction()
   async storyAdd(
     @Arg("story", () => StoryAddInput)
-    {tags, ...fields}: StoryAddInput,
+    {title, description, tags}: StoryAddInput,
 
     @Ctx()
-    ctx: Context,
-
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    tagRepo: TagRepo
+    ctx: Context
   ): Promise<Story> {
     const {viewer} = ctx.state
 
-    const story = storyRepo.create(fields)
+    const storyRepo = this._orm.em.getRepository(Story)
+    const tagRepo = this._orm.em.getRepository(Tag)
+
+    const story = new Story(title, description)
 
     story.publisher = viewer
 
     if (tags) {
-      story.tags = await tagRepo.findOrCreateMany(tags)
+      story.tags.set(await tagRepo.findOrCreate(tags))
     }
 
-    return storyRepo.save(story)
+    await storyRepo.persistAndFlush(story)
+
+    return story
   }
 
   @Mutation(() => Story, {description: "Updates story with given ID."})
   @Authorized()
-  @Transaction()
   async storyUpdate(
     @Arg("story")
     {id, tags, ...fields}: StoryUpdateInput,
 
     @Ctx()
-    ctx: Context,
-
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    tagRepo: TagRepo
+    ctx: Context
   ): Promise<Story> {
+    const storyRepo = this._orm.em.getRepository(Story)
+    const tagRepo = this._orm.em.getRepository(Tag)
+
     const story = await storyRepo.findOne(id)
 
     if (!story) {
       ctx.throw(400)
     }
 
-    Object.entries(fields).forEach(([key, value]) => set(story, key, value))
+    wrap(story).assign(fields)
 
     if (tags) {
-      story.tags = await tagRepo.findOrCreateMany(tags)
+      story.tags.set(await tagRepo.findOrCreate(tags))
     } else if (tags === null) { // Remove all tags from the story if "tags" parameter is null
-      story.tags = null
+      story.tags.removeAll()
     }
 
-    return storyRepo.save(story)
+    await storyRepo.persistAndFlush(story)
+
+    return story
   }
 
   @Mutation(() => ID, {description: "Removed story with given ID."})
   @Authorized()
-  @Transaction()
   async storyRemove(
     @Arg("storyId", () => ID)
     storyId: number,
 
     @Ctx()
-    ctx: Context,
-
-    @TransactionRepository()
-    storyRepo: StoryRepo
+    ctx: Context
   ): Promise<number> {
+    const storyRepo = this._orm.em.getRepository(Story)
+
     const story = await storyRepo.findOne(storyId)
 
     if (!story) {
       ctx.throw(400)
     }
 
-    return storyRepo.softRemove(story).then(() => storyId)
+    // TODO: Add soft removing implementation
+    return storyRepo.removeAndFlush(story).then(() => storyId)
   }
 
   @Mutation(() => File, {description: "Updates story's cover."})
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
-  @Transaction()
   async storyCoverUpdate(
-    @Arg("story")
-    {id, file}: FileNodeInput,
-
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    fileRepo: FileRepo
+    @Arg("story") {id, file}: FileNodeInput
   ): Promise<File | undefined> {
     // TODO: Check for user's permissions
     const {name, type: mime} = file
+
+    const storyRepo = this._orm.em.getRepository(Story)
+    const fileRepo = this._orm.em.getRepository(File)
 
     const story = await storyRepo.findOne(id)
 
@@ -202,26 +187,22 @@ class StoryResolver {
 
     if (story.cover) {
       const {cover} = story
-      const {path: oldPath} = cover
+      const {key: oldPath} = cover
 
-      Object
-        .entries(({path, hash, mime, name}))
-        .forEach(([key, value]) => set(cover, key, value))
+      const updated = wrap(cover).assign({key: path, hash, name, mime} as File)
 
-      const updated = await fileRepo.save(cover)
+      await fileRepo.persistAndFlush(cover)
 
       await removeFile(oldPath)
 
       return updated
     }
 
-    const cover = await fileRepo.createAndSave({
-      hash, path, mime, name
-    })
+    const cover = new File({key: path, name, mime, hash})
 
     story.cover = cover
 
-    await storyRepo.save(story)
+    await storyRepo.persistAndFlush(story)
 
     return cover
   }
@@ -229,33 +210,29 @@ class StoryResolver {
   @Mutation(() => ID, {nullable: true, description: "Removes story's cover."})
   @Authorized()
   @UseMiddleware([GetViewer, NotFound])
-  @Transaction()
   async storyCoverRemove(
     @Arg("storyId", () => ID)
-    storyId: number,
-
-    @TransactionRepository()
-    storyRepo: StoryRepo,
-
-    @TransactionRepository()
-    fileRepo: FileRepo
+    storyId: number
   ): Promise<number | null | undefined> {
+    const storyRepo = this._orm.em.getRepository(Story)
+    const fileRepo = this._orm.em.getRepository(File)
+
     // TODO: Check user's permissions
     const story = await storyRepo.findOne(storyId)
 
     // Report non-existent story to NotFount middleware
     if (!story) {
-      return undefined
-    }
-
-    // Do nothing and return `null` if the story has no cover
-    if (!story.cover) {
       return null
     }
 
-    const {id, path} = story.cover
+    // Do nothing and return `undefined` if the story has no cover
+    if (!story.cover) {
+      return undefined
+    }
 
-    await fileRepo.remove(story.cover)
+    const {id, key: path} = story.cover
+
+    await fileRepo.removeAndFlush(story.cover)
     await removeFile(path)
 
     return id

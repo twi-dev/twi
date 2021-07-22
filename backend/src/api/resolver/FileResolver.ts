@@ -10,8 +10,8 @@ import {FILES_ROOT} from "helper/util/file"
 @Resolver(() => File)
 class FileResolver {
   @FieldResolver(() => Int, {description: "Returns size of the file in bytes."})
-  async size(@Root() {path}: File): Promise<number> {
-    return stat(join(FILES_ROOT, path)).then(({size}) => size)
+  async size(@Root() {key}: File): Promise<number> {
+    return stat(join(FILES_ROOT, key)).then(({size}) => size)
   }
 }
 

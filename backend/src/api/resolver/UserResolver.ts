@@ -11,12 +11,10 @@ import {
   ID,
   UseMiddleware
 } from "type-graphql"
-import {Connection, Transaction, TransactionRepository} from "typeorm"
-import {InjectConnection} from "typeorm-typedi-extensions"
+import {MikroORM, wrap} from "@mikro-orm/core"
 import {ParameterizedContext} from "koa"
+import {Service, Inject} from "typedi"
 import {BodyFile} from "then-busboy"
-import {Service} from "typedi"
-import {set} from "lodash"
 
 import sharp from "sharp"
 
@@ -24,8 +22,6 @@ import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
 
 import {File} from "entity/File"
 import {User} from "entity/User"
-import {UserRepo} from "repo/UserRepo"
-import {FileRepo} from "repo/FileRepo"
 
 import {BaseContext} from "app/context/BaseContext"
 import {StateWithViewer} from "app/state/WithViewer"
@@ -44,19 +40,17 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
 @Service()
 @Resolver()
 class UserResolver {
-  @InjectConnection()
-  private _db!: Connection
+  @Inject()
+  private _orm!: MikroORM
 
   @Query(() => UserPage)
   async users(
     @Args()
     {limit, offset, page}: PageArgs
   ): Promise<UserPageParams> {
-    const userRepo = this._db.getCustomRepository(UserRepo)
+    const userRepo = this._orm.em.getRepository(User)
 
-    const [rows, count] = await userRepo.findAndCount({
-      skip: offset, take: limit
-    })
+    const [rows, count] = await userRepo.findAndCount({}, {offset, limit})
 
     return {rows, count, page, limit, offset}
   }
@@ -66,16 +60,16 @@ class UserResolver {
   async user(
     @Arg("username")
     username: string
-  ): Promise<User | undefined> {
-    const userRepo = this._db.getCustomRepository(UserRepo)
+  ): Promise<User | null> {
+    const userRepo = this._orm.em.getRepository(User)
 
-    return userRepo.findByEmailOrLogin(username)
+    return userRepo.findOneByEmailOrLogin(username)
   }
 
   @Query(() => Viewer, {description: "Returns currently logged-in user."})
   @Authorized()
   async viewer(@Ctx() ctx: Context): Promise<User> {
-    const userRepo = this._db.getCustomRepository(UserRepo)
+    const userRepo = this._orm.em.getRepository(User)
 
     const viewer = await userRepo.findOne(ctx.session!.userId)
 
@@ -89,22 +83,18 @@ class UserResolver {
   @Mutation(() => File, {description: "Updates avatar of the logged-in user."})
   @Authorized()
   @UseMiddleware(GetViewer)
-  @Transaction()
   async userAvatarUpdate(
     @Arg("image", () => FileInput)
     image: BodyFile,
 
     @Ctx()
-    ctx: Context,
-
-    @TransactionRepository()
-    userRepo: UserRepo,
-
-    @TransactionRepository()
-    fileRepo: FileRepo
+    ctx: Context
   ): Promise<File> {
     const {viewer} = ctx.state
     const {name, type: mime} = image
+
+    const fileRepo = this._orm.em.getRepository(File)
+    const userRepo = this._orm.em.getRepository(User)
 
     const {path, hash}: WriteFileResult = await writeFile(
       `user/${viewer.id}/avatar/${name}`,
@@ -116,26 +106,22 @@ class UserResolver {
     // Update existent avatar
     if (viewer.avatar) {
       const {avatar} = viewer
-      const {path: oldPath} = avatar
+      const {key: oldPath} = avatar
 
-      Object
-        .entries(({path, hash, mime, name}))
-        .forEach(([key, value]) => set(avatar, key, value))
+      const updated = wrap(avatar).assign({key: path, hash, mime, name} as File)
 
-      const updated = await fileRepo.save(avatar)
-
+      await fileRepo.persistAndFlush(avatar)
       await removeFile(oldPath)
 
       return updated
     }
 
-    const avatar = await fileRepo.createAndSave({
-      hash, path, mime, name
-    })
+    const avatar = new File({key: path, hash, mime, name})
 
+    // TODO: Review this for MikroORM compatibility
     viewer.avatar = avatar
 
-    await userRepo.save(viewer)
+    await userRepo.persistAndFlush(viewer)
 
     return avatar
   }
@@ -146,25 +132,20 @@ class UserResolver {
   })
   @Authorized()
   @UseMiddleware(GetViewer)
-  @Transaction()
-  async userAvatarRemove(
-    @Ctx()
-    ctx: Context,
-
-    @TransactionRepository()
-    fileRepo: FileRepo
-  ): Promise<number | null> {
+  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | null> {
     const {viewer} = ctx.state
+
+    const fileRepo = this._orm.em.getRepository(File)
 
     // Do nothing if user has no avatar
     if (!viewer.avatar) {
       return null
     }
 
-    const {id, path} = viewer.avatar
+    const {id, key} = viewer.avatar
 
-    await fileRepo.remove(viewer.avatar)
-    await removeFile(path)
+    await fileRepo.removeAndFlush(viewer.avatar)
+    await removeFile(key)
 
     return id
   }

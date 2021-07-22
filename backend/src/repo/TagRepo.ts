@@ -1,25 +1,24 @@
-import {Repository, EntityRepository, In} from "typeorm"
-import {Service} from "typedi"
+import {EntityRepository} from "@mikro-orm/mysql"
 import {isEmpty} from "lodash"
+import {Service} from "typedi"
 
 import {Tag} from "entity/Tag"
 
 @Service()
-@EntityRepository(Tag)
-export class TagRepo extends Repository<Tag> {
-  async findOrCreateMany(tags: string[]): Promise<Tag[]> {
-    const found = await this.find({where: {name: In(tags)}, select: ["name"]})
+export class TagRepo extends EntityRepository<Tag> {
+  async findOrCreate(list: string[]): Promise<Tag[]> {
+    const found = await this.find({name: {$in: list}}, {fields: ["name"]})
 
     const names = found.map(({name}) => name.toLowerCase())
 
-    const created = tags
+    const created = list
       .filter(name => !names.includes(name.toLowerCase()))
-      .map(name => this.create({name}))
+      .map(name => new Tag(name))
 
     if (!isEmpty(created)) {
-      await this.save(created)
+      await this.persistAndFlush(created)
     }
 
-    return this.find({where: {name: In(tags)}})
+    return this.find({name: {$in: list}})
   }
 }
