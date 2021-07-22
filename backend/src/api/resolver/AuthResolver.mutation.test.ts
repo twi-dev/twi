@@ -1,10 +1,6 @@
 import ava, {TestInterface} from "ava"
 
-import {Connection} from "typeorm"
-import {GraphQLSchema} from "graphql"
 import {HttpError} from "http-errors"
-
-import {UserRepo} from "repo/UserRepo"
 
 import {User} from "entity/User"
 
@@ -20,7 +16,13 @@ import {graphql} from "./__helper__/graphql"
 
 import OperationError from "./__helper__/OperationError"
 
-const test = ava as TestInterface<{db: Connection, schema: GraphQLSchema}>
+import {
+  withDatabase,
+  DatabaseContext,
+  WithDatabaseMacro as Macro,
+} from "../../__macro__/withDatabaseContext"
+
+const test = ava as TestInterface<DatabaseContext>
 
 interface AuthSignUpVariables {
   user: AuthSignUpInput
@@ -66,7 +68,7 @@ test.before(async t => {
   t.context.db = await setupConnection()
 })
 
-test("authSignUp creates a new user", async t => {
+test<Macro>("authSignUp creates a new user", withDatabase, async t => {
   const [{email, login, password}] = createFakeUsers(1)
 
   const {
@@ -80,7 +82,7 @@ test("authSignUp creates a new user", async t => {
   t.is(actual.login, login)
 })
 
-test("authSignUp sets up a session", async t => {
+test<Macro>("authSignUp sets up a session", withDatabase, async t => {
   const [{email, login, password}] = createFakeUsers(1)
 
   const context = createFakeContext()
@@ -96,11 +98,11 @@ test("authSignUp sets up a session", async t => {
   t.is(Number(actual.id), context.session.userId)
 })
 
-test("authLogIn returns logged in user.", async t => {
+test<Macro>("authLogIn returns logged in user.", withDatabase, async t => {
   const [user] = createFakeUsers(1)
   const {email, password} = user
 
-  await t.context.db.getCustomRepository(UserRepo).save(user)
+  await t.context.db.em.getRepository(User).persistAndFlush(user)
 
   const {
     authLogIn: actual
@@ -112,11 +114,11 @@ test("authLogIn returns logged in user.", async t => {
   t.is(Number(actual.id), user.id)
 })
 
-test("authLogIn creates a session.", async t => {
+test<Macro>("authLogIn creates a session.", withDatabase, async t => {
   const [user] = createFakeUsers(1)
   const {email, password} = user
 
-  await t.context.db.getCustomRepository(UserRepo).save(user)
+  await t.context.db.em.getRepository(User).persistAndFlush(user)
 
   const context = createFakeContext()
 
@@ -129,49 +131,59 @@ test("authLogIn creates a session.", async t => {
   t.is(context.session.userId, user.id)
 })
 
-test("authLogIn throws an error on incorrect password", async t => {
+test<Macro>(
+  "authLogIn throws an error on incorrect password",
+  withDatabase,
+  async t => {
+    const [user] = createFakeUsers(1)
+
+    await t.context.db.em.getRepository(User).persistAndFlush(user)
+
+    const trap = (): Promise<never> => graphql<never, AuthLogInVariables>({
+      source: authLogIn,
+      variableValues: {
+        credentials: {username: user.email, password: "incorrect".repeat(3)}
+      }
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 401)
+  }
+)
+
+test<Macro>(
+  "authLogIn throws an error on incorrect login",
+
+  withDatabase,
+
+  async t => {
+    const [user] = createFakeUsers(1)
+    const {password} = user
+
+    await t.context.db.em.getRepository(User).persistAndFlush(user)
+
+    const trap = (): Promise<never> => graphql<never, AuthLogInVariables>({
+      source: authLogIn,
+      variableValues: {
+        credentials: {username: "dummy-login".repeat(3), password}
+      }
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 401)
+  }
+)
+
+test<Macro>("authLogOut destroys current session", withDatabase, async t => {
   const [user] = createFakeUsers(1)
 
-  await t.context.db.getCustomRepository(UserRepo).save(user)
-
-  const trap = (): Promise<never> => graphql<never, AuthLogInVariables>({
-    source: authLogIn,
-    variableValues: {
-      credentials: {username: user.email, password: "incorrect".repeat(3)}
-    }
-  })
-
-  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
-
-  const [{originalError}] = graphQLErrors
-
-  t.is((originalError as HttpError).statusCode, 401)
-})
-
-test("authLogIn throws an error on incorrect login", async t => {
-  const [user] = createFakeUsers(1)
-  const {password} = user
-
-  await t.context.db.getCustomRepository(UserRepo).save(user)
-
-  const trap = (): Promise<never> => graphql<never, AuthLogInVariables>({
-    source: authLogIn,
-    variableValues: {
-      credentials: {username: "dummy-login".repeat(3), password}
-    }
-  })
-
-  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
-
-  const [{originalError}] = graphQLErrors
-
-  t.is((originalError as HttpError).statusCode, 401)
-})
-
-test("authLogOut destroys current session", async t => {
-  const [user] = createFakeUsers(1)
-
-  await t.context.db.getCustomRepository(UserRepo).save(user)
+  await t.context.db.em.getRepository(User).persistAndFlush(user)
 
   const context = createFakeContext({session: {userId: user.id}})
 

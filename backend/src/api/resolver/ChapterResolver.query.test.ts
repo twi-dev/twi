@@ -1,12 +1,7 @@
 import ava, {TestInterface} from "ava"
 import {HttpError} from "http-errors"
 
-import {Connection} from "typeorm"
 import {isString, isBoolean} from "lodash"
-
-import {ChapterRepo} from "repo/ChapterRepo"
-import {StoryRepo} from "repo/StoryRepo"
-import {UserRepo} from "repo/UserRepo"
 
 import {User, UserStatuses} from "entity/User"
 import {Chapter} from "entity/Chapter"
@@ -23,14 +18,22 @@ import createFakeUsers from "__helper__/createFakeUsers"
 import PageVariables from "./__helper__/PageVariables"
 import OperationError from "./__helper__/OperationError"
 
+import {
+  withDatabase,
+  WithDatabaseMacro,
+  DatabaseContext
+} from "../../__macro__/withDatabaseContext"
 import {graphql} from "./__helper__/graphql"
 
-const test = ava as TestInterface<{
-  db: Connection
+interface TestContext {
   user: User
   story: Story
   chapters: Chapter[]
-}>
+}
+
+type Macro = WithDatabaseMacro<TestContext>
+
+const test = ava as TestInterface<DatabaseContext & TestContext>
 
 interface ChapterQueryVariables {
   storyId: number
@@ -108,9 +111,9 @@ test.before(async t => {
     chapter.number = story.chaptersCount
   })
 
-  await connection.getCustomRepository(UserRepo).save(user)
-  await connection.getCustomRepository(StoryRepo).save(story)
-  await connection.getCustomRepository(ChapterRepo).save(chapters)
+  await connection.em.getRepository(User).persistAndFlush(user)
+  await connection.em.getRepository(Story).persistAndFlush(story)
+  await connection.em.getRepository(Chapter).persistAndFlush(chapters)
 
   t.context.db = connection
 
@@ -119,8 +122,10 @@ test.before(async t => {
   t.context.chapters = chapters
 })
 
-test(
+test<Macro>(
   "chapter returns chapter by story ID and its number within the story",
+
+  withDatabase,
 
   async t => {
     const [{id, number, story}] = t.context.chapters
@@ -136,7 +141,7 @@ test(
   }
 )
 
-test("chapters returns a list of chapters", async t => {
+test<Macro>("chapters returns a list of chapters", withDatabase, async t => {
   const {id} = t.context.story
 
   const {
@@ -155,20 +160,26 @@ test("chapters returns a list of chapters", async t => {
   t.true(isBoolean(chapter.isDraft))
 })
 
-test("chapter throws 404 error if there are no matched results", async t => {
-  const trap = (): Promise<never> => graphql<never, ChapterQueryVariables>({
-    source: chapterQuery,
-    variableValues: {
-      storyId: 451,
-      number: 42
-    }
-  })
+test<Macro>(
+  "chapter throws 404 error if there are no matched results",
 
-  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
-  const [{originalError}] = graphQLErrors
+  withDatabase,
 
-  t.is((originalError as HttpError).statusCode, 404)
-})
+  async t => {
+    const trap = (): Promise<never> => graphql<never, ChapterQueryVariables>({
+      source: chapterQuery,
+      variableValues: {
+        storyId: 451,
+        number: 42
+      }
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 404)
+  }
+)
 
 test.after.always(async () => {
   await cleanupConnection()

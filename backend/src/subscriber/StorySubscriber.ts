@@ -36,7 +36,7 @@ export class StorySubscriber implements EventSubscriber<Story> {
 
     // Update the slug property of the story
     if (payload.title) {
-      story.title = createSlug(story.createdAt, story.title)
+      story.slug = createSlug(story.createdAt, story.title)
     }
 
     // Make sure chapters count is never negative

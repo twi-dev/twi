@@ -15,7 +15,6 @@ export class StoryRepo extends EntityRepository<Story> {
       $or: [
         {
           id: idOrSlug,
-          isDraft: false // TODO: Add filter to get only listed stories
         },
         {
           slug: idOrSlug

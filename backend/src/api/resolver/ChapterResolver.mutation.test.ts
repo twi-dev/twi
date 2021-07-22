@@ -1,11 +1,6 @@
 import ava, {TestInterface} from "ava"
 
-import {Connection} from "typeorm"
 import {HttpError} from "http-errors"
-
-import {UserRepo} from "repo/UserRepo"
-import {StoryRepo} from "repo/StoryRepo"
-import {ChapterRepo} from "repo/ChapterRepo"
 
 import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
@@ -20,16 +15,24 @@ import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
+import {
+  withDatabase,
+  WithDatabaseMacro,
+  DatabaseContext
+} from "../../__macro__/withDatabaseContext"
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
 import OperationError from "./__helper__/OperationError"
 
-const test = ava as TestInterface<{
-  db: Connection
+interface TestContext {
   user: User
   story: Story
-}>
+}
+
+type Macro = WithDatabaseMacro<TestContext>
+
+const test = ava as TestInterface<DatabaseContext & TestContext>
 
 interface StoryChapterAddVariables {
   story: Omit<StoryChapterAddInput, "#id">
@@ -89,17 +92,22 @@ test.before(async t => {
   const [user] = createFakeUsers(1)
   const [story] = createFakeStories(1)
 
-  const userRepo = connection.getCustomRepository(UserRepo)
-  const storyRepo = connection.getCustomRepository(StoryRepo)
+  const userRepo = connection.em.getRepository(User)
+  const storyRepo = connection.em.getRepository(Story)
 
   story.publisher = user
 
+  await userRepo.persistAndFlush(user)
+  await storyRepo.persistAndFlush(story)
+
+  // console.log(storyRepo.findAll())
+
   t.context.db = connection
-  t.context.user = await userRepo.save(user)
-  t.context.story = await storyRepo.save(story)
+  t.context.user = user
+  t.context.story = story
 })
 
-test("storyChapterAdd creates a new chapter", async t => {
+test<Macro>("storyChapterAdd creates a new chapter", withDatabase, async t => {
   const {user, story} = t.context
 
   const [{title, description, text}] = createFakeChapters(1)
@@ -122,8 +130,10 @@ test("storyChapterAdd creates a new chapter", async t => {
   t.is(actual.text, text)
 })
 
-test(
+test<Macro>(
   "storyChapterAdd throws an error when given story doesn't exists",
+
+  withDatabase,
 
   async t => {
     const {user} = t.context
@@ -143,14 +153,14 @@ test(
   }
 )
 
-test("storyChapterUpdate updates a title", async t => {
+test<Macro>("storyChapterUpdate updates a title", withDatabase, async t => {
   const {user, story, db} = t.context
 
   const [{title}, chapter] = createFakeChapters(2)
 
   chapter.story = story
 
-  await db.getCustomRepository(ChapterRepo).save(chapter)
+  await db.em.getRepository(Chapter).persistAndFlush(chapter)
 
   const {
     storyChapterUpdate: actual
@@ -163,54 +173,66 @@ test("storyChapterUpdate updates a title", async t => {
   t.is(actual.title, title)
 })
 
-test("storyChapterUpdate updates a description", async t => {
-  const {user, story, db} = t.context
+test<Macro>(
+  "storyChapterUpdate updates a description",
 
-  const [{description}, chapter] = createFakeChapters(2)
+  withDatabase,
 
-  chapter.story = story
+  async t => {
+    const {user, story, db} = t.context
 
-  await db.getCustomRepository(ChapterRepo).save(chapter)
+    const [{description}, chapter] = createFakeChapters(2)
 
-  const {
-    storyChapterUpdate: actual
-  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
-    source: storyChapterUpdate,
-    contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {chapter: {id: chapter.id, description}}
-  })
+    chapter.story = story
 
-  t.is(actual.description, description)
-})
+    await db.em.getRepository(Chapter).persistAndFlush(chapter)
 
-test("storyChapterUpdate removes description if set to null", async t => {
-  const {user, story, db} = t.context
+    const {
+      storyChapterUpdate: actual
+    } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
+      source: storyChapterUpdate,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {chapter: {id: chapter.id, description}}
+    })
 
-  const [chapter] = createFakeChapters(1)
+    t.is(actual.description, description)
+  }
+)
 
-  chapter.story = story
+test<Macro>(
+  "storyChapterUpdate removes description if set to null",
 
-  await db.getCustomRepository(ChapterRepo).save(chapter)
+  withDatabase,
 
-  const {
-    storyChapterUpdate: actual
-  } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
-    source: storyChapterUpdate,
-    contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {chapter: {id: chapter.id, description: null}}
-  })
+  async t => {
+    const {user, story, db} = t.context
 
-  t.is(actual.description, null)
-})
+    const [chapter] = createFakeChapters(1)
 
-test("storyChapterUpdate updates a text", async t => {
+    chapter.story = story
+
+    await db.em.getRepository(Chapter).persistAndFlush(chapter)
+
+    const {
+      storyChapterUpdate: actual
+    } = await graphql<StoryChapterUpdateResult, StoryChapterUpdateVariables>({
+      source: storyChapterUpdate,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {chapter: {id: chapter.id, description: null}}
+    })
+
+    t.is(actual.description, null)
+  }
+)
+
+test<Macro>("storyChapterUpdate updates a text", withDatabase, async t => {
   const {user, story, db} = t.context
 
   const [{text}, chapter] = createFakeChapters(2)
 
   chapter.story = story
 
-  await db.getCustomRepository(ChapterRepo).save(chapter)
+  await db.em.getRepository(Chapter).persistAndFlush(chapter)
 
   const {
     storyChapterUpdate: actual
@@ -223,8 +245,10 @@ test("storyChapterUpdate updates a text", async t => {
   t.is(actual.text, text)
 })
 
-test(
+test<Macro>(
   "storyChapterUpdate throws an error when given chapter doesn't exists",
+
+  withDatabase,
 
   async t => {
     const {user} = t.context
@@ -244,27 +268,35 @@ test(
   }
 )
 
-test("storyChapterRemove removes chapter by given ID", async t => {
-  const {user, story, db} = t.context
-  const [chapter] = createFakeChapters(1)
+test<Macro>(
+  "storyChapterRemove removes chapter by given ID",
 
-  chapter.story = story
+  withDatabase,
 
-  await db.getCustomRepository(ChapterRepo).save(chapter)
+  async t => {
+    const {user, story, db} = t.context
+    const [chapter] = createFakeChapters(1)
 
-  const {
-    storyChapterRemove: actual
-  } = await graphql<StoryChapterRemoveResult, StoryChapterRemoveVariables>({
-    source: storyChapterRemove,
-    contextValue: createFakeContext({session: {userId: user.id}}),
-    variableValues: {chapterId: chapter.id}
-  })
+    chapter.story = story
 
-  t.is(Number(actual), chapter.id)
-})
+    await db.em.getRepository(Chapter).persistAndFlush(chapter)
 
-test(
+    const {
+      storyChapterRemove: actual
+    } = await graphql<StoryChapterRemoveResult, StoryChapterRemoveVariables>({
+      source: storyChapterRemove,
+      contextValue: createFakeContext({session: {userId: user.id}}),
+      variableValues: {chapterId: chapter.id}
+    })
+
+    t.is(Number(actual), chapter.id)
+  }
+)
+
+test<Macro>(
   "storyChapterRemove throws an error when can't find a chapter",
+
+  withDatabase,
 
   async t => {
     const {user} = t.context
@@ -282,6 +314,4 @@ test(
   }
 )
 
-test.after.always(async () => {
-  await cleanupConnection()
-})
+test.after.always(cleanupConnection)

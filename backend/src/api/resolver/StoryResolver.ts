@@ -18,7 +18,7 @@ import {
 import {ParameterizedContext} from "koa"
 import {isEmpty} from "lodash"
 
-import {Story} from "entity/Story"
+import {Story, StoryFilters} from "entity/Story"
 import {File} from "entity/File"
 import {Tag} from "entity/Tag"
 
@@ -46,10 +46,7 @@ class StoryResolver {
   private _orm!: MikroORM
 
   @FieldResolver(() => [Tag], {nullable: "items"})
-  tags(
-    @Root()
-    {tags}: Story
-  ) {
+  tags(@Root() {tags}: Story) {
     if (isEmpty(tags)) {
       return []
     }
@@ -64,7 +61,15 @@ class StoryResolver {
   ): Promise<StoryPageParams> {
     const storyRepo = this._orm.em.getRepository(Story)
 
-    const [rows, count] = await storyRepo.findAndCount({}, {limit, offset})
+    const [rows, count] = await storyRepo.findAndCount(
+      {},
+
+      {
+        limit,
+        offset,
+        filters: [StoryFilters.PUBLISHED]
+      }
+    )
 
     return {rows, count, page, limit, offset}
   }

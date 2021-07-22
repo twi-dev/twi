@@ -29,13 +29,7 @@ export enum StoryFilters {
 
 @ObjectType()
 @Entity({customRepository: () => StoryRepo})
-@Filter<Story>({
-  name: StoryFilters.FINISHED,
-  default: true,
-  args: false,
-
-  cond: (_, type) => type === "read" ? {isDraft: false} : {}
-})
+@Filter<Story>({name: StoryFilters.PUBLISHED, cond: {isDraft: false}})
 @Filter<Story>({name: StoryFilters.UNLISTED, cond: {isDraft: true}})
 @Filter<Story>({name: StoryFilters.FINISHED, cond: {isFinished: true}})
 @Filter<Story>({name: StoryFilters.UNFINISHED, cond: {isFinished: false}})
@@ -63,7 +57,7 @@ export class Story extends BaseEntitySoftRemovable {
   title!: string
 
   @Field()
-  @Property()
+  @Property({columnType: "text"})
   description!: string
 
   @Field()

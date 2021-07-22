@@ -11,13 +11,7 @@ export enum ChapterFilters {
 
 @ObjectType()
 @Entity()
-@Filter<Chapter>({
-  name: ChapterFilters.PUBLISHED,
-  default: true,
-  args: false,
-
-  cond: (_, type) => type === "read" ? {isDraft: true} : {}
-})
+@Filter<Chapter>({name: ChapterFilters.PUBLISHED, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.UNLISTED, cond: {isDraft: true}})
 export class Chapter extends BaseEntitySoftRemovable {
   @ManyToOne(() => Story)

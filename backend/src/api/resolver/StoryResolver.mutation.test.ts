@@ -2,14 +2,9 @@ import ava, {TestInterface} from "ava"
 
 import faker from "faker"
 
-import {Connection} from "typeorm"
 import {HttpError} from "http-errors"
 
-import {ChapterRepo} from "repo/ChapterRepo"
-import {StoryRepo} from "repo/StoryRepo"
-import {UserRepo} from "repo/UserRepo"
-import {TagRepo} from "repo/TagRepo"
-
+import {Chapter} from "entity/Chapter"
 import {Story} from "entity/Story"
 import {User} from "entity/User"
 import {Tag} from "entity/Tag"
@@ -23,16 +18,23 @@ import createFakeChapters from "__helper__/createFakeChapters"
 import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
+import {
+  withDatabase,
+  WithDatabaseMacro,
+  DatabaseContext
+} from "../../__macro__/withDatabaseContext"
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
 import OperationError from "./__helper__/OperationError"
 
-const test = ava as TestInterface<{
-  db: Connection,
-  user: User,
-  stories: Story[]
-}>
+interface TestContext {
+  user: User
+}
+
+type Macro = WithDatabaseMacro<TestContext>
+
+const test = ava as TestInterface<DatabaseContext & TestContext>
 
 interface StoryAddVariables {
   story: StoryAddInput
@@ -106,15 +108,17 @@ const storyRemove = /* GraphQL */ `
 
 test.before(async t => {
   const connection = await setupConnection()
-  const userRepo = connection.getCustomRepository(UserRepo)
+  const userRepo = connection.em.getRepository(User)
 
   const [user] = createFakeUsers(1)
 
+  await userRepo.persistAndFlush(user)
+
   t.context.db = connection
-  t.context.user = await userRepo.save(user)
+  t.context.user = user
 })
 
-test("storyAdd creates a new story", async t => {
+test<Macro>("storyAdd creates a new story", withDatabase, async t => {
   const [{title, description}] = createFakeStories(1)
   const {user} = t.context
 
@@ -129,144 +133,181 @@ test("storyAdd creates a new story", async t => {
   t.is(actual.title, title)
   t.is(actual.description, description)
   t.deepEqual(
-    actual.tags, [], "Tags must be resolved as an empty array by default"
+    actual.tags as any as Tag[],
+
+    [],
+
+    "Tags must be resolved as an empty array by default"
   )
 })
 
-test("storyAdd allows to assing tags to created story", async t => {
-  const [{title, description}] = createFakeStories(1)
-  const {user} = t.context
+test<Macro>(
+  "storyAdd allows to assing tags to created story",
 
-  const expected = [
-    "Slice of Life",
-    "Sunset Shimmer",
-    "Twilight Sparkle",
-    "Princess Celestia"
-  ]
+  withDatabase,
 
-  const {
-    storyAdd: actual
-  } = await graphql<StoryAddResult, StoryAddVariables>({
-    source: storyAdd,
-    variableValues: {story: {title, description, tags: expected}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+  async t => {
+    const [{title, description}] = createFakeStories(1)
+    const {user} = t.context
 
-  // Sort tags here to make sure that arrays are deep equal
-  // because TypeORM may persist them in a wrong order
-  t.deepEqual(actual.tags!.map(({name}) => name).sort(), expected.sort())
-})
+    const expected = [
+      "Slice of Life",
+      "Sunset Shimmer",
+      "Twilight Sparkle",
+      "Princess Celestia"
+    ]
 
-test("storyAdd has isDraft field set to true by default", async t => {
-  const [{title, description}] = createFakeStories(1)
-  const {user} = t.context
+    const {
+      storyAdd: actual
+    } = await graphql<StoryAddResult, StoryAddVariables>({
+      source: storyAdd,
+      variableValues: {story: {title, description, tags: expected}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
 
-  const {
-    storyAdd: actual
-  } = await graphql<StoryAddResult, StoryAddVariables>({
-    source: storyAdd,
-    variableValues: {story: {title, description}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+    // Sort tags here to make sure that arrays are deep equal
+    // because TypeORM may persist them in a wrong order
+    t.deepEqual(
+      (actual.tags! as any as Tag[]).map(({name}) => name).sort(),
 
-  t.true(actual.isDraft)
-})
+      expected.sort()
+    )
+  }
+)
 
-test("storyAdd has isFinished field set to false by default", async t => {
-  const [{title, description}] = createFakeStories(1)
-  const {user} = t.context
+test<Macro>(
+  "storyAdd has isDraft field set to true by default",
 
-  const {
-    storyAdd: actual
-  } = await graphql<StoryAddResult, StoryAddVariables>({
-    source: storyAdd,
-    variableValues: {story: {title, description}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+  withDatabase,
 
-  t.false(actual.isFinished)
-})
+  async t => {
+    const [{title, description}] = createFakeStories(1)
+    const {user} = t.context
 
-test("storyUpdate allows to update title of the story", async t => {
-  const expected = faker.lorem.words(3)
+    const {
+      storyAdd: actual
+    } = await graphql<StoryAddResult, StoryAddVariables>({
+      source: storyAdd,
+      variableValues: {story: {title, description}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
 
-  const {user, db} = t.context
+    t.true(actual.isDraft)
+  }
+)
 
-  const [story] = createFakeStories(1)
+test(
+  "storyAdd has isFinished field set to false by default",
 
-  story.publisher = user
+  withDatabase,
 
-  await db.getCustomRepository(StoryRepo).save(story)
+  async t => {
+    const [{title, description}] = createFakeStories(1)
+    const {user} = t.context
 
-  const {
-    storyUpdate: actual
-  } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
-    source: storyUpdate,
-    variableValues: {story: {id: story.id, title: expected}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+    const {
+      storyAdd: actual
+    } = await graphql<StoryAddResult, StoryAddVariables>({
+      source: storyAdd,
+      variableValues: {story: {title, description}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
 
-  t.is(actual.title, expected)
-})
+    t.false(actual.isFinished)
+  }
+)
 
-test("storyUpdate allows to update description of the story", async t => {
-  const expected = faker.lorem.paragraph()
+test(
+  "storyUpdate allows to update title of the story",
 
-  const {user, db} = t.context
+  withDatabase,
 
-  const [story] = createFakeStories(1)
+  async t => {
+    const expected = faker.lorem.words(3)
 
-  story.publisher = user
+    const {user, db} = t.context
 
-  await db.getCustomRepository(StoryRepo).save(story)
+    const [story] = createFakeStories(1)
 
-  const {
-    storyUpdate: actual
-  } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
-    source: storyUpdate,
-    variableValues: {story: {id: story.id, description: expected}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+    story.publisher = user
 
-  t.is(actual.description, expected)
-})
+    await db.em.getRepository(Story).persistAndFlush(story)
 
-test("storyUpdate resets tags when the tags argument is null", async t => {
-  const {user, db} = t.context
+    const {
+      storyUpdate: actual
+    } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+      source: storyUpdate,
+      variableValues: {story: {id: story.id, title: expected}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
 
-  const [story] = createFakeStories(1)
+    t.is(actual.title, expected)
+  }
+)
 
-  const tags = [
-    "Sweetie Belle",
-    "Scootaloo",
-    "Apple Bloom",
-    "Adventure"
-  ].map<Tag>(name => {
-    const tag = new Tag()
+test<Macro>(
+  "storyUpdate allows to update description of the story",
 
-    tag.name = name
+  withDatabase,
 
-    return tag
-  })
+  async t => {
+    const expected = faker.lorem.paragraph()
 
-  story.publisher = user
-  story.tags = tags
+    const {user, db} = t.context
 
-  await db.getCustomRepository(TagRepo).save(tags)
-  await db.getCustomRepository(StoryRepo).save(story)
+    const [story] = createFakeStories(1)
 
-  const {
-    storyUpdate: actual
-  } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
-    source: storyUpdate,
-    variableValues: {story: {id: story.id, tags: null}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+    story.publisher = user
 
-  t.deepEqual(actual.tags, [])
-})
+    await db.em.getRepository(Story).persistAndFlush(story)
 
-test("storyUpdate allows to update tags", async t => {
+    const {
+      storyUpdate: actual
+    } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+      source: storyUpdate,
+      variableValues: {story: {id: story.id, description: expected}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
+
+    t.is(actual.description, expected)
+  }
+)
+
+test(
+  "storyUpdate resets tags when the tags argument is null",
+
+  withDatabase,
+
+  async t => {
+    const {user, db} = t.context
+
+    const [story] = createFakeStories(1)
+
+    const tags = [
+      "Sweetie Belle",
+      "Scootaloo",
+      "Apple Bloom",
+      "Adventure"
+    ].map<Tag>(name => new Tag(name))
+
+    story.publisher = user
+    story.tags.set(tags)
+
+    await db.em.getRepository(Story).persistAndFlush(story)
+
+    const {
+      storyUpdate: actual
+    } = await graphql<StoryUpdateResult, StoryUpdateVariables>({
+      source: storyUpdate,
+      variableValues: {story: {id: story.id, tags: null}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
+
+    t.deepEqual((actual.tags as any as Tag[]), [])
+  }
+)
+
+test<Macro>("storyUpdate allows to update tags", withDatabase, async t => {
   const expected = ["Big Macintosh", "Sugar Belle", "Romance"]
 
   const {user, db} = t.context
@@ -277,19 +318,12 @@ test("storyUpdate allows to update tags", async t => {
     "Big Macintosh",
     "Marble Pie",
     "Romance"
-  ].map<Tag>(name => {
-    const tag = new Tag()
-
-    tag.name = name
-
-    return tag
-  })
+  ].map<Tag>(name => new Tag(name))
 
   story.publisher = user
-  story.tags = tags
+  story.tags.set(tags)
 
-  await db.getCustomRepository(TagRepo).save(tags)
-  await db.getCustomRepository(StoryRepo).save(story)
+  await db.em.getRepository(Story).persistAndFlush(story)
 
   const {
     storyUpdate: actual
@@ -299,11 +333,17 @@ test("storyUpdate allows to update tags", async t => {
     contextValue: createFakeContext({session: {userId: user.id}})
   })
 
-  t.deepEqual(actual.tags!.map(({name}) => name).sort(), expected.sort())
+  t.deepEqual(
+    (actual.tags! as any as Tag[]).map(({name}) => name).sort(),
+
+    expected.sort()
+  )
 })
 
-test(
+test<Macro>(
   "storyUpdate will not update isFinished field when there's no chapters",
+
+  withDatabase,
 
   async t => {
     const {user, db} = t.context
@@ -313,7 +353,7 @@ test(
     story.publisher = user
     story.isFinished = false
 
-    await db.getCustomRepository(StoryRepo).save(story)
+    await db.em.getRepository(Story).persistAndFlush(story)
 
     const {
       storyUpdate: actual
@@ -327,8 +367,10 @@ test(
   }
 )
 
-test(
+test<Macro>(
   "storyUpdate will update isFinished field when there's story has chapters",
+
+  withDatabase,
 
   async t => {
     const {user, db} = t.context
@@ -343,8 +385,8 @@ test(
     chapter.story = story
     chapter.number = 1
 
-    await db.getCustomRepository(StoryRepo).save(story)
-    await db.getCustomRepository(ChapterRepo).save(chapter)
+    await db.em.getRepository(Story).persistAndFlush(story)
+    await db.em.getRepository(Chapter).persistAndFlush(chapter)
 
     const {
       storyUpdate: actual
@@ -358,29 +400,35 @@ test(
   }
 )
 
-test("storyUpdate throws an error when given story doesn't exists", async t => {
-  const {user} = t.context
+test<Macro>(
+  "storyUpdate throws an error when given story doesn't exists",
 
-  const trap = () => graphql<never, StoryUpdateVariables>({
-    source: storyUpdate,
-    variableValues: {story: {id: 420, description: "Not goanna happen."}},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+  withDatabase,
 
-  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
-  const [{originalError}] = graphQLErrors
+  async t => {
+    const {user} = t.context
 
-  t.is((originalError as HttpError).statusCode, 400)
-})
+    const trap = () => graphql<never, StoryUpdateVariables>({
+      source: storyUpdate,
+      variableValues: {story: {id: 420, description: "Not goanna happen."}},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
 
-test("storyRemove removes given story", async t => {
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 400)
+  }
+)
+
+test<Macro>("storyRemove removes given story", withDatabase, async t => {
   const {user, db} = t.context
 
   const [story] = createFakeStories(1)
 
   story.publisher = user
 
-  await db.getCustomRepository(StoryRepo).save(story)
+  await db.em.getRepository(Story).persistAndFlush(story)
 
   const {
     storyRemove: actual
@@ -393,20 +441,26 @@ test("storyRemove removes given story", async t => {
   t.is(Number(actual), story.id)
 })
 
-test("storyRemove throws an error when given story doesn't exists", async t => {
-  const {user} = t.context
+test<Macro>(
+  "storyRemove throws an error when given story doesn't exists",
 
-  const trap = () => graphql<never, StoryRemoveVariables>({
-    source: storyRemove,
-    variableValues: {storyId: 420},
-    contextValue: createFakeContext({session: {userId: user.id}})
-  })
+  withDatabase,
 
-  const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
-  const [{originalError}] = graphQLErrors
+  async t => {
+    const {user} = t.context
 
-  t.is((originalError as HttpError).statusCode, 400)
-})
+    const trap = () => graphql<never, StoryRemoveVariables>({
+      source: storyRemove,
+      variableValues: {storyId: 420},
+      contextValue: createFakeContext({session: {userId: user.id}})
+    })
+
+    const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
+    const [{originalError}] = graphQLErrors
+
+    t.is((originalError as HttpError).statusCode, 400)
+  }
+)
 
 test.after.always(async () => {
   await cleanupConnection()

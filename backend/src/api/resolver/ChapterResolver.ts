@@ -19,8 +19,8 @@ import {BaseContext} from "app/context/BaseContext"
 
 import {ChapterPage, ChapterPageParams} from "api/type/chapter/ChapterPage"
 
-import {Chapter} from "entity/Chapter"
-import {Story} from "entity/Story"
+import {Chapter, ChapterFilters} from "entity/Chapter"
+import {Story, StoryFilters} from "entity/Story"
 
 import ChapterPageArgs from "api/args/ChapterPageArgs"
 
@@ -51,7 +51,11 @@ class ChapterResolver {
   ): Promise<Chapter | null> {
     const chapterRepo = this._orm.em.getRepository(Chapter)
 
-    return chapterRepo.findOne({isDraft: false, number, story: {id: storyId}})
+    return chapterRepo.findOne(
+      {number, story: {id: storyId}},
+
+      {filters: [ChapterFilters.PUBLISHED]}
+    )
   }
 
   @Query(() => ChapterPage, {
@@ -66,11 +70,11 @@ class ChapterResolver {
     const [rows, count] = await chapterRepo.findAndCount(
       {
         story: {id: storyId},
-        isDraft: false
       },
       {
         limit,
-        offset
+        offset,
+        filters: [StoryFilters.PUBLISHED]
       }
     )
 
@@ -90,7 +94,7 @@ class ChapterResolver {
     const chapterRepo = this._orm.em.getRepository(Chapter)
     const storyRepo = this._orm.em.getRepository(Story)
 
-    const story = await storyRepo.findOne(id)
+    const story = await storyRepo.findOne({id})
 
     if (!story) {
       ctx.throw(400)
@@ -122,7 +126,7 @@ class ChapterResolver {
   ): Promise<Chapter> {
     const chapterRepo = this._orm.em.getRepository(Chapter)
 
-    const chapter = await chapterRepo.findOne(id)
+    const chapter = await chapterRepo.findOne({id})
 
     if (!chapter) {
       ctx.throw(400)
@@ -147,7 +151,15 @@ class ChapterResolver {
   ): Promise<number> {
     const chapterRepo = this._orm.em.getRepository(Chapter)
 
-    const chapter = await chapterRepo.findOne(chapterId, {populate: ["story"]})
+    const chapter = await chapterRepo.findOne(
+      {
+        id: chapterId
+      },
+
+      {
+        populate: ["story"]
+      }
+    )
 
     if (!chapter) {
       ctx.throw(400)

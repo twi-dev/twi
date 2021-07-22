@@ -11,7 +11,7 @@ export interface ConnectOptions {
   synchronize?: boolean
   dropSchema?: boolean
   database?: string,
-  logger?: Function
+  logging?: boolean
 }
 
 async function loadFromGlob<T extends object>(
@@ -34,7 +34,12 @@ async function loadFromGlob<T extends object>(
 /**
  * Creates a new connection to database
  */
-export async function connect({database}: ConnectOptions = {}) {
+export async function connect({
+  database,
+  synchronize,
+  dropSchema,
+  logging
+}: ConnectOptions = {}) {
   const subscribers = await loadFromGlob<Constructable<EventSubscriber>>(
     [process.env.DATABASE_SUBSCRIBERS!]
   )
@@ -51,19 +56,23 @@ export async function connect({database}: ConnectOptions = {}) {
     subscribers: subscribers.map(Subscriber => new Subscriber()),
     entities: entities as any[],
     implicitTransactions: true,
-    debug: true,
+    debug: logging,
 
     context: () => storage.getStore()
   })
 
-  // TODO: Remove this once I finish the MVP
-  if (process.env.NODE_ENV !== "production") {
-    const generator = orm.getSchemaGenerator()
+  Container.set<MikroORM>(MikroORM, orm)
 
-    await generator.updateSchema(true, true, false)
+  const generator = orm.getSchemaGenerator()
+
+  if (dropSchema) {
+    await generator.dropSchema()
   }
 
-  Container.set<MikroORM>(MikroORM, orm)
+  // TODO: Remove this once I finish the MVP
+  if (process.env.NODE_ENV !== "production" || synchronize === true) {
+    await generator.updateSchema(true, true, false)
+  }
 
   return orm
 }

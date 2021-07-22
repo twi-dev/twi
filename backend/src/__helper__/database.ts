@@ -1,10 +1,11 @@
 import {customAlphabet} from "nanoid/async"
 import {urlAlphabet} from "nanoid"
-import {Connection} from "typeorm"
 
 import mysql from "mysql2/promise"
 
-import {connect, disconnect} from "db"
+import {connect, disconnect} from "app/db/connection"
+
+// TODO: I should probably move all of this setup to a macros and execute before and after hooks in their own unique database context
 
 const PREFIX = "twi-test__"
 
@@ -32,7 +33,7 @@ const createNativeConnection = () => mysql.createConnection({
  *
  * @returns TypeORM Connection instance
  */
-export async function setupConnection(): Promise<Connection> {
+export async function setupConnection(logging?: boolean) {
   name = `${PREFIX}${await createSuffix()}`
 
   const connection = await createNativeConnection()
@@ -41,7 +42,7 @@ export async function setupConnection(): Promise<Connection> {
   await connection.end()
 
   // Create the actual connection
-  return connect({database: name, synchronize: true})
+  return connect({database: name, synchronize: true, logging})
 }
 
 /**

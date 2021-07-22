@@ -5,7 +5,7 @@ interface CreateFakeEntitiesFunction<T extends BaseEntity> {
 }
 
 interface EntityConstructor<T extends BaseEntity> {
-  new (): T
+  new (...args: any[]): T
 }
 
 function createFakeEntities<T extends BaseEntity>(

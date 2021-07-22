@@ -11,6 +11,6 @@ module.exports = {
   require: [
     "ts-node/register/transpile-only",
     "reflect-metadata",
-    "./src/config.ts"
+    "./src/app/config.ts"
   ]
 }
