@@ -81,7 +81,9 @@ class StoryResolver {
   ): Promise<Story | null> {
     const storyRepo = this._orm.em.getRepository(Story)
 
-    return storyRepo.findOneByIdOrSlug(idOrSlug)
+    return storyRepo.findOneByIdOrSlug(idOrSlug, {
+      filters: [StoryFilters.PUBLISHED]
+    })
   }
 
   @Mutation(() => Story, {description: "Creates a new story"})
