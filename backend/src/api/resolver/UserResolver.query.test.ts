@@ -313,4 +313,6 @@ test<Macro>(
   }
 )
 
-test.after.always(cleanupConnection)
+test.after.always(async () => {
+  await cleanupConnection()
+})
