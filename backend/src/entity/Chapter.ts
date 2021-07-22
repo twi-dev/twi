@@ -18,7 +18,7 @@ export class Chapter extends BaseEntitySoftRemovable {
   @Property()
   title!: string
 
-  @Field(() => String)
+  @Field(() => String, {nullable: true})
   @Property({columnType: "text", nullable: true})
   description!: string | null
 

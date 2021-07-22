@@ -8,7 +8,7 @@ import {Context} from "koa"
 const NotFound: MiddlewareFn<Context> = async ({context, info}, next) => {
   const result = await next()
 
-  if (result === undefined) {
+  if (result === null) {
     context.throw(404, `Unable to find "${info.fieldName}"`)
   }
 
