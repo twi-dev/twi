@@ -1,4 +1,4 @@
-import {ExecutionContext, UntitledMacro} from "ava"
+import {ExecutionContext, UntitledMacro, ImplementationResult} from "ava"
 import {MikroORM} from "@mikro-orm/core"
 
 import storage from "app/db/storage"
@@ -11,13 +11,19 @@ export interface DatabaseContext {
 }
 
 interface WithDatabaseCallback<C extends object> {
-  (t: C): unknown
+  (t: C): ImplementationResult
 }
 
 export type WithDatabaseMacro<T extends object = {}> = [
   WithDatabaseCallback<MaybeContext<T & DatabaseContext>>
 ]
 
+/**
+ * Runs test implementation inside of it's own database context.
+ *
+ * @param t Test context (will be assigned by AVA)
+ * @param implementation Test implementation
+ */
 export const withDatabase: UntitledMacro<
   WithDatabaseMacro<any>,
   DatabaseContext
