@@ -1,10 +1,8 @@
-import {EntityRepository} from "@mikro-orm/mysql"
 import {FindOneOptions, Populate} from "@mikro-orm/core"
-import {Service} from "typedi"
+import {EntityRepository} from "@mikro-orm/mysql"
 
 import {Story} from "entity/Story"
 
-@Service()
 export class StoryRepo extends EntityRepository<Story> {
   /**
    * Finds the first story that matches given `id` or `slug`

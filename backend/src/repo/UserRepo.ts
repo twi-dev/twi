@@ -3,7 +3,6 @@ import {cpus} from "os"
 import {EntityRepository} from "@mikro-orm/mysql"
 import {FindOneOptions, Populate} from "@mikro-orm/core"
 import {hash, verify, argon2id} from "argon2"
-import {Service} from "typedi"
 
 import {User} from "entity/User"
 
@@ -15,7 +14,6 @@ export const hashPassword = (password: string) => hash(password, {
   parallelism: cpus().length
 })
 
-@Service()
 export class UserRepo extends EntityRepository<User> {
   /**
    * Finds a user by their email or login.
