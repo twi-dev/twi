@@ -10,7 +10,10 @@ export class Category extends BaseEntitySoftRemovable {
   @OneToMany(() => Tag, tag => tag.category)
   tags = new Collection<Tag, Category>(this)
 
-  @Field()
+  /**
+   * Category name.
+   */
+  @Field({description: "Category name."})
   @Property({unique: true})
   name!: string
 

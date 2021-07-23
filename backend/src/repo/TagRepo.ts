@@ -6,6 +6,11 @@ import {Tag} from "entity/Tag"
 
 @Service()
 export class TagRepo extends EntityRepository<Tag> {
+  /**
+   * Finds or creates tags based on given list of tags names.
+   *
+   * @param list A list of the tags names.
+   */
   async findOrCreate(list: string[]): Promise<Tag[]> {
     const found = await this.find({name: {$in: list}})
 

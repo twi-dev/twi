@@ -36,42 +36,76 @@ export enum StoryFilters {
 export class Story extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: StoryRepo
 
+  /**
+   * Returns the user who published the story.
+   */
   @Field(() => User)
   @ManyToOne({eager: true, nullable: false})
   publisher!: User
 
+  /**
+   * Story cover.
+   */
   @Field(() => File, {nullable: true})
   @OneToOne({entity: () => File, nullable: true, eager: true})
   cover!: File | null
 
+  /**
+   * List of the chapters associated with the story
+   */
   @Field(() => [Chapter], {nullable: "items"})
   @OneToMany(() => Chapter, chapter => chapter.story)
   chapters = new Collection<Chapter, Story>(this)
 
+  /**
+   * List of the story tags.
+   */
   @Field(() => [Tag], {nullable: "items"})
   @ManyToMany(() => Tag, undefined, {eager: true})
   tags = new Collection<Tag, Story>(this)
 
+  /**
+   * Story title.
+   */
   @Field()
   @Property()
   title!: string
 
+  /**
+   * Story description.
+   */
   @Field()
   @Property({columnType: "text"})
   description!: string
 
+  /**
+   * URL-friendly story identifier.
+   */
   @Field()
   @Property({unique: true})
   slug!: string
 
+  /**
+   * Indicates if the story is hidden from anyone to read.
+   */
   @Field(() => Boolean)
   @Property()
   isDraft: boolean = true
 
-  @Field(() => Boolean)
+  /**
+   * Indicates if the story finished.
+   * It must have at least one chapter to be marked as finished.
+   */
+  @Field(() => Boolean, {
+    description: "Indicates if the story is finished. "
+        + "It **must** have at least one chapter to be marked as finished."
+  })
   @Property()
   isFinished: boolean = false
 
+  /**
+   * An amount of chapters within the story.
+   */
   @Property({type: "tinyint", unsigned: true})
   chaptersCount: number = 0
 

@@ -41,22 +41,37 @@ export class User extends BaseEntitySoftRemovable {
   @Matches(LOGIN_PATTERN)
   login!: string
 
+  /**
+   * Email address (private),
+   */
   @Field()
   @Property({unique: true})
   @IsEmail()
   email!: string
 
+  /**
+   * Password (will be hashed once the user is created & persisted).
+   */
   @Property()
   password!: string
 
+  /**
+   * Indicates which role user were assigned to.
+   */
   @Field(() => String)
   @Enum(() => UserRoles)
   role: UserRoles = UserRoles.REGULAR
 
+  /**
+   * Indecates user's account status.
+   */
   @Field(() => String)
   @Enum(() => UserStatuses)
   status: UserStatuses = UserStatuses.INACTIVE
 
+  /**
+   * User avatar,
+   */
   @Field(() => File, {nullable: true})
   @OneToOne({entity: () => File, nullable: true, eager: true})
   avatar!: File | null

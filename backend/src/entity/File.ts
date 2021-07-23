@@ -5,7 +5,7 @@ import {ObjectType, Field} from "type-graphql"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 
-export interface FileInterface {
+export interface FileInput {
   /**
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.
@@ -30,12 +30,11 @@ export interface FileInterface {
 
 @ObjectType()
 @Entity()
-export class File extends BaseEntitySoftRemovable implements FileInterface {
+export class File extends BaseEntitySoftRemovable implements FileInput {
   /**
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.
    */
-  @Field()
   @Property({unique: true})
   key!: string
 
@@ -49,18 +48,18 @@ export class File extends BaseEntitySoftRemovable implements FileInterface {
   /**
    * SHA 512 hash based on file's content.
    */
-  @Field()
+  @Field({description: "SHA 512 hash based on file's content."})
   @Property({columnType: "char(128)"})
   hash!: string
 
   /**
    * MIME type of the file.
    */
-  @Field()
+  @Field({description: "MIME type of the file."})
   @Property()
   mime!: string
 
-  constructor(file: FileInterface) {
+  constructor(file: FileInput) {
     super()
 
     this.key = file.key
@@ -72,7 +71,9 @@ export class File extends BaseEntitySoftRemovable implements FileInterface {
   /**
    * Full address of the file on static server.
    */
-  @Field(() => String)
+  @Field(() => String, {
+    description: "Full address of the file on static server."
+  })
   get url(): string {
     return new URL(this.key, process.env.SERVER_ADDRESS).toString()
   }

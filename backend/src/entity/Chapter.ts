@@ -17,23 +17,42 @@ export class Chapter extends BaseEntitySoftRemovable {
   @ManyToOne(() => Story)
   story!: Story
 
-  @Field(() => Int)
+  /**
+   * Chapter number within the story.
+   *
+   * The value will be "null" when the chapter is unlisted or soft-removed.
+   */
+  @Field(() => Int, {description: "Chapter number within the story."})
   @Property({columnType: "smallint", unsigned: true, nullable: true})
   number!: number | null
 
-  @Field()
+  /**
+   * Chapter title.
+   */
+  @Field({description: "Chapter title."})
   @Property()
   title!: string
 
-  @Field(() => String, {nullable: true})
+  /**
+   * Chapter description.
+   */
+  @Field(() => String, {nullable: true, description: "Chapter description."})
   @Property({columnType: "text", nullable: true})
   description!: string | null
 
-  @Field()
+  /**
+   * Chapter text.
+   */
+  @Field({description: "Chapter text."})
   @Property({columnType: "mediumtext"})
   text!: string
 
-  @Field(() => Boolean)
+  /**
+   * Indicates if the chapter is hidden from anyone to read.
+   */
+  @Field(() => Boolean, {
+    description: "Indicates if the chapter is hidden from anyone to read."
+  })
   @Property()
   isDraft: boolean = true
 }

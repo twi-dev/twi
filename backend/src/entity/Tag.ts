@@ -18,17 +18,29 @@ import {Category} from "./Category"
 export class Tag extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: TagRepo
 
+  /**
+   * Category assigned to the tag.
+   */
   @ManyToOne(() => Category, {nullable: true})
   category!: Category | null
 
+  /**
+   * Name of the tag.
+   */
   @Field()
   @Property({unique: true})
   name!: string
 
+  /**
+   * URL-firendly representation of the tag's name.
+   */
   @Field()
   @Property({unique: true})
   slug!: string
 
+  /**
+   * An optional tag description.
+   */
   @Field(() => String, {nullable: true})
   @Property({columnType: "text", nullable: true})
   description!: string | null

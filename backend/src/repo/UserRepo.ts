@@ -1,6 +1,7 @@
 import {cpus} from "os"
 
 import {EntityRepository} from "@mikro-orm/mysql"
+import {FindOneOptions, Populate} from "@mikro-orm/core"
 import {hash, verify, argon2id} from "argon2"
 import {Service} from "typedi"
 
@@ -17,10 +18,29 @@ export const hashPassword = (password: string) => hash(password, {
 @Service()
 export class UserRepo extends EntityRepository<User> {
   /**
-   * Finds a user by their email or login
+   * Finds a user by their email or login.
+   *
+   * @param emailOrLogin An `email` or `login` to search a user against to.
    */
-  async findOneByEmailOrLogin(emailOrLogin: string) {
-    return this.findOne({$or: [{login: emailOrLogin}, {email: emailOrLogin}]})
+  async findOneByEmailOrLogin<P extends Populate<User> = Populate<User>>(
+    emailOrLogin: string,
+    populate?: FindOneOptions<User, P>
+  ): Promise<User | null> {
+    return this.findOne(
+      {
+        $or: [
+          {
+            login: emailOrLogin
+          },
+
+          {
+            email: emailOrLogin
+          }
+        ]
+      },
+
+      populate
+    )
   }
 
   /**
