@@ -7,7 +7,7 @@ import {Tag} from "entity/Tag"
 @Service()
 export class TagRepo extends EntityRepository<Tag> {
   async findOrCreate(list: string[]): Promise<Tag[]> {
-    const found = await this.find({name: {$in: list}}, {fields: ["name"]})
+    const found = await this.find({name: {$in: list}})
 
     const names = found.map(({name}) => name.toLowerCase())
 

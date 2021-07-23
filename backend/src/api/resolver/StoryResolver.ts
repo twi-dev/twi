@@ -51,7 +51,7 @@ class StoryResolver {
       return []
     }
 
-    return tags
+    return Array.isArray(tags) ? tags : tags.getItems()
   }
 
   @Query(() => StoryPage)
