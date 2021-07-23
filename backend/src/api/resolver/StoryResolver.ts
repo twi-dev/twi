@@ -3,20 +3,17 @@ import {join} from "path"
 import {MikroORM, wrap} from "@mikro-orm/core"
 import {Service, Inject} from "typedi"
 import {
-  FieldResolver,
   Resolver,
   Query,
   Mutation,
   Ctx,
   Arg,
   Args,
-  Root,
   Authorized,
   UseMiddleware,
   ID
 } from "type-graphql"
 import {ParameterizedContext} from "koa"
-import {isEmpty} from "lodash"
 
 import {Story, StoryFilters} from "entity/Story"
 import {File} from "entity/File"
@@ -44,15 +41,6 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
 class StoryResolver {
   @Inject()
   private _orm!: MikroORM
-
-  @FieldResolver(() => [Tag], {nullable: "items"})
-  tags(@Root() {tags}: Story) {
-    if (isEmpty(tags)) {
-      return []
-    }
-
-    return Array.isArray(tags) ? tags : tags.getItems()
-  }
 
   @Query(() => StoryPage)
   async stories(
