@@ -6,9 +6,9 @@ import serve from "koa-static"
 
 import waterfall from "helper/array/waterfall"
 
-import ormContext from "middleware/ormContext"
-import multipart from "middleware/multipart"
-import session from "middleware/session"
+import ormContext from "app/middleware/ormContext"
+import multipart from "app/middleware/multipart"
+import session from "app/middleware/session"
 import getRouter from "app/router"
 
 import {FILES_ROOT} from "helper/util/file"
