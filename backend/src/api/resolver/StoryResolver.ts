@@ -62,7 +62,7 @@ class StoryResolver {
     return {rows, count, page, limit, offset}
   }
 
-  @Query(() => Story, {description: "Finds a story by given id or slug"})
+  @Query(() => Story, {description: "Finds a story by given id or slug."})
   @UseMiddleware(NotFound)
   async story(
     @Arg("idOrSlug") idOrSlug: string
@@ -74,7 +74,7 @@ class StoryResolver {
     })
   }
 
-  @Mutation(() => Story, {description: "Creates a new story"})
+  @Mutation(() => Story, {description: "Creates a new story."})
   @Authorized()
   @UseMiddleware(GetViewer)
   async storyAdd(
