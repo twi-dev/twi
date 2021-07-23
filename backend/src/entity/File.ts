@@ -1,5 +1,3 @@
-import {URL} from "url"
-
 import {Entity, Property} from "@mikro-orm/core"
 import {ObjectType, Field} from "type-graphql"
 
@@ -66,15 +64,5 @@ export class File extends BaseEntitySoftRemovable implements FileInput {
     this.name = file.name
     this.hash = file.hash
     this.mime = file.mime
-  }
-
-  /**
-   * Full address of the file on static server.
-   */
-  @Field(() => String, {
-    description: "Full address of the file on static server."
-  })
-  get url(): string {
-    return new URL(this.key, process.env.SERVER_ADDRESS).toString()
   }
 }
