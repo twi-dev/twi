@@ -196,7 +196,7 @@ test<Macro>(
   }
 )
 
-test(
+test<Macro>(
   "storyAdd has isFinished field set to false by default",
 
   withDatabase,
@@ -217,7 +217,7 @@ test(
   }
 )
 
-test(
+test<Macro>(
   "storyUpdate allows to update title of the story",
 
   withDatabase,
@@ -273,7 +273,7 @@ test<Macro>(
   }
 )
 
-test(
+test<Macro>(
   "storyUpdate resets tags when the tags argument is null",
 
   withDatabase,

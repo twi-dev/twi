@@ -215,7 +215,7 @@ test<Macro>(
   }
 )
 
-test(
+test<Macro>(
   "users returns true in a hasNext field when there's more pages left",
 
   withDatabase,
