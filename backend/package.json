@@ -56,11 +56,9 @@
     "@mikro-orm/cli": "^4.5.7",
     "@mikro-orm/core": "^4.5.7",
     "@mikro-orm/mysql": "^4.5.7",
-    "@mikro-orm/reflection": "^4.5.7",
     "@next/env": "11.0.1",
     "@sindresorhus/slugify": "1.1.0",
     "apollo-server-koa": "2.25.2",
-    "apollo-server-plugin-base": "^3.0.0",
     "argon2": "0.28.2",
     "class-validator": "0.13.1",
     "date-fns": "2.22.1",
@@ -83,8 +81,6 @@
     "tslib": "2.3.0",
     "type-graphql": "1.1.1",
     "type-graphql-dataloader": "0.4.0",
-    "typedi": "0.10.0",
-    "typeorm": "0.2.34",
-    "typeorm-typedi-extensions": "0.4.1"
+    "typedi": "0.10.0"
   }
 }
