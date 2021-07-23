@@ -38,7 +38,7 @@ import GetViewer from "api/middleware/GetViewer"
 type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 @Service()
-@Resolver()
+@Resolver(() => User)
 class UserResolver {
   @Inject()
   private _orm!: MikroORM

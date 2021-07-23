@@ -14,7 +14,7 @@ import Viewer from "api/type/user/Viewer"
 type Context = ParameterizedContext<DefaultState, BaseContext>
 
 @Service()
-@Resolver()
+@Resolver(() => User)
 class AuthResolver {
   @Inject()
   private _orm!: MikroORM

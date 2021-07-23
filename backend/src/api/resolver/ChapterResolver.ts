@@ -33,7 +33,7 @@ import GetViewer from "api/middleware/GetViewer"
 type Context = ParameterizedContext<StateWithViewer, BaseContext>
 
 @Service()
-@Resolver()
+@Resolver(() => Chapter)
 class ChapterResolver {
   @Inject()
   private _orm!: MikroORM
