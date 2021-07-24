@@ -191,7 +191,10 @@ class ChapterResolver {
       },
 
       {
-        populate: ["story"]
+        populate: ["story"],
+        filters: {
+          softRemoved: false
+        }
       }
     )
 
