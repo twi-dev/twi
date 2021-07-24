@@ -103,7 +103,7 @@ export class Story extends BaseEntitySoftRemovable {
    */
   @Field(() => Boolean, {
     description: "Indicates if the story is finished. "
-        + "It **must** have at least one chapter to be marked as finished."
+      + "It **must** have at least one chapter to be marked as finished."
   })
   @Property()
   isFinished: boolean = false
