@@ -47,7 +47,7 @@ class ChapterResolver {
     storyId: number,
 
     @Arg("number", () => Int)
-    number: number,
+    number: number
   ): Promise<Chapter | null> {
     const chapterRepo = this._orm.em.getRepository(Chapter)
 
@@ -69,7 +69,7 @@ class ChapterResolver {
 
     const [rows, count] = await chapterRepo.findAndCount(
       {
-        story: {id: storyId},
+        story: {id: storyId}
       },
       {
         limit,
@@ -167,9 +167,44 @@ class ChapterResolver {
 
     chapter.story.chaptersCount--
 
-    await chapterRepo.removeAndFlush(chapter)
+    await chapterRepo.softRemoveAndFlush(chapter)
 
     return chapterId
+  }
+
+  @Mutation(() => Chapter, {
+    description: "Restores previously soft removed chapter."
+  })
+  @Authorized()
+  async storyChapterRestore(
+    @Arg("chapterId", () => ID)
+    chapterId: number,
+
+    @Ctx()
+    ctx: Context
+  ): Promise<Chapter> {
+    const chapterRepo = this._orm.em.getRepository(Chapter)
+
+    const chapter = await chapterRepo.findOne(
+      {
+        id: chapterId
+      },
+
+      {
+        populate: ["story"]
+      }
+    )
+
+    if (!chapter) {
+      ctx.throw(400)
+    }
+
+    chapter.story.chaptersCount++
+    chapter.number = chapter.story.chaptersCount
+
+    await chapterRepo.restoreAndFlush(chapter)
+
+    return chapter
   }
 }
 

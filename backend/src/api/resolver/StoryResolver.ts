@@ -133,7 +133,7 @@ class StoryResolver {
     return story
   }
 
-  @Mutation(() => ID, {description: "Removed story with given ID."})
+  @Mutation(() => ID, {description: "Removes story with given ID."})
   @Authorized()
   async storyRemove(
     @Arg("storyId", () => ID)
@@ -151,6 +151,31 @@ class StoryResolver {
     }
 
     return storyRepo.softRemoveAndFlush(story).then(() => storyId)
+  }
+
+  @Mutation(() => Story, {
+    description: "Restores previously soft removed story."
+  })
+  @Authorized()
+  async storyRestore(
+    @Arg("storyId", () => ID)
+    storyId: number,
+
+    @Ctx()
+    ctx: Context
+  ): Promise<Story> {
+    const storyRepo = this._orm.em.getRepository(Story)
+
+    const story = await storyRepo.findOne({id: storyId})
+
+    if (!story) {
+      ctx.throw(400)
+    }
+
+    // TODO: Check user's permissions first
+    await storyRepo.restoreAndFlush(story)
+
+    return story
   }
 
   @Mutation(() => File, {description: "Updates story's cover."})

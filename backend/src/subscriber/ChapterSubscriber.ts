@@ -8,10 +8,12 @@ export class ChapterSubscriber implements EventSubscriber<Chapter> {
   }
 
   async beforeUpdate(event: EventArgs<Chapter>) {
-    const {entity: chapter} = event
+    const {entity: chapter, changeSet} = event
 
-    // Unlisted chapters does not have their number.
-    if (chapter.isDraft === true) {
+    // Reset chapter.number column to null when:
+    // 1. The chapter marked as unlisted.
+    // 2. The chapter marked to soft removing.
+    if (chapter.isDraft === true || changeSet?.payload.deletedAt) {
       chapter.number = null
     }
   }
