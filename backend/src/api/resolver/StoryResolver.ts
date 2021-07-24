@@ -185,7 +185,6 @@ class StoryResolver {
       const updated = wrap(cover).assign({key: path, hash, name, mime} as File)
 
       await fileRepo.persistAndFlush(cover)
-
       await removeFile(oldPath)
 
       return updated
