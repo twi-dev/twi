@@ -1,7 +1,7 @@
 import {Entity, Property} from "@mikro-orm/core"
 import {ObjectType, Field} from "type-graphql"
 
-import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
+import {BaseEntityWithDates} from "./BaseEntityWithDates"
 
 export interface FileInput {
   /**
@@ -28,7 +28,7 @@ export interface FileInput {
 
 @ObjectType()
 @Entity()
-export class File extends BaseEntitySoftRemovable implements FileInput {
+export class File extends BaseEntityWithDates implements FileInput {
   /**
    * Relative path to the file on a disk or its key in remote storage.
    * Must be unique.
