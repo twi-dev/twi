@@ -10,12 +10,12 @@ import createSlug from "helper/util/createSlug"
 
 import {TagRepo} from "repo/TagRepo"
 
-import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
+import {BaseEntityWithDates} from "./BaseEntityWithDates"
 import {Category} from "./Category"
 
 @ObjectType()
 @Entity({customRepository: () => TagRepo})
-export class Tag extends BaseEntitySoftRemovable {
+export class Tag extends BaseEntityWithDates {
   [EntityRepositoryType]: TagRepo
 
   /**

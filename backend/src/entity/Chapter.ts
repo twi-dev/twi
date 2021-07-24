@@ -7,6 +7,8 @@ import {
   EntityRepositoryType
 } from "@mikro-orm/core"
 
+import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+
 import {ChapterRepo} from "repo/ChapterRepo"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
@@ -21,6 +23,7 @@ export enum ChapterFilters {
 @Entity({customRepository: () => ChapterRepo})
 @Filter<Chapter>({name: ChapterFilters.PUBLISHED, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.UNLISTED, cond: {isDraft: true}})
+@ExcludeSoftRemovedFilter()
 export class Chapter extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: ChapterRepo
 

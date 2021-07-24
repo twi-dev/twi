@@ -1,7 +1,7 @@
 import {ObjectType, Field} from "type-graphql"
 import {Property} from "@mikro-orm/core"
 
-import Dates from "api/type/common/Dates"
+import DatesWithDeleted from "api/type/common/DatesWithDeleted"
 
 import {BaseEntityWithDates} from "./BaseEntityWithDates"
 
@@ -11,8 +11,8 @@ export abstract class BaseEntitySoftRemovable extends BaseEntityWithDates {
   @Property({type: Date, nullable: true})
   deletedAt!: Date | null
 
-  @Field(() => Dates)
-  get dates(): Dates {
+  @Field(() => DatesWithDeleted)
+  get dates(): DatesWithDeleted {
     return {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,

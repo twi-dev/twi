@@ -8,6 +8,7 @@ import {
   EntityRepositoryType
 } from "@mikro-orm/core"
 
+import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
 import {UserRepo} from "repo/UserRepo"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
@@ -33,6 +34,7 @@ registerEnumType(UserStatuses, {name: "UserStatuses"})
 
 @ObjectType()
 @Entity({customRepository: () => UserRepo})
+@ExcludeSoftRemovedFilter()
 export class User extends BaseEntitySoftRemovable {
   [EntityRepositoryType]?: UserRepo
 

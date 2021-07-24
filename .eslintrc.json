@@ -35,6 +35,8 @@
     "no-dupe-class-members": 0,
     "lines-between-class-members": 0,
     "indent": ["error", 2, {
+      "SwitchCase": 1,
+
       // Turn this rules of because of bug in this rule when using with TS
       // See: https://github.com/typescript-eslint/typescript-eslint/issues/1824
       "FunctionExpression": {

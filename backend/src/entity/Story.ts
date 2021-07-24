@@ -12,6 +12,8 @@ import {
 } from "@mikro-orm/core"
 import {isEmpty} from "lodash"
 
+import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+
 import {StoryRepo} from "repo/StoryRepo"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
@@ -33,6 +35,7 @@ export enum StoryFilters {
 @Filter<Story>({name: StoryFilters.UNLISTED, cond: {isDraft: true}})
 @Filter<Story>({name: StoryFilters.FINISHED, cond: {isFinished: true}})
 @Filter<Story>({name: StoryFilters.UNFINISHED, cond: {isFinished: false}})
+@ExcludeSoftRemovedFilter()
 export class Story extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: StoryRepo
 
@@ -102,8 +105,9 @@ export class Story extends BaseEntitySoftRemovable {
    * It must have at least one chapter to be marked as finished.
    */
   @Field(() => Boolean, {
-    description: "Indicates if the story is finished. "
-      + "It **must** have at least one chapter to be marked as finished."
+    description:
+      "Indicates if the story is finished. "
+        + "It **must** have at least one chapter to be marked as finished."
   })
   @Property()
   isFinished: boolean = false

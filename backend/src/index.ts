@@ -5,7 +5,10 @@ import waterfall from "helper/array/waterfall"
 import {connect, disconnect} from "app/db/connection"
 import {start, stop} from "app/server"
 
-const exit = (code: number = 0) => waterfall([disconnect, stop])
+const exit = (code: number = 0) => waterfall([
+  () => disconnect(),
+  () => stop()
+])
   .then(() => { process.exit(code) })
   .catch((error: Error) => {
     console.error(error)
@@ -15,7 +18,10 @@ const exit = (code: number = 0) => waterfall([disconnect, stop])
 
 ["SIGTERM", "SIGINT"].forEach(signal => process.on(signal, () => exit()))
 
-waterfall([connect, start]).catch(error => {
+waterfall([
+  () => connect({logging: process.env.NODE_ENV !== "production"}),
+  () => start()
+]).catch(error => {
   console.error(error)
 
   return exit(1)

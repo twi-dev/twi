@@ -7,9 +7,6 @@ class Dates {
 
   @Field()
   updatedAt!: Date
-
-  @Field(() => Date, {nullable: true})
-  deletedAt!: Date | null
 }
 
 export default Dates

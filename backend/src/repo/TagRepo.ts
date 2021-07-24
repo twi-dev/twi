@@ -1,10 +1,9 @@
+import {EntityRepository} from "@mikro-orm/mysql"
 import {isEmpty} from "lodash"
-
-import {BaseRepo} from "repo/BaseRepo"
 
 import {Tag} from "entity/Tag"
 
-export class TagRepo extends BaseRepo<Tag> {
+export class TagRepo extends EntityRepository<Tag> {
   /**
    * Finds or creates tags based on given list of tags names.
    *

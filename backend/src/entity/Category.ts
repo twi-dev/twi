@@ -7,6 +7,8 @@ import {
   EntityRepositoryType
 } from "@mikro-orm/core"
 
+import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+
 import {CategoryRepo} from "repo/CategoryRepo"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
@@ -14,6 +16,7 @@ import {Tag} from "./Tag"
 
 @ObjectType()
 @Entity({customRepository: () => CategoryRepo})
+@ExcludeSoftRemovedFilter()
 export class Category extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: CategoryRepo
 
