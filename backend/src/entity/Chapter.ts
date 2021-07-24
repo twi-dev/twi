@@ -1,6 +1,8 @@
 import {Entity, Property, ManyToOne, Filter} from "@mikro-orm/core"
 import {ObjectType, Field, Int} from "type-graphql"
 
+import {ChapterRepo} from "repo/ChapterRepo"
+
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Story} from "./Story"
 
@@ -10,7 +12,7 @@ export enum ChapterFilters {
 }
 
 @ObjectType()
-@Entity()
+@Entity({customRepository: () => ChapterRepo})
 @Filter<Chapter>({name: ChapterFilters.PUBLISHED, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.UNLISTED, cond: {isDraft: true}})
 export class Chapter extends BaseEntitySoftRemovable {

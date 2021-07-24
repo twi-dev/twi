@@ -1,11 +1,13 @@
 import {Entity, Property, Collection, OneToMany} from "@mikro-orm/core"
 import {ObjectType, Field} from "type-graphql"
 
+import {CategoryRepo} from "repo/CategoryRepo"
+
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
 import {Tag} from "./Tag"
 
 @ObjectType()
-@Entity()
+@Entity({customRepository: () => CategoryRepo})
 export class Category extends BaseEntitySoftRemovable {
   @OneToMany(() => Tag, tag => tag.category)
   tags = new Collection<Tag, Category>(this)

@@ -150,8 +150,7 @@ class StoryResolver {
       ctx.throw(400)
     }
 
-    // TODO: Add soft removing implementation
-    return storyRepo.removeAndFlush(story).then(() => storyId)
+    return storyRepo.softRemoveAndFlush(story).then(() => storyId)
   }
 
   @Mutation(() => File, {description: "Updates story's cover."})
