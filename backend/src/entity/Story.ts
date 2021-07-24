@@ -40,14 +40,19 @@ export class Story extends BaseEntitySoftRemovable {
    * Returns the user who published the story.
    */
   @Field(() => User)
-  @ManyToOne({eager: true, nullable: false})
+  @ManyToOne(() => User, {eager: true, nullable: false, onDelete: "cascade"})
   publisher!: User
 
   /**
    * Story cover.
    */
   @Field(() => File, {nullable: true})
-  @OneToOne({entity: () => File, nullable: true, eager: true})
+  @OneToOne({
+    entity: () => File,
+    nullable: true,
+    eager: true,
+    onDelete: "set null"
+  })
   cover!: File | null
 
   /**
@@ -106,7 +111,7 @@ export class Story extends BaseEntitySoftRemovable {
   /**
    * An amount of chapters within the story.
    */
-  @Property({type: "tinyint", unsigned: true})
+  @Property({type: "smallint", unsigned: true})
   chaptersCount: number = 0
 
   constructor(title: string, description: string, tags?: Tag[]) {

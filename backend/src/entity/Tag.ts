@@ -21,7 +21,7 @@ export class Tag extends BaseEntitySoftRemovable {
   /**
    * Category assigned to the tag.
    */
-  @ManyToOne(() => Category, {nullable: true})
+  @ManyToOne(() => Category, {nullable: true, onDelete: "set null"})
   category!: Category | null
 
   /**

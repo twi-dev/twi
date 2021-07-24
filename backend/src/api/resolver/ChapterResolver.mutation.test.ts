@@ -90,21 +90,31 @@ test.before(async t => {
   const connection = await setupConnection()
 
   const [user] = createFakeUsers(1)
-  const [story] = createFakeStories(1)
 
   const userRepo = connection.em.getRepository(User)
-  const storyRepo = connection.em.getRepository(Story)
-
-  story.publisher = user
 
   await userRepo.persistAndFlush(user)
-  await storyRepo.persistAndFlush(story)
-
-  // console.log(storyRepo.findAll())
 
   t.context.db = connection
   t.context.user = user
+})
+
+test.beforeEach<Macro>(withDatabase, async t => {
+  const {user, db} = t.context
+
+  const [story] = createFakeStories(1)
+
+  story.publisher = user
+
+  await db.em.getRepository(Story).persistAndFlush(story)
+
   t.context.story = story
+})
+
+test.afterEach<Macro>(withDatabase, async t => {
+  const {story, db} = t.context
+
+  await db.em.getRepository(Story).removeAndFlush(story)
 })
 
 test<Macro>("storyChapterAdd creates a new chapter", withDatabase, async t => {

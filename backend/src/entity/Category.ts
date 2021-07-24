@@ -17,6 +17,9 @@ export class Category extends BaseEntitySoftRemovable {
   @Property({unique: true})
   name!: string
 
+  /**
+   * Category prefix.
+   */
   @Field()
   @Property({unique: true})
   prefix!: string
