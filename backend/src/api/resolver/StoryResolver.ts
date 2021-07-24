@@ -166,7 +166,17 @@ class StoryResolver {
   ): Promise<Story> {
     const storyRepo = this._orm.em.getRepository(Story)
 
-    const story = await storyRepo.findOne({id: storyId})
+    const story = await storyRepo.findOne(
+      {
+        id: storyId
+      },
+
+      {
+        filters: {
+          softRemoved: false
+        }
+      }
+    )
 
     if (!story) {
       ctx.throw(400)

@@ -57,6 +57,13 @@ export abstract class BaseRepo<
 
     assertColumn(meta, String(this.entityName), "restore")
 
+    // Do nothing and stop if the entity has already been restored.
+    if (entity.deletedAt === null) {
+      return this.em
+    }
+
+    entity.deletedAt = null
+
     return this.em.persist(entity)
   }
 
