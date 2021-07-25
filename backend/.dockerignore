@@ -1,0 +1,9 @@
+__test__
+__macro__
+__fixture__
+node_modules
+lib
+
+ava.config.cjs
+ava.config.mjs
+ava.config.js
