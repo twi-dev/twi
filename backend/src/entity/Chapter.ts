@@ -27,6 +27,9 @@ export enum ChapterFilters {
 export class Chapter extends BaseEntitySoftRemovable {
   [EntityRepositoryType]: ChapterRepo
 
+  /**
+   * Story associated with the chapter.
+   */
   @ManyToOne(() => Story, {onDelete: "cascade"})
   story!: Story
 
