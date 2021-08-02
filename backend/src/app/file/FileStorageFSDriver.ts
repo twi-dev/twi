@@ -12,6 +12,9 @@ import {createHashFromPath} from "helper/util/createHashFromPath"
 
 import pipe from "helper/util/pipe"
 
+/**
+ * FileStorage driver for file system
+ */
 export class FileStorageFSDriver implements FileStorageDriver {
   readonly root: string
 
