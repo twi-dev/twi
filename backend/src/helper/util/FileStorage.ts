@@ -40,7 +40,7 @@ export interface FileStorageDriver {
 
 @Service()
 export class FileStorage {
-  #driver: FileStorageDriver
+  readonly #driver: FileStorageDriver
 
   constructor(driver: FileStorageDriver) {
     this.#driver = driver

@@ -6,7 +6,7 @@ import {FileStorageDriver, FileStorageWriteResult} from "../FileStorage"
 import {createHashFromPath} from "../createHashFromPath"
 
 export class FileStorageMemoryDriver implements FileStorageDriver {
-  files = new Map<string, Uint8Array>()
+  readonly files = new Map<string, Uint8Array>()
 
   async write(path: string, data: Readable): Promise<FileStorageWriteResult> {
     const chunks: Buffer[] = []
