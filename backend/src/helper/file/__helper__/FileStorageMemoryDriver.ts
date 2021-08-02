@@ -3,7 +3,7 @@ import {Readable} from "stream"
 import {nanoid} from "nanoid/async"
 
 import {FileStorageDriver, FileStorageWriteResult} from "../FileStorage"
-import {createHashFromPath} from "../createHashFromPath"
+import {createHashFromPath} from "../../util/createHashFromPath"
 
 export class FileStorageMemoryDriver implements FileStorageDriver {
   readonly files = new Map<string, Uint8Array>()
