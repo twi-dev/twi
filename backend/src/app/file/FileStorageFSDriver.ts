@@ -8,7 +8,7 @@ import {
   FileStorageDriver,
   FileStorageWriteResult
 } from "helper/file/FileStorage"
-import {createHashFromPath} from "helper/util/createHashFromPath"
+import {createHashFromPath} from "helper/file/createHashFromPath"
 
 import pipe from "helper/util/pipe"
 
