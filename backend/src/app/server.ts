@@ -18,27 +18,25 @@ import getRouter from "app/router"
 
 import {FileStorageFSDriver} from "app/file/FileStorageFSDriver"
 
-import {FILES_ROOT} from "helper/util/file"
-
 let server: Server | undefined
 
 async function init(): Promise<Koa> {
   const koa = new Koa()
 
-  const fsDriver = new FileStorageFSDriver(resolve("static"))
-  const fileStorage = new FileStorage(fsDriver)
+  const fileStorage = new FileStorage(
+    new FileStorageFSDriver(resolve("static"))
+  )
 
   Container.set(FileStorage, fileStorage)
 
   koa.proxy = process.env.SERVER_TRUST_PROXY! === "true"
-
   koa.keys = process.env.SERVER_AUTH_SESSION_SECRET!.split(" ")
 
   const router = await getRouter()
 
   koa
     .use(cors())
-    .use(serve(FILES_ROOT))
+    .use(serve(fileStorage.driver.ROOT))
     .use(ormContext)
     .use(session)
     .use(multipart)

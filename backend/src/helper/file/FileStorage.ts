@@ -18,7 +18,7 @@ export interface FileStorageDriver {
   /**
    * Writes an object to the storage.
    *
-   * @param path A path to file on disk.
+   * @param key A path to file on disk.
    * @param data The data to put in the storage.
    */
   write(key: string, data: Readable): Promise<FileStorageWriteResult>
@@ -39,21 +39,21 @@ export interface FileStorageDriver {
 }
 
 @Service()
-export class FileStorage {
-  readonly #driver: FileStorageDriver
+export class FileStorage<T extends FileStorageDriver> {
+  readonly driver: T
 
-  constructor(driver: FileStorageDriver) {
-    this.#driver = driver
+  constructor(driver: T) {
+    this.driver = driver
   }
 
   /**
    * Writes an object to the storage.
    *
-   * @param path A path to file on disk.
+   * @param key A path to file on disk.
    * @param data The data to put in the storage.
    */
-  async write(path: string, data: Readable): Promise<FileStorageWriteResult> {
-    return this.#driver.write(path, data)
+  async write(key: string, data: Readable): Promise<FileStorageWriteResult> {
+    return this.driver.write(key, data)
   }
 
   /**
@@ -62,7 +62,7 @@ export class FileStorage {
    * @param key Object key inside of the storage.
    */
   async read(key: string): Promise<Uint8Array> {
-    return this.#driver.read(key)
+    return this.driver.read(key)
   }
 
   /**
@@ -71,6 +71,6 @@ export class FileStorage {
    * @param key Object key inside of the storage.
    */
   async unlink(key: string): Promise<void> {
-    return this.#driver.unlink(key)
+    return this.driver.unlink(key)
   }
 }

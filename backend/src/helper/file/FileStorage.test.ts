@@ -7,7 +7,7 @@ import {FileStorageMemoryDriver} from "./__helper__/FileStorageMemoryDriver"
 import {FileStorage} from "./FileStorage"
 
 const test = ava as TestInterface<{
-  storage: FileStorage,
+  storage: FileStorage<FileStorageMemoryDriver>,
   driver: FileStorageMemoryDriver
 }>
 

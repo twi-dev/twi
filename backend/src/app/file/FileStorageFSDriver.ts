@@ -1,8 +1,8 @@
-import {dirname, extname, join, sep} from "path"
+import {dirname, extname, join, relative} from "path"
 import {Readable} from "stream"
 
-import {ensureDir, readFile, unlink, createWriteStream} from "fs-extra"
 import {nanoid} from "nanoid/async"
+import {ensureDir, readFile, unlink, createWriteStream} from "fs-extra"
 
 import {
   FileStorageDriver,
@@ -16,29 +16,28 @@ import pipe from "helper/util/pipe"
  * FileStorage driver for file system
  */
 export class FileStorageFSDriver implements FileStorageDriver {
-  readonly root: string
+  readonly ROOT: string
 
   constructor(root: string) {
-    this.root = root
+    this.ROOT = root
   }
 
-  async write(path: string, data: Readable): Promise<FileStorageWriteResult> {
-    const dest = join(this.root, `${await nanoid()}${extname(path)}`)
-    const key = dest.replace(this.root, "").replace(new RegExp(`^${sep}`), "")
+  async write(key: string, data: Readable): Promise<FileStorageWriteResult> {
+    const dest = join(this.ROOT, `${await nanoid()}${extname(key)}`)
 
-    await ensureDir(dirname(path))
+    await ensureDir(dirname(dest))
     await pipe(data, createWriteStream(dest))
 
     const hash = await createHashFromPath(dest)
 
-    return {hash, key}
+    return {hash, key: relative(this.ROOT, dest)}
   }
 
   async read(key: string): Promise<Uint8Array> {
-    return readFile(join(this.root, key))
+    return readFile(join(this.ROOT, key))
   }
 
   async unlink(key: string): Promise<void> {
-    return unlink(join(this.root, key))
+    return unlink(join(this.ROOT, key))
   }
 }
