@@ -1,8 +1,13 @@
 import {createServer, Server} from "http"
+import {resolve} from "path"
 
 import Koa from "koa"
 import cors from "@koa/cors"
 import serve from "koa-static"
+
+import {Container} from "typedi"
+
+import {FileStorage} from "helper/file/FileStorage"
 
 import waterfall from "helper/array/waterfall"
 
@@ -11,12 +16,19 @@ import multipart from "app/middleware/multipart"
 import session from "app/middleware/session"
 import getRouter from "app/router"
 
+import {FileStorageFSDriver} from "app/file/FileStorageFSDriver"
+
 import {FILES_ROOT} from "helper/util/file"
 
-let server: Server | null = null
+let server: Server | undefined
 
 async function init(): Promise<Koa> {
   const koa = new Koa()
+
+  const fsDriver = new FileStorageFSDriver(resolve("static"))
+  const fileStorage = new FileStorage(fsDriver)
+
+  Container.set(FileStorage, fileStorage)
 
   koa.proxy = process.env.SERVER_TRUST_PROXY! === "true"
 
