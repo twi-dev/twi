@@ -36,10 +36,17 @@ export interface FileStorageDriver {
    * @param key Object key inside of the storage.
    */
   unlink(key: string): Promise<void>
+
+  /**
+   * Returns size of the file in bytes.
+   *
+   * @param key Object key inside of the storage.
+   */
+  getSize(key: string): Promise<number>
 }
 
 @Service()
-export class FileStorage<T extends FileStorageDriver> {
+export class FileStorage<T extends FileStorageDriver = FileStorageDriver> {
   readonly driver: T
 
   constructor(driver: T) {
@@ -72,5 +79,14 @@ export class FileStorage<T extends FileStorageDriver> {
    */
   async unlink(key: string): Promise<void> {
     return this.driver.unlink(key)
+  }
+
+  /**
+   * Returns size of the file in bytes.
+   *
+   * @param key Object key inside of the storage.
+   */
+  async getSize(key: string): Promise<number> {
+    return this.driver.getSize(key)
   }
 }

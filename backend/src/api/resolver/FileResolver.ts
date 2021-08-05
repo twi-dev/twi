@@ -1,17 +1,18 @@
-import {join} from "path"
 import {URL} from "url"
 
 import {Resolver, FieldResolver, Root, Int} from "type-graphql"
-import {Service} from "typedi"
-import {stat} from "fs-extra"
+import {Service, Inject} from "typedi"
 
 import {File} from "entity/File"
 
-import {FILES_ROOT} from "helper/util/file"
+import {FileStorage} from "helper/file/FileStorage"
 
 @Service()
 @Resolver(() => File)
 class FileResolver {
+  @Inject()
+  private _fs!: FileStorage
+
   @FieldResolver(() => String, {
     description: "Full address of the file on static server."
   })
@@ -22,7 +23,7 @@ class FileResolver {
 
   @FieldResolver(() => Int, {description: "Returns size of the file in bytes."})
   async size(@Root() {key}: File): Promise<number> {
-    return stat(join(FILES_ROOT, key)).then(({size}) => size)
+    return this._fs.getSize(key)
   }
 }
 

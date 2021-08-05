@@ -18,7 +18,7 @@ import {BodyFile} from "then-busboy"
 
 import sharp from "sharp"
 
-import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
+import {FileStorage} from "helper/file/FileStorage"
 
 import {File} from "entity/File"
 import {User} from "entity/User"
@@ -42,6 +42,9 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
 class UserResolver {
   @Inject()
   private _orm!: MikroORM
+
+  @Inject()
+  private _fs!: FileStorage
 
   @Query(() => UserPage)
   async users(
@@ -96,7 +99,7 @@ class UserResolver {
     const fileRepo = this._orm.em.getRepository(File)
     const userRepo = this._orm.em.getRepository(User)
 
-    const {path, hash}: WriteFileResult = await writeFile(
+    const {key, hash} = await this._fs.write(
       `user/${viewer.id}/avatar/${name}`,
 
       // TODO: I should probably measure image resolution first
@@ -108,15 +111,15 @@ class UserResolver {
       const {avatar} = viewer
       const {key: oldPath} = avatar
 
-      const updated = wrap(avatar).assign({key: path, hash, mime, name} as File)
+      const updated = wrap(avatar).assign({key, hash, mime, name} as File)
 
       await fileRepo.persistAndFlush(avatar)
-      await removeFile(oldPath)
+      await this._fs.unlink(oldPath)
 
       return updated
     }
 
-    const avatar = new File({key: path, hash, mime, name})
+    const avatar = new File({key, hash, mime, name})
 
     // TODO: Review this for MikroORM compatibility
     viewer.avatar = avatar
@@ -145,7 +148,7 @@ class UserResolver {
     const {id, key} = viewer.avatar
 
     await fileRepo.removeAndFlush(viewer.avatar)
-    await removeFile(key)
+    await this._fs.unlink(key)
 
     return id
   }

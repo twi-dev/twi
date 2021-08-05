@@ -2,7 +2,7 @@ import {dirname, extname, join, relative} from "path"
 import {Readable} from "stream"
 
 import {nanoid} from "nanoid/async"
-import {ensureDir, readFile, unlink, createWriteStream} from "fs-extra"
+import {ensureDir, readFile, unlink, stat, createWriteStream} from "fs-extra"
 
 import {
   FileStorageDriver,
@@ -23,7 +23,9 @@ export class FileStorageFSDriver implements FileStorageDriver {
   }
 
   async write(key: string, data: Readable): Promise<FileStorageWriteResult> {
-    const dest = join(this.ROOT, `${await nanoid()}${extname(key)}`)
+    const dest = join(
+      this.ROOT, dirname(key), `${await nanoid()}${extname(key)}`
+    )
 
     await ensureDir(dirname(dest))
     await pipe(data, createWriteStream(dest))
@@ -39,5 +41,9 @@ export class FileStorageFSDriver implements FileStorageDriver {
 
   async unlink(key: string): Promise<void> {
     return unlink(join(this.ROOT, key))
+  }
+
+  async getSize(key: string): Promise<number> {
+    return stat(join(this.ROOT, key)).then(({size}) => size)
   }
 }

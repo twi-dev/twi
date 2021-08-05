@@ -1,3 +1,4 @@
+import {Readable} from "stream"
 import {join} from "path"
 
 import {MikroORM, wrap} from "@mikro-orm/core"
@@ -19,7 +20,7 @@ import {Story, StoryFilters} from "entity/Story"
 import {File} from "entity/File"
 import {Tag} from "entity/Tag"
 
-import {writeFile, removeFile, WriteFileResult} from "helper/util/file"
+import {FileStorage} from "helper/file/FileStorage"
 
 import {BaseContext} from "app/context/BaseContext"
 import {StateWithViewer} from "app/state/WithViewer"
@@ -41,6 +42,9 @@ type Context = ParameterizedContext<StateWithViewer, BaseContext>
 class StoryResolver {
   @Inject()
   private _orm!: MikroORM
+
+  @Inject()
+  private _fs!: FileStorage
 
   @Query(() => StoryPage)
   async stories(
@@ -206,25 +210,25 @@ class StoryResolver {
       return undefined
     }
 
-    const {path, hash}: WriteFileResult = await writeFile(
+    const {key, hash} = await this._fs.write(
       join("story", String(story.id), "cover", name),
 
-      file.stream()
+      Readable.from(file.stream())
     )
 
     if (story.cover) {
       const {cover} = story
       const {key: oldPath} = cover
 
-      const updated = wrap(cover).assign({key: path, hash, name, mime} as File)
+      const updated = wrap(cover).assign({key, hash, name, mime} as File)
 
       await fileRepo.persistAndFlush(cover)
-      await removeFile(oldPath)
+      await this._fs.unlink(oldPath)
 
       return updated
     }
 
-    const cover = new File({key: path, name, mime, hash})
+    const cover = new File({key, name, mime, hash})
 
     story.cover = cover
 
@@ -259,7 +263,7 @@ class StoryResolver {
     const {id, key: path} = story.cover
 
     await fileRepo.removeAndFlush(story.cover)
-    await removeFile(path)
+    await this._fs.unlink(path)
 
     return id
   }
