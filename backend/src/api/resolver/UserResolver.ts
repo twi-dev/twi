@@ -135,14 +135,14 @@ class UserResolver {
   })
   @Authorized()
   @UseMiddleware(GetViewer)
-  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | null> {
+  async userAvatarRemove(@Ctx() ctx: Context): Promise<number | undefined> {
     const {viewer} = ctx.state
 
     const fileRepo = this._orm.em.getRepository(File)
 
     // Do nothing if user has no avatar
     if (!viewer.avatar) {
-      return null
+      return undefined
     }
 
     const {id, key} = viewer.avatar

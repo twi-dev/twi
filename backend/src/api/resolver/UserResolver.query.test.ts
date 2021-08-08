@@ -3,20 +3,20 @@ import ava, {TestInterface} from "ava"
 import {HttpError} from "http-errors"
 import {isBoolean, isNumber} from "lodash"
 
-import {User, UserStatuses} from "entity/User"
-import {UserPageResult} from "api/type/user/UserPage"
-
-import {setupConnection, cleanupConnection} from "__helper__/database"
-
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {
   withDatabase,
   WithDatabaseMacro,
   DatabaseContext
-} from "../../__macro__/withDatabaseContext"
-import {graphql} from "./__helper__/graphql"
+} from "__macro__/withDatabaseContext"
+import {setupConnection, cleanupConnection} from "__helper__/database"
+
+import {User, UserStatuses} from "entity/User"
+import {UserPageResult} from "api/type/user/UserPage"
+
 import {createFakeContext} from "./__helper__/createFakeContext"
+import {graphql} from "./__helper__/graphql"
 
 import OperationError from "./__helper__/OperationError"
 

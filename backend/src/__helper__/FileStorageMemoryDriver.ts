@@ -2,14 +2,17 @@ import {Readable} from "stream"
 
 import {nanoid} from "nanoid/async"
 
-import {FileStorageDriver, FileStorageWriteResult} from "../FileStorage"
-import {createHashFromPath} from "../createHashFromPath"
+import {
+  FileStorageDriver,
+  FileStorageWriteResult
+} from "helper/file/FileStorage"
+import {createHashFromPath} from "helper/file/createHashFromPath"
 
 export class FileStorageMemoryDriver implements FileStorageDriver {
   readonly files = new Map<string, Uint8Array>()
 
   async write(path: string, data: Readable): Promise<FileStorageWriteResult> {
-    const chunks: Buffer[] = []
+    const chunks: Uint8Array[] = []
 
     for await (const chunk of data) {
       chunks.push(chunk)
@@ -29,5 +32,9 @@ export class FileStorageMemoryDriver implements FileStorageDriver {
 
   async unlink(key: string): Promise<void> {
     return void this.files.delete(key)
+  }
+
+  async getSize(key: string): Promise<number> {
+    return this.files.get(key)!.byteLength
   }
 }
