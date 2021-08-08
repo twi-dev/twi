@@ -112,6 +112,23 @@ test<Macro>("userAvatarUpdate updates user avatar", withDatabase, async t => {
   t.truthy(file)
 })
 
+test<Macro>("userAvatarUpdate has required fields", withDatabase, async t => {
+  const {user, image} = t.context
+
+  const {
+    userAvatarUpdate: actual
+  } = await graphql<UserAvatarUpdateResult, UserAvatarUpdateVariables>({
+    source: userAvatarUpdate,
+    variableValues: {image},
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  t.true("id" in actual)
+  t.true("url" in actual)
+  t.true("size" in actual)
+  t.true("mime" in actual)
+})
+
 test<Macro>("userAvatarRemove removes user avatar", withDatabase, async t => {
   const {user, db, image, fs} = t.context
 
