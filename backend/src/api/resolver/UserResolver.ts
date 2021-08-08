@@ -122,7 +122,6 @@ class UserResolver {
 
     const avatar = new File({key, hash, mime, name})
 
-    // TODO: Review this for MikroORM compatibility
     viewer.avatar = avatar
 
     await userRepo.persistAndFlush(viewer)
@@ -135,7 +134,7 @@ class UserResolver {
     description: "Removes avatar of the logged-in user"
   })
   @Authorized()
-  @UseMiddleware(GetViewer)
+  @UseMiddleware([NotFound, GetViewer])
   async userAvatarRemove(@Ctx() ctx: Context): Promise<number | undefined> {
     const {viewer} = ctx.state
 
