@@ -1,17 +1,15 @@
-import {tmpdir} from "os"
+import {join} from "path"
 
 import ava, {TestInterface} from "ava"
 
 import fetch from "node-fetch"
 import faker from "faker"
 
-import {Container} from "typedi"
 import {File as FileSource} from "formdata-node"
 
 import {File} from "entity/File"
 import {User, UserStatuses} from "entity/User"
 import {FileStorage} from "helper/file/FileStorage"
-import {FileStorageFSDriver} from "app/file/FileStorageFSDriver"
 
 import createFakeUsers from "__helper__/createFakeUsers"
 
@@ -20,6 +18,7 @@ import {
   WithDatabaseMacro,
   DatabaseContext
 } from "__macro__/withDatabaseContext"
+import {setupFs, cleanupFs} from "__helper__/fs"
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {createFakeContext} from "./__helper__/createFakeContext"
@@ -54,11 +53,17 @@ interface UserAvatarUpdateResult {
   userAvatarUpdate: File
 }
 
+const userAvatarRemove = /* GraphQL */ `
+  mutation {
+    userAvatarRemove
+  }
+`
+
+interface UserAvatarRemoveResult {
+  userAvatarRemove: number
+}
+
 test.before(async t => {
-  const fs = new FileStorage(new FileStorageFSDriver(tmpdir()))
-
-  Container.set(FileStorage, fs)
-
   const response = await fetch(faker.internet.avatar())
 
   // TODO: Perhaps it would be better to use some local images for testing
@@ -66,8 +71,8 @@ test.before(async t => {
     type: "image/png"
   })
 
-  t.context.fs = fs
   t.context.image = image
+  t.context.fs = await setupFs()
   t.context.db = await setupConnection()
 })
 
@@ -107,6 +112,35 @@ test<Macro>("userAvatarUpdate updates user avatar", withDatabase, async t => {
   t.truthy(file)
 })
 
+test<Macro>("userAvatarRemove removes user avatar", withDatabase, async t => {
+  const {user, db, image, fs} = t.context
+
+  const {
+    hash, key
+  } = await fs.write(
+    join("user", String(user.id), "avatar", image.name),
+
+    image.stream()
+  )
+
+  const file = new File({hash, key, name: image.name, mime: image.type})
+
+  user.avatar = file
+
+  await db.em.getRepository(User).persistAndFlush(user)
+
+  const {
+    userAvatarRemove: actual
+  } = await graphql<UserAvatarRemoveResult>({
+    source: userAvatarRemove,
+    contextValue: createFakeContext({session: {userId: user.id}})
+  })
+
+  // Perhaps I will use UUID as file ID in a future
+  t.is(String(actual), String(file.id))
+})
+
 test.after.always(async () => {
   await cleanupConnection()
+  await cleanupFs()
 })

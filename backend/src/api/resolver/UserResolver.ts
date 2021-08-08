@@ -1,4 +1,5 @@
 import {Readable} from "stream"
+import {join} from "path"
 
 import {
   Resolver,
@@ -100,7 +101,7 @@ class UserResolver {
     const userRepo = this._orm.em.getRepository(User)
 
     const {key, hash} = await this._fs.write(
-      `user/${viewer.id}/avatar/${name}`,
+      join("user", String(viewer.id), "avatar", name),
 
       // TODO: I should probably measure image resolution first
       Readable.from(image.stream()).pipe(sharp().resize(180).png())
