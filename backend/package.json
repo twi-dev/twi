@@ -61,7 +61,7 @@
     "@mikro-orm/mysql": "4.5.7",
     "@next/env": "11.0.1",
     "@sindresorhus/slugify": "1.1.0",
-    "apollo-server-koa": "3.1.2",
+    "apollo-server-koa": "2.25.2",
     "argon2": "0.28.2",
     "class-validator": "0.13.1",
     "date-fns": "2.23.0",
