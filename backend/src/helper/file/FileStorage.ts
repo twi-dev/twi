@@ -43,6 +43,13 @@ export interface FileStorageDriver {
    * @param key Object key inside of the storage.
    */
   getSize(key: string): Promise<number>
+
+  /**
+   * Returns URL assiciated with file.
+   *
+   * @param key Object key inside of the storage.
+   */
+  getURL(key: string): Promise<string>
 }
 
 @Service()
@@ -88,5 +95,14 @@ export class FileStorage<T extends FileStorageDriver = FileStorageDriver> {
    */
   async getSize(key: string): Promise<number> {
     return this.driver.getSize(key)
+  }
+
+  /**
+   * Returns URL assiciated with file.
+   *
+   * @param key Object key inside of the storage.
+   */
+  async getURL(key: string): Promise<string> {
+    return this.driver.getURL(key)
   }
 }

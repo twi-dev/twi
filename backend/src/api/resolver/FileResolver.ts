@@ -1,5 +1,3 @@
-import {URL} from "url"
-
 import {Resolver, FieldResolver, Root, Int} from "type-graphql"
 import {Service, Inject} from "typedi"
 
@@ -17,8 +15,7 @@ class FileResolver {
     description: "Full address of the file on static server."
   })
   async url(@Root() {key}: File): Promise<string> {
-    // TODO: Move this logic into the file storage once I come up with its implementation (if I will decide to make this abstraction)
-    return new URL(key, process.env.SERVER_ADDRESS).toString()
+    return this._fs.getURL(key)
   }
 
   @FieldResolver(() => Int, {description: "Returns size of the file in bytes."})

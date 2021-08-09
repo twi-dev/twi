@@ -1,5 +1,6 @@
 import {dirname, extname, join, relative} from "path"
 import {Readable} from "stream"
+import {URL} from "url"
 
 import {nanoid} from "nanoid/async"
 import {ensureDir, readFile, unlink, stat, createWriteStream} from "fs-extra"
@@ -45,5 +46,9 @@ export class FileStorageFSDriver implements FileStorageDriver {
 
   async getSize(key: string): Promise<number> {
     return stat(join(this.ROOT, key)).then(({size}) => size)
+  }
+
+  async getURL(key: string): Promise<string> {
+    return new URL(key, process.env.SERVER_ADDRESS).toString()
   }
 }
