@@ -1,4 +1,4 @@
-import {FC} from "preact/compat"
+import {FC} from "react"
 
 import Head from "next/head"
 

@@ -15,7 +15,8 @@
   "extends": [
     "airbnb-typescript",
     "@octetstream",
-    "plugin:ava/recommended"
+    "plugin:ava/recommended",
+    "plugin:react/jsx-runtime"
   ],
   "rules": {
     "no-void": 0,
@@ -64,6 +65,10 @@
 
     "import/no-unresolved": 0,
     "import/no-cycle": 0,
-    "ava/use-test": 0
+    "ava/use-test": 0,
+
+    "react/prop-types": 0, // Disable because of TS
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-fragments": ["error", "element"]
   }
 }

@@ -1,4 +1,4 @@
-import {FC} from "preact/compat"
+import {FC, Fragment} from "react"
 
 import NextError from "next/error"
 
@@ -10,7 +10,7 @@ interface PageErrorProps {
 
 const PageError: FC<PageErrorProps> = ({error, children}) => {
   if (!error) {
-    return <>{children}</>
+    return <Fragment>{children}</Fragment>
   }
 
   return <NextError {...error} />
