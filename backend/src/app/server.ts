@@ -37,9 +37,9 @@ async function init(): Promise<Koa> {
   koa
     .use(cors())
     .use(serve(fileStorage.driver.ROOT))
-    .use(ormContext)
     .use(session)
     .use(multipart)
+    .use(ormContext)
     .use(router.allowedMethods())
     .use(router.routes())
 
