@@ -12,7 +12,7 @@ const createFakeStories = (
   amount,
 
   story => {
-    story.title = faker.lorem.words(2)
+    story.title = faker.lorem.words(5)
     story.description = faker.lorem.paragraph()
   },
 
