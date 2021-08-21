@@ -72,7 +72,7 @@ export class User extends BaseEntitySoftRemovable {
   status: UserStatuses = UserStatuses.INACTIVE
 
   /**
-   * User avatar,
+   * User avatar.
    */
   @Field(() => File, {nullable: true})
   @OneToOne({entity: () => File, nullable: true, eager: true})
