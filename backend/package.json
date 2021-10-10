@@ -15,6 +15,13 @@
     "coverage": "c8 npm test",
     "report:html": "c8 -r=html npm test"
   },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/app/db/config.ts",
+      "./lib/app/db/config.js"
+    ]
+  },
   "devDependencies": {
     "@octetstream/eslint-config": "5.0.0",
     "@types/bcrypt": "5.0.0",
