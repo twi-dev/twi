@@ -58,6 +58,7 @@
     "@koa/router": "10.1.1",
     "@mikro-orm/cli": "4.5.9",
     "@mikro-orm/core": "4.5.9",
+    "@mikro-orm/migrations": "^4.5.9",
     "@mikro-orm/mysql": "4.5.9",
     "@next/env": "11.1.2",
     "@sindresorhus/slugify": "1.1.2",

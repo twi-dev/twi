@@ -46,7 +46,6 @@ export class User extends BaseEntitySoftRemovable {
   /**
    * Email address (private),
    */
-  @Field()
   @Property({unique: true})
   @IsEmail()
   email!: string
