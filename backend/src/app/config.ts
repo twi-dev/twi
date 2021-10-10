@@ -6,6 +6,7 @@ import {set, noop} from "lodash"
 const PWD = process.cwd()
 const dev = process.env.NODE_ENV !== "production"
 
+// TODO: Write custom config load soluction because @next/env doesn't seem to work for Mikro ORM conig
 loadEnvConfig(PWD, dev, {
   // Silencing annoying logging from @next/env
   /* c8 ignore next */
