@@ -37,4 +37,8 @@ export class FileStorageMemoryDriver implements FileStorageDriver {
   async getSize(key: string): Promise<number> {
     return this.files.get(key)!.byteLength
   }
+
+  async getURL(key: string): Promise<string> {
+    return key // TODO: Support for keys
+  }
 }
