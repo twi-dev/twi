@@ -1,4 +1,4 @@
-import {basename, extname} from "path"
+import {basename, extname, resolve} from "path"
 
 import {MikroORM, EventSubscriber, Options} from "@mikro-orm/core"
 import {Container, Constructable} from "typedi"
@@ -55,6 +55,9 @@ export async function getConfig({
     user: process.env.DATABASE_USER || undefined,
     password: process.env.DATABASE_PASSWORD || undefined,
     implicitTransactions: true,
+    migrations: {
+      path: resolve("migration/schema")
+    },
 
     context: () => storage.getStore()
   }

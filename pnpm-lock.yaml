@@ -10,7 +10,6 @@ importers:
       '@mikro-orm/core': 4.5.9
       '@mikro-orm/migrations': ^4.5.9
       '@mikro-orm/mysql': 4.5.9
-      '@next/env': 11.1.2
       '@octetstream/eslint-config': 5.0.0
       '@sindresorhus/slugify': 1.1.2
       '@types/bcrypt': 5.0.0
@@ -37,6 +36,7 @@ importers:
       ava: 3.15.0
       class-validator: 0.13.1
       date-fns: 2.24.0
+      dotenv: ^10.0.0
       eslint: 7.32.0
       eslint-config-airbnb-typescript: 12.3.1
       eslint-import-resolver-typescript: 2.5.0
@@ -79,12 +79,12 @@ importers:
       '@mikro-orm/core': 4.5.9_5ae46d24dd2c43a07808d6760579e667
       '@mikro-orm/migrations': 4.5.9_7b4f162415af723db99ba15a6dfd8375
       '@mikro-orm/mysql': 4.5.9_c5924a60946be4b9f3a0784c71d54059
-      '@next/env': 11.1.2
       '@sindresorhus/slugify': 1.1.2
       apollo-server-koa: 2.25.2_graphql@15.6.0
       argon2: 0.28.2
       class-validator: 0.13.1
       date-fns: 2.24.0
+      dotenv: 10.0.0
       fs-extra: 10.0.0
       globby: 11.0.4
       graphql: 15.6.0
@@ -3036,10 +3036,6 @@ packages:
 
   /@next/env/11.0.1:
     resolution: {integrity: sha512-yZfKh2U6R9tEYyNUrs2V3SBvCMufkJ07xMH5uWy8wqcl5gAXoEw6A/1LDqwX3j7pUutF9d1ZxpdGDA3Uag+aQQ==}
-    dev: false
-
-  /@next/env/11.1.2:
-    resolution: {integrity: sha512-+fteyVdQ7C/OoulfcF6vd1Yk0FEli4453gr8kSFbU8sKseNSizYq6df5MKz/AjwLptsxrUeIkgBdAzbziyJ3mA==}
     dev: false
 
   /@next/polyfill-module/11.0.1:
@@ -6071,7 +6067,6 @@ packages:
   /dotenv/10.0.0:
     resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
     engines: {node: '>=10'}
-    dev: true
 
   /dotenv/8.2.0:
     resolution: {integrity: sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==}

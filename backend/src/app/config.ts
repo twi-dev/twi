@@ -1,18 +1,43 @@
+import {readFileSync} from "fs"
 import {resolve} from "path"
 
-import {loadEnvConfig} from "@next/env"
-import {set, noop} from "lodash"
+import {set, pickBy} from "lodash"
 
-const PWD = process.cwd()
+import dotenv from "dotenv"
+
+if (!process.env.NODE_ENV) {
+  // @ts-ignore
+  process.env.NODE_ENV = "development"
+}
+
 const dev = process.env.NODE_ENV !== "production"
 
-// TODO: Write custom config load soluction because @next/env doesn't seem to work for Mikro ORM conig
-loadEnvConfig(PWD, dev, {
-  // Silencing annoying logging from @next/env
-  /* c8 ignore next */
-  info: (process.env.NODE_ENV as string) === "debug" ? console.info : noop,
-  error: console.error,
-})
+function loadConfig(name: string): object {
+  try {
+    const config = dotenv.parse(readFileSync(resolve(name)))
+
+    return pickBy(config, Boolean)
+  } catch (error) {
+    if ((error as any).code !== "ENOENT") {
+      throw error
+    }
+
+    return {}
+  }
+}
+
+function getConfig(): void {
+  const config: Record<string, string> = {
+    ...loadConfig(".env"),
+    ...loadConfig(".env.local"),
+    ...loadConfig(`.env.${process.env.NODE_ENV}`),
+    ...loadConfig(`.env.${process.env.NODE_ENV}.local`)
+  }
+
+  Object.entries(config).forEach(([name, value]) => {
+    process.env[name] = value
+  })
+}
 
 const SERVER_ROOT = resolve(dev ? "src" : "lib")
 
@@ -46,3 +71,5 @@ set(
   "GRAPHQL_RESOLVERS",
   resolve(SERVER_ROOT, "api", "resolver", `*Resolver${EXT}`)
 )
+
+getConfig()

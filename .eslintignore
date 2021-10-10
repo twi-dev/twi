@@ -1,3 +1,5 @@
+backend/migration/**/*.ts
+
 *.js
 *.cjs
 *.mjs
