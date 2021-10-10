@@ -1,17 +1,20 @@
 import {basename, extname} from "path"
 
-import {MikroORM, EventSubscriber} from "@mikro-orm/core"
+import {MikroORM, EventSubscriber, Options} from "@mikro-orm/core"
 import {Container, Constructable} from "typedi"
 
 import globby from "globby"
 
 import storage from "./storage"
 
-export interface ConnectOptions {
+export interface GetConfigOptios {
+  database?: string
+  logging?: boolean
+}
+
+export interface ConnectOptions extends GetConfigOptios {
   synchronize?: boolean
   dropSchema?: boolean
-  database?: string,
-  logging?: boolean
 }
 
 async function loadFromGlob<T extends object>(
@@ -31,6 +34,32 @@ async function loadFromGlob<T extends object>(
   return res
 }
 
+export async function getConfig({
+  logging,
+  database
+}: GetConfigOptios = {}): Promise<Options> {
+  const subscribers = await loadFromGlob<Constructable<EventSubscriber>>([
+    process.env.DATABASE_SUBSCRIBERS!
+  ])
+
+  const entities = await loadFromGlob([process.env.DATABASE_ENTITIES!])
+
+  return {
+    subscribers: subscribers.map(Subscriber => new Subscriber()),
+    entities: entities as any,
+    debug: logging,
+    type: "mysql",
+    host: process.env.DATABASE_HOST || undefined,
+    port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
+    dbName: database || process.env.DATABASE_NAME!,
+    user: process.env.DATABASE_USER || undefined,
+    password: process.env.DATABASE_PASSWORD || undefined,
+    implicitTransactions: true,
+
+    context: () => storage.getStore()
+  }
+}
+
 /**
  * Creates a new connection to database
  */
@@ -40,26 +69,7 @@ export async function connect({
   dropSchema,
   logging
 }: ConnectOptions = {}) {
-  const subscribers = await loadFromGlob<Constructable<EventSubscriber>>(
-    [process.env.DATABASE_SUBSCRIBERS!]
-  )
-
-  const entities = await loadFromGlob([process.env.DATABASE_ENTITIES!])
-
-  const orm = await MikroORM.init({
-    type: "mysql",
-    host: process.env.DATABASE_HOST || undefined,
-    port: parseInt(process.env.DATABASE_PORT!, 10) || undefined,
-    dbName: database || process.env.DATABASE_NAME!,
-    user: process.env.DATABASE_USER || undefined,
-    password: process.env.DATABASE_PASSWORD || undefined,
-    subscribers: subscribers.map(Subscriber => new Subscriber()),
-    entities: entities as any[],
-    implicitTransactions: true,
-    debug: logging,
-
-    context: () => storage.getStore()
-  })
+  const orm = await MikroORM.init(await getConfig({database, logging}))
 
   Container.set<MikroORM>(MikroORM, orm)
 
