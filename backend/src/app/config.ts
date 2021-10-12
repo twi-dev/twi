@@ -13,8 +13,13 @@ if (!process.env.NODE_ENV) {
 const dev = process.env.NODE_ENV !== "production"
 
 function loadConfig(name: string): object {
+  const path = resolve(name)
+  if (dev && process.env.NODE_ENV !== "test") {
+    console.log("Load config from %s", path)
+  }
+
   try {
-    const config = dotenv.parse(readFileSync(resolve(name)))
+    const config = dotenv.parse(readFileSync(path))
 
     return pickBy(config, Boolean)
   } catch (error) {
@@ -41,10 +46,8 @@ function getConfig(): void {
 
 const SERVER_ROOT = resolve(dev ? "src" : "lib")
 
-/* c8 ignore next 3 */
-const EXT = process.env.NODE_ENV === "production"
-  ? ".js"
-  : ".ts"
+/* c8 ignore next 1 */
+const EXT = dev ? ".ts" : ".js"
 
 set(
   process.env,
