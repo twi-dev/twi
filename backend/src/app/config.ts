@@ -13,13 +13,13 @@ if (!process.env.NODE_ENV) {
 const dev = process.env.NODE_ENV !== "production"
 
 function loadConfig(name: string): object {
-  const path = resolve(name)
-  if (dev && process.env.NODE_ENV !== "test") {
-    console.log("Load config from %s", path)
-  }
-
   try {
+    const path = resolve(name)
     const config = dotenv.parse(readFileSync(path))
+
+    if (dev && process.env.NODE_ENV !== "test") {
+      console.log("Load config from %s", path)
+    }
 
     return pickBy(config, Boolean)
   } catch (error) {
