@@ -75,4 +75,6 @@ set(
   resolve(SERVER_ROOT, "api", "resolver", `*Resolver${EXT}`)
 )
 
+set(process.env, "SERVER_ROOT", SERVER_ROOT)
+
 getConfig()
