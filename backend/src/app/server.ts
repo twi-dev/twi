@@ -14,7 +14,7 @@ import waterfall from "helper/array/waterfall"
 import ormContext from "app/middleware/ormContext"
 import multipart from "app/middleware/multipart"
 import session from "app/middleware/session"
-import getRouter from "app/router"
+import graphql from "app/graphql"
 
 import {FileStorageFSDriver} from "app/file/FileStorageFSDriver"
 
@@ -32,7 +32,7 @@ async function init(): Promise<Koa> {
   koa.proxy = process.env.SERVER_TRUST_PROXY! === "true"
   koa.keys = process.env.SERVER_AUTH_SESSION_SECRET!.split(" ")
 
-  const router = await getRouter()
+  await graphql.start()
 
   koa
     .use(cors())
@@ -40,8 +40,7 @@ async function init(): Promise<Koa> {
     .use(session)
     .use(multipart)
     .use(ormContext)
-    .use(router.allowedMethods())
-    .use(router.routes())
+    .use(graphql.getMiddleware({path: "/graphql"}))
 
   return koa
 }
