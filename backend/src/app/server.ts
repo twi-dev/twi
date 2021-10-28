@@ -40,7 +40,7 @@ async function init(): Promise<Koa> {
     .use(session)
     .use(multipart)
     .use(ormContext)
-    .use(graphql.getMiddleware({path: "/graphql"}))
+    .use(graphql.getMiddleware({path: "/graphql", cors: false}))
 
   return koa
 }
