@@ -1,21 +1,30 @@
+import {Server} from "http"
+
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
-  ApolloServerPluginLandingPageDisabled
+  ApolloServerPluginLandingPageDisabled,
+  ApolloServerPluginDrainHttpServer
 } from "apollo-server-core"
 import {ApolloServer} from "apollo-server-koa"
 
 import schema from "api/schema"
 
-const graphql = new ApolloServer({
-  schema,
+function createApolloServer(httpServer: Server): ApolloServer {
+  const apolloServer = new ApolloServer({
+    schema,
 
-  context: ({ctx}) => ctx,
+    context: ({ctx}) => ctx,
 
-  plugins: [
-    process.env.NODE_ENV === "production"
-      ? ApolloServerPluginLandingPageGraphQLPlayground()
-      : ApolloServerPluginLandingPageDisabled()
-  ]
-})
+    stopOnTerminationSignals: false,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({httpServer}),
+      process.env.NODE_ENV === "production"
+        ? ApolloServerPluginLandingPageDisabled()
+        : ApolloServerPluginLandingPageGraphQLPlayground()
+    ]
+  })
 
-export default graphql
+  return apolloServer
+}
+
+export default createApolloServer

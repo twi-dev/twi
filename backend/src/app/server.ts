@@ -1,4 +1,4 @@
-import {createServer, Server} from "http"
+import {createServer} from "http"
 import {resolve} from "path"
 
 import Koa from "koa"
@@ -9,18 +9,16 @@ import {Container} from "typedi"
 
 import {FileStorage} from "helper/file/FileStorage"
 
-import waterfall from "helper/array/waterfall"
-
 import ormContext from "app/middleware/ormContext"
 import multipart from "app/middleware/multipart"
 import session from "app/middleware/session"
-import graphql from "app/graphql"
+import createApolloServer from "app/graphql"
 
 import {FileStorageFSDriver} from "app/file/FileStorageFSDriver"
 
-let server: Server | undefined
-
-async function init(): Promise<Koa> {
+async function startServer(): Promise<() => Promise<void>> {
+  const server = createServer()
+  const apolloServer = createApolloServer(server)
   const koa = new Koa()
 
   const fileStorage = new FileStorage(
@@ -32,7 +30,7 @@ async function init(): Promise<Koa> {
   koa.proxy = process.env.SERVER_TRUST_PROXY! === "true"
   koa.keys = process.env.SERVER_AUTH_SESSION_SECRET!.split(" ")
 
-  await graphql.start()
+  await apolloServer.start()
 
   koa
     .use(cors())
@@ -40,39 +38,29 @@ async function init(): Promise<Koa> {
     .use(session)
     .use(multipart)
     .use(ormContext)
-    .use(graphql.getMiddleware({path: "/graphql", cors: false}))
+    .use(apolloServer.getMiddleware({cors: false}))
 
-  return koa
-}
+  server.on("request", koa.callback())
 
-const run = (koa: Koa) => new Promise<Server>((resolve, reject) => {
-  server = createServer(koa.callback())
+  await new Promise<void>(resolve => server.listen(
+    process.env.SERVER_PORT, resolve
+  ))
 
-  server
-    .once("error", reject)
-    .listen(parseInt(process.env.SERVER_PORT!, 10), () => resolve(server!))
-})
-
-export const start = () => waterfall([init, run]).then(() => {
   const address = `http://localhost:${process.env.SERVER_PORT}`
 
-  console.log(`Server is running on ${address}`)
-  console.log(`GraphiQL is mounted on ${address}/graphql`)
-})
+  console.log("Server is running on %s", address)
 
-/**
- * Gracefully stops the server
- */
-export const stop = () => new Promise<void>((resolve, reject) => {
-  const fulfill = (error?: Error) => error ? reject(error) : resolve()
-
-  if (!server) {
-    return resolve()
+  if (process.env.NODE_ENV !== "production") {
+    console.log(
+      "GraphQL IDE is available on %s%s", address, apolloServer.graphqlPath
+    )
   }
 
-  if (!server.listening) {
-    return resolve()
-  }
+  return async function stopServer() {
+    console.log("Stopping the server on %s", address)
 
-  server.close(fulfill)
-})
+    await apolloServer.stop()
+  }
+}
+
+export default startServer

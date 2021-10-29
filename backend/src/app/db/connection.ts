@@ -64,7 +64,7 @@ export async function getConfig({
 }
 
 /**
- * Creates a new connection to database
+ * Connects to the database and returns an ORM instance
  */
 export async function connect({
   database,
@@ -98,5 +98,22 @@ export async function disconnect(): Promise<void> {
 
   if (orm && await orm.isConnected()) {
     return orm.close()
+  }
+}
+
+export async function createConnection({
+  database,
+  synchronize,
+  dropSchema,
+  logging
+}: ConnectOptions = {}): Promise<() => Promise<void>> {
+  const orm = await connect({database, synchronize, dropSchema, logging})
+
+  console.log("Connected to the database")
+
+  return async function closeConnection() {
+    console.log("Closing connection to the database")
+
+    await orm.close()
   }
 }

@@ -2,27 +2,24 @@ import "app/config"
 
 import waterfall from "helper/array/waterfall"
 
-import {connect, disconnect} from "app/db/connection"
-import {start, stop} from "app/server"
+import startServer from "app/server"
 
-const exit = (code: number = 0) => waterfall([
-  () => disconnect(),
-  () => stop()
-])
-  .then(() => { process.exit(code) })
-  .catch((error: Error) => {
-    console.error(error)
+import {createConnection} from "app/db/connection"
 
-    process.exit(1)
-  });
+(async () => {
+  const closeConnection = await createConnection({
+    logging: process.env.NODE_ENV !== "production"
+  })
 
-["SIGTERM", "SIGINT"].forEach(signal => process.on(signal, () => exit()))
+  const stopServer = await startServer();
 
-waterfall([
-  () => connect({logging: process.env.NODE_ENV !== "production"}),
-  () => start()
-]).catch(error => {
-  console.error(error)
+  ["SIGTERM", "SIGINT"].forEach(signal => process.on(signal, () => {
+    waterfall([closeConnection, stopServer])
+      .then(() => process.exit(0))
+      .catch((error: Error) => {
+        console.error(error)
 
-  return exit(1)
-})
+        process.exit(1)
+      })
+  }))
+})()
