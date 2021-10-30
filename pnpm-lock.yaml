@@ -5,7 +5,6 @@ importers:
   backend:
     specifiers:
       '@koa/cors': 3.1.0
-      '@koa/router': 10.1.1
       '@mikro-orm/cli': 4.5.9
       '@mikro-orm/core': 4.5.9
       '@mikro-orm/migrations': ^4.5.9
@@ -19,7 +18,6 @@ importers:
       '@types/ioredis': 4.27.8
       '@types/koa': 2.13.4
       '@types/koa__cors': 3.0.3
-      '@types/koa__router': 8.0.8
       '@types/koa-redis': 4.0.1
       '@types/koa-session-minimal': 3.0.7
       '@types/koa-static': 4.0.2
@@ -75,7 +73,6 @@ importers:
       typescript-transform-paths: 2.2.4
     dependencies:
       '@koa/cors': 3.1.0
-      '@koa/router': 10.1.1
       '@mikro-orm/cli': 4.5.9_bbe242f917bfad68c6673e7c3756385b
       '@mikro-orm/core': 4.5.9_5ae46d24dd2c43a07808d6760579e667
       '@mikro-orm/migrations': 4.5.9_4f6664ef34446be897308c3bc9cfc6f8
@@ -116,7 +113,6 @@ importers:
       '@types/ioredis': 4.27.8
       '@types/koa': 2.13.4
       '@types/koa__cors': 3.0.3
-      '@types/koa__router': 8.0.8
       '@types/koa-redis': 4.0.1
       '@types/koa-session-minimal': 3.0.7
       '@types/koa-static': 4.0.2
@@ -2677,19 +2673,6 @@ packages:
       vary: 1.1.2
     dev: false
 
-  /@koa/router/10.1.1:
-    resolution: {integrity: sha512-ORNjq5z4EmQPriKbR0ER3k4Gh7YGNhWDL7JBW+8wXDrHLbWYKYSJaOJ9aN06npF5tbTxe2JBOsurpJDAvjiXKw==}
-    engines: {node: '>= 8.0.0'}
-    dependencies:
-      debug: 4.3.2
-      http-errors: 1.8.0
-      koa-compose: 4.1.0
-      methods: 1.1.2
-      path-to-regexp: 6.2.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@mapbox/node-pre-gyp/1.0.5:
     resolution: {integrity: sha512-4srsKPXWlIxp5Vbqz5uLfBN+du2fJChBoYn/f2h991WLdk7jUvcSk/McVLSv/X+xQIPI8eGD5GjrnygdyHnhPA==}
     hasBin: true
@@ -3523,12 +3506,6 @@ packages:
     resolution: {integrity: sha512-74Xb4hJOPGKlrQ4PRBk1A/p0gfLpgbnpT0o67OMVbwyeMXvlBN+ZCRztAAmkKZs+8hKbgMutUlZVbA52Hr/0IA==}
     dependencies:
       '@types/koa': 2.13.4
-
-  /@types/koa__router/8.0.8:
-    resolution: {integrity: sha512-9pGCaDtzCsj4HJ8HmGuqzk8+s57sPj4njWd08GG5o92n5Xp9io2snc40CPpXFhoKcZ8OKhuu6ht4gNou9e1C2w==}
-    dependencies:
-      '@types/koa': 2.13.4
-    dev: true
 
   /@types/lodash/4.14.176:
     resolution: {integrity: sha512-xZmuPTa3rlZoIbtDUyJKZQimJV3bxCmzMIO2c9Pz9afyDro6kr7R79GwcB6mRhuoPmV2p1Vb66WOJH7F886WKQ==}
@@ -8858,11 +8835,6 @@ packages:
       '@types/node': 16.4.13
     dev: true
 
-  /methods/1.1.2:
-    resolution: {integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=}
-    engines: {node: '>= 0.6'}
-    dev: false
-
   /micro-spelling-correcter/1.1.1:
     resolution: {integrity: sha512-lkJ3Rj/mtjlRcHk6YyCbvZhyWTOzdBvTHsxMmZSk5jxN1YyVSQ+JETAom55mdzfcyDrY/49Z7UCW760BK30crg==}
     dev: true
@@ -9780,10 +9752,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       path-root-regex: 0.1.2
-
-  /path-to-regexp/6.2.0:
-    resolution: {integrity: sha512-f66KywYG6+43afgE/8j/GoiNyygk/bnoCbps++3ErRKsIYkGGupyv07R2Ok5m9i67Iqc+T2g1eAUGUPzWhYTyg==}
-    dev: false
 
   /path-type/3.0.0:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==}
