@@ -22,4 +22,8 @@ import {createConnection} from "app/db/connection"
         process.exit(1)
       })
   }))
-})()
+})().catch((error: Error) => {
+  console.error(error)
+
+  process.exit(1)
+})
