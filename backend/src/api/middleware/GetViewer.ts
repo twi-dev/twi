@@ -21,7 +21,7 @@ class GetViewer implements MiddlewareInterface<Context> {
   async use({context}: ResolverData<Context>, next: NextFn) {
     // Require user to be authorized first, just in case
     if (!context.session?.userId) {
-      return context.throw(401)
+      return context.throw(401, "Yuo're not authenticated.")
     }
 
     const userRepo = this._orm.em.getRepository(User)
@@ -31,7 +31,7 @@ class GetViewer implements MiddlewareInterface<Context> {
     // If there's no user, threat request as unauthorized
     // c8 ignore next 3
     if (!viewer) {
-      return context.throw(401, "Cant find current user.")
+      return context.throw(404, "Cant find current user.")
     }
 
     // Add user onto context state
