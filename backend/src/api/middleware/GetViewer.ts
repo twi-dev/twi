@@ -21,7 +21,7 @@ class GetViewer implements MiddlewareInterface<Context> {
   async use({context}: ResolverData<Context>, next: NextFn) {
     // Require user to be authorized first, just in case
     if (!context.session?.userId) {
-      return context.throw(401, "Yuo're not authenticated.")
+      return context.throw(401, "You're not authenticated.")
     }
 
     const userRepo = this._orm.em.getRepository(User)
