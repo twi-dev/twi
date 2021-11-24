@@ -28,7 +28,7 @@ class GetViewer implements MiddlewareInterface<Context> {
 
     const viewer = await userRepo.findOne(context.session.userId)
 
-    // If there's no user, threat request as unauthorized
+    // If there's no user, throw 404
     // c8 ignore next 3
     if (!viewer) {
       return context.throw(404, "Cant find current user.")
