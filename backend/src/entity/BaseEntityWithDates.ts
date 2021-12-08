@@ -7,11 +7,9 @@ import {BaseEntity} from "./BaseEntity"
 
 @ObjectType({isAbstract: true})
 export abstract class BaseEntityWithDates extends BaseEntity {
-  @Field(() => Date)
   @Property()
   createdAt: Date = new Date()
 
-  @Field(() => Date)
   @Property({onUpdate: () => new Date()})
   updatedAt: Date = new Date()
 

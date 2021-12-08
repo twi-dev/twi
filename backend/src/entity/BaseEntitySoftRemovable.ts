@@ -7,7 +7,6 @@ import {BaseEntityWithDates} from "./BaseEntityWithDates"
 
 @ObjectType({isAbstract: true})
 export abstract class BaseEntitySoftRemovable extends BaseEntityWithDates {
-  @Field(() => Date, {nullable: true})
   @Property({type: Date, nullable: true})
   deletedAt!: Date | null
 
