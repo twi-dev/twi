@@ -1,3 +1,4 @@
+import {Readable} from "stream"
 import {join} from "path"
 
 import ava, {TestInterface} from "ava"
@@ -137,7 +138,7 @@ test<Macro>("userAvatarRemove removes user avatar", withDatabase, async t => {
   } = await fs.write(
     join("user", String(user.id), "avatar", image.name),
 
-    image.stream()
+    Readable.from(image.stream())
   )
 
   const file = new File({hash, key, name: image.name, mime: image.type})
