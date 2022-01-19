@@ -18,6 +18,7 @@ export const CONTEXT_DEFAULTS: FakeContext = {
   },
   state: {},
   throw(...args): never {
+    // @ts-ignore
     throw createError(...args)
   }
 }
