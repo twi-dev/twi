@@ -170,7 +170,7 @@ test<Macro>(
     const {graphQLErrors} = await t.throwsAsync<OperationError>(trap)
     const [{originalError}] = graphQLErrors
 
-    t.is((originalError as HttpError).statusCode, 401)
+    t.is((originalError as HttpError).statusCode, 404)
   }
 )
 
