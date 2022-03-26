@@ -1,13 +1,14 @@
-import {MikroORM} from "@mikro-orm/core"
+import {MikroORM, RequestContext} from "@mikro-orm/core"
 import {Container} from "typedi"
 import {Middleware} from "koa"
 
-import storage from "app/db/storage"
-
+/**
+ * Creates a new request context
+ */
 const ormContext: Middleware = async (_ctx, next) => {
   const orm = Container.get(MikroORM)
 
-  await storage.run(orm.em.fork(true, true), next)
+  return RequestContext.createAsync(orm.em, next)
 }
 
 export default ormContext

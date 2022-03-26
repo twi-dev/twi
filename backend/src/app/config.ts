@@ -6,7 +6,7 @@ import {set, pickBy} from "lodash"
 import dotenv from "dotenv"
 
 if (!process.env.NODE_ENV) {
-  // @ts-expect-error
+  // @ts-ignore
   process.env.NODE_ENV = "development"
 }
 

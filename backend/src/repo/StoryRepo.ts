@@ -1,4 +1,4 @@
-import {FindOneOptions, Populate} from "@mikro-orm/core"
+import {FindOneOptions} from "@mikro-orm/core"
 
 import {BaseRepo} from "repo/BaseRepo"
 
@@ -10,23 +10,23 @@ export class StoryRepo extends BaseRepo<Story> {
    *
    * @param idOrSlug `id` or `slug` to search a row by
    */
-  async findOneByIdOrSlug<P extends Populate<Story> = Populate<Story>>(
+  async findOneByIdOrSlug(
     idOrSlug: string | number,
-    populate?: FindOneOptions<Story, P>
+    options?: FindOneOptions<Story, string>
   ) {
     return this.findOne(
       {
         $or: [
           {
-            id: idOrSlug,
+            id: idOrSlug as number,
           },
           {
-            slug: idOrSlug
+            slug: idOrSlug as string
           }
         ]
       },
 
-      populate
+      options
     )
   }
 }

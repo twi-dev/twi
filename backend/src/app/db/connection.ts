@@ -5,8 +5,6 @@ import {Container, Constructable} from "typedi"
 
 import globby from "globby"
 
-import storage from "./storage"
-
 export interface GetConfigOptios {
   database?: string
   logging?: boolean
@@ -57,9 +55,7 @@ export async function getConfig({
     implicitTransactions: true,
     migrations: {
       path: resolve("migration/schema")
-    },
-
-    context: () => storage.getStore()
+    }
   }
 }
 
@@ -84,7 +80,7 @@ export async function connect({
 
   // TODO: Remove this once I finish the MVP
   if (process.env.NODE_ENV !== "production" || synchronize === true) {
-    await generator.updateSchema(true, true, false)
+    await generator.updateSchema({dropDb: false, dropTables: false, safe: true})
   }
 
   return orm

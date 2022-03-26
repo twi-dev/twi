@@ -1,6 +1,6 @@
 import {cpus} from "os"
 
-import {FindOneOptions, Populate} from "@mikro-orm/core"
+import {FindOneOptions} from "@mikro-orm/core"
 import {hash, verify, argon2id} from "argon2"
 
 import {BaseRepo} from "repo/BaseRepo"
@@ -21,9 +21,9 @@ export class UserRepo extends BaseRepo<User> {
    *
    * @param emailOrLogin An `email` or `login` to search a user against to.
    */
-  async findOneByEmailOrLogin<P extends Populate<User> = Populate<User>>(
+  async findOneByEmailOrLogin(
     emailOrLogin: string,
-    populate?: FindOneOptions<User, P>
+    options?: FindOneOptions<User, string>
   ): Promise<User | null> {
     return this.findOne(
       {
@@ -38,7 +38,7 @@ export class UserRepo extends BaseRepo<User> {
         ]
       },
 
-      populate
+      options
     )
   }
 
