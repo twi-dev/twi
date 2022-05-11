@@ -29,8 +29,9 @@ export async function getConfig({
   database
 }: GetConfigOptios = {}): Promise<Options> {
   const subscribers = await arrayFromAsync<Subscriber, EventSubscriber>(
-    classFromPath(SUBSCRIBERS_ROOT),
+    classFromPath(SUBSCRIBERS_ROOT, "*Subscriber"),
 
+    // Instaniate subscribers for MikroORM.init
     Subscriber => new Subscriber()
   )
 

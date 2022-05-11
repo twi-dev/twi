@@ -10,8 +10,11 @@ interface ModuleExposeClass<T> {
   [name: string]: T
 }
 
-async function* readClassFromPath<T extends Constructable<any>>(dir: string) {
-  for await (const path of readDir(dir)) {
+async function* readClassFromPath<T extends Constructable<any>>(
+  dir: string,
+  pattern?: string
+) {
+  for await (const path of readDir(dir, pattern)) {
     const m: ModuleExposeClass<T> = await import(path)
     const name = basename(path, extname(path))
     const exposedClass: T | undefined = m.default || m[name]
