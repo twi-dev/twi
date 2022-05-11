@@ -18,7 +18,8 @@
     ]
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "env.d.ts"
   ],
   "ts-node": {
     "preferTsExts": true,

@@ -1,9 +1,12 @@
-import {basename, extname, resolve} from "path"
+import {resolve, join} from "path"
 
+import {Container} from "typedi"
 import {MikroORM, EventSubscriber, Options} from "@mikro-orm/core"
-import {Container, Constructable} from "typedi"
 
-import globby from "globby"
+import {Constructable} from "helper/type/Constructable"
+
+import classFromPath from "helper/util/readClassFromPath"
+import arrayFromAsync from "helper/array/fromAsync"
 
 export interface GetConfigOptios {
   database?: string
@@ -15,36 +18,27 @@ export interface ConnectOptions extends GetConfigOptios {
   dropSchema?: boolean
 }
 
-async function loadFromGlob<T extends object>(
-  patterns: string[]
-): Promise<T[]> {
-  const res: T[] = []
+type Subscriber = Constructable<EventSubscriber>
 
-  for await (const path of globby.stream([...patterns, "!*.test.ts"])) {
-    const stringPath = String(path)
-
-    const name = basename(stringPath, extname(stringPath))
-    const m = await import(stringPath)
-
-    res.push(m.default || m[name])
-  }
-
-  return res
-}
+const ROOT = resolve(__dirname, "..", "..")
+const SUBSCRIBERS_ROOT = join(ROOT, "subscriber")
+const ENTITIES_ROOT = join(ROOT, "entity")
 
 export async function getConfig({
   logging,
   database
 }: GetConfigOptios = {}): Promise<Options> {
-  const subscribers = await loadFromGlob<Constructable<EventSubscriber>>([
-    process.env.DATABASE_SUBSCRIBERS!
-  ])
+  const subscribers = await arrayFromAsync<Subscriber, EventSubscriber>(
+    classFromPath(SUBSCRIBERS_ROOT),
 
-  const entities = await loadFromGlob([process.env.DATABASE_ENTITIES!])
+    Subscriber => new Subscriber()
+  )
+
+  const entities = await arrayFromAsync(classFromPath(ENTITIES_ROOT))
 
   return {
-    subscribers: subscribers.map(Subscriber => new Subscriber()),
-    entities: entities as any,
+    entities,
+    subscribers,
     debug: logging,
     type: "mysql",
     host: process.env.DATABASE_HOST || undefined,

@@ -15,8 +15,7 @@
   "extends": [
     "airbnb-typescript",
     "@octetstream",
-    "plugin:ava/recommended",
-    "plugin:react/jsx-runtime"
+    "plugin:ava/recommended"
   ],
   "rules": {
     "no-void": 0,
