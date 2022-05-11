@@ -2,7 +2,7 @@ import {basename, extname} from "path"
 
 import {Constructable} from "helper/type/Constructable"
 
-import readDir from "./readDir"
+import {readDir} from "./readDir"
 
 interface ModuleExposeClass<T> {
   default: T
