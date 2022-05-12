@@ -12,7 +12,8 @@ if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = "development"
 }
 
-const dev = process.env.NODE_ENV !== "production"
+const envName = process.env.NODE_ENV
+const dev = envName !== "production"
 
 // eslint-disable-next-line no-undef
 type RequiredKeys = PickRequiredKeys<NodeJS.ProcessEnv>
@@ -40,7 +41,7 @@ function loadConfig(name: string): Record<string, string> {
     const path = resolve(name)
     const config = dotenv.parse(readFileSync(path))
 
-    if (dev && process.env.NODE_ENV !== "test") {
+    if (dev && envName !== "test") {
       console.log("Load config from %s", path)
     }
 
@@ -57,8 +58,8 @@ function loadConfig(name: string): Record<string, string> {
 const config: Record<string, string> = {
   ...loadConfig(".env"),
   ...loadConfig(".env.local"),
-  ...loadConfig(`.env.${process.env.NODE_ENV}`),
-  ...loadConfig(`.env.${process.env.NODE_ENV}.local`)
+  ...loadConfig(`.env.${envName}`),
+  ...loadConfig(`.env.${envName}.local`)
 }
 
 Object.entries(config).forEach(([name, value]) => {
