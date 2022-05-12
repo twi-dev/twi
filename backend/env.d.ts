@@ -5,11 +5,6 @@ declare namespace NodeJS {
     readonly NODE_ENV: "development" | "production" | "test" | "debug"
 
     /**
-     * Server root directory. The default value depends on the environment. Please don't change this manually.
-     */
-    readonly SERVER_ROOT: string
-
-    /**
      * The port server will listen on
      */
     readonly SERVER_PORT: string
@@ -49,17 +44,9 @@ declare namespace NodeJS {
      */
     readonly DATABASE_NAME: string
 
-    readonly DATABASE_ENTITIES: string
-
-    readonly DATABASE_SUBSCRIBERS: string
-
-    readonly DATABASE_REPOSITORY: string
-
     /**
      * Server-wide secret key
      */
     readonly SERVER_AUTH_SESSION_SECRET: string
-
-    readonly GRAPHQL_RESOLVERS: string
   }
 }

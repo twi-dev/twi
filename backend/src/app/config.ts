@@ -1,9 +1,11 @@
 import {readFileSync} from "fs"
 import {resolve} from "path"
 
-import {set, pickBy} from "lodash"
+import {pickBy} from "lodash"
 
 import dotenv from "dotenv"
+
+import type {PickRequiredKeys} from "helper/type/PickRequiredKeys"
 
 if (!process.env.NODE_ENV) {
   // @ts-ignore
@@ -11,6 +13,27 @@ if (!process.env.NODE_ENV) {
 }
 
 const dev = process.env.NODE_ENV !== "production"
+
+// eslint-disable-next-line no-undef
+type RequiredKeys = PickRequiredKeys<NodeJS.ProcessEnv>
+
+const REQUIRED_KEYS: RequiredKeys[] = [
+  "DATABASE_HOST",
+  "DATABASE_NAME",
+  "DATABASE_PASSWORD",
+  "DATABASE_PORT",
+  "DATABASE_PORT",
+  "SERVER_AUTH_SESSION_SECRET"
+]
+
+function assertRequiredVariable(name: string, value?: string): void | never {
+  // I don't care about type mismatching here, so just cast REQUIRED to string[]
+  if ((REQUIRED_KEYS as string[]).includes(name) && !value) {
+    throw new Error(
+      `Environment variable ${name} is required, but not provided.`
+    )
+  }
+}
 
 function loadConfig(name: string): object {
   try {
@@ -31,50 +54,15 @@ function loadConfig(name: string): object {
   }
 }
 
-function getConfig(): void {
-  const config: Record<string, string> = {
-    ...loadConfig(".env"),
-    ...loadConfig(".env.local"),
-    ...loadConfig(`.env.${process.env.NODE_ENV}`),
-    ...loadConfig(`.env.${process.env.NODE_ENV}.local`)
-  }
-
-  Object.entries(config).forEach(([name, value]) => {
-    process.env[name] = value
-  })
+const config: Record<string, string> = {
+  ...loadConfig(".env"),
+  ...loadConfig(".env.local"),
+  ...loadConfig(`.env.${process.env.NODE_ENV}`),
+  ...loadConfig(`.env.${process.env.NODE_ENV}.local`)
 }
 
-const SERVER_ROOT = resolve(dev ? "src" : "lib")
+Object.entries(config).forEach(([name, value]) => {
+  assertRequiredVariable(name, value)
 
-/* c8 ignore next 1 */
-const EXT = dev ? ".ts" : ".js"
-
-set(
-  process.env,
-  "DATABASE_ENTITIES",
-  resolve(SERVER_ROOT, "entity", `*${EXT}`)
-)
-
-set(
-  process.env,
-  "DATABASE_SUBSCRIBERS",
-  resolve(SERVER_ROOT, "subscriber", `*Subscriber${EXT}`)
-)
-
-set(
-  process.env,
-
-  "DATABASE_REPOSITORY",
-
-  resolve(SERVER_ROOT, "repo", `*Repo${EXT}`)
-)
-
-set(
-  process.env,
-  "GRAPHQL_RESOLVERS",
-  resolve(SERVER_ROOT, "api", "resolver", `*Resolver${EXT}`)
-)
-
-set(process.env, "SERVER_ROOT", SERVER_ROOT)
-
-getConfig()
+  process.env[name] = value
+})
