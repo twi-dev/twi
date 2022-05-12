@@ -4,8 +4,6 @@ interface MapFunction<T, U> {
   (value: T, index: number): MaybePromise<U>
 }
 
-Array.from([])
-
 // eslint-disable-next-line no-undef
 async function arrayFromAsync<T>(iterable: AsyncIterable<T>): Promise<T[]>
 async function arrayFromAsync<T, U>(
@@ -28,7 +26,7 @@ async function arrayFromAsync<T, U>(
       )
     }
 
-    array.push(mapFn ? await mapFn.call(ctx, value, array.length - 1) : value)
+    array.push(mapFn ? await mapFn.call(ctx, value, array.length) : value)
   }
 
   return array
