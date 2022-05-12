@@ -35,7 +35,7 @@ function assertRequiredVariable(name: string, value?: string): void | never {
   }
 }
 
-function loadConfig(name: string): object {
+function loadConfig(name: string): Record<string, string> {
   try {
     const path = resolve(name)
     const config = dotenv.parse(readFileSync(path))
