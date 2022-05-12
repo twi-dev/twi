@@ -2,11 +2,18 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": ["./tsconfig.json"]
   },
   "env": {
     "browser": true,
     "node": true
+  },
+  // TODO: Find a better solution for this mess
+  "globals": {
+    "NodeJS": true,
+    "AsyncIterator": true,
+    "AsyncIterable": true,
+    "AsyncGenerator": true
   },
   "plugins": [
     "@typescript-eslint",

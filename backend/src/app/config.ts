@@ -46,7 +46,7 @@ function loadConfig(name: string): object {
 
     return pickBy(config, Boolean)
   } catch (error) {
-    if ((error as any).code !== "ENOENT") {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
       throw error
     }
 

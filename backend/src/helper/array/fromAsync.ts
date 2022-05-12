@@ -4,15 +4,12 @@ interface MapFunction<T, U> {
   (value: T, index: number): MaybePromise<U>
 }
 
-// eslint-disable-next-line no-undef
 async function arrayFromAsync<T>(iterable: AsyncIterable<T>): Promise<T[]>
 async function arrayFromAsync<T, U>(
-  // eslint-disable-next-line no-undef
   iterable: AsyncIterable<T>,
   mapFn: MapFunction<T, U>
 ): Promise<U[]>
 async function arrayFromAsync<T, U>(
-  // eslint-disable-next-line no-undef
   iterable: AsyncIterable<T>,
   mapFn?: MapFunction<T, U>,
   ctx?: unknown
