@@ -8,8 +8,8 @@ import {connect, disconnect} from "app/db/connection"
 // TODO: I should probably move all of this setup to a macros and execute before and after hooks in their own unique database context
 
 const PREFIX = "twi-test__"
-
-const createSuffix = customAlphabet(urlAlphabet.replace(/[^a-z0-9]/ig, ""), 6)
+const alphanum = urlAlphabet.replace(/[^a-z0-9]/gi, "")
+const createSuffix = customAlphabet(alphanum, 6)
 
 // Stores a database name for this AVA test process.
 let name: string | null = null
