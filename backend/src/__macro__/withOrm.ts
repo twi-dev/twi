@@ -17,7 +17,7 @@ export type WithOrmMacro<T extends object = {}> = [
 ]
 
 /**
- * Runs test implementation inside of it's own database context.
+ * Runs test implementation inside RequestContext, so test has its own Identity Map.
  *
  * @param t Test context (will be assigned by AVA)
  * @param implementation Test implementation
@@ -26,7 +26,7 @@ export const withOrm: UntitledMacro<
   WithOrmMacro<any>,
   DatabaseContext
 > = async (t, implementation) => {
-  await RequestContext.createAsync(t.context.db.em, async () => {
-    await implementation(t)
-  })
+  const {em} = t.context.db
+
+  await RequestContext.createAsync(em, async () => { await implementation(t) })
 }

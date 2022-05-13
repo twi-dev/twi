@@ -303,7 +303,7 @@ test<Macro>(
       contextValue: createFakeContext({session: {userId: user.id}})
     })
 
-    t.deepEqual((actual.tags as any as Tag[]), [])
+    t.deepEqual((actual.tags.toArray()), [])
   }
 )
 
@@ -334,7 +334,7 @@ test<Macro>("storyUpdate allows to update tags", withOrm, async t => {
   })
 
   t.deepEqual(
-    (actual.tags! as any as Tag[]).map(({name}) => name).sort(),
+    actual.tags.toArray().map(({name}) => name).sort(),
 
     expected.sort()
   )
