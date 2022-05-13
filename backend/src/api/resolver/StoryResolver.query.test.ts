@@ -11,10 +11,10 @@ import createFakeStories from "__helper__/createFakeStories"
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "../../__macro__/withDatabaseContext"
+} from "../../__macro__/withOrm"
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
@@ -23,7 +23,7 @@ interface TestContext {
   stories: Story[]
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -101,7 +101,7 @@ test.before(async t => {
   t.context.stories = stories
 })
 
-test<Macro>("story returns a story by slug", withDatabase, async t => {
+test<Macro>("story returns a story by slug", withOrm, async t => {
   const [story] = t.context.stories
 
   const {
@@ -115,7 +115,7 @@ test<Macro>("story returns a story by slug", withDatabase, async t => {
   t.is(Number(actual.id), story.id)
 })
 
-test<Macro>("story returns a story by ID", withDatabase, async t => {
+test<Macro>("story returns a story by ID", withOrm, async t => {
   const [story] = t.context.stories
 
   const {
@@ -132,7 +132,7 @@ test<Macro>("story returns a story by ID", withDatabase, async t => {
 test<Macro>(
   "stories returns list of the stories in the page frame",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {

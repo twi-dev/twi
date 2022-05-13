@@ -16,10 +16,10 @@ import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "../../__macro__/withDatabaseContext"
+} from "../../__macro__/withOrm"
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
@@ -30,7 +30,7 @@ interface TestContext {
   story: Story
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -99,7 +99,7 @@ test.before(async t => {
   t.context.user = user
 })
 
-test.beforeEach<Macro>(withDatabase, async t => {
+test.beforeEach<Macro>(withOrm, async t => {
   const {user, db} = t.context
 
   const [story] = createFakeStories(1)
@@ -111,13 +111,13 @@ test.beforeEach<Macro>(withDatabase, async t => {
   t.context.story = story
 })
 
-test.afterEach<Macro>(withDatabase, async t => {
+test.afterEach<Macro>(withOrm, async t => {
   const {story, db} = t.context
 
   await db.em.getRepository(Story).removeAndFlush(story)
 })
 
-test<Macro>("storyChapterAdd creates a new chapter", withDatabase, async t => {
+test<Macro>("storyChapterAdd creates a new chapter", withOrm, async t => {
   const {user, story} = t.context
 
   const [{title, description, text}] = createFakeChapters(1)
@@ -143,7 +143,7 @@ test<Macro>("storyChapterAdd creates a new chapter", withDatabase, async t => {
 test<Macro>(
   "storyChapterAdd throws an error when given story doesn't exists",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user} = t.context
@@ -163,7 +163,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("storyChapterUpdate updates a title", withDatabase, async t => {
+test<Macro>("storyChapterUpdate updates a title", withOrm, async t => {
   const {user, story, db} = t.context
 
   const [{title}, chapter] = createFakeChapters(2)
@@ -186,7 +186,7 @@ test<Macro>("storyChapterUpdate updates a title", withDatabase, async t => {
 test<Macro>(
   "storyChapterUpdate updates a description",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, story, db} = t.context
@@ -212,7 +212,7 @@ test<Macro>(
 test<Macro>(
   "storyChapterUpdate removes description if set to null",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, story, db} = t.context
@@ -235,7 +235,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("storyChapterUpdate updates a text", withDatabase, async t => {
+test<Macro>("storyChapterUpdate updates a text", withOrm, async t => {
   const {user, story, db} = t.context
 
   const [{text}, chapter] = createFakeChapters(2)
@@ -258,7 +258,7 @@ test<Macro>("storyChapterUpdate updates a text", withDatabase, async t => {
 test<Macro>(
   "storyChapterUpdate throws an error when given chapter doesn't exists",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user} = t.context
@@ -281,7 +281,7 @@ test<Macro>(
 test<Macro>(
   "storyChapterRemove removes chapter by given ID",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, story, db} = t.context
@@ -306,7 +306,7 @@ test<Macro>(
 test<Macro>(
   "storyChapterRemove throws an error when can't find a chapter",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user} = t.context

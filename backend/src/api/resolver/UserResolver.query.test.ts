@@ -6,10 +6,10 @@ import {isBoolean, isNumber} from "lodash"
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "__macro__/withDatabaseContext"
+} from "__macro__/withOrm"
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
 import {User, UserStatuses} from "entity/User"
@@ -24,7 +24,7 @@ interface TestContext {
   users: User[]
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -101,7 +101,7 @@ test.before(async t => {
 test<Macro>(
   "user returns a user by their email",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{id, email}] = t.context.users
@@ -120,7 +120,7 @@ test<Macro>(
 test<Macro>(
   "user returns a user by their login",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{id, login}] = t.context.users
@@ -134,7 +134,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("viewer returns loggen-in user", withDatabase, async t => {
+test<Macro>("viewer returns loggen-in user", withOrm, async t => {
   const [{id}] = t.context.users
 
   const {viewer: actual} = await graphql<ViewerQueryResult>({
@@ -145,7 +145,7 @@ test<Macro>("viewer returns loggen-in user", withDatabase, async t => {
   t.is(Number(actual.id), id)
 })
 
-test<Macro>("viewer result has the email field", withDatabase, async t => {
+test<Macro>("viewer result has the email field", withOrm, async t => {
   const [{id, email}] = t.context.users
 
   const {viewer: actual} = await graphql<ViewerQueryResult>({
@@ -159,7 +159,7 @@ test<Macro>("viewer result has the email field", withDatabase, async t => {
 test<Macro>(
   "viewer throws an error if current user was not found",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const trap = () => graphql<never>({
@@ -177,7 +177,7 @@ test<Macro>(
 test(
   "users returns correct page frame shape",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {users: actual} = await graphql<UsersQueryResult>({
@@ -197,7 +197,7 @@ test(
 test<Macro>(
   "users returns same limit values as in variables",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const expected = 3
@@ -218,7 +218,7 @@ test<Macro>(
 test<Macro>(
   "users returns true in a hasNext field when there's more pages left",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {
@@ -237,7 +237,7 @@ test<Macro>(
 test<Macro>(
   "The value of the last page in users query depends on rows count and limit",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const limit = 5
@@ -261,7 +261,7 @@ test<Macro>(
 test<Macro>(
   "users returns the same current page number as in variables",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const expected = 3
@@ -283,7 +283,7 @@ test<Macro>(
 test<Macro>(
   "The count field in users equals the total number of rows",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const expected = await t.context.db.em.getRepository(User).count()
@@ -299,7 +299,7 @@ test<Macro>(
 test<Macro>(
   "users returns empty list when the page is out of range",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {

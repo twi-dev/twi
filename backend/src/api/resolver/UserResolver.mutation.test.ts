@@ -15,10 +15,10 @@ import {FileStorage} from "helper/file/FileStorage"
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "__macro__/withDatabaseContext"
+} from "__macro__/withOrm"
 import {setupFs, cleanupFs} from "__helper__/fs"
 import {setupConnection, cleanupConnection} from "__helper__/database"
 
@@ -31,7 +31,7 @@ interface TestContext {
   fs: FileStorage
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -77,7 +77,7 @@ test.before(async t => {
   t.context.db = await setupConnection()
 })
 
-test.beforeEach<Macro>(withDatabase, async t => {
+test.beforeEach<Macro>(withOrm, async t => {
   const {db} = t.context
 
   const [user] = createFakeUsers(1)
@@ -89,13 +89,13 @@ test.beforeEach<Macro>(withDatabase, async t => {
   t.context.user = user
 })
 
-test.afterEach<Macro>(withDatabase, async t => {
+test.afterEach<Macro>(withOrm, async t => {
   const {db, user} = t.context
 
   await db.em.getRepository(User).removeAndFlush(user)
 })
 
-test<Macro>("userAvatarUpdate updates user avatar", withDatabase, async t => {
+test<Macro>("userAvatarUpdate updates user avatar", withOrm, async t => {
   const {user, image, db} = t.context
 
   const {
@@ -113,7 +113,7 @@ test<Macro>("userAvatarUpdate updates user avatar", withDatabase, async t => {
   t.truthy(file)
 })
 
-test<Macro>("userAvatarUpdate has required fields", withDatabase, async t => {
+test<Macro>("userAvatarUpdate has required fields", withOrm, async t => {
   const {user, image} = t.context
 
   const {
@@ -130,7 +130,7 @@ test<Macro>("userAvatarUpdate has required fields", withDatabase, async t => {
   t.true("mime" in actual)
 })
 
-test<Macro>("userAvatarRemove removes user avatar", withDatabase, async t => {
+test<Macro>("userAvatarRemove removes user avatar", withOrm, async t => {
   const {user, db, image, fs} = t.context
 
   const {

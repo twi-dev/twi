@@ -19,10 +19,10 @@ import createFakeStories from "__helper__/createFakeStories"
 import createFakeUsers from "__helper__/createFakeUsers"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "../../__macro__/withDatabaseContext"
+} from "../../__macro__/withOrm"
 import {graphql} from "./__helper__/graphql"
 import {createFakeContext} from "./__helper__/createFakeContext"
 
@@ -32,7 +32,7 @@ interface TestContext {
   user: User
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -118,7 +118,7 @@ test.before(async t => {
   t.context.user = user
 })
 
-test<Macro>("storyAdd creates a new story", withDatabase, async t => {
+test<Macro>("storyAdd creates a new story", withOrm, async t => {
   const [{title, description}] = createFakeStories(1)
   const {user} = t.context
 
@@ -144,7 +144,7 @@ test<Macro>("storyAdd creates a new story", withDatabase, async t => {
 test<Macro>(
   "storyAdd allows to assing tags to created story",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{title, description}] = createFakeStories(1)
@@ -178,7 +178,7 @@ test<Macro>(
 test<Macro>(
   "storyAdd has isDraft field set to true by default",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{title, description}] = createFakeStories(1)
@@ -199,7 +199,7 @@ test<Macro>(
 test<Macro>(
   "storyAdd has isFinished field set to false by default",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{title, description}] = createFakeStories(1)
@@ -220,7 +220,7 @@ test<Macro>(
 test<Macro>(
   "storyUpdate allows to update title of the story",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const expected = faker.lorem.words(3)
@@ -248,7 +248,7 @@ test<Macro>(
 test<Macro>(
   "storyUpdate allows to update description of the story",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const expected = faker.lorem.paragraph()
@@ -276,7 +276,7 @@ test<Macro>(
 test<Macro>(
   "storyUpdate resets tags when the tags argument is null",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, db} = t.context
@@ -307,7 +307,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("storyUpdate allows to update tags", withDatabase, async t => {
+test<Macro>("storyUpdate allows to update tags", withOrm, async t => {
   const expected = ["Big Macintosh", "Sugar Belle", "Romance"]
 
   const {user, db} = t.context
@@ -343,7 +343,7 @@ test<Macro>("storyUpdate allows to update tags", withDatabase, async t => {
 test<Macro>(
   "storyUpdate will not update isFinished field when there's no chapters",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, db} = t.context
@@ -370,7 +370,7 @@ test<Macro>(
 test<Macro>(
   "storyUpdate will update isFinished field when there's story has chapters",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user, db} = t.context
@@ -403,7 +403,7 @@ test<Macro>(
 test<Macro>(
   "storyUpdate throws an error when given story doesn't exists",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user} = t.context
@@ -421,7 +421,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("storyRemove removes given story", withDatabase, async t => {
+test<Macro>("storyRemove removes given story", withOrm, async t => {
   const {user, db} = t.context
 
   const [story] = createFakeStories(1)
@@ -444,7 +444,7 @@ test<Macro>("storyRemove removes given story", withDatabase, async t => {
 test<Macro>(
   "storyRemove throws an error when given story doesn't exists",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const {user} = t.context

@@ -19,10 +19,10 @@ import PageVariables from "./__helper__/PageVariables"
 import OperationError from "./__helper__/OperationError"
 
 import {
-  withDatabase,
-  WithDatabaseMacro,
+  withOrm,
+  WithOrmMacro,
   DatabaseContext
-} from "../../__macro__/withDatabaseContext"
+} from "../../__macro__/withOrm"
 import {graphql} from "./__helper__/graphql"
 
 interface TestContext {
@@ -31,7 +31,7 @@ interface TestContext {
   chapters: Chapter[]
 }
 
-type Macro = WithDatabaseMacro<TestContext>
+type Macro = WithOrmMacro<TestContext>
 
 const test = ava as TestInterface<DatabaseContext & TestContext>
 
@@ -125,7 +125,7 @@ test.before(async t => {
 test<Macro>(
   "chapter returns chapter by story ID and its number within the story",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [{id, number, story}] = t.context.chapters
@@ -141,7 +141,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("chapters returns a list of chapters", withDatabase, async t => {
+test<Macro>("chapters returns a list of chapters", withOrm, async t => {
   const {id} = t.context.story
 
   const {
@@ -163,7 +163,7 @@ test<Macro>("chapters returns a list of chapters", withDatabase, async t => {
 test<Macro>(
   "chapter throws 404 error if there are no matched results",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const trap = (): Promise<never> => graphql<never, ChapterQueryVariables>({

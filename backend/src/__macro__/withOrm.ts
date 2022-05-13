@@ -1,7 +1,5 @@
 import {ExecutionContext, UntitledMacro, ImplementationResult} from "ava"
-import {MikroORM} from "@mikro-orm/core"
-
-import storage from "app/db/storage"
+import {MikroORM, RequestContext} from "@mikro-orm/core"
 
 type MaybeContext<T extends object> =
   T extends ExecutionContext ? T : ExecutionContext<T>
@@ -10,12 +8,12 @@ export interface DatabaseContext {
   db: MikroORM
 }
 
-interface WithDatabaseCallback<C extends object> {
+interface WithOrmCallback<C extends object> {
   (t: C): ImplementationResult
 }
 
-export type WithDatabaseMacro<T extends object = {}> = [
-  WithDatabaseCallback<MaybeContext<T & DatabaseContext>>
+export type WithOrmMacro<T extends object = {}> = [
+  WithOrmCallback<MaybeContext<T & DatabaseContext>>
 ]
 
 /**
@@ -24,9 +22,11 @@ export type WithDatabaseMacro<T extends object = {}> = [
  * @param t Test context (will be assigned by AVA)
  * @param implementation Test implementation
  */
-export const withDatabase: UntitledMacro<
-  WithDatabaseMacro<any>,
+export const withOrm: UntitledMacro<
+  WithOrmMacro<any>,
   DatabaseContext
 > = async (t, implementation) => {
-  await storage.run(t.context.db.em.fork(true, true), () => implementation(t))
+  await RequestContext.createAsync(t.context.db.em, async () => {
+    await implementation(t)
+  })
 }

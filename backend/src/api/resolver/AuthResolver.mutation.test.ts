@@ -17,10 +17,10 @@ import {graphql} from "./__helper__/graphql"
 import OperationError from "./__helper__/OperationError"
 
 import {
-  withDatabase,
+  withOrm,
   DatabaseContext,
-  WithDatabaseMacro as Macro,
-} from "../../__macro__/withDatabaseContext"
+  WithOrmMacro as Macro,
+} from "../../__macro__/withOrm"
 
 const test = ava as TestInterface<DatabaseContext>
 
@@ -68,7 +68,7 @@ test.before(async t => {
   t.context.db = await setupConnection()
 })
 
-test<Macro>("authSignUp creates a new user", withDatabase, async t => {
+test<Macro>("authSignUp creates a new user", withOrm, async t => {
   const [{email, login, password}] = createFakeUsers(1)
 
   const {
@@ -82,7 +82,7 @@ test<Macro>("authSignUp creates a new user", withDatabase, async t => {
   t.is(actual.login, login)
 })
 
-test<Macro>("authSignUp sets up a session", withDatabase, async t => {
+test<Macro>("authSignUp sets up a session", withOrm, async t => {
   const [{email, login, password}] = createFakeUsers(1)
 
   const context = createFakeContext()
@@ -98,7 +98,7 @@ test<Macro>("authSignUp sets up a session", withDatabase, async t => {
   t.is(Number(actual.id), context.session.userId)
 })
 
-test<Macro>("authLogIn returns logged in user.", withDatabase, async t => {
+test<Macro>("authLogIn returns logged in user.", withOrm, async t => {
   const [user] = createFakeUsers(1)
   const {email, password} = user
 
@@ -114,7 +114,7 @@ test<Macro>("authLogIn returns logged in user.", withDatabase, async t => {
   t.is(Number(actual.id), user.id)
 })
 
-test<Macro>("authLogIn creates a session.", withDatabase, async t => {
+test<Macro>("authLogIn creates a session.", withOrm, async t => {
   const [user] = createFakeUsers(1)
   const {email, password} = user
 
@@ -133,7 +133,7 @@ test<Macro>("authLogIn creates a session.", withDatabase, async t => {
 
 test<Macro>(
   "authLogIn throws an error on incorrect password",
-  withDatabase,
+  withOrm,
   async t => {
     const [user] = createFakeUsers(1)
 
@@ -157,7 +157,7 @@ test<Macro>(
 test<Macro>(
   "authLogIn throws an error on incorrect login",
 
-  withDatabase,
+  withOrm,
 
   async t => {
     const [user] = createFakeUsers(1)
@@ -180,7 +180,7 @@ test<Macro>(
   }
 )
 
-test<Macro>("authLogOut destroys current session", withDatabase, async t => {
+test<Macro>("authLogOut destroys current session", withOrm, async t => {
   const [user] = createFakeUsers(1)
 
   await t.context.db.em.getRepository(User).persistAndFlush(user)
