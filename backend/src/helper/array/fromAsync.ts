@@ -1,4 +1,4 @@
-import {MaybePromise} from "helper/type/MaybePromise"
+import type {MaybePromise} from "helper/type/MaybePromise"
 
 interface MapFunction<T, U> {
   (value: T, index: number): MaybePromise<U>

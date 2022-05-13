@@ -1,4 +1,4 @@
-import MaybePromise from "helper/type/MaybePromise"
+import type {MaybePromise} from "helper/type/MaybePromise"
 
 interface Task {
   (...args: any[]): MaybePromise<unknown>
