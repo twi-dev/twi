@@ -105,7 +105,7 @@ class UserResolver {
       const {avatar} = viewer
       const {key: oldPath} = avatar
 
-      const updated = wrap(avatar).assign({key, hash, mime, name} as File)
+      const updated = wrap(avatar).assign({key, hash, mime, name})
 
       await fileRepo.persistAndFlush(avatar)
       await this._fs.unlink(oldPath)
