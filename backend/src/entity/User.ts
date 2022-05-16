@@ -9,6 +9,7 @@ import {
 } from "@mikro-orm/core"
 
 import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+import type {MaybeNull} from "helper/type/MaybeNull"
 import {UserRepo} from "repo/UserRepo"
 
 import {BaseEntitySoftRemovable} from "./BaseEntitySoftRemovable"
@@ -75,5 +76,5 @@ export class User extends BaseEntitySoftRemovable {
    */
   @Field(() => File, {nullable: true})
   @OneToOne({entity: () => File, nullable: true, eager: true})
-  avatar!: File | null
+  avatar!: MaybeNull<File>
 }

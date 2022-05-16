@@ -6,6 +6,7 @@ import {
   EntityRepositoryType
 } from "@mikro-orm/core"
 
+import type {MaybeNull} from "helper/type/MaybeNull"
 import createSlug from "helper/util/createSlug"
 
 import {TagRepo} from "repo/TagRepo"
@@ -22,7 +23,7 @@ export class Tag extends BaseEntityWithDates {
    * Category assigned to the tag.
    */
   @ManyToOne(() => Category, {nullable: true, onDelete: "set null"})
-  category!: Category | null
+  category!: MaybeNull<Category>
 
   /**
    * Name of the tag.
@@ -43,9 +44,9 @@ export class Tag extends BaseEntityWithDates {
    */
   @Field(() => String, {nullable: true})
   @Property({columnType: "text", nullable: true})
-  description!: string | null
+  description!: MaybeNull<string>
 
-  constructor(name: string, description: string | null = null) {
+  constructor(name: string, description: MaybeNull<string> = null) {
     super()
 
     this.name = name

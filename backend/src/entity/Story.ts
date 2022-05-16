@@ -13,6 +13,7 @@ import {
 import {isEmpty} from "lodash"
 
 import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+import type {MaybeNull} from "helper/type/MaybeNull"
 
 import {StoryRepo} from "repo/StoryRepo"
 
@@ -56,7 +57,7 @@ export class Story extends BaseEntitySoftRemovable {
     eager: true,
     onDelete: "set null"
   })
-  cover!: File | null
+  cover!: MaybeNull<File>
 
   /**
    * List of the chapters associated with the story

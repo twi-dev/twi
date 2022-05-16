@@ -8,6 +8,7 @@ import {
 } from "@mikro-orm/core"
 
 import {ExcludeSoftRemovedFilter} from "app/db/filter/ExcludeSoftRemovedFilter"
+import type {MaybeNull} from "helper/type/MaybeNull"
 
 import {ChapterRepo} from "repo/ChapterRepo"
 
@@ -40,7 +41,7 @@ export class Chapter extends BaseEntitySoftRemovable {
    */
   @Field(() => Int, {description: "Chapter number within the story."})
   @Property({columnType: "smallint", unsigned: true, nullable: true})
-  number!: number | null
+  number!: MaybeNull<number>
 
   /**
    * Chapter title.
@@ -54,7 +55,7 @@ export class Chapter extends BaseEntitySoftRemovable {
    */
   @Field(() => String, {nullable: true, description: "Chapter description."})
   @Property({columnType: "text", nullable: true})
-  description!: string | null
+  description!: MaybeNull<string>
 
   /**
    * Chapter text.
