@@ -11,5 +11,8 @@ export default defineNuxtConfig({
   ],
   tailwindcss: {
     exposeConfig: true
+  },
+  build: {
+    transpile: ["trpc-nuxt"]
   }
 })
