@@ -1,34 +1,63 @@
-# twi
+# Nuxt 3 Minimal Starter
 
-Fanfiction library engine, mostly focused on **My Little Pony: Friendship is Magic** community.
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-The current project contains codebase related to Twilight's Library API getaway service needs.
+## Setup
 
-🚧 **IMPORTANT NOTE: Project is still in development
-and isn't ready for production! Stay in touch.**
+Make sure to install the dependencies:
 
-**I'm also do not accept pull requests (but feel free to ask me about this project),**
-**because Twi have no stable API, docs and contributing policy.**
-**All these things will be added soon.**
+```bash
+# npm
+npm install
 
-## Requirements:
+# pnpm
+pnpm install
 
-| Dependency name                      | Version (semver)          |
-|--------------------------------------|---------------------------|
-| [Node.js](https://nodejs.org/en/)    | >= 12.2                   |
-| [MySQL](https://www.mysql.com/)      | >= 8.x                    |
-| [Redis](https://redis.io)            | >= 2.6.12                 |
+# yarn
+yarn install
+```
 
-You also need:
+## Development Server
 
-* Linux or macOS to run Twi.
+Start the development server on `http://localhost:3000`:
 
-   I don't support Windows and have no plans about that,
-   but feel free to add this feature if you want to do.
+```bash
+# npm
+npm run dev
 
-* Some server for mail service.
-* Any init system, like [systemd](https://github.com/systemd/systemd)
+# pnpm
+pnpm run dev
 
-## License
+# yarn
+yarn dev
+```
 
-**MIT**
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm run build
+
+# yarn
+yarn build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm run preview
+
+# yarn
+yarn preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

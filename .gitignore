@@ -1,50 +1,24 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
 
-# dependencies
+# Node dependencies
 node_modules
 
-# plug-n-play
-/.pnp
-.pnp.js
+# Logs
+logs
+*.log
 
-# testing
-coverage
-
-# NYC
-/.nyc_output
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+# Misc
 .DS_Store
-*.pem
+.fleet
+.idea
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Unnecessary lockfiles
-yarn.lock
-package-lock.json
-
-# local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.user.local
-
-# vercel
-.vercel
-
-lib
-
-/config
-
-*.old
+# Local env files
+.env
+.env.*
+!.env.example
