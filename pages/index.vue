@@ -3,7 +3,7 @@ import {useNuxtApp} from "#imports"
 
 const {$trpc} = useNuxtApp()
 
-const message = await $trpc.hello.query()
+const {data: message} = await $trpc.hello.useQuery()
 </script>
 
 <template>
