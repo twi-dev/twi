@@ -14,5 +14,19 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ["trpc-nuxt"]
+  },
+
+  // Enable desorators support thought nitro config, so we can use mikro-orm entity decorators
+  // Note that esbuild does not support emitDecoratorMetadata option
+  nitro: {
+    esbuild: {
+      options: {
+        tsconfigRaw: {
+          compilerOptions: {
+            experimentalDecorators: true
+          }
+        }
+      }
+    }
   }
 })

@@ -1,9 +1,9 @@
 import {setTimeout} from "node:timers/promises"
 
-import {string, minLength} from "valibot"
+import {z} from "zod"
 
-import {procedure} from "../def.js"
+import {procedure} from "../procedures/base.js"
 
 export const hello = procedure
-  .output(string([minLength(1)]))
+  .output(z.string().nonempty())
   .query(() => setTimeout(1000, "Hello, world!"))

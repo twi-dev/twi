@@ -1,27 +1,42 @@
 {
+  "type": "module",
   "name": "nuxt-app",
   "private": true,
+  "main": ".output/server/index.mjs",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --dotenv .env.development.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./server/lib/db/cli.ts"
+    ]
+  },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
+    "@mikro-orm/migrations": "^5.7.14",
+    "@mikro-orm/seeder": "^5.7.14",
+    "@nuxt/devtools": "0.8.0",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@types/lodash-es": "^4.17.8",
     "@types/node": "^18.17.3",
-    "nuxt": "^3.6.5"
+    "nuxt": "^3.6.5",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@mikro-orm/cli": "^5.7.14",
+    "@mikro-orm/core": "^5.7.14",
+    "@mikro-orm/mysql": "^5.7.14",
     "@trpc/client": "^10.37.1",
     "@trpc/server": "^10.37.1",
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
+    "mysql2": "^3.6.0",
     "superjson": "^1.13.1",
     "trpc-nuxt": "^0.10.10",
-    "valibot": "^0.12.0"
+    "zod": "^3.22.2"
   }
 }
