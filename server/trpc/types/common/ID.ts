@@ -1,7 +1,7 @@
-import {type Input, type Output, string, minLength} from "valibot"
+import {z} from "zod"
 
-export const ID = string([minLength(1)])
+export const ID = z.string().uuid()
 
-export type IID = Input<typeof ID>
+export type IID = z.input<typeof ID>
 
-export type OID = Output<typeof ID>
+export type OID = z.output<typeof ID>

@@ -3,19 +3,10 @@ import {Entity, Property, Enum} from "@mikro-orm/core"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import {stringEnumValues} from "../../../lib/utils/stringEnumValues.js"
 
+import {UserStatuses} from "../../trpc/types/user/UserStatuses.js"
+import {UserRoles} from "../../trpc/types/user/UserRoles.js"
+
 import {RecordSoft} from "./RecordSoft.js"
-
-export enum UserRoles {
-  OWNER = "owner",
-  ADMIN = "admin",
-  REGULAR = "regular"
-}
-
-export enum UserStatuses {
-  INACTIVE = "inactive",
-  ACTIVE = "active",
-  SUSPENDED = "suspended"
-}
 
 // TODO: Add avatar field
 @Entity()

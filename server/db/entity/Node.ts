@@ -6,5 +6,5 @@ export abstract class Node<TOptionalFields = never> {
   [OptionalProps]?: TOptionalFields
 
   @PrimaryKey({type: "uuid"})
-  readonly id = randomUUID()
+  readonly id: string = randomUUID()
 }

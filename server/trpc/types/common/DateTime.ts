@@ -1,19 +1,13 @@
-import {date, string, number, union, transform} from "valibot"
-import type {Input, Output} from "valibot"
+import {z} from "zod"
 
 import {isString} from "lodash-es"
 import {parseISO, toDate} from "date-fns"
 
-export const DateTime = transform(
-  transform(
-    union([date(), string(), number()]),
+export const DateTime = z
+  .union([z.date(), z.string(), z.number()])
+  .transform(date => isString(date) ? parseISO(date) : toDate(date))
+  .transform(date => date.toISOString())
 
-    date => isString(date) ? parseISO(date) : toDate(date)
-  ),
+export type IDateTime = z.input<typeof DateTime>
 
-  value => value.toISOString()
-)
-
-export type IDateTime = Input<typeof DateTime>
-
-export type ODateTime = Output<typeof DateTime>
+export type ODateTime = z.input<typeof DateTime>
