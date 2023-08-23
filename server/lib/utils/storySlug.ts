@@ -1,7 +1,7 @@
 import {customAlphabet, urlAlphabet} from "nanoid"
 import {format} from "date-fns"
 
-import isDate from "validator/lib/isDate"
+import isDate from "validator/lib/isDate.js"
 
 import type {RawDate} from "../../../lib/utils/types/RawDate.js"
 import {normalizeDate} from "../../../lib/utils/normalizeDate.js"

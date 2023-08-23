@@ -1,5 +1,5 @@
 import {parseISO, toDate} from "date-fns"
-import {isString} from "lodash"
+import {isString} from "lodash-es"
 
 import type {RawDate} from "./types/RawDate.js"
 
