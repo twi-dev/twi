@@ -18,10 +18,7 @@ export async function closeConnection(): Promise<void> {
   }
 
   const orm = await cached
-
-  if (!orm || await orm.isConnected() === false) {
-    return
+  if (orm && await orm.isConnected()) {
+    await orm.close()
   }
-
-  return orm.close()
 }
