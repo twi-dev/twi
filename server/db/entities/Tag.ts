@@ -12,13 +12,13 @@ export class Tag extends RecordSoft<TagOptionalFields> {
    * Name of the tag
    */
   @Property({type: "varchar"})
-  name!: string
+  readonly name!: string
 
   /**
    * URL-firendly representation of the tag's name
    */
   @Property({type: "varchar"})
-  slug!: string
+  readonly slug!: string
 
   /**
    * An optional tag description.
