@@ -32,6 +32,7 @@
     "@mikro-orm/cli": "5.7.14",
     "@mikro-orm/core": "5.7.14",
     "@mikro-orm/mysql": "5.7.14",
+    "@sindresorhus/slugify": "^2.2.1",
     "@trpc/client": "10.37.1",
     "@trpc/server": "10.37.1",
     "bcrypt": "^5.1.1",
