@@ -1,10 +1,7 @@
 import {defineConfig, type Options} from "@mikro-orm/mysql"
 
-import {Story} from "../../db/entity/Story.js"
-import {Chapter} from "../../db/entity/Chapter.js"
-import {Category} from "../../db/entity/Category.js"
-import {User} from "../../db/entity/User.js"
-import {Tag} from "../../db/entity/Tag.js"
+import * as subscribers from "../../db/subscribers.js"
+import * as entities from "../../db/entities.js"
 
 import {Config, type IConfig} from "./types/Config.js"
 
@@ -33,6 +30,7 @@ export async function getConfig(): Promise<Options> {
     password,
     debug,
     implicitTransactions: true,
-    entities: [User, Story, Chapter, Category, Tag]
+    entities: Object.values(entities),
+    subscribers: Object.values(subscribers).map(Subscriber => new Subscriber())
   })
 }

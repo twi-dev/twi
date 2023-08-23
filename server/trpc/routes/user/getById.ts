@@ -2,7 +2,7 @@ import {TRPCError} from "@trpc/server"
 
 import {procedure} from "../../procedures/base.js"
 
-import {User} from "../../../db/entity/User.js"
+import {User} from "../../../db/entities/User.js"
 
 import {Node} from "../../types/common/Node.js"
 import {UserOutput} from "../../types/user/UserOutput.js"
