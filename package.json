@@ -24,6 +24,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/lodash-es": "4.17.8",
     "@types/node": "18.17.3",
+    "@types/validator": "^13.11.1",
     "nuxt": "3.6.5",
     "ts-node": "10.9.1",
     "type-fest": "^4.2.0"
@@ -41,6 +42,7 @@
     "mysql2": "3.6.0",
     "superjson": "1.13.1",
     "trpc-nuxt": "0.10.10",
+    "validator": "^13.11.0",
     "zod": "3.22.2"
   }
 }

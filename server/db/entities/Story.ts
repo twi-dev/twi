@@ -46,6 +46,9 @@ export class Story extends RecordSoft<StoryOptionalFields> {
   @Property({type: "boolean", default: false})
   isFinished = true
 
+  @Property({type: "smallint", unsigned: true})
+  chaptersCount = 0
+
   /**
    * List of tags associated with the story
    */
