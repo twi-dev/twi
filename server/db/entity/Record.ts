@@ -1,14 +1,13 @@
-import {Property, OptionalProps} from "@mikro-orm/core"
+import {Property} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
+import type {MergeOptionals} from "../../lib/db/utils/MergeOptionals.js"
 
 import {Node} from "./Node.js"
 
 export abstract class Record<
-  TOptionalProps extends string = RecordOptionalFields
-> extends Node {
-  [OptionalProps]?: TOptionalProps
-
+  TOptionalProps extends string = never
+> extends Node<MergeOptionals<RecordOptionalFields, TOptionalProps>> {
   @Property({type: "datetime"})
   createdAt = new Date()
 
@@ -16,4 +15,4 @@ export abstract class Record<
   updatedAt = new Date()
 }
 
-export type RecordOptionalFields = PickKeys<Record, "createdAt" | "updatedAt">
+type RecordOptionalFields = PickKeys<Record, "createdAt" | "updatedAt">

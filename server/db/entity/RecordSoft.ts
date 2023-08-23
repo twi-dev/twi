@@ -1,15 +1,16 @@
 import {Property} from "@mikro-orm/core"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
+import type {MergeOptionals} from "../../lib/db/utils/MergeOptionals.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 
-import {Record, type RecordOptionalFields} from "./Record.js"
+import {Record} from "./Record.js"
 
-// TODO: Merge given optionals
-export abstract class RecordSoft extends Record<RecordSoftOptionalFields> {
+export abstract class RecordSoft<
+  TOptionalProps extends string = never
+> extends Record<MergeOptionals<RecordSoftOptionalFields, TOptionalProps>> {
   @Property({type: "datetime", nullable: true})
   deletedAt: MaybeNull<Date> = null
 }
 
-export type RecordSoftOptionalFields =
-  PickKeys<RecordSoft, RecordOptionalFields | "deletedAt">
+type RecordSoftOptionalFields = PickKeys<RecordSoft, "deletedAt">

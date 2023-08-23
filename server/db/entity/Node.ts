@@ -1,8 +1,10 @@
 import {randomUUID} from "node:crypto"
 
-import {PrimaryKey} from "@mikro-orm/core"
+import {PrimaryKey, OptionalProps} from "@mikro-orm/core"
 
-export abstract class Node {
+export abstract class Node<TOptionalFields = never> {
+  [OptionalProps]?: TOptionalFields
+
   @PrimaryKey({type: "uuid"})
   readonly id = randomUUID()
 }
