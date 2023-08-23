@@ -15,23 +15,49 @@ export enum ChapterFilters {
 @Filter<Chapter>({name: ChapterFilters.PUBLISHED, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.DRAFT, cond: {isDraft: true}})
 export class Chapter extends RecordSoft<ChapterOptionalFields> {
-  @ManyToOne(() => Story, {onDelete: "cascade"})
-  story!: Story
-
-  @Property({type: "smallint", unsigned: true, nullable: true})
-  number!: MaybeNull<number>
-
+  /**
+   * Chapter title
+   */
   @Property({type: "varchar"})
   title!: string
 
+  /**
+   * Chapter description
+   */
   @Property({type: "text"})
   description!: string
 
+  /**
+   * Chapter content.
+   *
+   * This field contains collection of [`Slate`](https://www.slatejs.org) nodes
+   */
   @Property({type: JsonType})
   content!: Record<string, unknown> // TODO: Adjust type to slate nodes
 
+  /**
+   * Indicates if the chapter is hidden from anyone to read
+   *
+   * `true` - means chapter is **hidden**
+   *
+   * `false` - means chapter is **public**
+   */
   @Property({type: "boolean", default: false})
   isDraft = true
+
+  /**
+   * Chapter order number within the story.
+   *
+   * The value will be "null" when the chapter is unlisted or soft-removed
+   */
+  @Property({type: "smallint", unsigned: true, nullable: true})
+  order!: MaybeNull<number>
+
+  /**
+   * Story associated with the chapter
+   */
+  @ManyToOne(() => Story, {onDelete: "cascade"})
+  story!: Story
 }
 
 type ChapterOptionalFields = PickKeys<Chapter, never>

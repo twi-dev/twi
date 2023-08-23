@@ -11,6 +11,9 @@ import {RecordSoft} from "./RecordSoft.js"
 // TODO: Add avatar field
 @Entity()
 export class User extends RecordSoft<UserOptionalFields> {
+  /**
+   * User unique human-readable identifier
+   */
   @Property({type: "varchar", unique: true})
   login!: string
 
