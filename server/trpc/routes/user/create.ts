@@ -3,10 +3,10 @@ import {procedure} from "../../procedures/base.js"
 import {User} from "../../../db/entities/User.js"
 
 import {UserOutput} from "../../types/user/UserOutput.js"
-import {UserCreateInput} from "../../types/user/UserCreateInput.js"
+import {UserSignUpInput} from "../../types/user/UserSignUpInput.js"
 
 export const create = procedure
-  .input(UserCreateInput)
+  .input(UserSignUpInput)
   .output(UserOutput)
   .mutation(async ({input, ctx: {orm}}) => {
     const user = orm.em.create(User, input)
