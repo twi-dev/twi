@@ -21,30 +21,30 @@
     "@mikro-orm/seeder": "5.7.14",
     "@nuxt/devtools": "0.8.0",
     "@nuxtjs/tailwindcss": "6.8.0",
-    "@types/bcrypt": "^5.0.0",
+    "@types/bcrypt": "5.0.0",
     "@types/lodash-es": "4.17.8",
     "@types/node": "18.17.3",
-    "@types/validator": "^13.11.1",
+    "@types/validator": "13.11.1",
     "nuxt": "3.6.5",
     "ts-node": "10.9.1",
-    "type-fest": "^4.2.0"
+    "type-fest": "4.2.0"
   },
   "dependencies": {
     "@mikro-orm/cli": "5.7.14",
     "@mikro-orm/core": "5.7.14",
     "@mikro-orm/mysql": "5.7.14",
-    "@sindresorhus/slugify": "^2.2.1",
+    "@sindresorhus/slugify": "2.2.1",
     "@trpc/client": "10.37.1",
     "@trpc/server": "10.37.1",
-    "@vorms/core": "^1.1.0",
-    "@vorms/resolvers": "^1.1.0",
-    "bcrypt": "^5.1.1",
+    "@vorms/core": "1.1.0",
+    "@vorms/resolvers": "1.1.0",
+    "bcrypt": "5.1.1",
     "date-fns": "2.30.0",
     "lodash-es": "4.17.21",
     "mysql2": "3.6.0",
     "superjson": "1.13.1",
     "trpc-nuxt": "0.10.10",
-    "validator": "^13.11.0",
+    "validator": "13.11.0",
     "zod": "3.22.2"
   }
 }
