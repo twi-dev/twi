@@ -8,7 +8,7 @@ import {RecordSoft} from "./RecordSoft.js"
 import {Category} from "./Category.js"
 
 @Entity()
-export class Tag extends RecordSoft<TagOptionalFields> {
+export class Tag extends RecordSoft<TagOptionalProps> {
   /**
    * Name of the tag
    */
@@ -47,4 +47,4 @@ export class Tag extends RecordSoft<TagOptionalFields> {
   }
 }
 
-type TagOptionalFields = PickKeys<Tag, "slug" | "description" | "category">
+type TagOptionalProps = PickKeys<Tag, "slug" | "description" | "category">

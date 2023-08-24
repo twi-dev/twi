@@ -16,7 +16,7 @@ import {User} from "./User.js"
 import {Tag} from "./Tag.js"
 
 @Entity()
-export class Story extends RecordSoft<StoryOptionalFields> {
+export class Story extends RecordSoft<StoryOptionalProps> {
   /**
    * Story title
    */
@@ -78,4 +78,4 @@ export class Story extends RecordSoft<StoryOptionalFields> {
   chapters = new Collection<Chapter, Story>(this)
 }
 
-type StoryOptionalFields = PickKeys<Story, "isDraft" | "isFinished" | "slug">
+type StoryOptionalProps = PickKeys<Story, "isDraft" | "isFinished" | "slug">

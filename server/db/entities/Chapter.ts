@@ -21,7 +21,7 @@ export enum ChapterFilters {
 @Entity()
 @Filter<Chapter>({name: ChapterFilters.Published, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.Draft, cond: {isDraft: true}})
-export class Chapter extends RecordSoft<ChapterOptionalFields> {
+export class Chapter extends RecordSoft<ChapterOptionalProps> {
   /**
    * Chapter title
    */
@@ -71,4 +71,4 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
   story!: Story
 }
 
-type ChapterOptionalFields = PickKeys<Chapter, "order" | "isDraft">
+type ChapterOptionalProps = PickKeys<Chapter, "order" | "isDraft">

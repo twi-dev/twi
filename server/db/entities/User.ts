@@ -10,7 +10,7 @@ import {RecordSoft} from "./RecordSoft.js"
 
 // TODO: Add avatar field
 @Entity()
-export class User extends RecordSoft<UserOptionalFields> {
+export class User extends RecordSoft<UserOptionalProps> {
   /**
    * User unique human-readable identifier
    */
@@ -44,4 +44,4 @@ export class User extends RecordSoft<UserOptionalFields> {
   status: UserStatuses = UserStatuses.Inactive
 }
 
-type UserOptionalFields = PickKeys<User, "role" | "status">
+type UserOptionalProps = PickKeys<User, "role" | "status">

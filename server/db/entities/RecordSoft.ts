@@ -8,9 +8,9 @@ import {Record} from "./Record.js"
 
 export abstract class RecordSoft<
   TOptionalProps extends string = never
-> extends Record<MergeOptionals<RecordSoftOptionalFields, TOptionalProps>> {
+> extends Record<MergeOptionals<RecordSoftOptionalProps, TOptionalProps>> {
   @Property({type: "datetime", nullable: true})
   deletedAt: MaybeNull<Date> = null
 }
 
-type RecordSoftOptionalFields = PickKeys<RecordSoft, "deletedAt">
+type RecordSoftOptionalProps = PickKeys<RecordSoft, "deletedAt">

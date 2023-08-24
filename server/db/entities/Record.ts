@@ -7,7 +7,7 @@ import {Node} from "./Node.js"
 
 export abstract class Record<
   TOptionalProps extends string = never
-> extends Node<MergeOptionals<RecordOptionalFields, TOptionalProps>> {
+> extends Node<MergeOptionals<RecordOptionalProps, TOptionalProps>> {
   @Property({type: "datetime"})
   createdAt = new Date()
 
@@ -15,4 +15,4 @@ export abstract class Record<
   updatedAt = new Date()
 }
 
-type RecordOptionalFields = PickKeys<Record, "createdAt" | "updatedAt">
+type RecordOptionalProps = PickKeys<Record, "createdAt" | "updatedAt">
