@@ -68,13 +68,13 @@ export class Story extends RecordSoft<StoryOptionalFields> {
   /**
    * List of tags associated with the story
    */
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, undefined, {lazy: true})
   tags = new Collection<Tag, Story>(this)
 
   /**
    * List of the chapters associated with the story
    */
-  @OneToMany(() => Chapter, chapter => chapter.story)
+  @OneToMany(() => Chapter, chapter => chapter.story, {lazy: true})
   chapters = new Collection<Chapter, Story>(this)
 }
 

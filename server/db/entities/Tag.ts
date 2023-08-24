@@ -7,7 +7,9 @@ import {createSlug} from "../../lib/utils/slug/createSlug.js"
 import {RecordSoft} from "./RecordSoft.js"
 import {Category} from "./Category.js"
 
-// TODO: I Should probably reconsider the way categories associate with tags
+// TODO(octet-stream): I Should probably reconsider the way categories associate with tags.
+// TODO(octet-stream): Maybe setup m:n relation between Tag and Category? So that a category may have
+// TODO(octet-stream): multiple tags and tag can be included in multiple categories
 @Entity()
 export class Tag extends RecordSoft<TagOptionalFields> {
   /**
