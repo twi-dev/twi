@@ -8,15 +8,27 @@ import {Tag} from "./Tag.js"
 
 @Entity()
 export class Category extends RecordSoft<CategoryOptionalFields> {
+  /**
+   * Category name
+   */
   @Property({type: "varchar", unique: true})
   name!: string
 
+  /**
+   * Unique URL-friendly identifier
+   */
   @Property({type: "varchar", unique: true})
   slug!: string
 
+  /**
+   * Category order
+   */
   @Property({type: "smallint", unsigned: true})
   order!: number
 
+  /**
+   * List of tags associated with category
+   */
   @OneToMany(() => Tag, tag => tag.category)
   tags = new Collection<Tag, Category>(this)
 

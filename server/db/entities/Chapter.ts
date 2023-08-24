@@ -24,7 +24,7 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
   /**
    * Chapter description
    */
-  @Property({type: "text"})
+  @Property({type: "text", lazy: true})
   description!: string
 
   /**
@@ -32,7 +32,7 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
    *
    * This field contains collection of [`Slate`](https://www.slatejs.org) nodes
    */
-  @Property({type: JsonType})
+  @Property({type: JsonType, lazy: true})
   content!: Record<string, unknown> // TODO: Adjust type to slate nodes
 
   /**

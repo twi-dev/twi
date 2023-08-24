@@ -26,7 +26,7 @@ export class Story extends RecordSoft<StoryOptionalFields> {
   /**
    * Story description
    */
-  @Property({type: "text"}) // FIXME: Chose precise type for description, MySQL has different variants for TEXT
+  @Property({type: "text", lazy: true}) // FIXME: Chose precise type for description, MySQL has different variants for TEXT
   description!: string
 
   /**
