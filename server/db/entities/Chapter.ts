@@ -60,4 +60,4 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
   story!: Story
 }
 
-type ChapterOptionalFields = PickKeys<Chapter, never>
+type ChapterOptionalFields = PickKeys<Chapter, "order" | "isDraft">
