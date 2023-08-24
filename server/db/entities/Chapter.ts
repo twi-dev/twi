@@ -53,6 +53,9 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
   @Property({type: "smallint", unsigned: true, nullable: true})
   order!: MaybeNull<number>
 
+  @Property({type: "varchar", unique: true})
+  slug!: string
+
   /**
    * Story associated with the chapter
    */
