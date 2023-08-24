@@ -1,4 +1,11 @@
-import {Entity, Property, ManyToOne, JsonType, Filter} from "@mikro-orm/core"
+import {
+  Entity,
+  Property,
+  ManyToOne,
+  JsonType,
+  Unique,
+  Filter
+} from "@mikro-orm/core"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
@@ -53,7 +60,8 @@ export class Chapter extends RecordSoft<ChapterOptionalFields> {
   @Property({type: "smallint", unsigned: true, nullable: true})
   order!: MaybeNull<number>
 
-  @Property({type: "varchar", unique: true})
+  @Property({type: "varchar"})
+  @Unique()
   slug!: string
 
   /**

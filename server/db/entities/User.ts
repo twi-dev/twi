@@ -1,4 +1,4 @@
-import {Entity, Property, Enum} from "@mikro-orm/core"
+import {Entity, Property, Enum, Unique} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import {stringEnumValues} from "../../../lib/utils/stringEnumValues.js"
@@ -14,13 +14,15 @@ export class User extends RecordSoft<UserOptionalFields> {
   /**
    * User unique human-readable identifier
    */
-  @Property({type: "varchar", unique: true})
+  @Property({type: "varchar"})
+  @Unique()
   login!: string
 
   /**
    * Email address (private),
    */
-  @Property({type: "varchar", unique: true})
+  @Property({type: "varchar"})
+  @Unique()
   email!: string
 
   /**
