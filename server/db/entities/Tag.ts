@@ -1,4 +1,4 @@
-import {Entity, Property, ManyToOne} from "@mikro-orm/core"
+import {Entity, Property, ManyToOne, Unique} from "@mikro-orm/core"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
@@ -7,7 +7,9 @@ import {createSlug} from "../../lib/utils/slug/createSlug.js"
 import {RecordSoft} from "./RecordSoft.js"
 import {Category} from "./Category.js"
 
+// TODO: I Should probably reconsider the way categories associate with tags
 @Entity()
+@Unique<Tag>({properties: ["category", "slug"]})
 export class Tag extends RecordSoft<TagOptionalFields> {
   /**
    * Name of the tag
