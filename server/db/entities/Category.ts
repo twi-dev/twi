@@ -40,4 +40,4 @@ export class Category extends RecordSoft<CategoryOptionalFields> {
   }
 }
 
-type CategoryOptionalFields = PickKeys<Category, never>
+type CategoryOptionalFields = PickKeys<Category, "slug" | "order" | "tags">
