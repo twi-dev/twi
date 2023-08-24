@@ -2,7 +2,7 @@ import {Entity, Property, ManyToOne} from "@mikro-orm/core"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
-import {createSlug} from "../../lib/utils/createSlug.js"
+import {createSlug} from "../../lib/utils/slug/createSlug.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Category} from "./Category.js"

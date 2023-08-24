@@ -8,8 +8,9 @@ import {
 } from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
-import {RecordSoft} from "./RecordSoft.js"
+import type {StorySlug} from "../../lib/utils/slug/storySlug.js"
 
+import {RecordSoft} from "./RecordSoft.js"
 import {Chapter} from "./Chapter.js"
 import {User} from "./User.js"
 import {Tag} from "./Tag.js"
@@ -32,7 +33,7 @@ export class Story extends RecordSoft<StoryOptionalFields> {
    * URL-friendly & human-readable story identifier
    */
   @Property({type: "varchar", unique: true})
-  slug!: string
+  slug!: StorySlug
 
   /**
    * Indicates whether the story is available for anyone to read.

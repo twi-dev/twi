@@ -1,6 +1,6 @@
 import {EventSubscriber, EventArgs, EntityName} from "@mikro-orm/core"
 
-import {createSlug} from "../../lib/utils/createSlug.js"
+import {createSlug} from "../../lib/utils/slug/createSlug.js"
 
 import {Chapter} from "../entities/Chapter.js"
 

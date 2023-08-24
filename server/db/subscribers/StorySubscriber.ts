@@ -2,7 +2,7 @@ import {EventSubscriber, EventArgs, EntityName} from "@mikro-orm/core"
 
 import {Story} from "../entities/Story.js"
 
-import {formatStorySlug} from "../../lib/utils/storySlug.js"
+import {formatStorySlug} from "../../lib/utils/slug/storySlug.js"
 
 export class StorySubscriber implements EventSubscriber<Story> {
   getSubscribedEntities(): EntityName<Story>[] {
@@ -12,7 +12,7 @@ export class StorySubscriber implements EventSubscriber<Story> {
   async beforeCreate(event: EventArgs<Story>): Promise<void> {
     const {entity: story} = event
 
-    story.slug = formatStorySlug(story.title, story.createdAt)
+    story.slug = formatStorySlug(story.title)
   }
 
   async beforeUpdate(event: EventArgs<Story>) {
@@ -26,7 +26,7 @@ export class StorySubscriber implements EventSubscriber<Story> {
 
     // Update the slug property of the story
     if (payload.title) {
-      story.slug = formatStorySlug(story.title, story.createdAt)
+      story.slug = formatStorySlug(story.title)
     }
 
     // Make sure chapters count is never negative

@@ -7,6 +7,10 @@ const customReplacements: readonly [key: string, replacement: string][] = [
   ["@", "at"]
 ].map(([key, replacement]) => [key, ` ${replacement} `])
 
+export const isSlugValid = (
+  value: string
+): boolean => /^[a-z0-9]+(?:-[a-z0-9]+)?$/i.test(value)
+
 /**
  * Creates URL-friendly `slug` from given `input`
  *

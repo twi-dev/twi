@@ -1,7 +1,7 @@
 import {Entity, Property, OneToMany, Collection} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
-import {createSlug} from "../../lib/utils/createSlug.js"
+import {createSlug} from "../../lib/utils/slug/createSlug.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Tag} from "./Tag.js"
