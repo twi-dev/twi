@@ -1,4 +1,4 @@
-import {Entity, Property, ManyToOne} from "@mikro-orm/core"
+import {Entity, Property, ManyToMany, Collection, Unique} from "@mikro-orm/core"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
@@ -7,35 +7,38 @@ import {createSlug} from "../../lib/utils/slug/createSlug.js"
 import {RecordSoft} from "./RecordSoft.js"
 import {Category} from "./Category.js"
 
-// TODO(octet-stream): I Should probably reconsider the way categories associate with tags.
-// TODO(octet-stream): Maybe setup m:n relation between Tag and Category? So that a category may have
-// TODO(octet-stream): multiple tags and tag can be included in multiple categories
 @Entity()
 export class Tag extends RecordSoft<TagOptionalFields> {
   /**
    * Name of the tag
    */
   @Property({type: "varchar"})
-  readonly name!: string
+  readonly name: string
 
   /**
    * URL-firendly representation of the tag's name
    */
   @Property({type: "varchar"})
-  readonly slug!: string
+  @Unique()
+  readonly slug: string
 
   /**
    * An optional tag description.
    */
-  @Property({type: "text", nullable: true})
-  description!: MaybeNull<string>
+  @Property({type: "text", nullable: true, default: null})
+  description: MaybeNull<string> = null
 
   /**
-   * Category assigned to the tag
+   * List of the categories associated with tag
    */
-  @ManyToOne(() => Category, {nullable: true, onDelete: "set null"})
-  category!: MaybeNull<string>
+  @ManyToMany(() => Category, "tags", {lazy: true, owner: true})
+  category = new Collection<Category, Tag>(this)
 
+  /**
+   * Creates a new `Tag` instance.
+   *
+   * @param name The name to assign to a new tag. This name will also be used to create a slug, to keep it unique.
+   */
   constructor(name: string) {
     super()
 

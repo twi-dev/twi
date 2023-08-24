@@ -1,4 +1,4 @@
-import {Entity, Property, OneToMany, Collection} from "@mikro-orm/core"
+import {Entity, Property, ManyToMany, Collection} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import {createSlug} from "../../lib/utils/slug/createSlug.js"
@@ -29,7 +29,7 @@ export class Category extends RecordSoft<CategoryOptionalFields> {
   /**
    * List of tags associated with category
    */
-  @OneToMany(() => Tag, tag => tag.category)
+  @ManyToMany(() => Tag, "category")
   tags = new Collection<Tag, Category>(this)
 
   constructor(name: string) {
