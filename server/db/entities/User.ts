@@ -33,13 +33,13 @@ export class User extends RecordSoft<UserOptionalFields> {
    * Indicates which role user were assigned to.
    */
   @Enum({type: "string", items: stringEnumValues(UserRoles)})
-  role: UserRoles = UserRoles.REGULAR
+  role: UserRoles = UserRoles.Regular
 
   /**
    * Indecates user's account status.
    */
   @Enum({type: "string", items: stringEnumValues(UserStatuses)})
-  status: UserStatuses = UserStatuses.INACTIVE
+  status: UserStatuses = UserStatuses.Inactive
 }
 
 type UserOptionalFields = PickKeys<User, "role" | "status">

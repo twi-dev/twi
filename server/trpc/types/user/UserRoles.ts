@@ -1,9 +1,9 @@
 import {z} from "zod"
 
 export enum UserRoles {
-  OWNER = "owner",
-  ADMIN = "admin",
-  REGULAR = "regular"
+  Owner = "owner",
+  Admin = "admin",
+  Regular = "regular"
 }
 
 export const UserRolesEnum = z.nativeEnum(UserRoles)

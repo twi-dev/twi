@@ -7,13 +7,13 @@ import {RecordSoft} from "./RecordSoft.js"
 import {Story} from "./Story.js"
 
 export enum ChapterFilters {
-  PUBLISHED = "published",
-  DRAFT = "DRAFT"
+  Published = "published",
+  Draft = "draft"
 }
 
 @Entity()
-@Filter<Chapter>({name: ChapterFilters.PUBLISHED, cond: {isDraft: false}})
-@Filter<Chapter>({name: ChapterFilters.DRAFT, cond: {isDraft: true}})
+@Filter<Chapter>({name: ChapterFilters.Published, cond: {isDraft: false}})
+@Filter<Chapter>({name: ChapterFilters.Draft, cond: {isDraft: true}})
 export class Chapter extends RecordSoft<ChapterOptionalFields> {
   /**
    * Chapter title
