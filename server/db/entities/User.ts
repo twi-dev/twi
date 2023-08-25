@@ -21,7 +21,7 @@ export class User extends RecordSoft<UserOptionalProps> {
   /**
    * Email address (private),
    */
-  @Property({type: "varchar", hidden: true})
+  @Property({type: "varchar"})
   @Unique()
   email!: string
 
