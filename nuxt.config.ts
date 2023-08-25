@@ -7,13 +7,17 @@ export default defineNuxtConfig({
     autoImport: false
   },
   modules: [
-    "@nuxtjs/tailwindcss"
+    "@nuxtjs/tailwindcss",
+    "@sidebase/nuxt-auth"
   ],
   tailwindcss: {
     exposeConfig: true
   },
+  auth: {
+    origin: process.env.AUTH_ORIGIN
+  },
   build: {
-    transpile: ["trpc-nuxt"]
+    transpile: ["trpc-nuxt", "next-auth/providers/credentials"]
   },
 
   // Enable desorators support thought nitro config, so we can use mikro-orm entity decorators
