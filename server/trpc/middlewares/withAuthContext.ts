@@ -1,7 +1,10 @@
+import {parseCookies} from "#imports"
+
 import {getToken, type JWT} from "next-auth/jwt"
 
 import {unauthorized} from "../errors/unauthorized.js"
 import {sessionToken} from "../../auth/cookies.js"
+import {config} from "../../auth/config.js"
 import {getORM} from "../../lib/db/orm.js"
 import {User} from "../../db/entities.js"
 
@@ -12,11 +15,24 @@ export interface AuthContext {
   user: User
 }
 
+/**
+ * Fake NextApiRequest look-a-like interface because we don't actualyy have Next.js types in Nuxt project.
+ */
+interface NextApiRequest {
+  cookies: Record<string, string>
+  headers: Headers
+}
+
 export const withAuthContext = withH3Context.unstable_pipe(
   async ({ctx, next}) => {
     const token = await getToken({
+      secureCookie: sessionToken.options.secure,
+      secret: config.secret,
       cookieName: sessionToken.name,
-      req: ctx.event.node.req
+      req: {
+        cookies: parseCookies(ctx.event),
+        headers: ctx.event.headers
+      } as unknown as NextApiRequest // Pass fake NextApiRequest so `getToken` will parse JWT token from cookies
     })
 
     if (!token) {
