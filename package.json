@@ -23,6 +23,11 @@
         "react-dom",
         "next"
       ]
+    },
+    "updateConfig": {
+      "ignoreDependencies": [
+        "next-auth"
+      ]
     }
   },
   "devDependencies": {
