@@ -36,8 +36,7 @@
     "@types/node": "18.17.3",
     "@types/validator": "13.11.1",
     "nuxt": "3.6.5",
-    "ts-node": "10.9.1",
-    "type-fest": "4.2.0"
+    "ts-node": "10.9.1"
   },
   "dependencies": {
     "@mikro-orm/cli": "5.7.14",

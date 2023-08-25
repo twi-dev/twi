@@ -1,3 +1,5 @@
+import {serverAddress} from "./lib/utils/serverAddress.js"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
@@ -14,7 +16,7 @@ export default defineNuxtConfig({
     exposeConfig: true
   },
   auth: {
-    origin: process.env.AUTH_ORIGIN
+    origin: new URL(serverAddress).origin
   },
   build: {
     transpile: ["trpc-nuxt", "next-auth/providers/credentials"]
