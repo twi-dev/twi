@@ -10,6 +10,7 @@ import {
 import {useForm} from "@vorms/core"
 import {zodResolver} from "@vorms/resolvers/zod"
 
+import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
 import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
 
@@ -19,7 +20,12 @@ import type {
 import {UserLogInInput} from "../../server/trpc/types/user/UserLogInInput.js"
 
 definePageMeta({
-  layout: "auth"
+  layout: "auth",
+  middleware: "auth",
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: "/"
+  } satisfies AuthMeta
 })
 
 useHead({
