@@ -1,3 +1,5 @@
+import {serverAddress} from "./lib/utils/serverAddress.js"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: {
@@ -7,13 +9,17 @@ export default defineNuxtConfig({
     autoImport: false
   },
   modules: [
-    "@nuxtjs/tailwindcss"
+    "@nuxtjs/tailwindcss",
+    "@sidebase/nuxt-auth"
   ],
   tailwindcss: {
     exposeConfig: true
   },
+  auth: {
+    origin: new URL(serverAddress).origin
+  },
   build: {
-    transpile: ["trpc-nuxt"]
+    transpile: ["trpc-nuxt", "next-auth/providers/credentials"]
   },
 
   // Enable desorators support thought nitro config, so we can use mikro-orm entity decorators

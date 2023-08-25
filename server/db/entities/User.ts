@@ -28,7 +28,7 @@ export class User extends RecordSoft<UserOptionalProps> {
   /**
    * Password (will be hashed once the user is created & persisted).
    */
-  @Property({type: "varchar"})
+  @Property({type: "varchar", hidden: true})
   password!: string
 
   /**
