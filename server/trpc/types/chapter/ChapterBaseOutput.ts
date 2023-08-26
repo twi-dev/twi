@@ -1,6 +1,8 @@
 import {z} from "zod"
 
-export const ChapterBaseOutput = z.object({
+import {ChapterRecord} from "./ChapterRecord.js"
+
+export const ChapterBaseOutput = ChapterRecord.extend({
   slug: z.string().min(2)
 })
 

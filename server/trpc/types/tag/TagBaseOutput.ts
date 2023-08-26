@@ -1,8 +1,8 @@
 import {z} from "zod"
 
-import {TagBase} from "./TagBase.js"
+import {TagRecord} from "./TagRecord.js"
 
-export const TagBaseOutput = TagBase.extend({
+export const TagBaseOutput = TagRecord.extend({
   slug: z.string().min(2)
 })
 

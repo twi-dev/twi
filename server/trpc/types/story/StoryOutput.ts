@@ -1,9 +1,13 @@
 import {z} from "zod"
 
-import {StoryRecord} from "./StoryRecord.js"
+import {TagBaseOutput} from "../tag/TagBaseOutput"
+import {createCollectionOutput} from "../../helpers/createCollectionOutput.js"
 
-// TODO: Add content field
-export const StoryOutput = StoryRecord
+import {StoryBaseOutput} from "./StoryBaseOutput.js"
+
+export const StoryOutput = StoryBaseOutput.extend({
+  tags: z.optional(createCollectionOutput(TagBaseOutput))
+})
 
 export type IStoryOutput = z.input<typeof StoryOutput>
 
