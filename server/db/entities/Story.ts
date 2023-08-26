@@ -78,4 +78,5 @@ export class Story extends RecordSoft<StoryOptionalProps> {
   chapters = new Collection<Chapter, Story>(this)
 }
 
-type StoryOptionalProps = PickKeys<Story, "isDraft" | "isFinished" | "slug">
+type StoryOptionalProps =
+  PickKeys<Story, "isDraft" | "isFinished" | "slug" | "chaptersCount">
