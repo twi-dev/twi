@@ -5,6 +5,10 @@ export default defineNuxtConfig({
   devtools: {
     enabled: process.env.NODE_ENV !== "production"
   },
+  experimental: {
+    asyncContext: true,
+    headNext: true
+  },
   imports: {
     autoImport: false
   },

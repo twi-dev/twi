@@ -41,7 +41,7 @@
     "@types/lodash-es": "4.17.8",
     "@types/node": "18.17.3",
     "@types/validator": "13.11.1",
-    "nuxt": "3.6.5",
+    "nuxt": "3.7.0",
     "ts-node": "10.9.1"
   },
   "dependencies": {
