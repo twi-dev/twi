@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 import type {ZodRawShape, ZodObject} from "zod"
-import {z, NEVER, ZodIssueCode} from "zod"
 import {Collection} from "@mikro-orm/core"
+import {z, ZodIssueCode} from "zod"
 
 // FIXME: Find a way to improve collections validation with Zod
 export const createCollectionOutput = <T extends ZodRawShape>(
@@ -14,6 +14,8 @@ export const createCollectionOutput = <T extends ZodRawShape>(
         code: ZodIssueCode.custom,
         message: "Input must be a Collection",
       })
+
+      return z.NEVER
     }
 
     const result = schema.safeParse(value)
@@ -24,6 +26,6 @@ export const createCollectionOutput = <T extends ZodRawShape>(
       })
     }
 
-    return NEVER
+    return z.NEVER
   })
   .transform(arg => Array.from(arg))
