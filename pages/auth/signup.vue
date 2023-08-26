@@ -4,7 +4,7 @@ import {
   useHead,
   useNuxtApp,
   useRouter,
-  useIsFormVaid
+  useIsFormVaid,
 } from "#imports"
 
 import {useForm} from "@vorms/core"
@@ -14,9 +14,15 @@ import type {
   IUserSignUpInput
 } from "../../server/trpc/types/user/UserSignUpInput.js"
 import {UserSignUpInput} from "../../server/trpc/types/user/UserSignUpInput.js"
+import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
 definePageMeta({
   layout: "auth",
+  middleware: "auth",
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: "/"
+  } satisfies AuthMeta
 })
 
 useHead({
