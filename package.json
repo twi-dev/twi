@@ -45,6 +45,7 @@
     "@types/node": "18.17.3",
     "@types/validator": "13.11.1",
     "@vitejs/plugin-vue": "^4.3.3",
+    "execa": "^8.0.1",
     "jsdom": "^22.1.0",
     "nuxt": "3.7.0",
     "ts-node": "10.9.1",
