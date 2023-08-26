@@ -1,3 +1,5 @@
+import {defineNuxtConfig} from "nuxt/config"
+
 import {serverAddress} from "./lib/utils/serverAddress.js"
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
