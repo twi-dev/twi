@@ -4,15 +4,22 @@ export default defineWorkspace([
   {
     test: {
       name: "node",
-      include: ["**/*.test.ts"],
-      environment: "node"
+      include: ["**/*.{node}.test.ts"],
+      environment: "node",
+      setupFiles: [
+        "./scripts/tests/setup/env.ts"
+      ],
     }
   },
   {
     test: {
       name: "server",
       environment: "node",
-      include: ["server/**/*.{db,trpc,node}.test.ts"],
+      include: ["server/**/*.{db,trpc}.test.ts"],
+      setupFiles: [
+        "./scripts/tests/setup/env.ts",
+        "./scripts/tests/setup/database.ts"
+      ],
       globalSetup: [
         "./scripts/tests/globalSetup/database.ts"
       ]
@@ -23,7 +30,10 @@ export default defineWorkspace([
     test: {
       name: "vue",
       include: ["**/*.{vue,nuxt}.test.{ts,tsx}"],
-      environment: "jsdom"
+      environment: "jsdom",
+      setupFiles: [
+        "./scripts/tests/setup/env.ts"
+      ],
     }
   }
 ])

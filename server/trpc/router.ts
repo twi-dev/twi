@@ -1,3 +1,4 @@
+import type {GlobalContext} from "./context.js"
 import {trpc} from "./def.js"
 
 import {protectedProcedure} from "./routes/protected.js"
@@ -14,4 +15,10 @@ export const router = trpc.router({
   user
 })
 
+export const createRouterCaller = (
+  ctx: GlobalContext
+) => router.createCaller(ctx)
+
 export type Router = typeof router
+
+export type RouterCaller = ReturnType<typeof router["createCaller"]>

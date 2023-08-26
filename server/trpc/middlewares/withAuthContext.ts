@@ -1,4 +1,4 @@
-import {parseCookies} from "#imports"
+import {parseCookies} from "h3"
 
 import {getToken, type JWT} from "next-auth/jwt"
 
