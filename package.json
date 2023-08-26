@@ -8,6 +8,7 @@
     "dev": "nuxt dev --dotenv .env.development.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview --dotenv .env.production.local",
+    "preinstall": "npx only-allow pnpm",
     "postinstall": "nuxt prepare"
   },
   "mikro-orm": {
