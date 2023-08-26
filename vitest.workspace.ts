@@ -15,7 +15,7 @@ export default defineWorkspace([
     test: {
       name: "server",
       environment: "node",
-      include: ["server/**/*.{db,trpc}.test.ts"],
+      include: ["server/**/*.{db,trpc,server}.test.ts"],
       setupFiles: [
         "./scripts/tests/setup/env.ts",
         "./scripts/tests/setup/database.ts"
