@@ -4,6 +4,7 @@
   "private": true,
   "main": ".output/server/index.mjs",
   "scripts": {
+    "test": "pnpm vitest --run",
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env.development.local",
     "generate": "nuxt generate",
@@ -35,14 +36,20 @@
     "@mikro-orm/migrations": "5.7.14",
     "@mikro-orm/seeder": "5.7.14",
     "@nuxt/devtools": "0.8.0",
+    "@nuxt/test-utils": "^3.7.0",
     "@nuxtjs/tailwindcss": "6.8.0",
     "@sidebase/nuxt-auth": "0.5.0",
+    "@testing-library/vue": "5",
     "@types/bcrypt": "5.0.0",
     "@types/lodash-es": "4.17.8",
     "@types/node": "18.17.3",
     "@types/validator": "13.11.1",
+    "@vitejs/plugin-vue": "^4.3.3",
+    "execa": "^8.0.1",
+    "jsdom": "^22.1.0",
     "nuxt": "3.7.0",
-    "ts-node": "10.9.1"
+    "ts-node": "10.9.1",
+    "vitest": "^0.34.3"
   },
   "dependencies": {
     "@mikro-orm/cli": "5.7.14",

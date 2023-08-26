@@ -1,12 +1,14 @@
-import {MikroORM} from "@mikro-orm/mysql"
+import {MikroORM, type Options} from "@mikro-orm/mysql"
 
 import {getConfig} from "./config.js"
 
 let cached: Promise<MikroORM>
 
+export const createORM = (config: Options) => MikroORM.init(config)
+
 export async function getORM(): Promise<MikroORM> {
   if (!cached) {
-    cached = MikroORM.init(await getConfig())
+    cached = createORM(await getConfig())
   }
 
   return cached
