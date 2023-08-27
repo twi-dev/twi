@@ -9,7 +9,7 @@ const customReplacements: readonly [key: string, replacement: string][] = [
 
 export const isSlugValid = (
   value: string
-): boolean => /^[a-z0-9]+(?:-[a-z0-9]+)?$/i.test(value)
+): boolean => /^[a-z0-9]+(?:-[a-z0-9]+)*$/i.test(value)
 
 /**
  * Creates URL-friendly `slug` from given `input`
