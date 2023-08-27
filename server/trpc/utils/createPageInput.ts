@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
 import type {ZodObject, ZodRawShape, input, output} from "zod"
-import {z} from "zod"
+import {z, ZodIssueCode} from "zod"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 
@@ -35,6 +35,17 @@ export function createPageInput<T extends ZodRawShape = never>(
     ])
     .optional()
     .transform(cursor => cursor == null ? undefined : Number(cursor))
+    .superRefine((value, ctx) => {
+      if (value != null && value < 1) {
+        ctx.addIssue({
+          code: ZodIssueCode.too_small,
+          minimum: 1,
+          inclusive: true,
+          type: "number",
+          message: "Page cursor must be greater than or equal to 1"
+        })
+      }
+    })
 
   const LimitBase = z.number().int().positive()
 
