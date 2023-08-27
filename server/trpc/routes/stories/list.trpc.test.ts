@@ -4,7 +4,6 @@ import {faker} from "@faker-js/faker"
 import {trpcTest} from "../../../../scripts/tests/context/trpc.js"
 import {User, Story} from "../../../db/entities.js"
 import {getORM} from "../../../lib/db/orm.js"
-import { setTimeout } from "timers/promises"
 
 describe("stories.list procedure", async () => {
   const count = 100
