@@ -23,7 +23,7 @@ describe("stories.list procedure", async () => {
     })
 
     const createStories = () => em.create(Story, {
-      title: faker.lorem.words({min: 1, max: 5}),
+      title: faker.lorem.words({min: 3, max: 6}),
       description: faker.lorem.paragraph(),
       publisher: user,
     })
