@@ -9,7 +9,7 @@ export function validateSuffix(value: string, ctx: RefinementCtx): void {
   if (!isStorySlugSuffixValid(value)) {
     ctx.addIssue({
       code: ZodIssueCode.invalid_string,
-      message: "Invalid suffix format.",
+      message: "Invalid suffix format",
       validation: "regex"
     })
   }

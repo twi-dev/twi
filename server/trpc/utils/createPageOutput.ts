@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-import {z} from "zod"
+import {z, ZodIssueCode} from "zod"
 import type {ZodObject, ZodRawShape, input, output} from "zod"
 
 import {createPageInput, DefaultPageInput} from "./createPageInput.js"
@@ -22,6 +22,18 @@ export const createPageOutput = <
     args: input.transform(({args}) => args)
   })
   .transform(page => new Page(page).toJSON())
+  .superRefine((value, ctx) => {
+    if (value.current > value.pagesCount) {
+      ctx.addIssue({
+        code: ZodIssueCode.too_big,
+        maximum: value.pagesCount,
+        inclusive: true,
+        type: "number",
+        message: "Page cursor is out of range: "
+          + `The value must be less than or equal to ${value.pagesCount}`
+      })
+    }
+  })
 
 export const DefaultPageOutput = createPageOutput(
   z.object({}),

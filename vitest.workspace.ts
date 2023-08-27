@@ -4,7 +4,7 @@ export default defineWorkspace([
   {
     test: {
       name: "node",
-      include: ["**/*.{node}.test.ts"],
+      include: ["./**/*.node.test.ts"],
       environment: "node",
       setupFiles: [
         "./scripts/tests/setup/env.ts"

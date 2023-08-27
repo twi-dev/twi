@@ -8,10 +8,10 @@ import {validateName} from "./utils/validateName.js"
 export const StorySlugString = z
   .string()
   .superRefine((slug, ctx): slug is StorySlug => {
-    const [date, name] = slug.split("/")
+    const [name, suffix] = slug.split("~")
 
-    validateSuffix(date, ctx)
     validateName(name, ctx)
+    validateSuffix(suffix, ctx)
 
     return z.NEVER
   })
