@@ -1,6 +1,11 @@
 <script setup lang="ts">
 definePageMeta({
-  layout: "auth"
+  layout: "auth",
+  middleware: "auth",
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: "/"
+  } satisfies AuthMeta
 })
 </script>
 
