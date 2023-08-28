@@ -2,7 +2,7 @@ import {H3Event} from "h3"
 
 import {isPlainObject} from "../../lib/utils/isPlainObject.js"
 
-const createCallerContextKey = "__$$createCallerContext"
+const createCallerContextKey = "__$$createCallerContext$$__"
 
 export interface BaseContext { }
 

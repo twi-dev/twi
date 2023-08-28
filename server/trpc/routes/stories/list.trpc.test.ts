@@ -2,7 +2,7 @@ import {describe, beforeAll, afterAll} from "vitest"
 import {faker} from "@faker-js/faker"
 import {z} from "zod"
 
-import {trpcTest} from "../../../../scripts/tests/context/trpc.js"
+import {trpcTest} from "../../../__fixtures__/trpc.js"
 import {StoryBaseOutput} from "../../types/story/StoryBaseOutput.js"
 import {UserStatuses} from "../../types/user/UserStatuses.js"
 import {User, Story} from "../../../db/entities.js"
@@ -43,7 +43,7 @@ describe("stories.list procedure", async () => {
     await em.nativeDelete(User, {})
   })
 
-  trpcTest("returns a list when called w/o arguments", async ({
+  trpcTest.concurrent("returns a list when called w/o arguments", async ({
     trpc,
     expect,
     orm
@@ -65,14 +65,14 @@ describe("stories.list procedure", async () => {
     expect(page.items).to.be.deep.equal(expected)
   })
 
-  trpcTest("has next page", async ({trpc, expect}) => {
+  trpcTest.concurrent("has next page", async ({trpc, expect}) => {
     const page = await trpc.stories.list({limit: count / 2})
 
     expect(page.current).to.be.equal(1)
     expect(page.nextCursor).to.be.equal(2)
   })
 
-  trpcTest("has prev page", async ({trpc, expect}) => {
+  trpcTest.concurrent("has prev page", async ({trpc, expect}) => {
     const page = await trpc.stories.list({limit: count / 2, cursor: 2})
 
     expect(page.current).to.be.equal(2)

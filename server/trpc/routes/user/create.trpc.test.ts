@@ -1,6 +1,6 @@
 import {describe} from "vitest"
 
-import {trpcTest} from "../../../../scripts/tests/context/trpc.js"
+import {trpcTest} from "../../../__fixtures__/trpc.js"
 
 import {User} from "../../../db/entities.js"
 

@@ -1,7 +1,7 @@
 import {RequestContext, MikroORM} from "@mikro-orm/core"
 import {test} from "vitest"
 
-import {getORM} from "../../../server/lib/db/orm.js"
+import {getORM} from "../lib/db/orm.js"
 
 export interface ORMTestContext {
   orm: MikroORM
