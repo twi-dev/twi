@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
+useHead({
+  title: "Reset password"
+})
+
 definePageMeta({
   layout: "auth",
   middleware: "auth",
