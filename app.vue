@@ -2,7 +2,15 @@
 import {useHead} from "#imports"
 
 useHead({
-  title: "Twilight's Library"
+  titleTemplate(title) {
+    const base = "Twilight's Library"
+
+    if (title) {
+      return `${title} – ${base}`
+    }
+
+    return base
+  },
 })
 </script>
 

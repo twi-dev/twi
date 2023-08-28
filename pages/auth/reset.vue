@@ -18,7 +18,7 @@ definePageMeta({
 <template>
   <FormAuth>
     <template #title>
-      Restore password
+      Reset password
     </template>
 
     <div class="flex flex-col gap-8">
@@ -36,7 +36,7 @@ definePageMeta({
     </div>
 
     <template #submit>
-      Restore password
+      Send instructions
     </template>
 
     <template #links>
