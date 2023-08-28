@@ -108,7 +108,6 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
     </template>
 
     <template #links>
-      <!-- <div class="h-px w-full bg-neutral-600" /> -->
       <div class="text-center flex flex-col gap-2">
         <NuxtLink href="/auth/login">
           Already have an account? Log in here

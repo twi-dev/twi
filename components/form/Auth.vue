@@ -1,6 +1,6 @@
 <template>
-  <form class="flex flex-col gap-8 py-10 px-7 border border-gray-100 dark:border-neutral-600 shadow-2xl dark:shadow-none rounded-lg bg-white dark:bg-neutral-800">
-    <div class="text-3xl">
+  <form class="flex flex-col gap-8 py-12 px-10 border border-gray-100 dark:border-neutral-600 shadow-2xl dark:shadow-none rounded-lg bg-white dark:bg-neutral-800">
+    <div class="text-3xl select-none">
       <slot name="title" />
     </div>
 
