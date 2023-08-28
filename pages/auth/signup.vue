@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import {
-  definePageMeta,
-  useHead,
-  useNuxtApp,
-  useRouter,
-  useIsFormVaid,
-} from "#imports"
-
 import {useForm} from "@vorms/core"
 import {zodResolver} from "@vorms/resolvers/zod"
 
@@ -33,7 +25,7 @@ const {$trpc} = useNuxtApp()
 
 const router = useRouter()
 
-const {register, handleSubmit, errors} = useForm<IUserSignUpInput>({
+const {register, handleSubmit} = useForm<IUserSignUpInput>({
   initialValues: {
     login: "",
     email: "",
@@ -42,6 +34,7 @@ const {register, handleSubmit, errors} = useForm<IUserSignUpInput>({
   validate: zodResolver(UserSignUpInput),
   validateMode: "input",
   reValidateMode: "input",
+  validateOnMounted: true,
   async onSubmit(data) {
     try {
       await $trpc.user.create.mutate(data)
@@ -52,43 +45,75 @@ const {register, handleSubmit, errors} = useForm<IUserSignUpInput>({
   }
 })
 
-const {isInvalid} = useIsFormVaid(errors)
-
 const {value: emailValue, attrs: emailAttrs} = register("email")
-
 const {value: loginValue, attrs: loginAttrs} = register("login")
-
 const {value: passwordValue, attrs: passwordAttrs} = register("password")
 </script>
 
 <template>
-  <form @submit="handleSubmit">
-    <input
-      type="email"
-      class="border"
-      placeholder="Email"
-      v-model="emailValue"
-      v-bind="emailAttrs"
-    />
+  <FormAuth @submit="handleSubmit">
+    <template #title>
+      Signup
+    </template>
 
-    <input
-      type="text"
-      class="border"
-      placeholder="Login"
-      v-model="loginValue"
-      v-bind="loginAttrs"
-    />
+    <div class="flex flex-col gap-2">
+      <Field>
+        <Label for="email">
+          Your email
+        </Label>
 
-    <input
-      type="password"
-      class="border"
-      placeholder="Password"
-      v-model="passwordValue"
-      v-bind="passwordAttrs"
-    />
+        <Input
+          wide
+          id="email"
+          type="email"
+          placeholder="Email"
+          v-model="emailValue"
+          v-bind="emailAttrs"
+        />
+      </Field>
 
-    <button type="submit" :disabled="isInvalid">
+      <Field>
+        <Label for="login">
+          Your new login
+        </Label>
+
+        <Input
+          wide
+          id="login"
+          type="text"
+          placeholder="Login"
+          v-model="loginValue"
+          v-bind="loginAttrs"
+        />
+      </Field>
+
+      <Field>
+        <Label for="password">
+          Create a passowrd
+        </Label>
+
+        <Input
+          wide
+          id="password"
+          type="password"
+          placeholder="Password"
+          v-model="passwordValue"
+          v-bind="passwordAttrs"
+        />
+      </Field>
+    </div>
+
+    <template #submit>
       Sign up
-    </button>
-  </form>
+    </template>
+
+    <template #links>
+      <!-- <div class="h-px w-full bg-neutral-600" /> -->
+      <div class="text-center flex flex-col gap-2">
+        <NuxtLink href="/auth/login">
+          Already have an account? Log in here
+        </NuxtLink>
+      </div>
+    </template>
+  </FormAuth>
 </template>

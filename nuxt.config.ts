@@ -11,9 +11,6 @@ export default defineNuxtConfig({
     asyncContext: true,
     headNext: true
   },
-  imports: {
-    autoImport: false
-  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@sidebase/nuxt-auth"

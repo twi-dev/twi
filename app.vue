@@ -6,12 +6,20 @@ useHead({
 })
 </script>
 
-<template>
-  <div>
-    <NuxtLayout>
-      <NuxtLoadingIndicator :color="false" class="bg-blue-500" />
+<style lang="postcss">
+body {
+  @apply bg-white dark:bg-neutral-900 dark:text-white;
+}
 
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+a {
+  @apply underline dark:text-neutral-400;
+}
+</style>
+
+<template>
+  <NuxtLayout>
+    <NuxtLoadingIndicator :color="false" class="bg-blue-500" />
+
+    <NuxtPage />
+  </NuxtLayout>
 </template>
