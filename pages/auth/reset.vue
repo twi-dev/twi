@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
+
 definePageMeta({
   layout: "auth",
   middleware: "auth",
