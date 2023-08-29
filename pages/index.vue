@@ -9,7 +9,5 @@ watch(error, () => console.error(error))
 </script>
 
 <template>
-  <div>
-    {{message}}
-  </div>
+  {{message}}
 </template>

@@ -1,9 +1,9 @@
-<script setup lang="ts">
-import FullscreenMain from "../components/FullscreenMain.vue"
-</script>
-
 <template>
-  <FullscreenMain>
-    <slot />
+  <FullscreenMain class="flex-col">
+    <Header />
+
+    <DesktopContainer>
+      <slot />
+    </DesktopContainer>
   </FullscreenMain>
 </template>

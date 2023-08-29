@@ -15,7 +15,7 @@ useHead({
 </script>
 
 <style lang="postcss">
-body {
+html, body {
   @apply bg-white dark:bg-neutral-900 dark:text-white;
 }
 
