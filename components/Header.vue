@@ -23,7 +23,7 @@ const session = await getSession()
           <User2 />
         </NuxtLink>
 
-        <Avatar />
+        <Avatar v-else />
       </div>
 
     </DesktopContainer>
