@@ -2,7 +2,7 @@
   <FullscreenMain class="flex-col">
     <Header />
 
-    <DesktopContainer>
+    <DesktopContainer class="p-5 desktop:px-0">
       <slot />
     </DesktopContainer>
   </FullscreenMain>
