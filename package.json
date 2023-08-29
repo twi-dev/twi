@@ -67,6 +67,7 @@
     "bcrypt": "5.1.1",
     "date-fns": "2.30.0",
     "lodash-es": "4.17.21",
+    "lucide-vue-next": "^0.270.0",
     "mysql2": "3.6.0",
     "next-auth": "4.22.5",
     "superjson": "1.13.1",

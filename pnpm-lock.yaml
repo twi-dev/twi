@@ -38,6 +38,9 @@ dependencies:
   lodash-es:
     specifier: 4.17.21
     version: 4.17.21
+  lucide-vue-next:
+    specifier: ^0.270.0
+    version: 0.270.0(vue@3.3.4)
   mysql2:
     specifier: 3.6.0
     version: 3.6.0
@@ -5977,6 +5980,14 @@ packages:
   /lru-cache@8.0.5:
     resolution: {integrity: sha512-MhWWlVnuab1RG5/zMRRcVGXZLCXrZTgfwMikgzCegsPnG62yDQo5JnqKkrK4jO5iKqDAZGItAqN5CtKBCBWRUA==}
     engines: {node: '>=16.14'}
+
+  /lucide-vue-next@0.270.0(vue@3.3.4):
+    resolution: {integrity: sha512-a7xt1Pjk5c1RLOLNHyHRWkF6+P/33Op3DSCG6T+0Uz0GYFqKAb8on8V+gV31T+IfYAQRO1Fig8kMUea+777c7Q==}
+    peerDependencies:
+      vue: '>=3.0.1'
+    dependencies:
+      vue: 3.3.4
+    dev: false
 
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
