@@ -15,7 +15,7 @@ defineProps({
   <Popover class="relative">
     <slot />
 
-    <PopoverPanel class="absolute w-72 bg-white dark:bg-neutral-900/70 dark:backdrop-blur backdrop-filter px-5 right-0 rounded-md shadow-md dark:shadow-none border border-neutral-200 dark:border-neutral-800">
+    <PopoverPanel class="absolute w-72 bg-white dark:bg-neutral-900 px-5 right-0 rounded-md shadow-md dark:shadow-none border border-neutral-200 dark:border-neutral-800">
       <div class="py-5 text-center flex flex-col items-center">
         <Avatar size="md" />
 

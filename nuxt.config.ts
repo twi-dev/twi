@@ -13,7 +13,8 @@ export default defineNuxtConfig({
   },
   modules: [
     "@nuxtjs/tailwindcss",
-    "@sidebase/nuxt-auth"
+    "@sidebase/nuxt-auth",
+    "@vueuse/nuxt"
   ],
   tailwindcss: {
     exposeConfig: true
