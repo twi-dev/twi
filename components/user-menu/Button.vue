@@ -3,7 +3,7 @@ import {PopoverButton} from "@headlessui/vue"
 </script>
 
 <template>
-  <PopoverButton>
+  <PopoverButton class="outline-none">
     <slot />
   </PopoverButton>
 </template>
