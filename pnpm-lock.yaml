@@ -6,7 +6,7 @@ settings:
 
 dependencies:
   '@headlessui/vue':
-    specifier: ^1.7.16
+    specifier: 1.7.16
     version: 1.7.16(vue@3.3.4)
   '@mikro-orm/cli':
     specifier: 5.7.14
@@ -33,10 +33,10 @@ dependencies:
     specifier: 1.1.0
     version: 1.1.0
   '@vueuse/core':
-    specifier: ^10.4.1
+    specifier: 10.4.1
     version: 10.4.1(vue@3.3.4)
   '@vueuse/nuxt':
-    specifier: ^10.4.1
+    specifier: 10.4.1
     version: 10.4.1(nuxt@3.7.0)(vue@3.3.4)
   bcrypt:
     specifier: 5.1.1
@@ -48,7 +48,7 @@ dependencies:
     specifier: 4.17.21
     version: 4.17.21
   lucide-vue-next:
-    specifier: ^0.270.0
+    specifier: 0.270.0
     version: 0.270.0(vue@3.3.4)
   mysql2:
     specifier: 3.6.0
@@ -71,8 +71,11 @@ dependencies:
 
 devDependencies:
   '@faker-js/faker':
-    specifier: ^8.0.2
+    specifier: 8.0.2
     version: 8.0.2
+  '@headlessui/tailwindcss':
+    specifier: 0.2.0
+    version: 0.2.0(tailwindcss@3.3.3)
   '@mikro-orm/migrations':
     specifier: 5.7.14
     version: 5.7.14(@mikro-orm/core@5.7.14)(mysql2@3.6.0)
@@ -98,7 +101,7 @@ devDependencies:
     specifier: 5.0.0
     version: 5.0.0
   '@types/cookie':
-    specifier: ^0.5.1
+    specifier: 0.5.1
     version: 0.5.1
   '@types/lodash-es':
     specifier: 4.17.8
@@ -113,7 +116,7 @@ devDependencies:
     specifier: 4.3.3
     version: 4.3.3(vite@4.4.9)(vue@3.3.4)
   cookie:
-    specifier: ^0.5.0
+    specifier: 0.5.0
     version: 0.5.0
   execa:
     specifier: 8.0.1
@@ -1066,6 +1069,15 @@ packages:
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
     dependencies:
       '@hapi/hoek': 9.3.0
+    dev: true
+
+  /@headlessui/tailwindcss@0.2.0(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-fpL830Fln1SykOCboExsWr3JIVeQKieLJ3XytLe/tt1A0XzqUthOftDmjcCYLW62w7mQI7wXcoPXr3tZ9QfGxw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      tailwindcss: ^3.0
+    dependencies:
+      tailwindcss: 3.3.3(ts-node@10.9.1)
     dev: true
 
   /@headlessui/vue@1.7.16(vue@3.3.4):
