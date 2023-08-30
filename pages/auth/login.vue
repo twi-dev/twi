@@ -68,7 +68,6 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
       <Input
         wide
         id="login"
-        class="mb-2"
         type="text"
         placeholder="Login..."
         v-model="loginValue"
@@ -77,13 +76,13 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
     </Field>
 
     <Field>
-      <Label for="login" class="text-neutral-500 dark:text-neutral-400">
+      <Label for="password">
         Your password
       </Label>
 
       <Input
         wide
-        class="mb-2"
+        id="password"
         type="password"
         placeholder="Password..."
         v-model="passwordValue"
