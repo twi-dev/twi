@@ -17,11 +17,13 @@ export default {
     extend: {
       width: {
         laptop,
-        mobile
+        mobile,
+        desktop
       },
       maxWidth: {
         laptop,
-        mobile
+        mobile,
+        desktop
       }
     },
     screens: {
