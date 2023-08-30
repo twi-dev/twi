@@ -8,7 +8,7 @@ const session = await getSession()
 </script>
 
 <template>
-  <header class="py-3 px-5 desktop:px-0 bg-transparent border-b border-neutral-200 dark:border-neutral-800">
+  <header class="sticky py-3 px-5 desktop:px-0 bg-transparent border-b border-neutral-200 dark:border-neutral-800">
     <DesktopContainer class="flex flex-row items-center">
       <div role="logo">
         <NuxtLink href="/" class="no-underline text-inherit">
@@ -23,7 +23,11 @@ const session = await getSession()
           <User2 />
         </NuxtLink>
 
-        <Avatar v-else />
+        <UserMenu v-else :user="session.user">
+          <UserMenuButton>
+            <Avatar />
+          </UserMenuButton>
+        </UserMenu>
       </div>
 
     </DesktopContainer>

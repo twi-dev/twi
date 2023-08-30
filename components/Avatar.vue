@@ -13,9 +13,19 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="rounded-full border-2 border-neutral-200 dark:border-neutral-900">
-    <div class="flex items-center justify-center rounded-full w-8 h-8 border-2 border-white">
-      <User2 class="text-neutral-200 dark:text-white" />
+  <div
+    :class='[
+      "rounded-full border-2 border-black dark:border-white overflow-hidden",
+
+      {
+        "w-8 h-8": size === "sm",
+        "w-20 h-20": size === "md",
+        "w-32": size === "lg"
+      }
+    ]'
+  >
+    <div class="w-full h-full flex items-center justify-center">
+      <User2 class="text-black-200 dark:text-white w-full h-full" />
     </div>
   </div>
 </template>

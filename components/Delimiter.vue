@@ -3,7 +3,9 @@ interface Props {
   orientation?: "vertical" | "horizontal"
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  orientation: "horizontal"
+})
 </script>
 
 <template>
