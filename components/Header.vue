@@ -10,7 +10,7 @@ const session = await getSession()
 <template>
   <header
     ref="headerRef"
-    class="sticky top-0 py-3 px-5 desktop:px-0 bg-white dark:bg-neutral-900/70 dark:backdrop-blur backdrop-filter border-b border-neutral-200 dark:border-neutral-800"
+    class="sticky top-0 py-3 px-5 desktop:px-0 bg-white/75 dark:bg-neutral-900/70 backdrop-blur backdrop-filter border-b border-neutral-200 dark:border-neutral-800"
   >
     <DesktopContainer class="flex flex-row items-center">
       <div role="logo">
