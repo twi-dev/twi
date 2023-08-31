@@ -26,7 +26,7 @@ a {
 
 <template>
   <NuxtLayout>
-    <NuxtLoadingIndicator :color="false" class="bg-blue-500" />
+    <NuxtLoadingIndicator :color="false" class="bg-violet-500" />
 
     <NuxtPage />
   </NuxtLayout>
