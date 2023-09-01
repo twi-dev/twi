@@ -1,1 +1,1 @@
-export {default} from "../../uploads/handler.js"
+export {default} from "../../lib/uploads/handler.js"

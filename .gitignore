@@ -23,3 +23,5 @@ logs
 .env.*
 !.env.test
 !.env.example
+/public/uploads
+/uploads
