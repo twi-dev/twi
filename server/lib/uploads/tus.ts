@@ -1,12 +1,12 @@
-import {resolve} from "node:path"
-
-import {FileStore} from "@tus/file-store"
 import {Server} from "@tus/server"
+
+import {createFilename} from "./utils/createFilename.js"
+
+import {store} from "./store.js"
 
 export const tus = new Server({
   path: "/api/uploads",
   respectForwardedHeaders: true,
-  datastore: new FileStore({
-    directory: resolve("uploads")
-  })
+  namingFunction: createFilename,
+  datastore: store
 })

@@ -80,9 +80,15 @@ dependencies:
   lucide-vue-next:
     specifier: 0.270.0
     version: 0.270.0(vue@3.3.4)
+  mime-types:
+    specifier: ^2.1.35
+    version: 2.1.35
   mysql2:
     specifier: 3.6.0
     version: 3.6.0
+  nanoid:
+    specifier: ^4.0.2
+    version: 4.0.2
   next-auth:
     specifier: 4.22.5
     version: 4.22.5
@@ -136,6 +142,9 @@ devDependencies:
   '@types/lodash-es':
     specifier: 4.17.8
     version: 4.17.8
+  '@types/mime-types':
+    specifier: ^2.1.1
+    version: 2.1.1
   '@types/node':
     specifier: 18.17.3
     version: 18.17.3
@@ -2455,6 +2464,10 @@ packages:
 
   /@types/lodash@4.14.197:
     resolution: {integrity: sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==}
+    dev: true
+
+  /@types/mime-types@2.1.1:
+    resolution: {integrity: sha512-vXOTGVSLR2jMw440moWTC7H19iUyLtP3Z1YTj7cSsubOICinjMxFeb/V57v9QdyyPGbbWolUFSSmSiRSn94tFw==}
     dev: true
 
   /@types/node@18.17.3:
@@ -6223,7 +6236,6 @@ packages:
   /mime-db@1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
-    dev: true
 
   /mime-match@1.0.2:
     resolution: {integrity: sha512-VXp/ugGDVh3eCLOBCiHZMYWQaTNUHv2IJrut+yXA6+JbLPXHglHwfS/5A5L0ll+jkCY7fIzRJcH6OIunF+c6Cg==}
@@ -6236,7 +6248,6 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.52.0
-    dev: true
 
   /mime@1.6.0:
     resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
