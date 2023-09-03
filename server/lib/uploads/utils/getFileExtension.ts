@@ -15,7 +15,7 @@ export function getFileExtension(metadata: Metadata): MaybeUndefined<string> {
   const mimeType = metadata.filetype || metadata.type || undefined
 
   if (name) {
-    return normalizeExtension(name)
+    return normalizeExtension(extname(name))
   }
 
   if (!mimeType) {

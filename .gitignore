@@ -24,4 +24,7 @@ logs
 !.env.test
 !.env.example
 /public/uploads
-/uploads
+
+# Uploads
+/uploads/**
+!/uploads/.gitkeep
