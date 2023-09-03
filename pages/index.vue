@@ -1,15 +1,4 @@
-<script setup lang="ts">
-import "@uppy/core/dist/style.css"
-import "@uppy/dashboard/dist/style.css"
-
-import {Dashboard} from "@uppy/vue"
-
-import {uppy} from "../lib/uploads/uppy.js"
-</script>
-
 <template>
-  <Dashboard :uppy="uppy" />
-
   <div>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit tristique mauris, id vehicula mi consectetur eget. Ut accumsan eget velit quis lacinia. Phasellus nulla ipsum, lobortis ut lacus euismod, dictum lacinia tortor. Integer ut nisi laoreet dui placerat blandit et nec purus. Nullam felis dolor, tempor ac rutrum vel, consectetur id nunc. Nunc dictum, ipsum sit amet gravida commodo, nulla mauris sollicitudin mi, in lacinia nisl felis in lacus. Praesent vel lacus fringilla, congue libero a, imperdiet turpis. Sed neque quam, rutrum et pharetra sed, tincidunt sed quam. Vestibulum in risus vel ipsum suscipit gravida. Phasellus commodo, tellus eget venenatis luctus, elit orci bibendum metus, vitae ultrices massa est non diam. Ut eget turpis tincidunt, venenatis velit vel, tincidunt elit. Morbi vestibulum mollis elit vitae aliquet. Nam vel magna venenatis turpis porttitor rhoncus. Phasellus sit amet convallis magna.
