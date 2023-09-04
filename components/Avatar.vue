@@ -3,15 +3,13 @@ import {User2} from "lucide-vue-next"
 
 type AvatarSizes = "sm" | "md" | "lg"
 
-interface Props {
+export interface AvatarProps {
   size?: AvatarSizes
 }
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<AvatarProps>(), {
   size: "sm"
 })
-
-export type AvatarProps = Props
 </script>
 
 <template>

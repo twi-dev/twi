@@ -13,7 +13,7 @@ defineEmits<Emits>()
 </script>
 
 <template>
-  <Avatar class="relative">
+  <Avatar class="relative" v-bind="$props">
     <button
       class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"
 

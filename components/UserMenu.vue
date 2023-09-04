@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import {Popover, PopoverPanel} from "@headlessui/vue"
-import type {PropType} from "vue"
 import type {User} from "next-auth"
 
-defineProps({
-  user: {
-    type: Object as PropType<User>,
-    required: true
-  }
-})
+export interface UserMenuProps {
+  user: User
+}
+
+defineProps<UserMenuProps>()
 </script>
 
 <template>
