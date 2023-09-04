@@ -10,6 +10,8 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   size: "sm"
 })
+
+export type AvatarProps = Props
 </script>
 
 <template>

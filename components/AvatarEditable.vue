@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import {Pencil} from "lucide-vue-next"
 
+import type {AvatarProps} from "./Avatar.vue"
+
 type Emits = {
   (trigger: "click", event: MouseEvent): void
 }
+
+defineProps<AvatarProps>()
 
 defineEmits<Emits>()
 </script>
