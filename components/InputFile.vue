@@ -23,14 +23,14 @@ function onChange(event: Event) {
   emit("change", toFilesArray(target.files))
 
   // Reset value so event will be fired even if the same file is chosen
-  // @ts-expect-error
+  // @ts-expect-error Chrome might not trigger change event for the same file if we reset to an empty string
   target.value = null
 }
 </script>
 
 <template>
-  <button type="button" @click="inputRef?.click()">
-    <input ref="inputRef" type="file" @change="onChange" v-bind="{accept, multiple}" />
+  <Button type="button" @click="inputRef?.click()">
+    <input ref="inputRef" type="file" class="hidden" @change="onChange" v-bind="{accept, multiple}" />
     <slot />
-  </button>
+  </Button>
 </template>

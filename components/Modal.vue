@@ -28,8 +28,8 @@ defineExpose({open, close})
     <div class="fixed inset-0 overflow-y-auto">
       <div class="flex min-h-full items-center justify-center p-4 text-center">
         <DialogPanel class="w-full max-w-md flex flex-col bg-white dark:bg-neutral-800 rounded-md text-left align-middle">
-          <DialogTitle as="div" class="flex p-6 w-full rounded-md overflow-hidden text-xl font-bold select-none">
-            <h3>
+          <DialogTitle as="div" class="flex p-6 w-full select-none">
+            <h3 class="text-xl font-bold">
               <slot name="title" />
             </h3>
 

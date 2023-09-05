@@ -13,12 +13,15 @@ interface Props {
   wide?: boolean
   disabled?: boolean
   loading?: boolean
+  plain?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
   variant: "primary",
   shape: "square",
   disabled: false,
+  plain: false,
+
   wide: ({wide = false, shape}) => shape === "circle" ? false : wide
 })
 </script>
@@ -27,9 +30,10 @@ withDefaults(defineProps<Props>(), {
   <button
     :disabled="disabled"
     :class='[
-      "text-center border",
+      "text-center",
 
-      {
+      !plain && {
+        border: true,
         "w-full": wide,
         "p-3 rounded-md": shape === "square",
         "p-2 rounded-full": shape === "circle",

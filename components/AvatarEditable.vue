@@ -6,21 +6,44 @@ import type {AvatarProps} from "./Avatar.vue"
 
 defineProps<AvatarProps>()
 
-const uppy = new Uppy()
+const uppy = new Uppy({
+  restrictions: {
+    maxNumberOfFiles: 1,
+    minFileSize: 1,
+    allowedFileTypes: [".jpeg", ".jpg", ".png"]
+  }
+})
 
-uppy.on("file-added", files => console.log(files))
+const preview = ref<string | undefined>(undefined)
 
 // TODO: Add crop
 const onChange = (files: File[] | null) => {
-  if (files) {
-    uppy.addFiles(files.map(file => ({
-      name: file.name,
-      type: file.type,
-      data: file,
-      source: "Local",
-      isRemote: false
-    })))
+  if (!files) {
+    return
   }
+
+  // Clear file(s) from first
+  uppy.getFiles().map(file => {
+    uppy.removeFile(file.id)
+
+    if (file.preview) {
+      URL.revokeObjectURL(file.preview)
+    }
+  })
+
+  const [file] = files
+
+  preview.value = URL.createObjectURL(file)
+
+  // Add new file(s)
+  uppy.addFile({
+    name: file.name,
+    type: file.type,
+    data: file,
+    source: "Local",
+    isRemote: false,
+    preview: unref(preview)
+  })
 }
 </script>
 
@@ -41,9 +64,15 @@ const onChange = (files: File[] | null) => {
         Update avatar
       </template>
 
-      <Dropzone class="p-6" @change="onChange">
-        Click to choose a file
-      </Dropzone>
+      <div class="p-6">
+        <div v-show="preview" class="overflow-hidden">
+          <img :src="preview" alt="avatar" />
+        </div>
+
+        <InputFile @change="onChange">
+          Choose a file
+        </InputFile>
+      </div>
     </Modal>
   </Avatar>
 </template>
