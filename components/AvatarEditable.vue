@@ -1,0 +1,78 @@
+<script setup lang="ts">
+import {Pencil} from "lucide-vue-next"
+import {Uppy} from "@uppy/core"
+
+import type {AvatarProps} from "./Avatar.vue"
+
+defineProps<AvatarProps>()
+
+const uppy = new Uppy({
+  restrictions: {
+    maxNumberOfFiles: 1,
+    minFileSize: 1,
+    allowedFileTypes: [".jpeg", ".jpg", ".png"]
+  }
+})
+
+const preview = ref<string | undefined>(undefined)
+
+// TODO: Add crop
+const onChange = (files: File[] | null) => {
+  if (!files) {
+    return
+  }
+
+  // Clear file(s) from first
+  uppy.getFiles().map(file => {
+    uppy.removeFile(file.id)
+
+    if (file.preview) {
+      URL.revokeObjectURL(file.preview)
+    }
+  })
+
+  const [file] = files
+
+  preview.value = URL.createObjectURL(file)
+
+  // Add new file(s)
+  uppy.addFile({
+    name: file.name,
+    type: file.type,
+    data: file,
+    source: "Local",
+    isRemote: false,
+    preview: unref(preview)
+  })
+}
+</script>
+
+<template>
+  <Avatar class="relative" v-bind="$props">
+    <Modal>
+      <template #openButton="{openDialog}">
+        <button
+          class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"
+
+          @click="openDialog"
+        >
+          <Pencil :size="16" />
+        </button>
+      </template>
+
+      <template #title>
+        Update avatar
+      </template>
+
+      <div class="p-6">
+        <div v-show="preview" class="overflow-hidden">
+          <img :src="preview" alt="avatar" />
+        </div>
+
+        <InputFile @change="onChange">
+          Choose a file
+        </InputFile>
+      </div>
+    </Modal>
+  </Avatar>
+</template>

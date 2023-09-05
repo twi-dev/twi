@@ -23,3 +23,8 @@ logs
 .env.*
 !.env.test
 !.env.example
+/public/uploads
+
+# Uploads
+/uploads/**
+!/uploads/.gitkeep
