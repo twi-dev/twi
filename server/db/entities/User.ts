@@ -1,16 +1,21 @@
-import {Entity, Property, Enum, Unique} from "@mikro-orm/core"
+import {Entity, Property, Enum, Unique, OneToOne} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
+import type {MaybeNull} from "../../..//lib/utils/types/MaybeNull.js"
 import {stringEnumValues} from "../../../lib/utils/stringEnumValues.js"
 
 import {UserStatuses} from "../../trpc/types/user/UserStatuses.js"
 import {UserRoles} from "../../trpc/types/user/UserRoles.js"
 
 import {RecordSoft} from "./RecordSoft.js"
+import {File} from "./File.js"
 
 // TODO: Add avatar field
 @Entity()
 export class User extends RecordSoft<UserOptionalProps> {
+  @Property({type: "varchar", nullable: true, default: null})
+  displayName: MaybeNull<string> = null
+
   /**
    * User unique human-readable identifier
    */
@@ -42,6 +47,13 @@ export class User extends RecordSoft<UserOptionalProps> {
    */
   @Enum({type: "string", items: stringEnumValues(UserStatuses)})
   status: UserStatuses = UserStatuses.Inactive
+
+  @OneToOne(() => File, undefined, {
+    nullable: true,
+    orphanRemoval: true,
+    default: null
+  })
+  avatar: MaybeNull<File> = null
 }
 
 type UserOptionalProps = PickKeys<User, "role" | "status">
