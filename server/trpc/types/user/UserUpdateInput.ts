@@ -2,9 +2,9 @@ import {z} from "zod"
 
 import {FileInput} from "../common/FileInput.js"
 
-import {UserBase} from "./UserBase.js"
+import {User} from "./User.js"
 
-export const UserUpdateInput = UserBase.extend({
+export const UserUpdateInput = User.extend({
   avatar: FileInput.nullish()
 })
 
