@@ -9,7 +9,7 @@ defineProps<AvatarProps>()
 const uppy = new Uppy({
   restrictions: {
     maxNumberOfFiles: 1,
-    minFileSize: 1,
+    maxFileSize: 10000000, // 10 MB
     allowedFileTypes: [".jpeg", ".jpg", ".png"]
   }
 })
@@ -33,17 +33,23 @@ const onChange = (files: File[] | null) => {
 
   const [file] = files
 
-  preview.value = URL.createObjectURL(file)
+  const previewUrl = URL.createObjectURL(file)
 
-  // Add new file(s)
-  uppy.addFile({
-    name: file.name,
-    type: file.type,
-    data: file,
-    source: "Local",
-    isRemote: false,
-    preview: unref(preview)
-  })
+  try {
+    // Add new file(s)
+    uppy.addFile({
+      name: file.name,
+      type: file.type,
+      data: file,
+      source: "Local",
+      isRemote: false,
+      preview: previewUrl
+    })
+
+    preview.value = previewUrl
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
 
