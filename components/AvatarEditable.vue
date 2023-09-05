@@ -2,6 +2,8 @@
 import {Pencil} from "lucide-vue-next"
 import {Uppy} from "@uppy/core"
 
+import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
+
 import type {AvatarProps} from "./Avatar.vue"
 
 defineProps<AvatarProps>()
@@ -14,7 +16,22 @@ const uppy = new Uppy({
   }
 })
 
-const preview = ref<string | undefined>(undefined)
+const preview = ref<MaybeUndefined<string>>()
+
+function cleanup(): void {
+  const [file] = uppy.getFiles() ?? []
+
+  if (!file) {
+    return
+  }
+
+  if (file.preview) {
+    URL.revokeObjectURL(file.preview)
+  }
+
+  uppy.removeFile(file.id)
+  preview.value = undefined
+}
 
 // TODO: Add crop
 const onChange = (files: File[] | null) => {
@@ -23,13 +40,7 @@ const onChange = (files: File[] | null) => {
   }
 
   // Clear file(s) from first
-  uppy.getFiles().map(file => {
-    uppy.removeFile(file.id)
-
-    if (file.preview) {
-      URL.revokeObjectURL(file.preview)
-    }
-  })
+  cleanup()
 
   const [file] = files
 
@@ -55,7 +66,7 @@ const onChange = (files: File[] | null) => {
 
 <template>
   <Avatar class="relative" v-bind="$props">
-    <Modal>
+    <Modal @close="cleanup">
       <template #openButton="{openDialog}">
         <button
           class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"

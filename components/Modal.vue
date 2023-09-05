@@ -1,10 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import {
   Dialog,
   DialogPanel,
   DialogTitle
 } from "@headlessui/vue"
 import {X} from "lucide-vue-next"
+
+type Emits = {
+  (type: "close", ...args: never[]): void
+}
+
+const emit = defineEmits<Emits>()
 
 const visible = ref(false)
 
@@ -16,13 +22,18 @@ function close() {
   visible.value = false
 }
 
+function onClose(): void {
+  close()
+  emit("close")
+}
+
 defineExpose({open, close})
 </script>
 
 <template>
   <slot name="openButton" :openDialog="open" />
 
-  <Dialog :open="visible" @close="close" as="div" class="relative z-10">
+  <Dialog :open="visible" @close="onClose" as="div" class="relative z-10">
     <div class="fixed inset-0 bg-black/40 dark:bg-black/70" />
 
     <div class="fixed inset-0 overflow-y-auto">
