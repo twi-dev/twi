@@ -51,7 +51,8 @@ export class User extends RecordSoft<UserOptionalProps> {
   @OneToOne(() => File, undefined, {
     nullable: true,
     orphanRemoval: true,
-    default: null
+    default: null,
+    eager: true
   })
   avatar: MaybeNull<File> = null
 }

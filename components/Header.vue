@@ -5,6 +5,19 @@ import {isEmpty} from "lodash-es"
 const {getSession} = useAuth()
 
 const session = await getSession()
+
+const avatarUrl = computed(() => {
+  if (!session) {
+    return undefined
+  }
+
+  const {avatar} = session.user
+  if (avatar) {
+    return `/api/uploads/${avatar.key}`
+  }
+
+  return undefined
+})
 </script>
 
 <template>
@@ -28,7 +41,7 @@ const session = await getSession()
 
         <UserMenu v-else :user="session.user">
           <UserMenuButton>
-            <Avatar />
+            <Avatar :src="avatarUrl" />
           </UserMenuButton>
         </UserMenu>
       </div>
