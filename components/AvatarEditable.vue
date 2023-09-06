@@ -70,10 +70,13 @@ function onCrop(blob: Blob) {
   })
 
   uppy.setFileState(file.id, {
-    data: croppedFile
+    data: croppedFile,
+    size: croppedFile.size
   })
 
   open(URL.createObjectURL(croppedFile), "_blank")
+
+  console.log(uppy.getFile(file.id))
 }
 </script>
 
