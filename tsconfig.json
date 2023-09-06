@@ -4,11 +4,13 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "baseUrl": "."
+    "esModuleInterop": true
   },
   "ts-node": {
     "esm": true,
-    "transpileOnly": true
+    "transpileOnly": true,
+    "compilerOptions": {
+      "baseUrl": "."
+    }
   }
 }

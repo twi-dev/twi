@@ -6,6 +6,8 @@ import type {
   IUserSignUpInput
 } from "../../server/trpc/types/user/UserSignUpInput.js"
 import {UserSignUpInput} from "../../server/trpc/types/user/UserSignUpInput.js"
+import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
+import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
 definePageMeta({
@@ -22,8 +24,8 @@ useHead({
 })
 
 const {$trpc} = useNuxtApp()
-
-const router = useRouter()
+const {replace} = useRouter()
+const {signIn} = useAuth()
 
 const {register, handleSubmit} = useForm<IUserSignUpInput>({
   initialValues: {
@@ -38,9 +40,19 @@ const {register, handleSubmit} = useForm<IUserSignUpInput>({
   async onSubmit(data) {
     try {
       await $trpc.user.create.mutate(data)
-      await router.replace("/")
+
+      const response: AuthResponse = await signIn("credentials", {
+        ...data,
+        redirect: false
+      })
+
+      if (isAuthOkResponse(response)) {
+        return replace("/")
+      }
+
+      console.error(response.error)
     } catch (error) {
-      console.error(data)
+      console.error(error)
     }
   }
 })

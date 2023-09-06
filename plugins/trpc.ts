@@ -1,5 +1,4 @@
 import {createTRPCNuxtClient, httpBatchLink} from "trpc-nuxt/client"
-import {defineNuxtPlugin} from "#imports"
 
 import SuperJSON from "superjson"
 
