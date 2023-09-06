@@ -2,11 +2,17 @@
 import {Pencil} from "lucide-vue-next"
 import {Uppy} from "@uppy/core"
 
+import Tus from "@uppy/tus"
+
 import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
+import {getFileIDFromURL} from "../lib/uploads/getFileIDFromURL.js"
 
 import type {AvatarProps} from "./Avatar.vue"
+import {isEmpty} from "lodash-es"
 
 defineProps<AvatarProps>()
+
+const {$trpc} = useNuxtApp()
 
 const uppy = new Uppy({
   restrictions: {
@@ -15,22 +21,46 @@ const uppy = new Uppy({
     allowedFileTypes: [".jpeg", ".jpg", ".png"]
   }
 })
+  .use(Tus, {
+    endpoint: "/api/uploads"
+  })
 
 const preview = ref<MaybeUndefined<string>>()
+const selected = ref<File>()
+
+const cleanupFiles = () => uppy
+  .getFiles()
+  .forEach(({id}) => uppy.removeFile(id))
 
 function cleanup(): void {
-  const [file] = uppy.getFiles() ?? []
+  cleanupFiles()
 
-  if (!file) {
-    return
+  if (preview.value) {
+    URL.revokeObjectURL(preview.value)
   }
 
-  if (file.preview) {
-    URL.revokeObjectURL(file.preview)
-  }
-
-  uppy.removeFile(file.id)
   preview.value = undefined
+  selected.value = undefined
+}
+
+function updatePreview(file: File): string {
+  preview.value = URL.createObjectURL(file)
+
+  return preview.value
+}
+
+function updateFile(file: File): string {
+  cleanupFiles()
+
+  const id =  uppy.addFile({
+    name: file.name,
+    type: file.type,
+    data: file,
+    source: "Local",
+    isRemote: false
+  })
+
+  return id
 }
 
 const onChange = (files: File[] | null) => {
@@ -38,46 +68,52 @@ const onChange = (files: File[] | null) => {
     return
   }
 
-  // Clear file(s) from first
-  cleanup()
-
   const [file] = files
-
-  const previewUrl = URL.createObjectURL(file)
 
   try {
     // Add new file(s)
-    uppy.addFile({
-      name: file.name,
-      type: file.type,
-      data: file,
-      source: "Local",
-      isRemote: false,
-      preview: previewUrl
-    })
+    updateFile(file)
 
-    preview.value = previewUrl
+    selected.value = file
+
+    updatePreview(selected.value)
   } catch (error) {
     console.error(error)
   }
 }
 
 function onCrop(blob: Blob) {
-  const [file] = uppy.getFiles()
+  if (!selected.value) {
+    throw new Error("Can't find selected file")
+  }
 
-  const croppedFile = new File([blob], file.name, {
-    type: file.type
+  const croppedFile = new File([blob], selected.value.name, {
+    type: unref(selected.value).type
   })
 
-  uppy.setFileState(file.id, {
-    data: croppedFile,
-    size: croppedFile.size
-  })
+  updateFile(croppedFile)
 
-  open(URL.createObjectURL(croppedFile), "_blank")
+  uppy.upload()
+    .then(({successful}) => {
+      if (isEmpty(successful)) {
+        return
+      }
 
-  console.log(uppy.getFile(file.id))
+      const [uploaded] = successful
+
+      const id = getFileIDFromURL(uploaded.uploadURL)
+
+      // Update user avatar
+      return $trpc.user.update.mutate({
+        avatar: id
+      })
+    })
+    .catch(console.error)
 }
+
+onUnmounted(() => {
+  cleanup()
+})
 </script>
 
 <template>
