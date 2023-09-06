@@ -11,7 +11,7 @@ defineEmits(["update:modelValue"])
 <template>
   <input
     :class='[
-      "p-3 border border-gray-300 text-neutral-500 dark:text-neutral-400 rounded-md dark:bg-neutral-900 dark:border-neutral-600",
+      "p-3 border border-gray-300 text-neutral-500 dark:text-neutral-400 rounded-md dark:bg-neutral-800 dark:border-neutral-600",
 
       {
         "w-full": wide === true
