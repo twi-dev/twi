@@ -11,7 +11,7 @@ const props = defineProps<UserMenuProps>()
 const avatarUrl = computed(() => {
   const {avatar} = props.user
   if (avatar) {
-    return `/api/uploads/${avatar.key}`
+    return `/uploads/${avatar.key}`
   }
 
   return undefined

@@ -22,7 +22,7 @@ const uppy = new Uppy({
   }
 })
   .use(Tus, {
-    endpoint: "/api/uploads"
+    endpoint: "/uploads"
   })
 
 const preview = ref<MaybeUndefined<string>>()

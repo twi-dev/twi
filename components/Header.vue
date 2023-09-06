@@ -13,7 +13,7 @@ const avatarUrl = computed(() => {
 
   const {avatar} = session.user
   if (avatar) {
-    return `/api/uploads/${avatar.key}`
+    return `/uploads/${avatar.key}`
   }
 
   return undefined
