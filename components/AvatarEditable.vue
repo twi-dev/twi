@@ -82,13 +82,15 @@ const onChange = (files: File[] | null) => {
       </template>
 
       <div class="p-6">
-        <div v-show="preview" class="overflow-hidden">
-          <img :src="preview" alt="avatar" />
+        <div v-if="preview" class="overflow-hidden">
+          <CropImage :src="preview" alt="Avatar" />
         </div>
 
-        <InputFile @change="onChange">
-          Choose a file
-        </InputFile>
+        <div class="pt-5">
+          <InputFile @change="onChange">
+            Choose a file
+          </InputFile>
+        </div>
       </div>
     </Modal>
   </Avatar>
