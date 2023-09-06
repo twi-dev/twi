@@ -33,7 +33,6 @@ function cleanup(): void {
   preview.value = undefined
 }
 
-// TODO: Add crop
 const onChange = (files: File[] | null) => {
   if (!files) {
     return
@@ -62,6 +61,23 @@ const onChange = (files: File[] | null) => {
     console.error(error)
   }
 }
+
+function onCrop(blob: Blob) {
+  const [file] = uppy.getFiles()
+
+  const croppedFile = new File([blob], file.name, {
+    type: file.type
+  })
+
+  uppy.setFileState(file.id, {
+    data: croppedFile,
+    size: croppedFile.size
+  })
+
+  open(URL.createObjectURL(croppedFile), "_blank")
+
+  console.log(uppy.getFile(file.id))
+}
 </script>
 
 <template>
@@ -82,13 +98,15 @@ const onChange = (files: File[] | null) => {
       </template>
 
       <div class="p-6">
-        <div v-show="preview" class="overflow-hidden">
-          <img :src="preview" alt="avatar" />
+        <div v-if="preview" class="overflow-hidden">
+          <CropImage round :src="preview" alt="Avatar" @crop="onCrop" />
         </div>
 
-        <InputFile @change="onChange">
-          Choose a file
-        </InputFile>
+        <div class="pt-5">
+          <InputFile @change="onChange">
+            Choose a file
+          </InputFile>
+        </div>
       </div>
     </Modal>
   </Avatar>
