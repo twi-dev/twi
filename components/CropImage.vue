@@ -77,8 +77,16 @@ function crop(): void {
 }
 </script>
 
+<style lang="postcss">
+.round-crop {
+  & .cropper-face, & .cropper-view-box {
+    @apply rounded-full;
+  }
+}
+</style>
+
 <template>
-  <div class="w-full">
+  <div :class='["w-full", {"round-crop": round}]'>
     <div class="w-full">
       <img ref="el" :src="src" :alt="alt" class="block max-w-full" />
     </div>

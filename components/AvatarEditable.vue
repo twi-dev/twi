@@ -96,7 +96,7 @@ function onCrop(blob: Blob) {
 
       <div class="p-6">
         <div v-if="preview" class="overflow-hidden">
-          <CropImage :src="preview" alt="Avatar" @crop="onCrop" />
+          <CropImage round :src="preview" alt="Avatar" @crop="onCrop" />
         </div>
 
         <div class="pt-5">
