@@ -14,7 +14,8 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
     "@sidebase/nuxt-auth",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+    "nuxt-svgo"
   ],
   tailwindcss: {
     exposeConfig: true
