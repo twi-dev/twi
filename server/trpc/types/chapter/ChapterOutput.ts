@@ -1,9 +1,10 @@
 import {z} from "zod"
 
+import {RootElements} from "../common/slate/RootElements.js"
 import {ChapterBaseOutput} from "./ChapterBaseOutput.js"
 
 export const ChapterOutput = ChapterBaseOutput.extend({
-  content: z.optional(z.array(z.record(z.unknown())))
+  content: z.optional(RootElements)
 })
 
 export type IChapterOutput = z.input<typeof ChapterOutput>
