@@ -1,5 +1,14 @@
-import type {UserConfig} from "@commitlint/types"
+import {type UserConfig, RuleConfigSeverity} from "@commitlint/types"
 
 export default {
-  extends: ["@commitlint/config-conventional"]
+  extends: ["@commitlint/config-conventional"],
+  rules: {
+    "subject-case": [
+      RuleConfigSeverity.Error,
+
+      "always",
+
+      ["sentence-case"]
+    ],
+  }
 } satisfies UserConfig
