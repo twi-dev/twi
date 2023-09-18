@@ -11,7 +11,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview --dotenv .env.production.local",
     "preinstall": "npx only-allow pnpm",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prepare": "husky install"
   },
   "mikro-orm": {
     "useTsNode": true,
@@ -59,7 +60,8 @@
     "nuxt": "3.7.3",
     "nuxt-svgo": "3.5.3",
     "ts-node": "10.9.1",
-    "vitest": "0.34.4"
+    "vitest": "0.34.4",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "@headlessui/vue": "1.7.16",
