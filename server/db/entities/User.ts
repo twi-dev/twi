@@ -1,4 +1,11 @@
-import {Entity, Property, Enum, Unique, OneToOne} from "@mikro-orm/core"
+import {
+  Entity,
+  Property,
+  Enum,
+  Unique,
+  OneToOne,
+  LoadStrategy
+} from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {MaybeNull} from "../../..//lib/utils/types/MaybeNull.js"
@@ -10,7 +17,6 @@ import {UserRoles} from "../../trpc/types/user/UserRoles.js"
 import {RecordSoft} from "./RecordSoft.js"
 import {File} from "./File.js"
 
-// TODO: Add avatar field
 @Entity()
 export class User extends RecordSoft<UserOptionalProps> {
   @Property({type: "varchar", nullable: true, default: null})
@@ -52,7 +58,8 @@ export class User extends RecordSoft<UserOptionalProps> {
     nullable: true,
     orphanRemoval: true,
     default: null,
-    eager: true
+    eager: true,
+    strategy: LoadStrategy.JOINED
   })
   avatar: MaybeNull<File> = null
 }

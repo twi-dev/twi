@@ -1,6 +1,5 @@
 import {createTRPCNuxtClient, httpBatchLink} from "trpc-nuxt/client"
-
-import SuperJSON from "superjson"
+import {SuperJSON} from "superjson"
 
 import type {Router} from "../server/trpc/router.js"
 

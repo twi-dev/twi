@@ -1,11 +1,10 @@
 import {initTRPC} from "@trpc/server"
-
-import Superjson from "superjson"
+import {SuperJSON} from "superjson"
 
 import type {GlobalContext} from "./context.js"
 
 export const trpc = initTRPC.context<GlobalContext>().create({
-  transformer: Superjson
+  transformer: SuperJSON
 })
 
 export const {middleware, procedure, router, mergeRouters} = trpc
