@@ -10,13 +10,13 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div
-    :class='[
-      "bg-neutral-200 dark:bg-neutral-800",
+    :class="[
+      'bg-neutral-200 dark:bg-neutral-800',
 
       {
-        "w-px h-full": orientation === "vertical",
-        "w-full h-px": orientation === "horizontal"
+        'w-px h-full': orientation === 'vertical',
+        'w-full h-px': orientation === 'horizontal'
       }
-    ]'
+    ]"
   />
 </template>

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
-
 import type {ZodObject, ZodRawShape, input, output} from "zod"
 import {z, ZodIssueCode} from "zod"
 

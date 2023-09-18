@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 import {isString} from "lodash-es"
 
 export const stringEnumValues = <

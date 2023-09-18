@@ -13,13 +13,13 @@ async function assertDockerComposeInstalled(): Promise<void> {
 export async function setup(): Promise<void> {
   await assertDockerComposeInstalled()
   await $({
-    stdio:"inherit"
+    stdio: "inherit"
   })`docker compose -f docker-compose.test.yaml up -d --wait`
 }
 
 export async function teardown(): Promise<void> {
   await assertDockerComposeInstalled()
   await $({
-    stdio:"inherit"
+    stdio: "inherit"
   })`docker compose -f docker-compose.test.yaml down`
 }

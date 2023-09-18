@@ -66,11 +66,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
       </Label>
 
       <Input
-        wide
         id="login"
+        v-model="loginValue"
+        wide
         type="text"
         placeholder="Login..."
-        v-model="loginValue"
         v-bind="loginAttrs"
       />
     </Field>
@@ -81,11 +81,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
       </Label>
 
       <Input
-        wide
         id="password"
+        v-model="passwordValue"
+        wide
         type="password"
         placeholder="Password..."
-        v-model="passwordValue"
         v-bind="passwordAttrs"
       />
     </Field>

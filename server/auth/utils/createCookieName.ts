@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 export const DEFAULT_COOKIE_PREFIX = "twi"
 
 export type CookieName<

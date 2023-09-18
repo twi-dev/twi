@@ -1,8 +1,9 @@
 import {z} from "zod"
 
-import {StorySlug} from "./StorySlug.js"
-import {StoryRecord} from "./StoryRecord.js"
 import {UserOutput} from "../user/UserOutput.js"
+
+import {StoryRecord} from "./StoryRecord.js"
+import {StorySlug} from "./StorySlug.js"
 
 export const StoryBaseOutput = StoryRecord.extend({
   publisher: UserOutput,

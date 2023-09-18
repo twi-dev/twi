@@ -6,9 +6,7 @@ const xProtoKey = "x-forwarded-proto"
 
 const isXProtoHeaderValid = (value: string) => /^https?/i.test(value)
 
-export default defineEventHandler(async ({node: {
-  req, res
-}}) => {
+export default defineEventHandler(async ({node: {req, res}}) => {
   // Remove once this issue is resolved: https://github.com/unjs/nitro/issues/1121
   const {headers} = req
   const xProto = headers[xProtoKey]

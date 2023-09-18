@@ -1,14 +1,14 @@
 import {createConnection} from "mysql2/promise.js"
 import type {Options} from "@mikro-orm/mysql"
 import {beforeAll, afterAll} from "vitest"
-import {nanoid} from "nanoid/async"
+import {nanoid} from "nanoid"
 
 import {getConfig} from "../../../server/lib/db/config.js"
 import {createORM} from "../../../server/lib/db/orm.js"
 
 async function getTestConfig(): Promise<Options> {
   // @ts-expect-error Override db name so we can pass it to getORM in tests
-  process.env.DB_NAME = `__test__${await nanoid()}`
+  process.env.DB_NAME = `__test__${nanoid()}`
 
   return getConfig()
 }

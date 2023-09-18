@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 import {customAlphabet, urlAlphabet} from "nanoid"
 
 export const DEFAULT_SUFFIX_SIZE = 5
