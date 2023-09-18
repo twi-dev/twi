@@ -11,8 +11,10 @@ export const getBySlug = procedure
   .input(StoryWithSlugInput)
   .output(StoryOutput)
   .query(async ({input: {slug}, ctx: {orm}}) => {
-    const story = await orm.em.findOneOrFail(Story, slug, {
-      failHandler: () => new TRPCError({code: "NOT_FOUND"})
+    const story = await orm.em.findOneOrFail(Story, {slug}, {
+      failHandler: () => new TRPCError({code: "NOT_FOUND"}),
+
+      populate: ["description"]
     })
 
     return story
