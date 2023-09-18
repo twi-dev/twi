@@ -53,6 +53,7 @@
     "@types/lodash-es": "4.17.9",
     "@types/mime-types": "2.1.1",
     "@types/node": "20.6.2",
+    "@types/uuid": "^9.0.4",
     "@types/validator": "13.11.1",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
@@ -96,6 +97,7 @@
     "next-auth": "4.22.5",
     "superjson": "1.13.1",
     "trpc-nuxt": "0.10.12",
+    "uuid": "^9.0.1",
     "validator": "13.11.0",
     "zod": "3.22.2"
   }
