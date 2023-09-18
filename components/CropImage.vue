@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<CropImageProps>(), {
     dragMode: "none",
     zoomable: false,
     autoCropArea: 1,
-    toggleDragModeOnDblclick: false,
+    toggleDragModeOnDblclick: false
   })
 })
 
@@ -86,7 +86,7 @@ function crop(): void {
 </style>
 
 <template>
-  <div :class='["w-full", {"round-crop": round}]'>
+  <div :class="['w-full', {'round-crop': round}]">
     <div class="w-full">
       <img ref="el" :src="src" :alt="alt" class="block max-w-full" />
     </div>

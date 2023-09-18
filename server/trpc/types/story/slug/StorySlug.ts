@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/indent */
+
 import {isString} from "lodash-es"
 import {z} from "zod"
 

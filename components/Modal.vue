@@ -31,9 +31,9 @@ defineExpose({open, close})
 </script>
 
 <template>
-  <slot name="openButton" :openDialog="open" />
+  <slot name="openButton" :open-dialog="open" />
 
-  <Dialog :open="visible" @close="onClose" as="div" class="relative z-10">
+  <Dialog :open="visible" as="div" class="relative z-10" @close="onClose">
     <div class="fixed inset-0 bg-black/40 dark:bg-black/70" />
 
     <div class="fixed inset-0 overflow-y-auto">
@@ -47,7 +47,7 @@ defineExpose({open, close})
             <div class="flex-1" />
 
             <button type="button" @click="close">
-              <X :size=28 class="text-white" />
+              <X :size="28" class="text-white" />
             </button>
           </DialogTitle>
 

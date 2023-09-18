@@ -1,4 +1,4 @@
-const EXTRACT_URL_EXPR =  /([^/]+)\/?$/
+const EXTRACT_URL_EXPR = /([^/]+)\/?$/
 
 export function getFileIDFromURL(url: string): string | undefined {
   const matches = EXTRACT_URL_EXPR.exec(new URL(url).pathname)

@@ -15,5 +15,5 @@ export function toFilesArray(
     return files.slice()
   }
 
-  return  Array.from(files)
+  return Array.from(files)
 }

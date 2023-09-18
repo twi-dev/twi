@@ -33,7 +33,7 @@ const dropZoneRes = useDropZone(dropzoneRef, onFiles)
 
 <template>
   <button ref="dropzoneRef" type="button" @click="inputRef?.click()">
-    <input ref="inputRef" type="file" class="hidden" @change="onChange" accept="image/*" />
+    <input ref="inputRef" type="file" class="hidden" accept="image/*" @change="onChange" />
 
     <slot v-bind="dropZoneRes" />
   </button>

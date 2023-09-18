@@ -2,9 +2,10 @@ import {encode} from "next-auth/jwt"
 
 import type {User} from "../db/entities.js"
 
-import {createChunkedCookie} from "./createChunkedCookie.js"
 import {sessionToken} from "../auth/cookies.js"
 import {config} from "../auth/config.js"
+
+import {createChunkedCookie} from "./createChunkedCookie.js"
 
 export async function createCookieHeader(user: User): Promise<Headers> {
   const headers = new Headers()

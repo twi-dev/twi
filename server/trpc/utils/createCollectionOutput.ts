@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable indent */
+
 import type {ZodRawShape, ZodObject} from "zod"
 import {Collection} from "@mikro-orm/core"
 import {z, ZodIssueCode} from "zod"
@@ -12,7 +13,7 @@ export const createCollectionOutput = <T extends ZodRawShape>(
     if (!(value instanceof Collection)) {
       ctx.addIssue({
         code: ZodIssueCode.custom,
-        message: "Input must be a Collection",
+        message: "Input must be a Collection"
       })
 
       return z.NEVER

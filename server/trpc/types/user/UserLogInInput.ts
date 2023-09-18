@@ -9,4 +9,3 @@ export const UserLogInInput = UserBase.extend({
 export type IUserLogInInput = z.input<typeof UserLogInInput>
 
 export type OUserLogInInput = z.output<typeof UserLogInInput>
-

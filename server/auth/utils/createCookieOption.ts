@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+
 import type {CookieOption} from "next-auth"
 
 import type {Replace} from "../../../lib/utils/types/Replace.js"

@@ -45,7 +45,6 @@ const avatarUrl = computed(() => {
           </UserMenuButton>
         </UserMenu>
       </div>
-
     </DesktopContainer>
   </header>
 </template>

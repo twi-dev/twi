@@ -30,7 +30,7 @@ function onChange(event: Event) {
 
 <template>
   <Button type="button" @click="inputRef?.click()">
-    <input ref="inputRef" type="file" class="hidden" @change="onChange" v-bind="{accept, multiple}" />
+    <input ref="inputRef" type="file" class="hidden" v-bind="{accept, multiple}" @change="onChange" />
     <slot />
   </Button>
 </template>

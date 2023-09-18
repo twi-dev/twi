@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {Pencil} from "lucide-vue-next"
+import {isEmpty} from "lodash-es"
 import {Uppy} from "@uppy/core"
 
 import Tus from "@uppy/tus"
@@ -8,7 +9,6 @@ import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
 import {getFileIDFromURL} from "../lib/uploads/getFileIDFromURL.js"
 
 import type {AvatarProps} from "./Avatar.vue"
-import {isEmpty} from "lodash-es"
 
 defineProps<AvatarProps>()
 
@@ -52,7 +52,7 @@ function updatePreview(file: File): string {
 function updateFile(file: File): string {
   cleanupFiles()
 
-  const id =  uppy.addFile({
+  const id = uppy.addFile({
     name: file.name,
     type: file.type,
     data: file,

@@ -3,7 +3,7 @@ import {z} from "zod"
 import {UserLogInInput} from "./UserLogInInput.js"
 
 export const UserSignUpInput = UserLogInInput.extend({
-  email: z.string().email(),
+  email: z.string().email()
 })
 
 export type IUserSignUpInput = z.input<typeof UserSignUpInput>

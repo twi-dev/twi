@@ -9,19 +9,20 @@ export interface AvatarProps {
 }
 
 withDefaults(defineProps<AvatarProps>(), {
-  size: "sm"
+  size: "sm",
+  src: undefined
 })
 </script>
 
 <template>
   <div
-    :class='[
+    :class="[
       {
-        "w-8 h-8": size === "sm",
-        "w-20 h-20": size === "md",
-        "w-32": size === "lg"
+        'w-8 h-8': size === 'sm',
+        'w-20 h-20': size === 'md',
+        'w-32': size === 'lg'
       }
-    ]'
+    ]"
   >
     <div class="w-full h-full rounded-full border-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
       <img v-if="src" :src="src" alt="User avatar" />

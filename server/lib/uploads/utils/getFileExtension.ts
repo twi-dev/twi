@@ -22,6 +22,7 @@ export function getFileExtension(metadata: Metadata): MaybeUndefined<string> {
     return undefined
   }
 
+  // eslint-disable-next-line import/no-named-as-default-member
   const ext = mime.extension(mimeType)
   if (ext) {
     return normalizeExtension(ext)
