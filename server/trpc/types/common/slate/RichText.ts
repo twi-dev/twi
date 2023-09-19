@@ -1,15 +1,14 @@
 import {z} from "zod"
 
-import {PlainText} from "./PlainText.js"
+import {RichTextBase} from "./RichTextBase.js"
 
-export const RichText = PlainText.extend({
-  bold: z.literal(true).optional(),
-  italic: z.literal(true).optional(),
-  underline: z.literal(true).optional(),
-  strikethrough: z.literal(true).optional(),
-  superscript: z.literal(true).optional(),
-  subscript: z.literal(true).optional()
-})
+import {RichTextSubscriptFormat} from "./RichTextSubscriptFormat.js"
+import {RichTextSuperscriptFormat} from "./RichTextSuperscriptFormat.js"
+
+export const RichText = z.intersection(RichTextBase, z.union([
+  RichTextSubscriptFormat,
+  RichTextSuperscriptFormat
+]))
 
 export type IRichText = z.input<typeof RichText>
 
