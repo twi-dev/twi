@@ -44,7 +44,7 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
    * This field contains collection of [`Slate`](https://www.slatejs.org) nodes
    */
   @Property({type: JsonType, lazy: true})
-  content!: ORootElements // TODO: Adjust type to slate nodes
+  content!: ORootElements
 
   /**
    * Indicates if the chapter is hidden from anyone to read
