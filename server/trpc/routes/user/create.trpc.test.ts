@@ -14,7 +14,7 @@ describe("user.create procedure", async () => {
 
     const user = await orm.em.findOneOrFail(User, actual.id)
 
-    expect(actual.id).to.be.equal(user.id)
-    expect(actual.login).to.be.equal(user.login)
+    expect(actual.id).toEqual(user.id)
+    expect(actual.login).toEqual(user.login)
   })
 })

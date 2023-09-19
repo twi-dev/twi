@@ -1,6 +1,5 @@
-import {TRPCError} from "@trpc/server"
-
 import {procedure} from "../../procedures/base.js"
+import {notFound} from "../../errors/notFound.js"
 
 import {User} from "../../../db/entities/User.js"
 
@@ -11,5 +10,5 @@ export const getById = procedure
   .input(Node)
   .output(UserOutput)
   .query(async ({input: {id}, ctx: {orm}}) => orm.em.findOneOrFail(User, id, {
-    failHandler: () => new TRPCError({code: "NOT_FOUND"})
+    failHandler: () => notFound("User not found")
   }))
