@@ -1,8 +1,10 @@
 import {z} from "zod"
 
+import {SlateDescription} from "../common/slate/SlateDescription.js"
+
 export const ChapterBase = z.object({
   title: z.string().min(2),
-  description: z.string().min(2),
+  description: SlateDescription,
   isDraft: z.boolean(),
   order: z.number().int().positive()
 })

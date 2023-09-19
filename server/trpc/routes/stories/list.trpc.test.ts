@@ -23,9 +23,14 @@ describe("stories.list procedure", async () => {
     })
 
     const createStories = () => em.create(Story, {
+      publisher: user,
       title: faker.lorem.words({min: 3, max: 6}),
-      description: faker.lorem.paragraph(),
-      publisher: user
+      description: [{
+        type: "p",
+        children: [{
+          text: faker.lorem.paragraph()
+        }]
+      }]
     })
 
     const stories = faker.helpers.multiple(createStories, {count})

@@ -13,9 +13,14 @@ describe("story.getBySlug procedure", async () => {
     })
 
     const story = orm.em.create(Story, {
+      publisher: user,
       title: faker.lorem.words({min: 2, max: 5}),
-      description: faker.lorem.paragraph(),
-      publisher: user
+      description: [{
+        type: "p",
+        children: [{
+          text: faker.lorem.paragraph()
+        }]
+      }]
     })
 
     await orm.em.persistAndFlush([user, story])

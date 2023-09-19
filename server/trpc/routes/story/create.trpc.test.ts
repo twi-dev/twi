@@ -12,19 +12,28 @@ describe("story.create procedure", async () => {
   trpcTest.concurrent("creates a new story", async ({expect, trpc}) => {
     const expected = {
       title: faker.lorem.words({min: 3, max: 6}),
-      description: faker.lorem.paragraph()
+      description: [{
+        type: "p",
+        children: [{
+          text: faker.lorem.paragraph()
+        }]
+      }]
     } satisfies IStoryCreateInput
 
     const actual = await trpc.story.create(expected)
 
-    expect(actual.title).to.equal(expected.title)
-    expect(actual.description).to.equal(expected.description)
+    expect(actual).toMatchObject(expected)
   })
 
   trpcTest.concurrent("generates slug", async ({expect, trpc, orm}) => {
     const actual = await trpc.story.create({
       title: faker.lorem.words({min: 3, max: 6}),
-      description: faker.lorem.paragraph()
+      description: [{
+        type: "p",
+        children: [{
+          text: faker.lorem.paragraph()
+        }]
+      }]
     })
 
     const expected = await orm.em.findOneOrFail(Story, actual.id, {
@@ -41,7 +50,12 @@ describe("story.create procedure", async () => {
   }) => {
     const {publisher} = await trpc.story.create({
       title: faker.lorem.words({min: 3, max: 6}),
-      description: faker.lorem.paragraph()
+      description: [{
+        type: "p",
+        children: [{
+          text: faker.lorem.paragraph()
+        }]
+      }]
     })
 
     expect(publisher.id).to.equal(auth!.id)
