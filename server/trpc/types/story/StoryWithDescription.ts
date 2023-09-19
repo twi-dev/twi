@@ -1,7 +1,9 @@
 import {z} from "zod"
 
+import {SlateDescription} from "../common/slate/SlateDescription.js"
+
 export const StoryWithDescription = z.object({
-  description: z.string().min(2)
+  description: SlateDescription
 })
 
 export type IStoryWithDescription = z.input<typeof StoryWithDescription>

@@ -4,11 +4,15 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  Collection
+  Collection,
+  JsonType
 } from "@mikro-orm/core"
 
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {StorySlug} from "../../lib/utils/slug/storySlug.js"
+import type {
+  OSlateDescription
+} from "../../trpc/types/common/slate/SlateDescription.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Chapter} from "./Chapter.js"
@@ -26,8 +30,8 @@ export class Story extends RecordSoft<StoryOptionalProps> {
   /**
    * Story description
    */
-  @Property({type: "text", lazy: true}) // FIXME: Chose precise type for description, MySQL has different variants for TEXT
-  description!: string
+  @Property({type: JsonType, lazy: true})
+  description!: OSlateDescription
 
   /**
    * URL-friendly & human-readable story identifier

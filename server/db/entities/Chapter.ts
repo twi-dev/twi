@@ -13,6 +13,9 @@ import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {
   ORootElements
 } from "../../trpc/types/common/slate/RootElements.js"
+import type {
+  OSlateDescription
+} from "../../trpc/types/common/slate/SlateDescription.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Story} from "./Story.js"
@@ -35,8 +38,8 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
   /**
    * Chapter description
    */
-  @Property({type: "text", lazy: true})
-  description!: string
+  @Property({type: JsonType, lazy: true})
+  description!: OSlateDescription
 
   /**
    * Chapter content.
