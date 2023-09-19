@@ -10,6 +10,10 @@ import {
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 
+import type {
+  ORootElements
+} from "../../trpc/types/common/slate/RootElements.js"
+
 import {RecordSoft} from "./RecordSoft.js"
 import {Story} from "./Story.js"
 
@@ -40,7 +44,7 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
    * This field contains collection of [`Slate`](https://www.slatejs.org) nodes
    */
   @Property({type: JsonType, lazy: true})
-  content!: Record<string, unknown> // TODO: Adjust type to slate nodes
+  content!: ORootElements
 
   /**
    * Indicates if the chapter is hidden from anyone to read

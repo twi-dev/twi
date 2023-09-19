@@ -83,6 +83,9 @@ dependencies:
   trpc-nuxt:
     specifier: 0.10.12
     version: 0.10.12(@trpc/client@10.38.3)(@trpc/server@10.38.3)
+  uuid:
+    specifier: 9.0.1
+    version: 9.0.1
   validator:
     specifier: 13.11.0
     version: 13.11.0
@@ -119,7 +122,7 @@ devDependencies:
     specifier: 3.7.3
     version: 3.7.3(vitest@0.34.4)(vue@3.3.4)
   '@nuxtjs/eslint-config-typescript':
-    specifier: ^12.1.0
+    specifier: 12.1.0
     version: 12.1.0(eslint@8.49.0)(typescript@5.2.2)
   '@nuxtjs/tailwindcss':
     specifier: 6.8.0
@@ -145,14 +148,17 @@ devDependencies:
   '@types/node':
     specifier: 20.6.2
     version: 20.6.2
+  '@types/uuid':
+    specifier: 9.0.4
+    version: 9.0.4
   '@types/validator':
     specifier: 13.11.1
     version: 13.11.1
   '@typescript-eslint/eslint-plugin':
-    specifier: ^6.7.0
+    specifier: 6.7.0
     version: 6.7.0(@typescript-eslint/parser@6.7.0)(eslint@8.49.0)(typescript@5.2.2)
   '@typescript-eslint/parser':
-    specifier: ^6.7.0
+    specifier: 6.7.0
     version: 6.7.0(eslint@8.49.0)(typescript@5.2.2)
   '@vitejs/plugin-vue':
     specifier: 4.3.4
@@ -161,7 +167,7 @@ devDependencies:
     specifier: 0.5.0
     version: 0.5.0
   eslint:
-    specifier: ^8.49.0
+    specifier: 8.49.0
     version: 8.49.0
   eslint-plugin-vue:
     specifier: ^9.17.0
@@ -3022,6 +3028,10 @@ packages:
 
   /@types/semver@7.5.2:
     resolution: {integrity: sha512-7aqorHYgdNO4DM36stTiGO3DvKoex9TQRwsJU6vMaFGyqpBA1MNZkz+PG3gaNUPpTAOYhT1WR7M1JyA3fbS9Cw==}
+    dev: true
+
+  /@types/uuid@9.0.4:
+    resolution: {integrity: sha512-zAuJWQflfx6dYJM62vna+Sn5aeSWhh3OB+wfUEACNcqUSc0AGc5JKl+ycL1vrH7frGTXhJchYjE1Hak8L819dA==}
     dev: true
 
   /@types/validator@13.11.1:
@@ -11002,6 +11012,11 @@ packages:
   /uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
+
+  /uuid@9.0.1:
+    resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
+    hasBin: true
+    dev: false
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
