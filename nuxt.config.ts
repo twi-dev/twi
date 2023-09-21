@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@sidebase/nuxt-auth",
     "@vueuse/nuxt",
+    "@nuxt/image",
     "nuxt-svgo"
   ],
   tailwindcss: {
