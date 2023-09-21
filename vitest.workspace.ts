@@ -8,7 +8,7 @@ export default defineWorkspace([
       environment: "node",
       setupFiles: [
         "./scripts/tests/setup/env.ts"
-      ],
+      ]
     }
   },
   {
@@ -33,7 +33,7 @@ export default defineWorkspace([
       environment: "jsdom",
       setupFiles: [
         "./scripts/tests/setup/env.ts"
-      ],
+      ]
     }
   }
 ])
