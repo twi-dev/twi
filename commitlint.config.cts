@@ -9,6 +9,6 @@ export default {
       "always",
 
       ["sentence-case"]
-    ],
+    ]
   }
 } satisfies UserConfig
