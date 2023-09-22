@@ -7,7 +7,7 @@ import {File} from "../../../db/entities.js"
 import {trpcTest} from "../../../__fixtures__/trpc.js"
 import {authContext} from "../../../__context__/authContext.js"
 
-import {getFileIDFromURL} from "../../../../lib/uploads/getFileIDFromURL.js"
+import {getFileIdFromUrl} from "../../../lib/uploads/utils/getFileIdFromUrl.js"
 
 describe("user.update procedure", async () => {
   authContext()
@@ -34,14 +34,14 @@ describe("user.update procedure", async () => {
   })
 
   trpcTest("updates avatar", async ({trpc}) => {
-    const expected = getFileIDFromURL(faker.internet.avatar())
+    const expected = getFileIdFromUrl(faker.internet.avatar())
     const actual = await trpc.user.update({avatar: expected})
 
     expect(actual.avatar?.key).toEqual(expected)
   })
 
   trpcTest("unsets avatar on null value", async ({trpc, orm, auth}) => {
-    const key = getFileIDFromURL(faker.internet.avatar())
+    const key = getFileIdFromUrl(faker.internet.avatar())
     const file = orm.em.create(File, {key: key as string}, {persist: true})
 
     auth!.avatar = file

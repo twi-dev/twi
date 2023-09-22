@@ -6,7 +6,6 @@ import {Uppy} from "@uppy/core"
 import Tus from "@uppy/tus"
 
 import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
-import {getFileIDFromURL} from "../lib/uploads/getFileIDFromURL.js"
 
 import type {AvatarProps} from "./Avatar.vue"
 
@@ -101,11 +100,9 @@ function onCrop(blob: Blob) {
 
       const [uploaded] = successful
 
-      const id = getFileIDFromURL(uploaded.uploadURL)
-
       // Update user avatar
       return $trpc.user.update.mutate({
-        avatar: id
+        avatar: uploaded.uploadURL
       })
     })
     .catch(console.error)
