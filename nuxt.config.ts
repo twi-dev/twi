@@ -24,6 +24,9 @@ export default defineNuxtConfig({
   auth: {
     origin: new URL(serverAddress).origin
   },
+  image: {
+    format: ["avif", "webp"]
+  },
   build: {
     transpile: ["trpc-nuxt", "next-auth/providers/credentials"]
   },
