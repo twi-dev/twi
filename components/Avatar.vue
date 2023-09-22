@@ -41,7 +41,7 @@ const {width, height} = sizes[size] || sizes.sm
     ]"
   >
     <div class="w-full h-full rounded-full border-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
-      <NuxtPicture v-if="src" :src="src" :width="width" :height="height" alt="My avatar" />
+      <NuxtImg v-if="src" :src="src" :width="width" :height="height" alt="My avatar" />
 
       <User2 v-else class="text-black-200 dark:text-white w-full h-full" />
     </div>
