@@ -1,25 +1,29 @@
 import type {IncomingMessage} from "node:http"
+import {createHash} from "node:crypto"
 
 import {nanoid} from "nanoid"
-import {format} from "date-fns"
+
+import {
+  Metadata,
+  type OMetadata
+} from "./types/Metadata.js"
 
 import {extractMetadata} from "./extractMetadata.js"
-import {getFileExtension} from "./getFileExtension.js"
 
-const DATETIME_FORMAT = "yyyyMMddHHmmss"
+interface HashPayload {
+  date: string
+  metadata?: OMetadata
+  randomness: string
+}
 
 export function createFilename(req: IncomingMessage): string {
-  const base = `${format(Date.now(), DATETIME_FORMAT)}-${nanoid()}`
+  const hash = createHash("sha256")
 
-  const metadata = extractMetadata(req)
-  if (!metadata) {
-    return base
+  const payload: HashPayload = {
+    date: new Date().toISOString(),
+    metadata: Metadata.parse(extractMetadata(req)),
+    randomness: nanoid()
   }
 
-  const ext = getFileExtension(metadata)
-  if (!ext) {
-    return base
-  }
-
-  return `${base}.${ext}`
+  return hash.update(JSON.stringify(payload)).digest("hex")
 }

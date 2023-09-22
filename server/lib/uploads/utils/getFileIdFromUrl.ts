@@ -1,10 +1,13 @@
 const EXTRACT_URL_EXPR = /([^/]+)\/?$/
 
-export function getFileIDFromURL(url: string): string | undefined {
+/**
+ * Gets upload ID from given file URL
+ */
+export function getFileIdFromUrl(url: string): string {
   const matches = EXTRACT_URL_EXPR.exec(new URL(url).pathname)
 
   if (!matches) {
-    return undefined
+    throw new Error("Could not get upload ID")
   }
 
   return decodeURIComponent(matches[1])

@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@sidebase/nuxt-auth",
     "@vueuse/nuxt",
+    "@nuxt/image",
     "nuxt-svgo"
   ],
   tailwindcss: {
@@ -22,6 +23,9 @@ export default defineNuxtConfig({
   },
   auth: {
     origin: new URL(serverAddress).origin
+  },
+  image: {
+    format: ["avif", "webp"]
   },
   build: {
     transpile: ["trpc-nuxt", "next-auth/providers/credentials"]
