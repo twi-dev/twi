@@ -63,7 +63,7 @@ dependencies:
     specifier: 2.30.0
     version: 2.30.0
   fs-extra:
-    specifier: ^11.1.1
+    specifier: 11.1.1
     version: 11.1.1
   lodash-es:
     specifier: 4.17.21
@@ -84,7 +84,7 @@ dependencies:
     specifier: 4.22.5
     version: 4.22.5
   sharp:
-    specifier: ^0.32.6
+    specifier: 0.32.6
     version: 0.32.6
   superjson:
     specifier: 1.13.1
@@ -93,7 +93,7 @@ dependencies:
     specifier: 0.10.12
     version: 0.10.12(@trpc/client@10.38.3)(@trpc/server@10.38.3)
   type-is:
-    specifier: ^1.6.18
+    specifier: 1.6.18
     version: 1.6.18
   uuid:
     specifier: 9.0.1
@@ -152,7 +152,7 @@ devDependencies:
     specifier: 0.5.2
     version: 0.5.2
   '@types/fs-extra':
-    specifier: ^11.0.2
+    specifier: 11.0.2
     version: 11.0.2
   '@types/lodash-es':
     specifier: 4.17.9
@@ -185,19 +185,19 @@ devDependencies:
     specifier: 8.49.0
     version: 8.49.0
   eslint-plugin-vue:
-    specifier: ^9.17.0
+    specifier: 9.17.0
     version: 9.17.0(eslint@8.49.0)
   execa:
     specifier: 8.0.1
     version: 8.0.1
   husky:
-    specifier: ^8.0.0
-    version: 8.0.3
+    specifier: 8.0.0
+    version: 8.0.0
   jsdom:
     specifier: 22.1.0
     version: 22.1.0
   lint-staged:
-    specifier: ^14.0.1
+    specifier: 14.0.1
     version: 14.0.1
   nuxt:
     specifier: 3.7.3
@@ -6637,8 +6637,8 @@ packages:
       ms: 2.1.3
     dev: true
 
-  /husky@8.0.3:
-    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+  /husky@8.0.0:
+    resolution: {integrity: sha512-4qbE/5dzNDNxFEkX9MNRPKl5+omTXQzdILCUWiqG/lWIAioiM5vln265/l6I2Zx8gpW8l1ukZwGQeCFbBZ6+6w==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
