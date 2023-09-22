@@ -12,6 +12,9 @@ import {match} from "type-is"
 import type {
   ArbitaryUnionString
 } from "../../../../lib/utils/types/ArbitaryUnionString.js"
+import {
+  createHashFromFileContent
+} from "../../utils/createHashFromFileContent.js"
 import {store} from "../store.js"
 
 import {Metadata} from "./types/Metadata.js"
@@ -19,20 +22,22 @@ import {getFileIdFromUrl} from "./getFileIdFromUrl.js"
 
 const DEST_ROOT = resolve("public", "uploads")
 
-export interface MoveFileUploadKinds {
+export interface MoveUploadedFileUploadKinds {
   user: ArbitaryUnionString<"avatar">
   story: ArbitaryUnionString<"cover" | "attachment">
   chapter: ArbitaryUnionString<"cover" | "attachment">
 }
 
-export type MoveFileValidOwners = keyof MoveFileUploadKinds
+export type MoveUploadedFileValidOwners = keyof MoveUploadedFileUploadKinds
 
-type Owners = ArbitaryUnionString<MoveFileValidOwners>
+type Owners = ArbitaryUnionString<MoveUploadedFileValidOwners>
 
 type GetKindByOwner<TOwner extends Owners> =
-  TOwner extends MoveFileValidOwners ? MoveFileUploadKinds[TOwner] : string
+  TOwner extends MoveUploadedFileValidOwners
+    ? MoveUploadedFileUploadKinds[TOwner]
+    : string
 
-interface MoveFileParams<TOwner extends Owners> {
+interface MoveUploadedFileParams<TOwner extends Owners> {
   /**
    * Upload ID or upload URL
    */
@@ -41,7 +46,7 @@ interface MoveFileParams<TOwner extends Owners> {
   /**
    * Upload's owner type (e. g., "user", "story", etc.)
    *
-   * Could be one of MoveFileValidOwners or arbitary string
+   * Could be one of MoveUploadedFileValidOwners or arbitary string
    */
   owner: TOwner
 
@@ -58,10 +63,12 @@ interface MoveFileParams<TOwner extends Owners> {
   accepts?: string
 }
 
-export interface FileMetadata {
+export interface MoveUploadedFileResult {
   key: string
   size: number
   path: string
+  sha512hash: string
+  mime: string
 }
 
 const getDate = (): string => format(new Date(), "yyyy-MM-dd")
@@ -71,7 +78,7 @@ const getDate = (): string => format(new Date(), "yyyy-MM-dd")
  */
 export async function moveUploadedFile<
   TOwner extends Owners
->(params: MoveFileParams<TOwner>): Promise<FileMetadata> {
+>(params: MoveUploadedFileParams<TOwner>): Promise<MoveUploadedFileResult> {
   const {id, owner, kind, accepts} = params
 
   const uploadId = getFileIdFromUrl(id)
@@ -88,9 +95,13 @@ export async function moveUploadedFile<
   const key = join(destBasePath, `${nanoid()}${extname(metadata.name)}`)
   const dest = join(DEST_ROOT, key)
 
+  const stream = store.read(uploadId)
+
   // Copy file to destination path
   await ensureDir(destDir)
-  await pipeline(store.read(uploadId), createWriteStream(dest))
+  await pipeline(stream, createWriteStream(dest))
+
+  const sha512hash = await createHashFromFileContent("sha512", stream)
 
   // Cleanup
   await store.remove(uploadId)
@@ -104,5 +115,5 @@ export async function moveUploadedFile<
     size = stats.size
   }
 
-  return {key, size, path: dest}
+  return {key, size, sha512hash, path: dest, mime: metadata.type}
 }

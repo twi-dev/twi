@@ -98,6 +98,7 @@
     "mysql2": "3.6.1",
     "nanoid": "5.0.1",
     "next-auth": "4.22.5",
+    "sharp": "^0.32.6",
     "superjson": "1.13.1",
     "trpc-nuxt": "0.10.12",
     "type-is": "^1.6.18",

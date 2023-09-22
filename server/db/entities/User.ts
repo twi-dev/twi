@@ -10,6 +10,7 @@ import {
 import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {MaybeNull} from "../../..//lib/utils/types/MaybeNull.js"
 import {stringEnumValues} from "../../../lib/utils/stringEnumValues.js"
+import type {OImageMetadata} from "../../lib/types/common/ImageMetadata.js"
 
 import {UserStatuses} from "../../trpc/types/user/UserStatuses.js"
 import {UserRoles} from "../../trpc/types/user/UserRoles.js"
@@ -61,7 +62,7 @@ export class User extends RecordSoft<UserOptionalProps> {
     eager: true,
     strategy: LoadStrategy.JOINED
   })
-  avatar: MaybeNull<File> = null
+  avatar: MaybeNull<File<OImageMetadata>> = null
 }
 
 type UserOptionalProps = PickKeys<User, "role" | "status">

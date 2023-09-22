@@ -1,13 +1,13 @@
 import {z} from "zod"
 
-import {FileOutput} from "../common/FileOutput.js"
+import {ImageOutput} from "../common/ImageOutput.js"
 
 import {UserDisplayName} from "./UserDisplayName.js"
 import {UserRecord} from "./UserRecord.js"
 
 export const UserOutput = UserRecord.extend({
   displayName: UserDisplayName.nullable(),
-  avatar: FileOutput.nullable()
+  avatar: ImageOutput.nullable()
 })
 
 export type IUserOutput = z.input<typeof UserOutput>

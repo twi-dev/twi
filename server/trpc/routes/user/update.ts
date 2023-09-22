@@ -1,4 +1,5 @@
 import {moveUploadedFile} from "../../../lib/uploads/utils/moveUploadedFile.js"
+import {getImageMetadata} from "../../../lib/utils/getImageMetadata.js"
 import {withAuthContext} from "../../middlewares/withAuthContext.js"
 import {UserUpdateInput} from "../../types/user/UserUpdateInput.js"
 import {UserOutput} from "../../types/user/UserOutput.js"
@@ -13,14 +14,36 @@ export const update = procedure
     const {avatar, ...fields} = input
 
     if (avatar) {
-      const {key} = await moveUploadedFile({
+      const {
+        key,
+        sha512hash,
+        size,
+        mime,
+        path
+      } = await moveUploadedFile({
         id: avatar,
         owner: "user",
         kind: "avatar",
         accepts: "image/*"
       })
 
-      user.avatar = orm.em.create(File, {key})
+      const metadata = await getImageMetadata(path)
+
+      user.avatar = orm.em.create(
+        File,
+
+        {
+          key,
+          size,
+          sha512hash,
+          mime,
+          metadata
+        },
+
+        {
+          persist: true
+        }
+      )
     } else if (avatar === null) {
       user.avatar = null
     }
