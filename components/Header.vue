@@ -2,9 +2,7 @@
 import {User2} from "lucide-vue-next"
 import {isEmpty} from "lodash-es"
 
-import {useSessionContext} from "../context/session.js"
-
-const {session} = useSessionContext()
+const {data: session} = useAuth()
 
 const avatarUrl = computed(() => {
   if (!session.value) {

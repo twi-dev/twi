@@ -6,15 +6,13 @@ import {Uppy} from "@uppy/core"
 import Tus from "@uppy/tus"
 
 import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
-import {useSessionContext} from "../context/session.js"
 
 import type {AvatarProps} from "./Avatar.vue"
 
 defineProps<AvatarProps>()
 
 const {$trpc} = useNuxtApp()
-
-const {refresh: refreshSession} = useSessionContext()
+const {getSession} = useAuth()
 
 const uppy = new Uppy({
   restrictions: {
@@ -105,7 +103,7 @@ function onCrop(blob: Blob) {
 
       // Update user avatar
       await $trpc.user.update.mutate({avatar: uploaded.uploadURL})
-      await refreshSession()
+      await getSession()
     })
     .catch(console.error)
 }
