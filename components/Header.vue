@@ -2,16 +2,14 @@
 import {User2} from "lucide-vue-next"
 import {isEmpty} from "lodash-es"
 
-const {getSession} = useAuth()
-
-const session = await getSession()
+const {data: session} = useAuth()
 
 const avatarUrl = computed(() => {
-  if (!session) {
+  if (!session.value) {
     return undefined
   }
 
-  const {avatar} = session.user
+  const {avatar} = session.value.user
   if (avatar) {
     return `/uploads/${avatar.key}`
   }
@@ -39,7 +37,7 @@ const avatarUrl = computed(() => {
           <User2 />
         </NuxtLink>
 
-        <UserMenu v-else :user="session.user">
+        <UserMenu v-else :user="session.user!">
           <UserMenuButton>
             <Avatar :src="avatarUrl" />
           </UserMenuButton>

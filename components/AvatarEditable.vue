@@ -12,6 +12,7 @@ import type {AvatarProps} from "./Avatar.vue"
 defineProps<AvatarProps>()
 
 const {$trpc} = useNuxtApp()
+const {getSession} = useAuth()
 
 const uppy = new Uppy({
   restrictions: {
@@ -93,7 +94,7 @@ function onCrop(blob: Blob) {
   updateFile(croppedFile)
 
   uppy.upload()
-    .then(({successful}) => {
+    .then(async ({successful}) => {
       if (isEmpty(successful)) {
         return
       }
@@ -101,9 +102,8 @@ function onCrop(blob: Blob) {
       const [uploaded] = successful
 
       // Update user avatar
-      return $trpc.user.update.mutate({
-        avatar: uploaded.uploadURL
-      })
+      await $trpc.user.update.mutate({avatar: uploaded.uploadURL})
+      await getSession()
     })
     .catch(console.error)
 }
