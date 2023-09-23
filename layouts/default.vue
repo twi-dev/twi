@@ -1,11 +1,13 @@
 <template>
-  <FullscreenMain class="flex-col">
-    <Header />
+  <Session>
+    <FullscreenMain class="flex-col">
+      <Header />
 
-    <DesktopContainer>
-      <div class="p-5 desktop:px-0">
-        <slot />
-      </div>
-    </DesktopContainer>
-  </FullscreenMain>
+      <DesktopContainer>
+        <div class="p-5 desktop:px-0">
+          <slot />
+        </div>
+      </DesktopContainer>
+    </FullscreenMain>
+  </Session>
 </template>
