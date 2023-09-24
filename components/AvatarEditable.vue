@@ -144,7 +144,7 @@ onUnmounted(() => {
       <template #default="{close}">
         <div class="p-6">
           <CropImage round :preview="preview" alt="Avatar" @crop="onCrop">
-            <template #default="{click}">
+            <template #default="{crop}">
               <div class="flex">
                 <Button variant="secondary" @click="close">
                   Cancel
@@ -152,7 +152,7 @@ onUnmounted(() => {
 
                 <div class="flex-1" />
 
-                <Button @click="click">
+                <Button @click="crop">
                   Save
                 </Button>
               </div>

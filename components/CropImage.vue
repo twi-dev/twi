@@ -87,6 +87,6 @@ function crop(): void {
       <img ref="el" :src="preview" :alt="alt" class="block max-w-full" />
     </div>
 
-    <slot :click="crop" />
+    <slot :crop="crop" />
   </div>
 </template>
