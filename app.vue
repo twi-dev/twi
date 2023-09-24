@@ -10,7 +10,7 @@ useHead({
     }
 
     return base
-  },
+  }
 })
 </script>
 
