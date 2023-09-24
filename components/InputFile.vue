@@ -2,7 +2,9 @@
 import type {MaybeNull} from "../lib/utils/types/MaybeNull"
 import {toFilesArray} from "../lib/utils/toFilesArray.js"
 
-export interface InputFileProps {
+import type {ButtonProps} from "./Button.vue"
+
+export interface InputFileProps extends ButtonProps {
   multiple?: boolean
   accept?: string
 }
@@ -29,7 +31,7 @@ function onChange(event: Event) {
 </script>
 
 <template>
-  <Button type="button" @click="inputRef?.click()">
+  <Button v-bind="$props" type="button" @click="inputRef?.click()">
     <input ref="inputRef" type="file" class="hidden" v-bind="{accept, multiple}" @change="onChange" />
     <slot />
   </Button>

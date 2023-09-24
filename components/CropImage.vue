@@ -1,4 +1,6 @@
 <script setup lang="ts">
+/* eslint-disable @typescript-eslint/indent */
+
 import "cropperjs/dist/cropper.css"
 
 import Cropper from "cropperjs"
@@ -17,17 +19,18 @@ export type CropImageOptions = Omit<
 
 export interface CropImageProps {
   round?: boolean
-  src: string
-  alt?: string,
+  preview: string
   options?: CropImageOptions
+  alt?: string
 }
 
 const props = withDefaults(defineProps<CropImageProps>(), {
+  preview: undefined,
   round: false,
   alt: "",
   options: () => ({
     aspectRatio: 1,
-    viewMode: 2,
+    viewMode: 3,
     dragMode: "none",
     zoomable: false,
     autoCropArea: 1,
@@ -46,17 +49,10 @@ onMounted(() => {
   }
 })
 
-onUnmounted(() => {
-  if (cropper.value) {
-    cropper.value.replace("") // A hack to prevent error because the image is removed before unmount
-    cropper.value.destroy()
-  }
-})
-
 onUpdated(() => {
-  if (cropper.value) {
+  if (cropper.value && props.preview) {
     // FIXME: Fix image flickering once it replaced
-    cropper.value.replace(props.src)
+    cropper.value.replace(props.preview)
   }
 })
 
@@ -87,12 +83,10 @@ function crop(): void {
 
 <template>
   <div :class="['w-full', {'round-crop': round}]">
-    <div class="w-full">
-      <img ref="el" :src="src" :alt="alt" class="block max-w-full" />
+    <div class="w-full mb-5 overflow-hidden" :style="{aspectRatio: options.aspectRatio}">
+      <img ref="el" :src="preview" :alt="alt" class="block max-w-full" />
     </div>
 
-    <button type="button" @click="crop">
-      Crop
-    </button>
+    <slot :click="crop" />
   </div>
 </template>
