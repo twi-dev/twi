@@ -9,6 +9,8 @@ import type {MaybeUndefined} from "../lib/utils/types/MaybeUndefined.js"
 
 import type {AvatarProps} from "./Avatar.vue"
 
+import Modal from "./Modal.vue"
+
 defineProps<AvatarProps>()
 
 const {$trpc} = useNuxtApp()
@@ -25,6 +27,7 @@ const uppy = new Uppy({
     endpoint: "/uploads"
   })
 
+const modalRef = ref<InstanceType<typeof Modal>>()
 const preview = ref<MaybeUndefined<string>>()
 const selected = ref<File>()
 
@@ -63,7 +66,7 @@ function updateFile(file: File): string {
   return id
 }
 
-const onChange = (files: File[] | null) => {
+const onFileSelected = (files: File[] | null) => {
   if (!files) {
     return
   }
@@ -77,6 +80,8 @@ const onChange = (files: File[] | null) => {
     selected.value = file
 
     updatePreview(selected.value)
+
+    modalRef.value?.open()
   } catch (error) {
     console.error(error)
   }
@@ -104,8 +109,16 @@ function onCrop(blob: Blob) {
       // Update user avatar
       await $trpc.user.update.mutate({avatar: uploaded.uploadURL})
       await getSession()
+
+      if (modalRef.value) {
+        modalRef.value.close()
+      }
     })
     .catch(console.error)
+}
+
+function onModalClose() {
+  cleanup()
 }
 
 onUnmounted(() => {
@@ -115,32 +128,38 @@ onUnmounted(() => {
 
 <template>
   <Avatar class="relative" v-bind="$props">
-    <Modal @close="cleanup">
-      <template #openButton="{openDialog}">
-        <button
-          class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"
+    <InputFile
+      plain
+      class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"
+      @change="onFileSelected"
+    >
+      <Pencil :size="16" />
+    </InputFile>
 
-          @click="openDialog"
-        >
-          <Pencil :size="16" />
-        </button>
-      </template>
-
+    <Modal ref="modalRef" @close="onModalClose">
       <template #title>
-        Update avatar
+        Crop
       </template>
 
-      <div class="p-6">
-        <div v-if="preview" class="overflow-hidden">
-          <CropImage round :src="preview" alt="Avatar" @crop="onCrop" />
-        </div>
+      <template #default="{close}">
+        <div class="p-6">
+          <CropImage round :preview="preview" alt="Avatar" @crop="onCrop">
+            <template #default="{crop}">
+              <div class="flex">
+                <Button variant="secondary" @click="close">
+                  Cancel
+                </Button>
 
-        <div class="pt-5">
-          <InputFile @change="onChange">
-            Choose a file
-          </InputFile>
+                <div class="flex-1" />
+
+                <Button @click="crop">
+                  Save
+                </Button>
+              </div>
+            </template>
+          </CropImage>
         </div>
-      </div>
+      </template>
     </Modal>
   </Avatar>
 </template>
