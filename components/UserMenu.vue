@@ -8,6 +8,8 @@ export interface UserMenuProps {
 
 const props = defineProps<UserMenuProps>()
 
+const {signOut} = useAuth()
+
 const avatarUrl = computed(() => {
   const {avatar} = props.user
   if (avatar) {
@@ -16,6 +18,15 @@ const avatarUrl = computed(() => {
 
   return undefined
 })
+
+async function logOut(close: () => void) {
+  try {
+    await signOut()
+    close()
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <template>
@@ -33,7 +44,7 @@ const avatarUrl = computed(() => {
 
       <Delimiter class="!bg-white" />
 
-      <UserMenuItem @click="close">
+      <UserMenuItem @click="logOut(close)">
         Log out
       </UserMenuItem>
     </PopoverPanel>
