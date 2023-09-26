@@ -130,10 +130,10 @@ onUnmounted(() => {
   <Avatar class="relative" v-bind="$props">
     <InputFile
       plain
-      class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-black rounded-full"
+      class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-white dark:bg-neutral-800 rounded-full"
       @change="onFileSelected"
     >
-      <Pencil :size="16" />
+      <Pencil :size="16" class="text-black dark:text-white" />
     </InputFile>
 
     <Modal ref="modalRef" @close="onModalClose">

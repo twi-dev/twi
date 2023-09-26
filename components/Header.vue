@@ -34,11 +34,11 @@ const avatarUrl = computed(() => {
 
       <div>
         <NuxtLink v-if="isEmpty(session)" href="/auth/login">
-          <User2 />
+          <User2 :size="32" />
         </NuxtLink>
 
-        <UserMenu v-else :user="session.user!">
-          <UserMenuButton>
+        <UserMenu v-else :user="session.user">
+          <UserMenuButton class="ui-open:invisible">
             <Avatar :src="avatarUrl" />
           </UserMenuButton>
         </UserMenu>

@@ -40,7 +40,7 @@ const {width, height} = sizes[size] || sizes.sm
       }
     ]"
   >
-    <div class="w-full h-full rounded-full border-2 border-black dark:border-white flex items-center justify-center overflow-hidden">
+    <div class="w-full h-full rounded-full border-2 border-white dark:border-neutral-800 flex items-center justify-center overflow-hidden">
       <NuxtImg
         v-if="src"
         :src="src"

@@ -30,11 +30,11 @@ async function logOut(close: () => void) {
 </script>
 
 <template>
-  <Popover class="relative">
+  <Popover class="relative w-8 h-8">
     <slot />
 
-    <PopoverPanel v-slot="{close}" class="absolute top-0 right-0 w-72 bg-white dark:bg-neutral-800 px-5 rounded-md shadow-md dark:shadow-none border border-neutral-200 dark:border-neutral-800">
-      <div class="py-5 text-center flex flex-col items-center">
+    <PopoverPanel v-slot="{close}" class="absolute top-0 right-0 w-72 bg-white dark:bg-neutral-800 rounded-md shadow-md dark:shadow-none border border-neutral-200 dark:border-neutral-600">
+      <div class="py-5 px-5 text-center flex flex-col items-center">
         <AvatarEditable size="md" :src="avatarUrl" />
 
         <div class="pt-2">
@@ -42,9 +42,9 @@ async function logOut(close: () => void) {
         </div>
       </div>
 
-      <Delimiter class="!bg-white" />
+      <Delimiter class="!bg-neutral-600" />
 
-      <UserMenuItem @click="logOut(close)">
+      <UserMenuItem class="px-5" @click="logOut(close)">
         Log out
       </UserMenuItem>
     </PopoverPanel>
