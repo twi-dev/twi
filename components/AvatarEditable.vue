@@ -16,11 +16,13 @@ defineProps<AvatarProps>()
 const {$trpc} = useNuxtApp()
 const {getSession} = useAuth()
 
+const allowedFileTypes = ["image/jpeg", ".png", ".avif", ".webp"]
+
 const uppy = new Uppy({
   restrictions: {
     maxNumberOfFiles: 1,
     maxFileSize: 10000000, // 10 MB
-    allowedFileTypes: [".jpeg", ".jpg", ".png"]
+    allowedFileTypes
   }
 })
   .use(Tus, {
@@ -131,6 +133,7 @@ onUnmounted(() => {
     <InputFile
       plain
       class="absolute bottom-0 right-0 w-6 h-6 flex justify-center items-center bg-white dark:bg-neutral-800 rounded-full"
+      :accept="allowedFileTypes"
       @change="onFileSelected"
     >
       <Pencil :size="16" class="text-black dark:text-white" />

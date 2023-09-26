@@ -6,7 +6,7 @@ import type {ButtonProps} from "./Button.vue"
 
 export interface InputFileProps extends ButtonProps {
   multiple?: boolean
-  accept?: string
+  accept?: string | string[]
 }
 
 type Emits = {
@@ -15,9 +15,14 @@ type Emits = {
 
 const emit = defineEmits<Emits>()
 
-defineProps<InputFileProps>()
+const props = defineProps<InputFileProps>()
 
 const inputRef = ref<HTMLInputElement>()
+const accepts = computed(() => {
+  const {accept} = props
+
+  return Array.isArray(accept) ? accept.join(",") : accept
+})
 
 function onChange(event: Event) {
   const target = event.target as HTMLInputElement
@@ -32,7 +37,7 @@ function onChange(event: Event) {
 
 <template>
   <Button v-bind="$props" type="button" @click="inputRef?.click()">
-    <input ref="inputRef" type="file" class="hidden" v-bind="{accept, multiple}" @change="onChange" />
+    <input ref="inputRef" type="file" class="hidden" v-bind="{accept: accepts, multiple}" @change="onChange" />
     <slot />
   </Button>
 </template>
