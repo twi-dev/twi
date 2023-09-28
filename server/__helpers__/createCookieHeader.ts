@@ -2,8 +2,8 @@ import {encode} from "next-auth/jwt"
 
 import type {User} from "../db/entities.js"
 
-import {sessionToken} from "../auth/cookies.js"
-import {config} from "../auth/config.js"
+import {sessionToken} from "../lib/auth/cookies.js"
+import {config} from "../lib/auth/config.js"
 
 import {createChunkedCookie} from "./createChunkedCookie.js"
 

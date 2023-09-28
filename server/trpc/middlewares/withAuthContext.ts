@@ -3,8 +3,8 @@ import {parseCookies} from "h3"
 import {getToken, type JWT} from "next-auth/jwt"
 
 import {unauthorized} from "../errors/unauthorized.js"
-import {sessionToken} from "../../auth/cookies.js"
-import {config} from "../../auth/config.js"
+import {sessionToken} from "../../lib/auth/cookies.js"
+import {config} from "../../lib/auth/config.js"
 import {getORM} from "../../lib/db/orm.js"
 import {User} from "../../db/entities.js"
 

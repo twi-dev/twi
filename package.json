@@ -8,6 +8,7 @@
     "test-watch": "pnpm vitest",
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env.development.local",
+    "start": "node --env-file=.env.production.local .",
     "generate": "nuxt generate",
     "preview": "nuxt preview --dotenv .env.production.local",
     "preinstall": "npx only-allow pnpm",

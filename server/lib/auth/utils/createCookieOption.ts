@@ -2,8 +2,8 @@
 
 import type {CookieOption} from "next-auth"
 
-import type {Replace} from "../../../lib/utils/types/Replace.js"
-import {serverAddress} from "../../../lib/utils/serverAddress.js"
+import type {Replace} from "../../../../lib/utils/types/Replace.js"
+import {serverAddress} from "../../../../lib/utils/serverAddress.js"
 
 import {createCookieName, type CookieName} from "./createCookieName.js"
 

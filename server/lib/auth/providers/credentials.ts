@@ -1,10 +1,10 @@
 import createCredentialsProvider from "next-auth/providers/credentials"
 
-import {UserLogInInput} from "../../trpc/types/user/UserLogInInput.js"
-import {UserOutput} from "../../trpc/types/user/UserOutput.js"
-import {comparePassword} from "../../lib/utils/password.js"
-import {getORM} from "../../lib/db/orm.js"
-import {User} from "../../db/entities.js"
+import {UserLogInInput} from "../../../trpc/types/user/UserLogInInput.js"
+import {UserOutput} from "../../../trpc/types/user/UserOutput.js"
+import {comparePassword} from "../../utils/password.js"
+import {getORM} from "../../db/orm.js"
+import {User} from "../../../db/entities.js"
 
 export const credentials = createCredentialsProvider({
   name: "credentials",

@@ -1,5 +1,5 @@
 import {NuxtAuthHandler} from "#auth"
 
-import {config} from "../../auth/config.js"
+import {config} from "../../lib/auth/config.js"
 
 export default NuxtAuthHandler(config)

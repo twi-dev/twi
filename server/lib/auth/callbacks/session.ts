@@ -1,8 +1,8 @@
 import type {CallbacksOptions} from "next-auth"
 
-import {UserSessionOutput} from "../../trpc/types/user/UserSessionOutput.js"
-import {getORM} from "../../lib/db/orm.js"
-import {User} from "../../db/entities.js"
+import {UserSessionOutput} from "../../../trpc/types/user/UserSessionOutput.js"
+import {getORM} from "../../db/orm.js"
+import {User} from "../../../db/entities.js"
 
 export type SessionCallback = CallbacksOptions["session"]
 
