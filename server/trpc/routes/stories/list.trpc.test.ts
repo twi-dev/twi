@@ -1,4 +1,4 @@
-import {describe, beforeAll, afterAll} from "vitest"
+import {describe, expect, beforeAll, afterAll} from "vitest"
 import {faker} from "@faker-js/faker"
 import {z} from "zod"
 
@@ -50,7 +50,6 @@ describe("stories.list procedure", async () => {
 
   trpcTest.concurrent("returns a list when called w/o arguments", async ({
     trpc,
-    expect,
     orm
   }) => {
     const page = await trpc.stories.list()

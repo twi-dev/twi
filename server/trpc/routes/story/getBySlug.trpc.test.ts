@@ -1,11 +1,11 @@
+import {describe, expect} from "vitest"
 import {faker} from "@faker-js/faker"
-import {describe} from "vitest"
 
 import {Story, User} from "../../../db/entities.js"
 import {trpcTest} from "../../../__fixtures__/trpc.js"
 
 describe("story.getBySlug procedure", async () => {
-  trpcTest.concurrent("returns story", async ({expect, trpc, orm}) => {
+  trpcTest.concurrent("returns story", async ({trpc, orm}) => {
     const user = orm.em.create(User, {
       login: faker.internet.userName(),
       email: faker.internet.email(),

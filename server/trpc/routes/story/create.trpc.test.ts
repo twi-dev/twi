@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker"
-import {describe} from "vitest"
+import {describe, expect} from "vitest"
 
 import {Story} from "../../../db/entities.js"
 import {trpcTest} from "../../../__fixtures__/trpc.js"
@@ -9,7 +9,7 @@ import type {IStoryCreateInput} from "../../../trpc/types/story/StoryCreateInput
 describe("story.create procedure", async () => {
   authContext()
 
-  trpcTest.concurrent("creates a new story", async ({expect, trpc}) => {
+  trpcTest.concurrent("creates a new story", async ({trpc}) => {
     const expected = {
       title: faker.lorem.words({min: 3, max: 6}),
       description: [{
@@ -25,7 +25,7 @@ describe("story.create procedure", async () => {
     expect(actual).toMatchObject(expected)
   })
 
-  trpcTest.concurrent("generates slug", async ({expect, trpc, orm}) => {
+  trpcTest.concurrent("generates slug", async ({trpc, orm}) => {
     const actual = await trpc.story.create({
       title: faker.lorem.words({min: 3, max: 6}),
       description: [{

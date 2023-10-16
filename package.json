@@ -31,7 +31,8 @@
     },
     "updateConfig": {
       "ignoreDependencies": [
-        "next-auth"
+        "next-auth",
+        "vitest"
       ]
     }
   },
@@ -70,7 +71,7 @@
     "nuxt": "3.7.4",
     "nuxt-svgo": "3.5.4",
     "ts-node": "10.9.1",
-    "vitest": "0.34.6"
+    "vitest": "0.34.4"
   },
   "dependencies": {
     "@headlessui/vue": "1.7.16",

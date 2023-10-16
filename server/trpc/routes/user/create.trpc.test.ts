@@ -1,11 +1,11 @@
-import {describe} from "vitest"
+import {describe, expect} from "vitest"
 
 import {trpcTest} from "../../../__fixtures__/trpc.js"
 
 import {User} from "../../../db/entities.js"
 
 describe("user.create procedure", async () => {
-  trpcTest("creates a user", async ({expect, trpc, orm}) => {
+  trpcTest("creates a user", async ({trpc, orm}) => {
     const actual = await trpc.user.create({
       login: "user1",
       email: "user1@example.com",

@@ -10,18 +10,20 @@ export interface AuthContext {
 }
 
 export function authContext() {
-  beforeEach<AuthContext>(async ctx => runIsolatied(async em => {
-    const user = em.create(User, {
-      login: faker.internet.userName(),
-      email: faker.internet.email(),
-      password: faker.internet.password(),
-      status: UserStatuses.Active
+  beforeEach<AuthContext>(async ctx => {
+    await runIsolatied(async em => {
+      const user = em.create(User, {
+        login: faker.internet.userName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+        status: UserStatuses.Active
+      })
+
+      await em.persistAndFlush(user)
+
+      ctx.auth = user
     })
-
-    await em.persistAndFlush(user)
-
-    ctx.auth = user
-  }))
+  })
 
   afterEach<AuthContext>(async ctx => runIsolatied(async em => {
     if (ctx.auth) {
