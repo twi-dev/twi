@@ -9,5 +9,5 @@ Free-form details for proposed changes. This could be a short or long proposal d
 ### Checklist
 
 - [ ] I have self-reviewed my changes before asking for a review from maintainers
-- [ ] I have added changesets (optional)
-- [ ] I have brought tests (if necessary)
+- [ ] I have added changesets <!-- optional -->
+- [ ] I have brought tests <!-- if necessary -->
