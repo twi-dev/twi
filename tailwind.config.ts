@@ -1,6 +1,7 @@
 import type {Config} from "tailwindcss"
 
 import headlessui from "@headlessui/tailwindcss"
+import daisyui from "daisyui"
 
 // Screen sizes
 const mobile = "450px"
@@ -15,7 +16,7 @@ const xl2 = "1536px"
 
 export default {
   content: ["*.vue", "*.tsx"],
-  plugins: [headlessui],
+  plugins: [headlessui, daisyui],
   theme: {
     extend: {
       width: {
