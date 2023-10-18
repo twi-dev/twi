@@ -1,5 +1,5 @@
 <template>
-  <main class="w-screen h-[100dvh] flex">
+  <main class="w-screen min-h-[100dvh] flex">
     <slot />
   </main>
 </template>

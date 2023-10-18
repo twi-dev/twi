@@ -10,9 +10,9 @@
 
     <div>
       <slot name="actions">
-        <Button wide type="submit">
+        <button type="submit" class="btn btn-block btn-primary no-animation">
           <slot name="submit" />
-        </Button>
+        </button>
       </slot>
     </div>
 

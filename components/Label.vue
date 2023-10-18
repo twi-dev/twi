@@ -1,5 +1,7 @@
 <template>
-  <label class="w-full text-neutral-500 dark:text-neutral-400">
-    <slot />
+  <label class="label">
+    <span class="label-text">
+      <slot />
+    </span>
   </label>
 </template>
