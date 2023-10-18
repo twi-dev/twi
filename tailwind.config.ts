@@ -1,6 +1,11 @@
+import type {Config as DaisyUIConfig} from "daisyui"
 import type {Config} from "tailwindcss"
 
+import colors from "tailwindcss/colors.js"
+import themes from "daisyui/src/theming/themes.js"
+
 import headlessui from "@headlessui/tailwindcss"
+import daisyui from "daisyui"
 
 // Screen sizes
 const mobile = "450px"
@@ -15,7 +20,7 @@ const xl2 = "1536px"
 
 export default {
   content: ["*.vue", "*.tsx"],
-  plugins: [headlessui],
+  plugins: [headlessui, daisyui],
   theme: {
     extend: {
       width: {
@@ -40,5 +45,24 @@ export default {
       xl,
       "2xl": xl2
     }
-  }
+  },
+  daisyui: {
+    base: false,
+    themes: [
+      {
+        light: {
+          ...themes["[data-theme=light]"],
+          primary: colors.violet["500"],
+          "primary-focus": colors.violet["600"],
+          "primary-content": colors.white
+        },
+        dark: {
+          ...themes["[data-theme=dark]"],
+          primary: colors.violet["500"],
+          "primary-focus": colors.violet["600"],
+          "primary-content": colors.white
+        }
+      }
+    ]
+  } as DaisyUIConfig
 } satisfies Config

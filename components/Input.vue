@@ -8,10 +8,18 @@ defineProps<Props>()
 defineEmits(["update:modelValue"])
 </script>
 
+<style>
+.input-ghost {
+  &, &:focus, &:focus-within {
+    @apply bg-transparent;
+  }
+}
+</style>
+
 <template>
   <input
     :class="[
-      'p-3 border border-gray-300 text-neutral-500 dark:text-neutral-400 rounded-md dark:bg-neutral-800 dark:border-neutral-600',
+      'input input-ghost input-bordered',
 
       {
         'w-full': wide === true
