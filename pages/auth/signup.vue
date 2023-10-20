@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {useForm} from "@vorms/core"
-import {zodResolver} from "@vorms/resolvers/zod"
+import {valibotResolver} from "@vorms/resolvers/valibot"
 
 import type {
   IUserSignUpInput
-} from "../../server/trpc/types/user/UserSignUpInput.js"
-import {UserSignUpInput} from "../../server/trpc/types/user/UserSignUpInput.js"
+} from "../../server/trpc/valibot/user/UserSignUpInput.js"
+import {UserSignUpInput} from "../../server/trpc/valibot/user/UserSignUpInput.js"
 import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
 import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
@@ -33,7 +33,7 @@ const {register, handleSubmit} = useForm<IUserSignUpInput>({
     email: "",
     password: ""
   },
-  validate: zodResolver(UserSignUpInput),
+  validate: valibotResolver(UserSignUpInput),
   validateMode: "input",
   reValidateMode: "input",
   validateOnMounted: true,

@@ -5,7 +5,7 @@ import {FileInput} from "../common/FileInput.js"
 
 import {User} from "./User.js"
 
-const UserUpdateInput = object({
+export const UserUpdateInput = object({
   ...omit(User, ["login"]).object,
 
   avatar: nullish(FileInput)

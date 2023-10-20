@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useForm} from "@vorms/core"
-import {zodResolver} from "@vorms/resolvers/zod"
+import {valibotResolver} from "@vorms/resolvers/valibot"
 
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
@@ -8,8 +8,8 @@ import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
 
 import type {
   IUserLogInInput
-} from "../../server/trpc/types/user/UserLogInInput.js"
-import {UserLogInInput} from "../../server/trpc/types/user/UserLogInInput.js"
+} from "../../server/trpc/valibot/user/UserLogInInput.js"
+import {UserLogInInput} from "../../server/trpc/valibot/user/UserLogInInput.js"
 
 definePageMeta({
   layout: "auth",
@@ -32,7 +32,7 @@ const {register, handleSubmit} = useForm<IUserLogInInput>({
     login: "",
     password: ""
   },
-  validate: zodResolver(UserLogInInput),
+  validate: valibotResolver(UserLogInInput),
   validateOnMounted: true,
   validateMode: "input",
   reValidateMode: "input",

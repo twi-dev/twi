@@ -3,7 +3,7 @@ import type {Input, Output} from "valibot"
 
 import {UserOutput} from "./UserOutput.js"
 
-const UserSessionOutput = object({
+export const UserSessionOutput = object({
   ...UserOutput.object,
 
   email: string([email()])

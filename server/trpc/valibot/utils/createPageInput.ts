@@ -54,11 +54,15 @@ export function createPageInput(
 
   const PageInput = object({cursor: Cursor, limit: Limit})
 
-  return transform(PageInput, ({cursor, limit}) => {
-    const args = new PageArgs({cursor, limit, maxLimit})
+  return optional(
+    transform(PageInput, ({cursor, limit}) => {
+      const args = new PageArgs({cursor, limit, maxLimit})
 
-    return {args}
-  })
+      return {args}
+    }),
+
+    {}
+  )
 }
 
 export const DefaultPageInput = createPageInput({maxLimit: 50})

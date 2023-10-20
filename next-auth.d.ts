@@ -1,6 +1,6 @@
 import "next-auth"
 
-import type {OUserSessionOutput} from "./server/trpc/types/user/UserSessionOutput.js"
+import type {OUserSessionOutput} from "./server/trpc/valibot/user/UserSessionOutput.js"
 
 declare module "next-auth" {
   interface User extends OUserSessionOutput { }
