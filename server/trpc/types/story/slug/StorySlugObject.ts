@@ -1,9 +1,14 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object, string} from "valibot"
 
-import {validateSuffix} from "./utils/validateSuffix.js"
-import {validateName} from "./utils/validateName.js"
+import {suffix} from "./utils/suffix.js"
+import {name} from "./utils/name.js"
 
-export const StorySlugObject = z.object({
-  date: z.string().nonempty().superRefine(validateSuffix),
-  name: z.string().nonempty().superRefine(validateName)
+export const StorySlugObject = object({
+  name: string([name()]),
+  date: string([suffix()])
 })
+
+export type IStorySlugObject = Input<typeof StorySlugObject>
+
+export type OStorySlugObject = Output<typeof StorySlugObject>

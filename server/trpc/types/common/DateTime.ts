@@ -1,12 +1,14 @@
-import {z} from "zod"
+import {date, string, number, union, transform} from "valibot"
+import type {Input, Output} from "valibot"
 
 import {normalizeDate} from "../../../../lib/utils/normalizeDate.js"
 
-export const DateTime = z
-  .union([z.date(), z.string(), z.number()])
-  .transform<Date>(date => normalizeDate(date))
-  .transform<string>(date => date.toISOString())
+export const DateTime = transform(
+  union([date(), string(), number()]),
 
-export type IDateTime = z.input<typeof DateTime>
+  (value): string => normalizeDate(value).toISOString()
+)
 
-export type ODateTime = z.output<typeof DateTime>
+export type IDateTime = Input<typeof DateTime>
+
+export type ODateTime = Output<typeof DateTime>

@@ -1,8 +1,8 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
 
 import {createPageOutput} from "../../utils/createPageOutput.js"
-
 import {StoryPageInput} from "./StoryPageInput.js"
+
 import {StoryBaseOutput} from "./StoryBaseOutput.js"
 
 export const StoryPageOutput = createPageOutput(
@@ -10,6 +10,6 @@ export const StoryPageOutput = createPageOutput(
   StoryPageInput
 )
 
-export type IStoryPageOutput = z.input<typeof StoryPageOutput>
+export type IStoryPageOutput = Input<typeof StoryPageOutput>
 
-export type OStoryPageOutput = z.output<typeof StoryPageOutput>
+export type OStoryPageOutput = Output<typeof StoryPageOutput>

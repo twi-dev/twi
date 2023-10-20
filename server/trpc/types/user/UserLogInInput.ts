@@ -1,11 +1,14 @@
-import {z} from "zod"
+import {object, string, minLength} from "valibot"
+import type {Input, Output} from "valibot"
 
 import {UserBase} from "./UserBase.js"
 
-export const UserLogInInput = UserBase.extend({
-  password: z.string().min(5)
+export const UserLogInInput = object({
+  ...UserBase.object,
+
+  password: string([minLength(5)])
 })
 
-export type IUserLogInInput = z.input<typeof UserLogInInput>
+export type IUserLogInInput = Input<typeof UserLogInInput>
 
-export type OUserLogInInput = z.output<typeof UserLogInInput>
+export type OUserLogInInput = Output<typeof UserLogInInput>

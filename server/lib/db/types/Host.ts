@@ -1,3 +1,3 @@
-import {z} from "zod"
+import {string, optional, minLength} from "valibot"
 
-export const Host = z.string().default("localhost") // TODO: Improve host validation
+export const Host = optional(string([minLength(1)]), "localhost") // TODO: Improve host validation

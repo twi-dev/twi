@@ -1,17 +1,16 @@
-import {z} from "zod"
+import {omit, object, nullish} from "valibot"
+import type {Input, Output} from "valibot"
 
 import {FileInput} from "../common/FileInput.js"
 
 import {User} from "./User.js"
 
-export const UserUpdateInput = User
-  .omit({
-    login: true
-  })
-  .extend({
-    avatar: FileInput.nullish()
-  })
+export const UserUpdateInput = object({
+  ...omit(User, ["login"]).object,
 
-export type IUserUpdateInput = z.input<typeof UserUpdateInput>
+  avatar: nullish(FileInput)
+})
 
-export type OUserUpdateInput = z.output<typeof UserUpdateInput>
+export type IUserUpdateInput = Input<typeof UserUpdateInput>
+
+export type OUserUpdateInput = Output<typeof UserUpdateInput>

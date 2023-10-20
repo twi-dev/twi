@@ -1,3 +1,5 @@
+import {wrap} from "@decs/typeschema"
+
 import {procedure} from "../../procedures/base.js"
 import {Story} from "../../../db/entities.js"
 
@@ -5,8 +7,8 @@ import {StoryPageInput} from "../../types/story/StoryPageInput.js"
 import {StoryPageOutput} from "../../types/story/StoryPageOutput.js"
 
 export const list = procedure
-  .input(StoryPageInput)
-  .output(StoryPageOutput)
+  .input(wrap(StoryPageInput))
+  .output(wrap(StoryPageOutput))
   .query(async ({input: {args}, ctx: {orm}}) => {
     const [items, count] = await orm.em.findAndCount(Story, {}, {
       limit: args.limit,

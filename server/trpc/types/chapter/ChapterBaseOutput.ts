@@ -1,11 +1,14 @@
-import {z} from "zod"
+import {object, string, minLength} from "valibot"
+import type {Input, Output} from "valibot"
 
 import {ChapterRecord} from "./ChapterRecord.js"
 
-export const ChapterBaseOutput = ChapterRecord.extend({
-  slug: z.string().min(2)
+export const ChapterBaseOutput = object({
+  ...ChapterRecord.object,
+
+  slug: string([minLength(2)])
 })
 
-export type IChapterBaseOutput = z.input<typeof ChapterBaseOutput>
+export type IChapterBaseOutput = Input<typeof ChapterBaseOutput>
 
-export type OChapterBaseOutput = z.output<typeof ChapterBaseOutput>
+export type OChapterBaseOutput = Output<typeof ChapterBaseOutput>

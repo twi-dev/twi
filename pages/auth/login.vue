@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useForm} from "@vorms/core"
-import {zodResolver} from "@vorms/resolvers/zod"
+import {valibotResolver} from "@vorms/resolvers/valibot"
 
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
@@ -32,7 +32,7 @@ const {register, handleSubmit} = useForm<IUserLogInInput>({
     login: "",
     password: ""
   },
-  validate: zodResolver(UserLogInInput),
+  validate: valibotResolver(UserLogInInput),
   validateOnMounted: true,
   validateMode: "input",
   reValidateMode: "input",

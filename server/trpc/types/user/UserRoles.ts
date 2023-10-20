@@ -1,4 +1,4 @@
-import {z} from "zod"
+import {nativeEnum} from "valibot"
 
 export enum UserRoles {
   Owner = "owner",
@@ -6,4 +6,4 @@ export enum UserRoles {
   Regular = "regular"
 }
 
-export const UserRolesEnum = z.nativeEnum(UserRoles)
+export const UserRolesEnum = nativeEnum(UserRoles)

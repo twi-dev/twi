@@ -1,10 +1,11 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {merge} from "valibot"
 
-import {CommonDates} from "./CommonDates.js"
 import {Node} from "./Node.js"
+import {CommonDates} from "./CommonDates.js"
 
-export const Record = Node.merge(CommonDates)
+export const Record = merge([Node, CommonDates])
 
-export type IRecord = z.input<typeof Record>
+export type IRecord = Input<typeof Record>
 
-export type ORecord = z.output<typeof Record>
+export type ORecord = Output<typeof Record>

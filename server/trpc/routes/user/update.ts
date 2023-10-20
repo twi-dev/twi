@@ -1,3 +1,5 @@
+import {wrap} from "@decs/typeschema"
+
 import {moveUploadedFile} from "../../../lib/uploads/utils/moveUploadedFile.js"
 import {getImageMetadata} from "../../../lib/utils/getImageMetadata.js"
 import {withAuthContext} from "../../middlewares/withAuthContext.js"
@@ -8,8 +10,8 @@ import {File} from "../../../db/entities.js"
 
 export const update = procedure
   .use(withAuthContext)
-  .input(UserUpdateInput)
-  .output(UserOutput)
+  .input(wrap(UserUpdateInput))
+  .output(wrap(UserOutput))
   .mutation(async ({input, ctx: {orm, auth: {user}}}) => {
     const {avatar, ...fields} = input
 

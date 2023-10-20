@@ -1,13 +1,16 @@
-import {z} from "zod"
+import {string, url, optional, transform, parse} from "valibot"
 
 import {globalObject} from "./globalObject"
 
-const ServerAddress = z
-  .string()
-  .url()
-  .default("http://localhost:3000") // FIXME: `nuxt prepare` if I remove this. Find proper fix
-  .transform(url => new URL(url).origin)
+export const ServerAddress = transform(
+  // ! default value is necessary for `nuxt prepare`, otherwise it breaks. I need to find proper fix.
+  optional(string([url()]), "http://localhost:3000"),
 
-export const serverAddress = ServerAddress.parse(
+  url => new URL(url).origin
+)
+
+export const serverAddress = parse(
+  ServerAddress,
+
   process.env.AUTH_ORIGIN || globalObject?.location?.origin
 )

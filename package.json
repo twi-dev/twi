@@ -81,6 +81,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@decs/typeschema": "^0.12.1",
     "@headlessui/vue": "1.7.16",
     "@mikro-orm/cli": "5.8.9",
     "@mikro-orm/core": "5.8.9",
@@ -93,8 +94,8 @@
     "@tus/server": "1.0.0",
     "@uppy/core": "3.5.1",
     "@uppy/tus": "3.3.1",
-    "@vorms/core": "1.1.0",
-    "@vorms/resolvers": "1.1.0",
+    "@vorms/core": "1.2.0-beta.4",
+    "@vorms/resolvers": "1.2.0-beta.4",
     "@vueuse/core": "10.5.0",
     "@vueuse/nuxt": "10.5.0",
     "bcrypt": "5.1.1",
@@ -113,6 +114,7 @@
     "trpc-nuxt": "0.10.12",
     "type-is": "1.6.18",
     "uuid": "9.0.1",
+    "valibot": "^0.19.0",
     "validator": "13.11.0",
     "zod": "3.22.4"
   }

@@ -1,4 +1,4 @@
-import {z} from "zod"
+import {nativeEnum} from "valibot"
 
 export enum UserStatuses {
   Inactive = "inactive",
@@ -6,4 +6,4 @@ export enum UserStatuses {
   Suspended = "suspended"
 }
 
-export const UserStatusesEnum = z.nativeEnum(UserStatuses)
+export const UserStatusesEnum = nativeEnum(UserStatuses)

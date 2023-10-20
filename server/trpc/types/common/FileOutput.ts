@@ -1,12 +1,17 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {merge, object} from "valibot"
 
 import {Record} from "./Record.js"
 import {FileInput} from "./FileInput.js"
 
-export const FileOutput = Record.extend({
-  key: FileInput
-})
+export const FileOutput = merge([
+  Record,
 
-export type IFileOutput = z.input<typeof FileOutput>
+  object({
+    key: FileInput
+  })
+])
 
-export type OFileOutput = z.output<typeof FileOutput>
+export type IFileOutput = Input<typeof FileOutput>
+
+export type OFileOutput = Output<typeof FileOutput>

@@ -1,12 +1,16 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
-import {RootElements} from "../common/slate/RootElements.js"
+import {RootElements} from "../slate/RootElements"
+
 import {ChapterBaseOutput} from "./ChapterBaseOutput.js"
 
-export const ChapterOutput = ChapterBaseOutput.extend({
-  content: z.optional(RootElements)
+export const ChapterOutput = object({
+  ...ChapterBaseOutput.object,
+
+  contents: RootElements
 })
 
-export type IChapterOutput = z.input<typeof ChapterOutput>
+export type IChapterOutput = Input<typeof ChapterOutput>
 
-export type OChapterOutput = z.output<typeof ChapterOutput>
+export type OChapterOutput = Output<typeof ChapterOutput>

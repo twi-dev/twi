@@ -1,12 +1,13 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
 import {DateTime} from "./DateTime.js"
 
-export const CommonDates = z.object({
+export const CommonDates = object({
   createdAt: DateTime,
   updatedAt: DateTime
 })
 
-export type ICommonDates = z.input<typeof CommonDates>
+export type ICommonDates = Input<typeof CommonDates>
 
-export type OCommonDates = z.output<typeof CommonDates>
+export type OCommonDates = Output<typeof CommonDates>

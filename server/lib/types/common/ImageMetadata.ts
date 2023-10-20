@@ -1,10 +1,12 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
-export const ImageMetadata = z.object({
-  width: z.number().int().positive(),
-  height: z.number().int().positive()
+import {ImageSize} from "./ImageSize.js"
+
+export const ImageMetadata = object({
+  ...ImageSize.object
 })
 
-export type IImageMetadata = z.input<typeof ImageMetadata>
+export type IImageMetadata = Input<typeof ImageMetadata>
 
-export type OImageMetadata = z.output<typeof ImageMetadata>
+export type OImageMetadata = Output<typeof ImageMetadata>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useForm} from "@vorms/core"
-import {zodResolver} from "@vorms/resolvers/zod"
+import {valibotResolver} from "@vorms/resolvers/valibot"
 
 import type {
   IUserSignUpInput
@@ -33,7 +33,7 @@ const {register, handleSubmit} = useForm<IUserSignUpInput>({
     email: "",
     password: ""
   },
-  validate: zodResolver(UserSignUpInput),
+  validate: valibotResolver(UserSignUpInput),
   validateMode: "input",
   reValidateMode: "input",
   validateOnMounted: true,

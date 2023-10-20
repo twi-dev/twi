@@ -1,17 +1,18 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {string, transform} from "valibot"
 
-import type {StorySlug} from "../../../../lib/utils/slug/storySlug.js"
+import type {
+  StorySlug as StorySlugOutput
+} from "../../../../lib/utils/slug/storySlug.js"
 
-import {validateSuffix} from "./utils/validateSuffix.js"
-import {validateName} from "./utils/validateName.js"
+import {slug} from "./utils/slug.js"
 
-export const StorySlugString = z
-  .string()
-  .superRefine((slug, ctx): slug is StorySlug => {
-    const [name, suffix] = slug.split("~")
+export const StorySlugString = transform(
+  string([slug()]),
 
-    validateName(name, ctx)
-    validateSuffix(suffix, ctx)
+  input => input as StorySlugOutput
+)
 
-    return z.NEVER
-  })
+export type IStorySlugString = Input<typeof StorySlugString>
+
+export type OStorySlugString = Output<typeof StorySlugString>

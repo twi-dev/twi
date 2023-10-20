@@ -1,11 +1,14 @@
-import {z} from "zod"
+import {object, string, email} from "valibot"
+import type {Input, Output} from "valibot"
 
 import {UserLogInInput} from "./UserLogInInput.js"
 
-export const UserSignUpInput = UserLogInInput.extend({
-  email: z.string().email()
+export const UserSignUpInput = object({
+  ...UserLogInInput.object,
+
+  email: string([email()])
 })
 
-export type IUserSignUpInput = z.input<typeof UserSignUpInput>
+export type IUserSignUpInput = Input<typeof UserSignUpInput>
 
-export type OUserSignUpInput = z.output<typeof UserSignUpInput>
+export type OUserSignUpInput = Output<typeof UserSignUpInput>

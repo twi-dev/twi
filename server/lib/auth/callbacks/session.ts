@@ -1,4 +1,5 @@
 import type {CallbacksOptions} from "next-auth"
+import {parseAsync} from "valibot"
 
 import {UserSessionOutput} from "../../../trpc/types/user/UserSessionOutput.js"
 import {getORM} from "../../db/orm.js"
@@ -19,6 +20,6 @@ export const session: SessionCallback = async ({session, token}) => {
   }
 
   return {
-    ...session, user: await UserSessionOutput.parseAsync(user)
+    ...session, user: await parseAsync(UserSessionOutput, user)
   }
 }

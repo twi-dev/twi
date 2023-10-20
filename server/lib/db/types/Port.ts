@@ -1,16 +1,18 @@
-import {z, ZodIssueCode} from "zod"
+import {
+  string,
+  regex,
+  number,
+  integer,
+  minValue,
+  optional,
+  transform,
+  union
+} from "valibot"
 
-const PortString = z.string()
-  .superRefine((value, ctx) => {
-    if (value && /^[0-9]+$/.test(value) === false) {
-      ctx.addIssue({
-        code: ZodIssueCode.invalid_string,
-        validation: "regex"
-      })
-    }
-  })
-  .transform(port => port ? parseInt(port, 10) : undefined)
+const PortString = transform(string([regex(/^[0-9]+$$/)]), Number)
 
-export const Port = z
-  .union([PortString, z.number()])
-  .default(3306)
+export const Port = optional(
+  union([PortString, number([integer(), minValue(0)])]),
+
+  3306
+)

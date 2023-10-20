@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/indent */
-
+import type {Input, Output} from "valibot"
+import {union, transform} from "valibot"
 import {isString} from "lodash-es"
-import {z} from "zod"
 
 import type {
   StorySlug as StorySlugOutput
@@ -11,9 +10,14 @@ import {StorySlugObject} from "./StorySlugObject.js"
 import {StorySlugString} from "./StorySlugString.js"
 import {StorySlugTuple} from "./StorySlugTuple.js"
 
-export const StorySlug = z
-  .union([StorySlugObject, StorySlugTuple, StorySlugString])
-  .transform<StorySlugOutput>(slug => {
+export const StorySlug = transform(
+  union([
+    StorySlugObject,
+    StorySlugTuple,
+    StorySlugString
+  ]),
+
+  (slug): StorySlugOutput => {
     if (isString(slug)) {
       return slug
     }
@@ -25,8 +29,9 @@ export const StorySlug = z
     }
 
     return `${slug.date}~${slug.name}`
-  })
+  }
+)
 
-export type IStorySlug = z.input<typeof StorySlug>
+export type IStorySlug = Input<typeof StorySlug>
 
-export type OStorySlug = z.output<typeof StorySlug>
+export type OStorySlug = Output<typeof StorySlug>

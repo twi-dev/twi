@@ -1,5 +1,17 @@
-import type {ZodObject, ZodRawShape, input, output} from "zod"
-import {z, ZodIssueCode} from "zod"
+import {
+  number,
+  string,
+  object,
+  union,
+  integer,
+  regex,
+  nullish,
+  minValue,
+  maxValue,
+  transform,
+  optional
+} from "valibot"
+import type {Pipe, Input, Output} from "valibot"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
 
@@ -13,66 +25,49 @@ const defaults: Required<CreatePageInputOptions> = {
   maxLimit: null
 }
 
-type PageOutput<T extends ZodRawShape = never> = [T] extends [never]
-  ? {args: PageArgs}
-  : {args: PageArgs} & output<ZodObject<T>>
+const isMaxLimitWithinRange = (
+  value: MaybeNull<number>
+): value is number => !!value && value > 1 && value <= Number.MAX_SAFE_INTEGER
 
-/**
- * Creates PageInput type with given `maxLimit` option
- */
-export function createPageInput<T extends ZodRawShape = never>(
-  options?: CreatePageInputOptions,
-  extensions?: ZodObject<T>
+export function createPageInput(
+  options?: CreatePageInputOptions
 ) {
   const {maxLimit} = {...defaults, ...options}
 
-  const Cursor = z
-    .union([
-      z.number().int(),
-      z.string().regex(/^-?[0-9]+$/)
-    ])
-    .optional()
-    .transform(cursor => cursor == null ? undefined : Number(cursor))
-    .superRefine((value, ctx) => {
-      if (value != null && value < 1) {
-        ctx.addIssue({
-          code: ZodIssueCode.too_small,
-          minimum: 1,
-          inclusive: true,
-          type: "number",
-          message: "Page cursor must be greater than or equal to 1"
-        })
-      }
-    })
+  const Cursor = transform(
+    nullish(
+      union([
+        number([integer(), minValue(1)]),
+        transform(string([regex(/^[1-9][0-9]*$/)]), Number)
+      ])
+    ),
 
-  const LimitBase = z.number().int().positive()
+    value => value ?? undefined
+  )
 
-  const Limit = maxLimit ? LimitBase.max(maxLimit).default(maxLimit) : LimitBase
+  const limitPipe: Pipe<number> = [integer(), minValue(1)]
 
-  const PageBaseInput = z
-    .object({cursor: Cursor, limit: Limit.optional()})
-    .default(maxLimit ? {limit: maxLimit} : {})
+  if (isMaxLimitWithinRange(maxLimit)) {
+    limitPipe.push(maxValue(maxLimit))
+  }
 
-  const PageInput = extensions
-    ? z.intersection(extensions, PageBaseInput)
-    : PageBaseInput
+  const Limit = optional(number(limitPipe), maxLimit ?? undefined)
 
-  return PageInput
-    .optional()
-    // @ts-expect-error Ignore typings error here, it should work as expected
-    .default({})
-    .transform(({cursor, limit, ...rest}) => {
+  const PageInput = object({cursor: Cursor, limit: Limit})
+
+  return optional(
+    transform(PageInput, ({cursor, limit}) => {
       const args = new PageArgs({cursor, limit, maxLimit})
 
-      return {...rest, args} as PageOutput<T>
-    })
+      return {args}
+    }),
+
+    {}
+  )
 }
 
-/**
- * Page input type with max `limit` and its default value set to `50`
- */
 export const DefaultPageInput = createPageInput({maxLimit: 50})
 
-export type IDefaultPageInput = input<typeof DefaultPageInput>
+export type IDefaultPageInput = Input<typeof DefaultPageInput>
 
-export type ODefaultPageInput = output<typeof DefaultPageInput>
+export type ODefaultPageInput = Output<typeof DefaultPageInput>

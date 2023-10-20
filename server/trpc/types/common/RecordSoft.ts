@@ -1,12 +1,17 @@
-import {z} from "zod"
+import {object, merge, nullable} from "valibot"
+import type {Input, Output} from "valibot"
 
-import {DateTime} from "./DateTime.js"
 import {Record} from "./Record.js"
+import {DateTime} from "./DateTime.js"
 
-export const RecordSoft = Record.extend({
-  deletedAt: DateTime.nullable()
-})
+export const RecordSoft = merge([
+  Record,
 
-export type IRecordSoft = z.input<typeof RecordSoft>
+  object({
+    deletedAt: nullable(DateTime)
+  })
+])
 
-export type ORecordSoft = z.output<typeof RecordSoft>
+export type IRecordSoft = Input<typeof RecordSoft>
+
+export type ORecordSoft = Output<typeof RecordSoft>

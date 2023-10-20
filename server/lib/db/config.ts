@@ -1,4 +1,5 @@
 import {defineConfig, type Options} from "@mikro-orm/mysql"
+import {parseAsync} from "valibot"
 
 import * as subscribers from "../../db/subscribers.js"
 import * as entities from "../../db/entities.js"
@@ -13,7 +14,7 @@ export async function getConfig(): Promise<Options> {
     user,
     password,
     debug
-  } = await Config.parseAsync({
+  } = await parseAsync(Config, {
     dbName: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,

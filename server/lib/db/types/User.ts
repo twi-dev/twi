@@ -1,3 +1,3 @@
-import {z} from "zod"
+import {string, minLength} from "valibot"
 
-export const User = z.string().nonempty("User name required") // TODO: Improve user validation
+export const User = string([minLength(1, "User name required")]) // TODO: Improve user validation
