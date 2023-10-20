@@ -56,7 +56,7 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
    *
    * `false` - means chapter is **public**
    */
-  @Property({type: "boolean", default: false})
+  @Property({type: "boolean", default: true})
   isDraft = true
 
   /**
