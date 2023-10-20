@@ -1,11 +1,11 @@
 import {number, integer, minValue, object} from "valibot"
 import type {Input, Output} from "valibot"
 
-const Edge = number([integer(), minValue(1)])
+export const ImageSizeSoze = number([integer(), minValue(1)])
 
 export const ImageSize = object({
-  width: Edge,
-  height: Edge
+  width: ImageSizeSoze,
+  height: ImageSizeSoze
 })
 
 export type IImageSize = Input<typeof ImageSize>

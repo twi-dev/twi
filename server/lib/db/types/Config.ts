@@ -1,4 +1,5 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
 import {DatabaseName} from "./DatabaseName.js"
 import {Password} from "./Password.js"
@@ -7,7 +8,7 @@ import {Host} from "./Host.js"
 import {Port} from "./Port.js"
 import {User} from "./User.js"
 
-export const Config = z.object({
+export const Config = object({
   dbName: DatabaseName,
   host: Host,
   port: Port,
@@ -16,6 +17,6 @@ export const Config = z.object({
   debug: Debug
 })
 
-export type IConfig = z.input<typeof Config>
+export type IConfig = Input<typeof Config>
 
-export type OConfig = z.output<typeof Config>
+export type OConfig = Output<typeof Config>

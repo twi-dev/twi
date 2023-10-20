@@ -1,7 +1,9 @@
 import sharp from "sharp"
 
+import {parseAsync} from "valibot"
+
 import {ImageMetadata} from "../types/common/ImageMetadata.js"
 
 export const getImageMetadata = async (
   path: string
-) => ImageMetadata.parseAsync(await sharp(path).metadata())
+) => parseAsync(ImageMetadata, await sharp(path).metadata())

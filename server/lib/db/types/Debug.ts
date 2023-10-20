@@ -1,3 +1,5 @@
+import {transform} from "valibot"
+
 import {NodeEnv} from "../../types/common/NodeEnv.js"
 
-export const Debug = NodeEnv.transform(env => env === "development")
+export const Debug = transform(NodeEnv, env => env === "development")

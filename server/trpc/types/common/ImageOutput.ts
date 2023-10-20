@@ -1,11 +1,14 @@
 import type {Input, Output} from "valibot"
 import {object} from "valibot"
 
+import {ImageMetadata} from "../../../lib/types/common/ImageMetadata.js"
+
 import {FileOutput} from "./FileOutput.js"
-import {ImageSize} from "./ImageSize.js"
 
 export const ImageOutput = object({
-  ...FileOutput.object, metadata: ImageSize
+  ...FileOutput.object,
+
+  metadata: ImageMetadata
 })
 
 export type IImageOutput = Input<typeof ImageOutput>

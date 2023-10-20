@@ -1,18 +1,28 @@
-import {z} from "zod"
+import {
+  string,
+  optional,
+  transform,
+  getPipeIssues,
+  getOutput,
+  type PipeResult
+} from "valibot"
 
-export const Password = z
-  .string()
-  .nonempty()
-  .optional()
-  .superRefine((value, ctx): value is string => {
-    if (process.env.NODE_ENV !== "test" && value == null) {
-      ctx.addIssue({
-        code: "invalid_type",
-        expected: "string",
-        received: "undefined",
-        message: "Password is required for connection user"
-      })
-    }
+const bypassForTestEnv = () => <TInput extends string>(
+  input: TInput
+): PipeResult<TInput> => {
+  if (process.env.NODE_ENV !== "test" && !input) {
+    return getPipeIssues(
+      "invalid_type",
+      "Password is required for connection user",
+      input
+    )
+  }
 
-    return z.NEVER
-  })
+  return getOutput(input)
+}
+
+export const Password = transform(
+  optional(string([bypassForTestEnv()])),
+
+  input => input as string // Lying valibot, because the return value will be `string` normally
+)

@@ -44,7 +44,7 @@ export const credentials = createCredentialsProvider({
       throw new Error("Invalid password")
     }
 
-    // Serialize user with zod
+    // Serialize user with valibot
     return parseAsync(UserOutput, user)
   }
 })
