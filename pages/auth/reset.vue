@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {noop} from "lodash-es"
+
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
 useHead({
@@ -16,7 +18,7 @@ definePageMeta({
 </script>
 
 <template>
-  <FormAuth>
+  <FormAuth @submit.prevent="noop">
     <template #title>
       Reset password
     </template>
