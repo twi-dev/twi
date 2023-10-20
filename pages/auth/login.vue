@@ -8,8 +8,8 @@ import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
 
 import type {
   IUserLogInInput
-} from "../../server/trpc/valibot/user/UserLogInInput.js"
-import {UserLogInInput} from "../../server/trpc/valibot/user/UserLogInInput.js"
+} from "../../server/trpc/types/user/UserLogInInput.js"
+import {UserLogInInput} from "../../server/trpc/types/user/UserLogInInput.js"
 
 definePageMeta({
   layout: "auth",

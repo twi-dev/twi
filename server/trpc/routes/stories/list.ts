@@ -3,8 +3,8 @@ import {wrap} from "@decs/typeschema"
 import {procedure} from "../../procedures/base.js"
 import {Story} from "../../../db/entities.js"
 
-import {StoryPageInput} from "../../valibot/story/StoryPageInput.js"
-import {StoryPageOutput} from "../../valibot/story/StoryPageOutput.js"
+import {StoryPageInput} from "../../types/story/StoryPageInput.js"
+import {StoryPageOutput} from "../../types/story/StoryPageOutput.js"
 
 export const list = procedure
   .input(wrap(StoryPageInput))

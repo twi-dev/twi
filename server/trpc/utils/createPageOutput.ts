@@ -1,46 +1,34 @@
 /* eslint-disable indent */
 
-import {z, ZodIssueCode} from "zod"
-import type {ZodObject, ZodRawShape, input, output} from "zod"
+import type {ObjectSchema, ObjectShape, Input, Output} from "valibot"
+import {number, integer, object, array, transform} from "valibot"
 
-import {createPageInput, DefaultPageInput} from "./createPageInput.js"
 import {Page} from "./Page.js"
 
-/**
- * Creates a `Page<T>` output with the list of items of type `T`
- */
+import {createPageInput, DefaultPageInput} from "./createPageInput.js"
+
 export const createPageOutput = <
-  TOutput extends ZodRawShape,
+  TOutput extends ObjectShape,
   TInput extends ReturnType<typeof createPageInput>
 >(
-  output: ZodObject<TOutput>,
+  output: ObjectSchema<TOutput>,
   input: TInput
-) => z
-  .object({
-    items: z.array(output),
-    count: z.number().int(),
-    args: input.transform(({args}) => args)
-  })
-  .transform(page => new Page(page).toJSON())
-  .superRefine((value, ctx) => {
-    if (value.current > value.pagesCount) {
-      ctx.addIssue({
-        code: ZodIssueCode.too_big,
-        maximum: value.pagesCount,
-        inclusive: true,
-        type: "number",
-        message: "Page cursor is out of range: "
-          + `The value must be less than or equal to ${value.pagesCount}`
-      })
-    }
-  })
+) => transform(
+  object({
+    items: array(output),
+    count: number([integer()]),
+    args: transform(input, ({args}) => args)
+  }),
+
+  page => new Page(page).toJSON()
+)
 
 export const DefaultPageOutput = createPageOutput(
-  z.object({}),
+  object({}),
 
   DefaultPageInput
 )
 
-export type IDefaultPageOutput = input<typeof DefaultPageOutput>
+export type IDefaultPageOutput = Input<typeof DefaultPageOutput>
 
-export type ODefaultPageOutput = output<typeof DefaultPageOutput>
+export type ODefaultPageOutput = Output<typeof DefaultPageOutput>

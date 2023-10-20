@@ -12,8 +12,8 @@ import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 
 import type {
   ORootElements
-} from "../../trpc/valibot/slate/RootElements.js"
-import type {ODescription} from "../../trpc/valibot/slate/Description.js"
+} from "../../trpc/types/slate/RootElements.js"
+import type {ODescription} from "../../trpc/types/slate/Description.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Story} from "./Story.js"

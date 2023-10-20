@@ -1,11 +1,12 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
 import {ID} from "./ID.js"
 
-export const Node = z.object({
+export const Node = object({
   id: ID
 })
 
-export type INode = z.input<typeof Node>
+export type INode = Input<typeof Node>
 
-export type ONode = z.output<typeof Node>
+export type ONode = Output<typeof Node>

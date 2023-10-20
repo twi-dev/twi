@@ -1,3 +1,5 @@
+import {safeParseAsync, parseAsync} from "valibot"
+
 import createCredentialsProvider from "next-auth/providers/credentials"
 
 import {UserLogInInput} from "../../../trpc/types/user/UserLogInInput.js"
@@ -19,7 +21,7 @@ export const credentials = createCredentialsProvider({
     }
   },
   async authorize(credentials) {
-    const result = await UserLogInInput.safeParseAsync(credentials)
+    const result = await safeParseAsync(UserLogInInput, credentials)
 
     if (!result.success) {
       return null
@@ -43,6 +45,6 @@ export const credentials = createCredentialsProvider({
     }
 
     // Serialize user with zod
-    return UserOutput.parseAsync(user)
+    return parseAsync(UserOutput, user)
   }
 })

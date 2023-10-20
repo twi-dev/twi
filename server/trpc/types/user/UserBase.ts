@@ -1,11 +1,12 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
 import {UserLogin} from "./UserLogin.js"
 
-export const UserBase = z.object({
+export const UserBase = object({
   login: UserLogin
 })
 
-export type IUserBase = z.input<typeof UserBase>
+export type IUserBase = Input<typeof UserBase>
 
-export type OUserBase = z.output<typeof UserBase>
+export type OUserBase = Output<typeof UserBase>

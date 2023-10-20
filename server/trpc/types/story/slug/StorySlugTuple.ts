@@ -1,9 +1,14 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {tuple, string} from "valibot"
 
-import {validateSuffix} from "./utils/validateSuffix.js"
-import {validateName} from "./utils/validateName.js"
+import {suffix} from "./utils/suffix.js"
+import {name} from "./utils/name.js"
 
-export const StorySlugTuple = z.tuple([
-  z.string().nonempty().superRefine(validateSuffix),
-  z.string().nonempty().superRefine(validateName)
+export const StorySlugTuple = tuple([
+  string([name()]),
+  string([suffix()])
 ])
+
+export type IStorySlugTuple = Input<typeof StorySlugTuple>
+
+export type OStorySlugTuple = Output<typeof StorySlugTuple>

@@ -1,7 +1,7 @@
 import type {CallbacksOptions} from "next-auth"
 import {parseAsync} from "valibot"
 
-import {UserSessionOutput} from "../../../trpc/valibot/user/UserSessionOutput.js"
+import {UserSessionOutput} from "../../../trpc/types/user/UserSessionOutput.js"
 import {getORM} from "../../db/orm.js"
 import {User} from "../../../db/entities.js"
 

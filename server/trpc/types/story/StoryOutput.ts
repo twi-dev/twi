@@ -1,17 +1,16 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
-import {TagBaseOutput} from "../tag/TagBaseOutput"
-import {createCollectionOutput} from "../../utils/createCollectionOutput.js"
+import {Description} from "../slate/Description.js"
 
-import {StoryWithDescription} from "./StoryWithDescription.js"
 import {StoryBaseOutput} from "./StoryBaseOutput.js"
 
-export const StoryOutput = StoryBaseOutput
-  .merge(StoryWithDescription)
-  .extend({
-    tags: z.optional(createCollectionOutput(TagBaseOutput))
-  })
+export const StoryOutput = object({
+  ...StoryBaseOutput.object,
 
-export type IStoryOutput = z.input<typeof StoryOutput>
+  description: Description
+})
 
-export type OStoryOutput = z.output<typeof StoryOutput>
+export type IStoryOutput = Input<typeof StoryOutput>
+
+export type OStoryOutput = Output<typeof StoryOutput>

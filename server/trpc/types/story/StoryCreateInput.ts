@@ -1,10 +1,16 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object} from "valibot"
 
-import {StoryWithDescription} from "./StoryWithDescription.js"
+import {Description} from "../slate/Description.js"
+
 import {StoryBase} from "./StoryBase.js"
 
-export const StoryCreateInput = StoryBase.merge(StoryWithDescription)
+export const StoryCreateInput = object({
+  ...StoryBase.object,
 
-export type IStoryCreateInput = z.input<typeof StoryCreateInput>
+  description: Description
+})
 
-export type OStoryCreateInput = z.output<typeof StoryCreateInput>
+export type IStoryCreateInput = Input<typeof StoryCreateInput>
+
+export type OStoryCreateInput = Output<typeof StoryCreateInput>

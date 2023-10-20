@@ -1,8 +1,8 @@
 import {wrap} from "@decs/typeschema"
 
-import {StoryCreateInput} from "../../valibot/story/StoryCreateInput.js"
+import {StoryCreateInput} from "../../types/story/StoryCreateInput.js"
 import {withAuthContext} from "../../middlewares/withAuthContext.js"
-import {StoryOutput} from "../../valibot/story/StoryOutput.js"
+import {StoryOutput} from "../../types/story/StoryOutput.js"
 import {procedure} from "../../procedures/base.js"
 import {Story} from "../../../db/entities.js"
 

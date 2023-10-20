@@ -1,7 +1,8 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {string, minLength} from "valibot"
 
-export const FileInput = z.string()
+export const FileInput = string([minLength(1)])
 
-export type IFileInput = z.input<typeof FileInput>
+export type IFileInput = Input<typeof FileInput>
 
-export type OFileInput = z.output<typeof FileInput>
+export type OFileInput = Output<typeof FileInput>

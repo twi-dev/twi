@@ -4,8 +4,8 @@ import {valibotResolver} from "@vorms/resolvers/valibot"
 
 import type {
   IUserSignUpInput
-} from "../../server/trpc/valibot/user/UserSignUpInput.js"
-import {UserSignUpInput} from "../../server/trpc/valibot/user/UserSignUpInput.js"
+} from "../../server/trpc/types/user/UserSignUpInput.js"
+import {UserSignUpInput} from "../../server/trpc/types/user/UserSignUpInput.js"
 import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
 import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"

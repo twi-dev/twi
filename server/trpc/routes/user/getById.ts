@@ -5,8 +5,8 @@ import {notFound} from "../../errors/notFound.js"
 
 import {User} from "../../../db/entities/User.js"
 
-import {Node} from "../../valibot/common/Node.js"
-import {UserOutput} from "../../valibot/user/UserOutput.js"
+import {Node} from "../../types/common/Node.js"
+import {UserOutput} from "../../types/user/UserOutput.js"
 
 export const getById = procedure
   .input(wrap(Node))

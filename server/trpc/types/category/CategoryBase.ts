@@ -1,9 +1,10 @@
-import {z} from "zod"
+import {string, object, minLength} from "valibot"
+import type {Input, Output} from "valibot"
 
-export const CategoryBase = z.object({
-  name: z.string().min(2)
+export const CategoryBase = object({
+  name: string([minLength(2)])
 })
 
-export type ICategoryBase = z.input<typeof CategoryBase>
+export type ICategoryBase = Input<typeof CategoryBase>
 
-export type OCategoryBase = z.output<typeof CategoryBase>
+export type OCategoryBase = Output<typeof CategoryBase>

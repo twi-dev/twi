@@ -1,9 +1,10 @@
-import {z} from "zod"
+import {object, string, minLength} from "valibot"
+import type {Input, Output} from "valibot"
 
-export const TagBase = z.object({
-  name: z.string().min(2)
+export const TagBase = object({
+  name: string([minLength(2)])
 })
 
-export type ITagBase = z.input<typeof TagBase>
+export type ITagBase = Input<typeof TagBase>
 
-export type OTagBase = z.output<typeof TagBase>
+export type OTagBase = Output<typeof TagBase>

@@ -5,8 +5,8 @@ import {procedure} from "../../procedures/base.js"
 
 import {Story} from "../../../db/entities.js"
 
-import {StoryOutput} from "../../valibot/story/StoryOutput.js"
-import {StoryGetBySlugInput} from "../../valibot/story/StoryGetBySlugInput.js"
+import {StoryOutput} from "../../types/story/StoryOutput.js"
+import {StoryGetBySlugInput} from "../../types/story/StoryGetBySlugInput.js"
 
 export const getBySlug = procedure
   .input(wrap(StoryGetBySlugInput))

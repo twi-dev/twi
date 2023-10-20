@@ -12,7 +12,7 @@ import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {StorySlug} from "../../lib/utils/slug/storySlug.js"
 import type {
   ODescription
-} from "../../trpc/valibot/slate/Description.js"
+} from "../../trpc/types/slate/Description.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Chapter} from "./Chapter.js"
