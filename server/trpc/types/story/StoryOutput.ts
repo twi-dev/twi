@@ -6,7 +6,7 @@ import {Description} from "../slate/Description.js"
 import {StoryBaseOutput} from "./StoryBaseOutput.js"
 
 export const StoryOutput = object({
-  ...StoryBaseOutput.object,
+  ...StoryBaseOutput.entries,
 
   description: Description
 })

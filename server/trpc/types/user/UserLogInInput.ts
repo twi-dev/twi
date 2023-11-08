@@ -4,7 +4,7 @@ import type {Input, Output} from "valibot"
 import {UserBase} from "./UserBase.js"
 
 export const UserLogInInput = object({
-  ...UserBase.object,
+  ...UserBase.entries,
 
   password: string([minLength(5)])
 })

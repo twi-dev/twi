@@ -6,8 +6,8 @@ import {RecordSoft} from "../common/RecordSoft.js"
 import {StoryNode} from "./StoryNode.js"
 
 export const StoryRecord = object({
-  ...RecordSoft.object,
-  ...StoryNode.object
+  ...RecordSoft.entries,
+  ...StoryNode.entries
 })
 
 export type IStoryRecord = Input<typeof StoryRecord>

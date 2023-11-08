@@ -5,7 +5,7 @@ import {UserBase} from "./UserBase.js"
 import {UserDisplayName} from "./UserDisplayName.js"
 
 export const User = object({
-  ...UserBase.object,
+  ...UserBase.entries,
 
   displayName: nullish(UserDisplayName)
 })

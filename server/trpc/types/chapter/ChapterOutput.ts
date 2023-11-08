@@ -6,7 +6,7 @@ import {RootElements} from "../slate/RootElements"
 import {ChapterBaseOutput} from "./ChapterBaseOutput.js"
 
 export const ChapterOutput = object({
-  ...ChapterBaseOutput.object,
+  ...ChapterBaseOutput.entries,
 
   contents: RootElements
 })

@@ -6,8 +6,8 @@ import {Node} from "../common/Node.js"
 import {StoryBase} from "./StoryBase.js"
 
 export const StoryNode = object({
-  ...Node.object,
-  ...StoryBase.object
+  ...Node.entries,
+  ...StoryBase.entries
 })
 
 export type IStoryNode = Input<typeof StoryNode>

@@ -4,7 +4,7 @@ import type {Input, Output} from "valibot"
 import {TagRecord} from "./TagRecord.js"
 
 export const TagBaseOutput = object({
-  ...TagRecord.object,
+  ...TagRecord.entries,
 
   slug: string([minLength(2)])
 })

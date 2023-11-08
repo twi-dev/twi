@@ -5,7 +5,7 @@ import {RecordSoft} from "../common/RecordSoft.js"
 
 import {UserBase} from "./UserBase.js"
 
-export const UserRecord = object({...RecordSoft.object, ...UserBase.object})
+export const UserRecord = object({...RecordSoft.entries, ...UserBase.entries})
 
 export type IUserRecord = Input<typeof UserRecord>
 

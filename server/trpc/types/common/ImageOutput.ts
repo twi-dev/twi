@@ -6,7 +6,7 @@ import {ImageMetadata} from "../../../lib/types/common/ImageMetadata.js"
 import {FileOutput} from "./FileOutput.js"
 
 export const ImageOutput = object({
-  ...FileOutput.object,
+  ...FileOutput.entries,
 
   metadata: ImageMetadata
 })
