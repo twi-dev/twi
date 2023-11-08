@@ -6,8 +6,8 @@ import {RecordSoft} from "../common/RecordSoft.js"
 import {ChapterBase} from "./ChapterBase.js"
 
 export const ChapterRecord = object({
-  ...RecordSoft.object,
-  ...ChapterBase.object
+  ...RecordSoft.entries,
+  ...ChapterBase.entries
 })
 
 export type IChapterRecord = Input<typeof ChapterRecord>

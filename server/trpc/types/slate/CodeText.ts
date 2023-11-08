@@ -4,7 +4,7 @@ import {literal, object} from "valibot"
 import {PlainText} from "./PlainText.js"
 
 export const CodeText = object({
-  ...PlainText.object,
+  ...PlainText.entries,
 
   code: literal(true)
 })

@@ -6,8 +6,8 @@ import {Node} from "../common/Node.js"
 import {ChapterBase} from "./ChapterBase.js"
 
 export const ChapterNode = object({
-  ...Node.object,
-  ...ChapterBase.object
+  ...Node.entries,
+  ...ChapterBase.entries
 })
 
 export type IChapterNode = Input<typeof ChapterNode>

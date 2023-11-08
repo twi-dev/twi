@@ -7,7 +7,7 @@ import {UserDisplayName} from "./UserDisplayName.js"
 import {UserRecord} from "./UserRecord.js"
 
 export const UserOutput = object({
-  ...UserRecord.object,
+  ...UserRecord.entries,
 
   displayName: nullable(UserDisplayName),
   avatar: nullable(ImageOutput)

@@ -4,7 +4,7 @@ import type {Input, Output} from "valibot"
 import {ChapterRecord} from "./ChapterRecord.js"
 
 export const ChapterBaseOutput = object({
-  ...ChapterRecord.object,
+  ...ChapterRecord.entries,
 
   slug: string([minLength(2)])
 })

@@ -4,7 +4,7 @@ import type {Input, Output} from "valibot"
 import {UserLogInInput} from "./UserLogInInput.js"
 
 export const UserSignUpInput = object({
-  ...UserLogInInput.object,
+  ...UserLogInInput.entries,
 
   email: string([email()])
 })

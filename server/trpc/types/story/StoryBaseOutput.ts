@@ -7,7 +7,7 @@ import {StoryRecord} from "./StoryRecord.js"
 import {StorySlug} from "./StorySlug.js"
 
 export const StoryBaseOutput = object({
-  ...StoryRecord.object,
+  ...StoryRecord.entries,
 
   publisher: UserOutput,
   slug: StorySlug

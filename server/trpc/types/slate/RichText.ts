@@ -1,4 +1,4 @@
-import {intersection, union} from "valibot"
+import {intersect, union} from "valibot"
 import type {Input, Output} from "valibot"
 
 import {RichTextBase} from "./RichTextBase.js"
@@ -6,7 +6,7 @@ import {RichTextBase} from "./RichTextBase.js"
 import {RichTextSubscriptFormat} from "./RichTextSubscriptFormat.js"
 import {RichTextSuperscriptFormat} from "./RichTextSuperscriptFormat.js"
 
-export const RichText = intersection([
+export const RichText = intersect([
   RichTextBase,
 
   union([

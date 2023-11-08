@@ -4,7 +4,7 @@ import type {Input, Output} from "valibot"
 import {UserOutput} from "./UserOutput.js"
 
 export const UserSessionOutput = object({
-  ...UserOutput.object,
+  ...UserOutput.entries,
 
   email: string([email()])
 })

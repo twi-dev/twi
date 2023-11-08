@@ -6,7 +6,7 @@ import {PlainText} from "./PlainText.js"
 const OptionalTrue = optional(literal(true))
 
 export const RichTextBase = object({
-  ...PlainText.object,
+  ...PlainText.entries,
 
   bold: OptionalTrue,
   italic: OptionalTrue,
