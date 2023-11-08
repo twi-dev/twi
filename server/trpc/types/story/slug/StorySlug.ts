@@ -23,12 +23,12 @@ export const StorySlug = transform(
     }
 
     if (Array.isArray(slug)) {
-      const [date, name] = slug
+      const [name, suffix] = slug
 
-      return `${date}~${name}`
+      return `${name}~${suffix}`
     }
 
-    return `${slug.date}~${slug.name}`
+    return `${slug.name}~${slug.suffix}`
   }
 )
 
