@@ -6,7 +6,7 @@ import {name} from "./utils/name.js"
 
 export const StorySlugObject = object({
   name: string([name()]),
-  date: string([suffix()])
+  suffix: string([suffix()])
 })
 
 export type IStorySlugObject = Input<typeof StorySlugObject>
