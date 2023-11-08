@@ -13,7 +13,7 @@ export async function useStoriesGetList(
 ): Promise<Ref<Result>> {
   const {$trpc} = useNuxtApp()
 
-  const {error, data} = $trpc.stories.list.useQuery(params)
+  const {error, data} = await $trpc.stories.list.useQuery(params)
 
   if (error.value) {
     throw error.value
