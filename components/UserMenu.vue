@@ -19,7 +19,7 @@ const avatarUrl = computed(() => {
   return undefined
 })
 
-async function logOut(close: () => void) {
+async function logOut(close: VoidFunction) {
   try {
     await signOut()
     close()
