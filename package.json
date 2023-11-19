@@ -13,7 +13,7 @@
     "preview": "nuxt preview --dotenv .env.production.local",
     "preinstall": "npx only-allow pnpm",
     "postinstall": "nuxt prepare",
-    "prepare": "husky install"
+    "prepare": "npx is-in-ci || husky install"
   },
   "mikro-orm": {
     "useTsNode": true,
