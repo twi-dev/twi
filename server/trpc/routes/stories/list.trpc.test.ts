@@ -1,6 +1,6 @@
 import {describe, expect, beforeAll, afterAll} from "vitest"
+import {parseAsync, array} from "valibot"
 import {faker} from "@faker-js/faker"
-import {z} from "zod"
 
 import {trpcTest} from "../../../__fixtures__/trpc.js"
 import {StoryBaseOutput} from "../../types/story/StoryBaseOutput.js"
@@ -55,7 +55,7 @@ describe("stories.list procedure", async () => {
     const page = await trpc.stories.list()
 
     const stories = await orm.em.find(Story, {}, {orderBy: {createdAt: "desc"}})
-    const expected = await z.array(StoryBaseOutput).parseAsync(stories)
+    const expected = await parseAsync(array(StoryBaseOutput), stories)
 
     expect(page.current).to.equal(1)
     expect(page.hasItems).to.equal(true)

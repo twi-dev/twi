@@ -1,4 +1,5 @@
-import {z} from "zod"
+import type {Input, Output} from "valibot"
+import {object, string} from "valibot"
 
 import type {MaybeNull} from "../../../../../lib/utils/types/MaybeNull.js"
 
@@ -10,11 +11,11 @@ export interface MetadataInput {
   filename?: MaybeNull<string>
 }
 
-export const Metadata = z.object({
-  type: z.string(),
-  name: z.string()
+export const Metadata = object({
+  type: string(),
+  name: string()
 })
 
-export type IMetadata = z.input<typeof Metadata>
+export type IMetadata = Input<typeof Metadata>
 
-export type OMetadata = z.output<typeof Metadata>
+export type OMetadata = Output<typeof Metadata>

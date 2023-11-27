@@ -1,23 +1,35 @@
-import {getPipeIssues, getOutput, type PipeResult} from "valibot"
+/* eslint-disable indent */
+
+import {getPipeIssues, getOutput, type BaseValidation} from "valibot"
 
 import {
   isStorySlugNameValid,
   isStorySlugSuffixValid
 } from "../../../../../lib/utils/slug/storySlug.js"
 
-export const slug = (message?: string) => <TInput extends string>(
-  input: TInput
-): PipeResult<TInput> => {
-  const [name, suffix] = input.split("~")
-
-  const isValid = [
-    !!name && isStorySlugNameValid(name),
-    !!suffix && isStorySlugSuffixValid(name)
-  ].every(value => value === true)
-
-  if (isValid) {
-    return getPipeIssues("regex", message ?? "Invalid slug format", input)
-  }
-
-  return getOutput(input)
+export type SlugValidation<TInput extends string> = BaseValidation<TInput> & {
+  type: "invalid_slug"
 }
+
+export const slug = <TInput extends string>(
+  message: string = "Invalid slug format"
+): SlugValidation<TInput> => ({
+  async: false,
+  type: "invalid_slug",
+  message,
+
+  _parse(input) {
+    const [name, suffix] = input.split("~")
+
+    const isValid = [
+      !!name && isStorySlugNameValid(name),
+      !!suffix && isStorySlugSuffixValid(name)
+    ].every(value => value === true)
+
+    if (isValid) {
+      return getPipeIssues(this.type, this.message, input)
+    }
+
+    return getOutput(input)
+  }
+})

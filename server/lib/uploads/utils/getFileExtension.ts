@@ -6,11 +6,13 @@ import type {
   MaybeUndefined
 } from "../../../../lib/utils/types/MaybeUndefined.js"
 
-import type {Metadata} from "./types/Metadata.js"
+import type {MetadataInput} from "./types/Metadata.js"
 
 const normalizeExtension = (value: string) => value.replace(/^\.?/, "")
 
-export function getFileExtension(metadata: Metadata): MaybeUndefined<string> {
+export function getFileExtension(
+  metadata: MetadataInput
+): MaybeUndefined<string> {
   const name = metadata.filename || metadata.name || undefined
   const mimeType = metadata.filetype || metadata.type || undefined
 

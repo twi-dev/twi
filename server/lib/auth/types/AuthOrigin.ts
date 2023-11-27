@@ -1,3 +1,3 @@
-import {z} from "zod"
+import {string, url} from "valibot"
 
-export const AuthOrigin = z.string().url()
+export const AuthOrigin = string([url()])
