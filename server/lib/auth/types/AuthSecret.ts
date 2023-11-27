@@ -1,3 +1,3 @@
-import {z} from "zod"
+import {string, minLength} from "valibot"
 
-export const AuthSecret = z.string().min(21)
+export const AuthSecret = string([minLength(21)])

@@ -1,15 +1,26 @@
-import {getPipeIssues, getOutput, type PipeResult} from "valibot"
+/* eslint-disable indent */
+
+import {getPipeIssues, getOutput, type BaseValidation} from "valibot"
 
 import {
   isStorySlugSuffixValid
 } from "../../../../../lib/utils/slug/storySlug.js"
 
-export const suffix = (message?: string) => <TInput extends string>(
-  input: TInput
-): PipeResult<TInput> => {
-  if (!isStorySlugSuffixValid(input)) {
-    return getPipeIssues("regex", message ?? "Invalid suffix format", input)
-  }
+export type SlugSuffixValidation<TInput extends string> =
+  BaseValidation<TInput> & {type: "invalid_slug_suffix"}
 
-  return getOutput(input)
-}
+export const suffix = <TInput extends string>(
+  message: string = "Invalid suffix format"
+): SlugSuffixValidation<TInput> => ({
+  async: false,
+  type: "invalid_slug_suffix",
+  message,
+
+  _parse(input) {
+    if (!isStorySlugSuffixValid(input)) {
+      return getPipeIssues(this.type, this.message, input)
+    }
+
+    return getOutput(input)
+  }
+})
