@@ -51,13 +51,15 @@ export default {
     themes: [
       {
         light: {
-          ...themes["[data-theme=light]"],
+          ...themes.dark,
+
           primary: colors.violet["500"],
           "primary-focus": colors.violet["600"],
           "primary-content": colors.white
         },
         dark: {
-          ...themes["[data-theme=dark]"],
+          ...themes.dark,
+
           primary: colors.violet["500"],
           "primary-focus": colors.violet["600"],
           "primary-content": colors.white
