@@ -73,7 +73,7 @@ function crop(): void {
 }
 </script>
 
-<style lang="postcss">
+<style>
 .round-crop {
   & .cropper-face, & .cropper-view-box {
     @apply rounded-full;
