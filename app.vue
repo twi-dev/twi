@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {useHead} from "#imports"
-
 useHead({
   titleTemplate(title) {
     const base = "Twilight's Library"
