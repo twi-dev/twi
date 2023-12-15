@@ -32,11 +32,11 @@ const {value: passwordValue, attrs: passwordAttrs} = fields.password
 
       <Input
         id="login"
+        v-bind="loginAttrs"
         v-model="loginValue"
         wide
         type="text"
         placeholder="Login..."
-        v-bind="loginAttrs"
       />
     </Field>
 
@@ -47,11 +47,11 @@ const {value: passwordValue, attrs: passwordAttrs} = fields.password
 
       <Input
         id="password"
+        v-bind="passwordAttrs"
         v-model="passwordValue"
         wide
         type="password"
         placeholder="Password..."
-        v-bind="passwordAttrs"
       />
     </Field>
 
