@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import {useForm} from "@vorms/core"
-import {valibotResolver} from "@vorms/resolvers/valibot"
-
-import type {
-  IUserSignUpInput
-} from "../../server/trpc/types/user/UserSignUpInput.js"
-import {UserSignUpInput} from "../../server/trpc/types/user/UserSignUpInput.js"
-import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
-import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
 definePageMeta({
@@ -23,43 +14,10 @@ useHead({
   title: "Signup"
 })
 
-const {$trpc} = useNuxtApp()
-const {replace} = useRouter()
-const {signIn} = useAuth()
-
-const {register, handleSubmit} = useForm<IUserSignUpInput>({
-  initialValues: {
-    login: "",
-    email: "",
-    password: ""
-  },
-  validate: valibotResolver(UserSignUpInput),
-  validateMode: "input",
-  reValidateMode: "input",
-  validateOnMounted: true,
-  async onSubmit(data) {
-    try {
-      await $trpc.user.create.mutate(data)
-
-      const response: AuthResponse = await signIn("credentials", {
-        ...data,
-        redirect: false
-      })
-
-      if (isAuthOkResponse(response)) {
-        return replace("/")
-      }
-
-      console.error(response.error)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-})
-
-const {value: emailValue, attrs: emailAttrs} = register("email")
-const {value: loginValue, attrs: loginAttrs} = register("login")
-const {value: passwordValue, attrs: passwordAttrs} = register("password")
+const {handleSubmit, fields} = useSignupForm()
+const {value: emailValue, attrs: emailAttrs} = fields.email
+const {value: loginValue, attrs: loginAttrs} = fields.login
+const {value: passwordValue, attrs: passwordAttrs} = fields.password
 </script>
 
 <template>
@@ -76,11 +34,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 
         <Input
           id="email"
+          v-bind="emailAttrs"
           v-model="emailValue"
           wide
           type="email"
           placeholder="Email"
-          v-bind="emailAttrs"
         />
       </Field>
 
@@ -91,11 +49,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 
         <Input
           id="login"
+          v-bind="loginAttrs"
           v-model="loginValue"
           wide
           type="text"
           placeholder="Login"
-          v-bind="loginAttrs"
         />
       </Field>
 
@@ -106,11 +64,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 
         <Input
           id="password"
+          v-bind="passwordAttrs"
           v-model="passwordValue"
           wide
           type="password"
           placeholder="Password"
-          v-bind="passwordAttrs"
         />
       </Field>
     </div>

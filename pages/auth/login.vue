@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import {useForm} from "@vorms/core"
-import {valibotResolver} from "@vorms/resolvers/valibot"
-
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
-import type {AuthResponse} from "../../lib/auth/AuthResponse.js"
-import {isAuthOkResponse} from "../../lib/auth/isAuthOkResponse.js"
-
-import type {
-  IUserLogInInput
-} from "../../server/trpc/types/user/UserLogInInput.js"
-import {UserLogInInput} from "../../server/trpc/types/user/UserLogInInput.js"
 
 definePageMeta({
   layout: "auth",
@@ -24,34 +14,9 @@ useHead({
   title: "Login"
 })
 
-const {replace} = useRouter()
-const {signIn} = useAuth()
-
-const {register, handleSubmit} = useForm<IUserLogInInput>({
-  initialValues: {
-    login: "",
-    password: ""
-  },
-  validate: valibotResolver(UserLogInInput),
-  validateOnMounted: true,
-  validateMode: "input",
-  reValidateMode: "input",
-  async onSubmit(data) {
-    const response: AuthResponse = await signIn("credentials", {
-      ...data,
-      redirect: false
-    })
-
-    if (isAuthOkResponse(response)) {
-      return replace("/")
-    }
-
-    console.error(response.error)
-  }
-})
-
-const {value: loginValue, attrs: loginAttrs} = register("login")
-const {value: passwordValue, attrs: passwordAttrs} = register("password")
+const {handleSubmit, fields} = useLoginForm()
+const {value: loginValue, attrs: loginAttrs} = fields.login
+const {value: passwordValue, attrs: passwordAttrs} = fields.password
 </script>
 
 <template>
@@ -67,11 +32,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 
       <Input
         id="login"
+        v-bind="loginAttrs"
         v-model="loginValue"
         wide
         type="text"
         placeholder="Login..."
-        v-bind="loginAttrs"
       />
     </Field>
 
@@ -82,11 +47,11 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 
       <Input
         id="password"
+        v-bind="passwordAttrs"
         v-model="passwordValue"
         wide
         type="password"
         placeholder="Password..."
-        v-bind="passwordAttrs"
       />
     </Field>
 
