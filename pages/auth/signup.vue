@@ -65,7 +65,7 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 <template>
   <FormAuth @submit="handleSubmit">
     <template #title>
-      Signup
+      Create an account
     </template>
 
     <div class="flex flex-col gap-2">
@@ -116,13 +116,13 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
     </div>
 
     <template #submit>
-      Sign up
+      Continue
     </template>
 
     <template #links>
       <div class="text-center flex flex-col gap-2">
         <NuxtLink href="/auth/login">
-          Already have an account? Log in here
+          Already have one? Log in here
         </NuxtLink>
       </div>
     </template>

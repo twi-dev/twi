@@ -57,7 +57,7 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
 <template>
   <FormAuth @submit="handleSubmit">
     <template #title>
-      Login
+      Log in to your account
     </template>
 
     <Field>
@@ -91,7 +91,7 @@ const {value: passwordValue, attrs: passwordAttrs} = register("password")
     </Field>
 
     <template #submit>
-      Log in
+      Continue
     </template>
 
     <template #links>
