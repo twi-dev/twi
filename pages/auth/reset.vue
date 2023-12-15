@@ -38,7 +38,7 @@ definePageMeta({
     </div>
 
     <template #submit>
-      Send instructions
+      Continue
     </template>
 
     <template #links>
