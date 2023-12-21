@@ -9,6 +9,10 @@ interface Params {
 const {name, suffix} = params as unknown as Params
 
 const story = await useStoryGetBySlug({name, suffix})
+
+useHeadSafe({
+  title: story.value.title
+})
 </script>
 
 <template>
