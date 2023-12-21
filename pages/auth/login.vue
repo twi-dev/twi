@@ -10,7 +10,7 @@ definePageMeta({
   } satisfies AuthMeta
 })
 
-useHead({
+useHeadSafe({
   title: "Login"
 })
 

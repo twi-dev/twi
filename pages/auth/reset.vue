@@ -3,7 +3,7 @@ import {noop} from "lodash-es"
 
 import type {AuthMeta} from "../../lib/auth/AuthMeta.js"
 
-useHead({
+useHeadSafe({
   title: "Reset password"
 })
 
