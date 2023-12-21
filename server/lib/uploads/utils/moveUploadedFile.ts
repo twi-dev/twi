@@ -3,6 +3,7 @@ import {pipeline} from "node:stream/promises"
 import {createWriteStream} from "node:fs"
 import {stat} from "node:fs/promises"
 
+import {parseAsync} from "valibot"
 import {ensureDir} from "fs-extra"
 import {format} from "date-fns"
 import {nanoid} from "nanoid"
@@ -83,7 +84,7 @@ export async function moveUploadedFile<
 
   const uploadId = getFileIdFromUrl(id)
   const upload = await store.getUpload(uploadId)
-  const metadata = await Metadata.parseAsync(upload.metadata)
+  const metadata = await parseAsync(Metadata, upload.metadata)
 
   if (accepts && match(accepts, metadata.type) === false) {
     throw new Error("File type mismatch")
