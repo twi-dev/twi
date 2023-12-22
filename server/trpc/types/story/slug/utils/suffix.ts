@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-import {getPipeIssues, getOutput, type BaseValidation} from "valibot"
+import {actionIssue, actionOutput, type BaseValidation} from "valibot"
 
 import {
   isStorySlugSuffixValid
@@ -18,9 +18,9 @@ export const suffix = <TInput extends string>(
 
   _parse(input) {
     if (!isStorySlugSuffixValid(input)) {
-      return getPipeIssues(this.type, this.message, input)
+      return actionIssue(this.type, this.message, input)
     }
 
-    return getOutput(input)
+    return actionOutput(input)
   }
 })

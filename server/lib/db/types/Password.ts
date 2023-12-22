@@ -2,8 +2,8 @@ import {
   string,
   optional,
   transform,
-  getPipeIssues,
-  getOutput
+  actionIssue,
+  actionOutput
 } from "valibot"
 import type {BaseValidation} from "valibot"
 
@@ -18,10 +18,10 @@ const bypassPwd = <TInput extends string>(): PasswordValidation<TInput> => ({
   message: "Password is required for connection user",
   _parse(input) {
     if (process.env.NODE_ENV !== "test" && !input) {
-      return getPipeIssues(this.type, this.message, input)
+      return actionIssue(this.type, this.message, input)
     }
 
-    return getOutput(input)
+    return actionOutput(input)
   }
 })
 
