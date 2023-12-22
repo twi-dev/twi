@@ -27,5 +27,9 @@ export async function useStoryGetBySlug(slug: Slug): Promise<Ref<Result>> {
     notFound()
   }
 
+  if (error.value) {
+    throw error.value
+  }
+
   return data as Ref<NonNullable<typeof data.value>>
 }
