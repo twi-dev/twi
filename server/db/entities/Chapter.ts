@@ -65,6 +65,9 @@ export class Chapter extends RecordSoft {
   @Property({type: "smallint", unsigned: true, nullable: true})
   order!: MaybeNull<Opt<number>>
 
+  /**
+   * URL-friendly & human-readable unique identifier associated with the story
+   */
   @Property({type: "varchar"})
   @Unique()
   slug!: Opt<string>

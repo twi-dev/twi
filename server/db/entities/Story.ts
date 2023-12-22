@@ -34,7 +34,7 @@ export class Story extends RecordSoft {
   description!: ODescription
 
   /**
-   * URL-friendly & human-readable story identifier
+   * URL-friendly & human-readable unique identifier associated with the story
    */
   @Property({type: "varchar", unique: true})
   slug!: Opt<StorySlug>
