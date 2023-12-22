@@ -2,6 +2,7 @@ import type {IncomingMessage} from "node:http"
 import {createHash} from "node:crypto"
 
 import {nanoid} from "nanoid"
+import {parse} from "valibot"
 
 import {
   Metadata,
@@ -11,7 +12,7 @@ import {
 import {extractMetadata} from "./extractMetadata.js"
 
 interface HashPayload {
-  date: string
+  date: number
   metadata?: OMetadata
   randomness: string
 }
@@ -20,8 +21,8 @@ export function createFilename(req: IncomingMessage): string {
   const hash = createHash("sha256")
 
   const payload: HashPayload = {
-    date: new Date().toISOString(),
-    metadata: Metadata.parse(extractMetadata(req)),
+    date: Date.now(),
+    metadata: parse(Metadata, extractMetadata(req)),
     randomness: nanoid()
   }
 

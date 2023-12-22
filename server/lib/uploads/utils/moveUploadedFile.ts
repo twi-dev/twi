@@ -104,9 +104,6 @@ export async function moveUploadedFile<
 
   const sha512hash = await createHashFromFileContent("sha512", stream)
 
-  // Cleanup
-  await store.remove(uploadId)
-
   let size: number
   if (upload.size) {
     size = upload.size
@@ -115,6 +112,9 @@ export async function moveUploadedFile<
 
     size = stats.size
   }
+
+  // Cleanup
+  await store.remove(uploadId)
 
   return {key, size, sha512hash, path: dest, mime: metadata.type}
 }
