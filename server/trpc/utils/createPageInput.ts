@@ -53,16 +53,18 @@ export function createPageInput(
 
   const Limit = optional(number(limitPipe), maxLimit ?? undefined)
 
-  const PageInput = object({cursor: Cursor, limit: Limit})
+  const PageInputSchema = object({cursor: Cursor, limit: Limit})
 
   return optional(
-    transform(PageInput, ({cursor, limit}) => {
+    transform(PageInputSchema, ({cursor, limit}) => {
       const args = new PageArgs({cursor, limit, maxLimit})
 
       return {args}
     }),
 
-    {}
+    {
+      cursor: undefined
+    }
   )
 }
 

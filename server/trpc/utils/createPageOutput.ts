@@ -18,13 +18,15 @@ export function createPageOutput<
     args: transform(input, ({args}) => args)
   })
 
-  return transform(
+  const PageOutput = transform(
     PageOutputSchema,
 
     // TODO: File an issue to valibot
     // @ts-expect-error WithQuestionMarks utility breaks type
     page => new Page(page).toJSON()
   )
+
+  return object(PageOutput.entries)
 }
 
 export const DefaultPageOutput = createPageOutput(
