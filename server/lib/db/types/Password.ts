@@ -16,6 +16,7 @@ const bypassPwd = <TInput extends string>(): PasswordValidation<TInput> => ({
   async: false,
   type: "db_password_required",
   message: "Password is required for connection user",
+
   _parse(input) {
     if (process.env.NODE_ENV !== "test" && !input) {
       return actionIssue(this.type, this.message, input)
@@ -28,5 +29,5 @@ const bypassPwd = <TInput extends string>(): PasswordValidation<TInput> => ({
 export const Password = transform(
   optional(string([bypassPwd()])),
 
-  input => input as string // Lying valibot, because the return value will be `string` normally
+  input => input as string // Lying to valibot, because the return value will be `string` normally
 )
