@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-import {getPipeIssues, getOutput, type BaseValidation} from "valibot"
+import {actionIssue, actionOutput, type BaseValidation} from "valibot"
 
 import {isStorySlugNameValid} from "../../../../../lib/utils/slug/storySlug.js"
 
@@ -16,9 +16,9 @@ export const name = <TInput extends string>(
 
   _parse(value) {
     if (!isStorySlugNameValid(value)) {
-      return getPipeIssues(this.type, this.message, value)
+      return actionIssue(this.type, this.message, value)
     }
 
-    return getOutput(value)
+    return actionOutput(value)
   }
 })
