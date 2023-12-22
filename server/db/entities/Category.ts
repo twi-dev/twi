@@ -1,13 +1,19 @@
-import {Entity, Property, ManyToMany, Unique, Collection} from "@mikro-orm/core"
+import {
+  Entity,
+  Property,
+  ManyToMany,
+  Unique,
+  Collection,
+  type Opt
+} from "@mikro-orm/mysql"
 
-import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import {createSlug} from "../../lib/utils/slug/createSlug.js"
 
 import {RecordSoft} from "./RecordSoft.js"
 import {Tag} from "./Tag.js"
 
 @Entity()
-export class Category extends RecordSoft<CategoryOptionalProps> {
+export class Category extends RecordSoft {
   /**
    * Category name
    */
@@ -20,13 +26,13 @@ export class Category extends RecordSoft<CategoryOptionalProps> {
    */
   @Property({type: "varchar"})
   @Unique()
-  slug!: string
+  slug!: Opt<string>
 
   /**
    * Category order
    */
   @Property({type: "smallint", unsigned: true})
-  order!: number
+  order!: Opt<number>
 
   /**
    * List of tags associated with category
@@ -41,5 +47,3 @@ export class Category extends RecordSoft<CategoryOptionalProps> {
     this.slug = createSlug(name)
   }
 }
-
-type CategoryOptionalProps = PickKeys<Category, "slug" | "order" | "tags">

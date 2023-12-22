@@ -1,10 +1,8 @@
 import {v4} from "uuid"
 
-import {PrimaryKey, OptionalProps} from "@mikro-orm/core"
+import {PrimaryKey} from "@mikro-orm/mysql"
 
-export abstract class Node<TOptionalFields = never> {
-  [OptionalProps]?: TOptionalFields
-
+export abstract class Node {
   @PrimaryKey({type: "uuid"})
   readonly id: string = v4()
 }

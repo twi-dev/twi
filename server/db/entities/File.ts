@@ -1,4 +1,4 @@
-import {Entity, Property, Unique, JsonType} from "@mikro-orm/core"
+import {Entity, Property, Unique, JsonType} from "@mikro-orm/mysql"
 
 import {Record} from "./Record.js"
 
