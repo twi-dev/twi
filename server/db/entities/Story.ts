@@ -5,10 +5,10 @@ import {
   ManyToOne,
   OneToMany,
   Collection,
-  JsonType
-} from "@mikro-orm/core"
+  JsonType,
+  type Opt
+} from "@mikro-orm/mysql"
 
-import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 import type {StorySlug} from "../../lib/utils/slug/storySlug.js"
 import type {
   ODescription
@@ -20,7 +20,7 @@ import {User} from "./User.js"
 import {Tag} from "./Tag.js"
 
 @Entity()
-export class Story extends RecordSoft<StoryOptionalProps> {
+export class Story extends RecordSoft {
   /**
    * Story title
    */
@@ -37,7 +37,7 @@ export class Story extends RecordSoft<StoryOptionalProps> {
    * URL-friendly & human-readable story identifier
    */
   @Property({type: "varchar", unique: true})
-  slug!: StorySlug
+  slug!: Opt<StorySlug>
 
   /**
    * Indicates whether the story is available for anyone to read.
@@ -47,7 +47,7 @@ export class Story extends RecordSoft<StoryOptionalProps> {
    * `false` - means the story is **public**
    */
   @Property({type: "boolean", default: true})
-  isDraft = true
+  isDraft: Opt<boolean> = true
 
   /**
    * Indicates whether the story finished.
@@ -55,18 +55,18 @@ export class Story extends RecordSoft<StoryOptionalProps> {
    * It must have at least one chapter to be marked as finished.
    */
   @Property({type: "boolean", default: false})
-  isFinished = true
+  isFinished: Opt<boolean> = true
 
   /**
    * An amount of chapters within the story
    */
   @Property({type: "smallint", unsigned: true})
-  chaptersCount = 0
+  chaptersCount: Opt<number> = 0
 
   /**
    * The user who published the story
    */
-  @ManyToOne(() => User, {eager: true, nullable: false, onDelete: "cascade"})
+  @ManyToOne(() => User, {eager: true, nullable: false, deleteRule: "cascade"})
   publisher!: User
 
   /**
@@ -81,6 +81,3 @@ export class Story extends RecordSoft<StoryOptionalProps> {
   @OneToMany(() => Chapter, "story", {lazy: true})
   chapters = new Collection<Chapter, Story>(this)
 }
-
-type StoryOptionalProps =
-  PickKeys<Story, "isDraft" | "isFinished" | "slug" | "chaptersCount">

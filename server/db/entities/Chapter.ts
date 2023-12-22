@@ -4,11 +4,11 @@ import {
   ManyToOne,
   JsonType,
   Unique,
-  Filter
-} from "@mikro-orm/core"
+  Filter,
+  type Opt
+} from "@mikro-orm/mysql"
 
 import type {MaybeNull} from "../../../lib/utils/types/MaybeNull.js"
-import type {PickKeys} from "../../../lib/utils/types/PickKeys.js"
 
 import type {
   ORootElements
@@ -26,7 +26,7 @@ export enum ChapterFilters {
 @Entity()
 @Filter<Chapter>({name: ChapterFilters.Published, cond: {isDraft: false}})
 @Filter<Chapter>({name: ChapterFilters.Draft, cond: {isDraft: true}})
-export class Chapter extends RecordSoft<ChapterOptionalProps> {
+export class Chapter extends RecordSoft {
   /**
    * Chapter title
    */
@@ -55,7 +55,7 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
    * `false` - means chapter is **public**
    */
   @Property({type: "boolean", default: true})
-  isDraft = true
+  isDraft: Opt<boolean> = true
 
   /**
    * Chapter order number within the story.
@@ -63,17 +63,15 @@ export class Chapter extends RecordSoft<ChapterOptionalProps> {
    * The value will be "null" when the chapter is unlisted or soft-removed
    */
   @Property({type: "smallint", unsigned: true, nullable: true})
-  order!: MaybeNull<number>
+  order!: MaybeNull<Opt<number>>
 
   @Property({type: "varchar"})
   @Unique()
-  slug!: string
+  slug!: Opt<string>
 
   /**
    * Story associated with the chapter
    */
-  @ManyToOne(() => Story, {onDelete: "cascade"})
+  @ManyToOne(() => Story, {deleteRule: "cascade"})
   story!: Story
 }
-
-type ChapterOptionalProps = PickKeys<Chapter, "order" | "isDraft">
