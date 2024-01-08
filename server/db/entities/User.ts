@@ -4,9 +4,9 @@ import {
   Enum,
   Unique,
   OneToOne,
-  LoadStrategy,
-  type Opt
+  LoadStrategy
 } from "@mikro-orm/mysql"
+import type {Opt, Hidden} from "@mikro-orm/mysql"
 
 import type {MaybeNull} from "../../..//lib/utils/types/MaybeNull.js"
 import {stringEnumValues} from "../../../lib/utils/stringEnumValues.js"
@@ -41,7 +41,7 @@ export class User extends RecordSoft {
    * Password (will be hashed once the user is created & persisted).
    */
   @Property({type: "varchar", hidden: true})
-  password!: string
+  password!: Hidden<string>
 
   /**
    * Indicates which role user were assigned to.
