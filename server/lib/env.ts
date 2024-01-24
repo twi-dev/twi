@@ -1,12 +1,15 @@
+import {optional, parse} from "valibot"
 import {omit} from "lodash-es"
 import {loadEnv} from "vite"
 
 import {NodeEnv} from "./types/common/NodeEnv.js"
 
 // @ts-expect-error
-process.env.NODE_ENV = NodeEnv
-  .default("development")
-  .parse(process.env.NODE_ENV)
+process.env.NODE_ENV = parse(
+  optional(NodeEnv, "development"),
+
+  process.env.NODE_ENV
+)
 
 const envs = omit(
   loadEnv(process.env.NODE_ENV, process.cwd(), ""),
