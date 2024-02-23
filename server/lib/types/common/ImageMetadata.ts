@@ -4,7 +4,7 @@ import {object} from "valibot"
 import {ImageSize} from "./ImageSize.js"
 
 export const ImageMetadata = object({
-  ...ImageSize.object
+  ...ImageSize.entries
 })
 
 export type IImageMetadata = Input<typeof ImageMetadata>
