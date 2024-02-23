@@ -16,7 +16,8 @@ export default defineNuxtConfig({
     "@sidebase/nuxt-auth",
     "@vueuse/nuxt",
     "@nuxt/image",
-    "nuxt-svgo"
+    "nuxt-svgo",
+    "radix-vue/nuxt"
   ],
   tailwindcss: {
     exposeConfig: true

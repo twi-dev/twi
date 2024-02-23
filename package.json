@@ -109,6 +109,7 @@
     "mysql2": "3.9.1",
     "nanoid": "5.0.6",
     "next-auth": "4.22.5",
+    "radix-vue": "^1.4.8",
     "sharp": "0.33.2",
     "superjson": "2.2.1",
     "trpc-nuxt": "0.10.19",
