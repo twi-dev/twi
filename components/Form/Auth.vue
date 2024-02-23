@@ -18,7 +18,7 @@ defineProps<Props>()
       </div>
     </div>
 
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-5">
       <slot />
     </div>
 

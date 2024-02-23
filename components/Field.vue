@@ -1,5 +1,5 @@
 <template>
-  <div class="form-control gap-2">
+  <div class="flex gap-2 flex-col">
     <slot />
   </div>
 </template>
