@@ -1,15 +1,14 @@
 <script setup lang="ts">
-type Variants = "primary" | "secondary"
+export type ButtonVariants = "primary" | "secondary"
 
-type Colors = "red" | "brand"
+export type ButtonColors = "red" | "brand"
 
-type Shapes = "square" | "circle"
+export type ButtonShapes = "square" | "circle"
 
-// ! Vue doesn't support this kind of props
 export interface ButtonProps {
-  variant?: Variants
-  color?: Colors
-  shape?: Shapes
+  variant?: ButtonVariants
+  color?: ButtonColors
+  shape?: ButtonShapes
   wide?: boolean
   disabled?: boolean
   loading?: boolean
@@ -36,11 +35,11 @@ withDefaults(defineProps<ButtonProps>(), {
       !plain && {
         border: true,
         'w-full': wide,
-        'p-3 rounded-md': shape === 'square',
+        'py-3 px-5 rounded-md': shape === 'square',
         'p-2 rounded-full': shape === 'circle',
         'relative cursor-progress': loading,
         'disabled:cursor-not-allowed': disabled && !loading,
-        'disabled:bg-gray-400 disabled:dark:bg-slate-600': (variant === 'primary' && !loading),
+        'disabled:bg-neutral-200 disabled:text-neutral-500 disabled:border-neutral-200 disabled:dark:border-neutral-700 disabled:dark:bg-neutral-700 disabled:dark:text-neutral-500': (variant === 'primary' && !loading),
         'disabled:border-gray-300 disabled:text-gray-300 bg-transparent active:disabled:bg-transparent dark:disabled:border-slate-500 dark:disabled:text-slate-500': variant === 'secondary',
         'bg-violet-500 active:bg-violet-600 border-violet-500 text-white': variant === 'primary' && (!color || color === 'brand'),
         'bg-white active:bg-gray-200 dark:bg-transparent dark:text-white dark:active:bg-slate-600': variant === 'secondary',

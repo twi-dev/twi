@@ -14,13 +14,15 @@ useHeadSafe({
   title: "Login"
 })
 
-const {handleSubmit, fields} = useLoginForm()
+const {handleSubmit, fields, errors} = useLoginForm()
 const {value: loginValue, attrs: loginAttrs} = fields.login
 const {value: passwordValue, attrs: passwordAttrs} = fields.password
+
+const {isValid} = useIsFormVaid(errors)
 </script>
 
 <template>
-  <FormAuth @submit="handleSubmit">
+  <FormAuth :valid="isValid" @submit="handleSubmit">
     <template #title>
       Log in to your account
     </template>

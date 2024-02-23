@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import LogoIcon from "../../assets/logo.svg"
+
+interface Props {
+  valid?: boolean
+}
+
+defineProps<Props>()
 </script>
 
 <template>
@@ -16,13 +22,11 @@ import LogoIcon from "../../assets/logo.svg"
       <slot />
     </div>
 
-    <div>
-      <slot name="actions">
-        <button type="submit" class="btn btn-block btn-primary no-animation">
-          <slot name="submit" />
-        </button>
-      </slot>
-    </div>
+    <slot name="actions">
+      <Button :disabled="!valid">
+        <slot name="submit" />
+      </Button>
+    </slot>
 
     <div class="text-sm">
       <slot name="links" />

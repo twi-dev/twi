@@ -14,7 +14,7 @@ useHead({
 
 <style>
 html, body {
-  @apply bg-white text-neutral dark:bg-neutral-900 dark:text-white;
+  @apply bg-white text-neutral-800 dark:bg-neutral-900 dark:text-neutral-100;
 }
 
 a {
