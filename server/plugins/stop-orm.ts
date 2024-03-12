@@ -1,5 +1,3 @@
-import {defineNitroPlugin} from "#imports"
-
 import {closeConnection} from "../lib/db/orm.js"
 
 /**
