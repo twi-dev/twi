@@ -27,7 +27,7 @@ export const credentials = createCredentialsProvider({
       return null
     }
 
-    const {login, password} = result.data
+    const {login, password} = result.output
 
     const orm = await getORM()
     const user = await orm.em.findOne(User, {login}, {

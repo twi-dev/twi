@@ -1,5 +1,5 @@
-import {union} from "valibot"
 import type {Input, Output} from "valibot"
+import {union} from "valibot"
 
 import {Text} from "./Text.js"
 import {Anchor} from "./Anchor.js"

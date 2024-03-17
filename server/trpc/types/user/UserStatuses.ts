@@ -1,4 +1,4 @@
-import {nativeEnum} from "valibot"
+import {enum_} from "valibot"
 
 export enum UserStatuses {
   Inactive = "inactive",
@@ -6,4 +6,4 @@ export enum UserStatuses {
   Suspended = "suspended"
 }
 
-export const UserStatusesEnum = nativeEnum(UserStatuses)
+export const UserStatusesEnum = enum_(UserStatuses)

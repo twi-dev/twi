@@ -1,4 +1,4 @@
-import {wrap} from "@decs/typeschema"
+import {wrap} from "@typeschema/valibot"
 
 import {procedure} from "../../procedures/base.js"
 

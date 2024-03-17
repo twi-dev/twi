@@ -66,20 +66,7 @@ module.exports = {
     "operator-linebreak": ["error", "before"],
 
     // Indent
-    indent: [
-      "error",
-
-      2,
-
-      {
-        SwitchCase: 1,
-        flatTernaryExpressions: false,
-        offsetTernaryExpressions: false,
-        ignoredNodes: [
-          "PropertyDefinition[decorators]"
-        ]
-      }
-    ],
+    indent: "off",
     "@typescript-eslint/indent": [
       "error",
 
