@@ -1,4 +1,4 @@
-import {nativeEnum} from "valibot"
+import {enum_} from "valibot"
 
 export enum UserRoles {
   Owner = "owner",
@@ -6,4 +6,4 @@ export enum UserRoles {
   Regular = "regular"
 }
 
-export const UserRolesEnum = nativeEnum(UserRoles)
+export const UserRolesEnum = enum_(UserRoles)

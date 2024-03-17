@@ -1,5 +1,3 @@
-/* eslint-disable indent */
-
 import {actionIssue, actionOutput, type BaseValidation} from "valibot"
 
 import {
@@ -7,8 +5,21 @@ import {
   isStorySlugSuffixValid
 } from "../../../../../lib/utils/slug/storySlug.js"
 
-export type SlugValidation<TInput extends string> = BaseValidation<TInput> & {
+function validateSlug(value: string): boolean {
+  const [name, suffix] = value.split("~")
+
+  return [
+    !!name && isStorySlugNameValid(name),
+    !!suffix && isStorySlugSuffixValid(name)
+  ].every(value => value === true)
+}
+
+export interface SlugValidation<
+  TInput extends string
+> extends BaseValidation<TInput> {
   type: "invalid_slug"
+
+  requirement: typeof validateSlug
 }
 
 export const slug = <TInput extends string>(
@@ -16,20 +27,15 @@ export const slug = <TInput extends string>(
 ): SlugValidation<TInput> => ({
   async: false,
   type: "invalid_slug",
+  expects: null,
+  requirement: validateSlug,
   message,
 
   _parse(input) {
-    const [name, suffix] = input.split("~")
-
-    const isValid = [
-      !!name && isStorySlugNameValid(name),
-      !!suffix && isStorySlugSuffixValid(name)
-    ].every(value => value === true)
-
-    if (isValid) {
-      return actionIssue(this.type, this.message, input)
+    if (this.requirement(input)) {
+      return actionOutput(input)
     }
 
-    return actionOutput(input)
+    return actionIssue(this, slug, input, "slug")
   }
 })

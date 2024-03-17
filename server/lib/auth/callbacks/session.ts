@@ -8,6 +8,7 @@ import {User} from "../../../db/entities.js"
 export type SessionCallback = CallbacksOptions["session"]
 
 export const session: SessionCallback = async ({session, token}) => {
+  console.log("foo")
   const orm = await getORM()
 
   const user = await orm.em.findOne(User, {id: token.sub}, {

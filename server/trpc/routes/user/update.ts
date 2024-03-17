@@ -1,4 +1,4 @@
-import {wrap} from "@decs/typeschema"
+import {wrap} from "@typeschema/valibot"
 
 import {moveUploadedFile} from "../../../lib/uploads/utils/moveUploadedFile.js"
 import {getImageMetadata} from "../../../lib/utils/getImageMetadata.js"

@@ -1,4 +1,4 @@
-import {wrap} from "@decs/typeschema"
+import {wrap} from "@typeschema/valibot"
 
 import {StoryCreateInput} from "../../types/story/StoryCreateInput.js"
 import {withAuthContext} from "../../middlewares/withAuthContext.js"

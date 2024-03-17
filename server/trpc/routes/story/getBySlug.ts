@@ -1,5 +1,5 @@
+import {wrap} from "@typeschema/valibot"
 import {TRPCError} from "@trpc/server"
-import {wrap} from "@decs/typeschema"
 
 import {procedure} from "../../procedures/base.js"
 
